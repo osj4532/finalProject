@@ -6,9 +6,11 @@
 <link rel='stylesheet' media="print"
 	href='<c:url value='/resources/lib/scheduler/fullcalendar.print.min.css'/>' />
 
+<script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>
 <script src='<c:url value='/resources/lib/scheduler/moment.min.js'/>'></script>
 <script	src='<c:url value='/resources/lib/scheduler/fullcalendar.min.js'/>'></script>
 <script	src='<c:url value='/resources/lib/scheduler/fullcalendar-ko.js'/>'></script>
+
 <style type="text/css">
 	.mg_text{
 	    font-size: 36px;
@@ -96,19 +98,22 @@
 	  });
 	 }); */
 </script>
+
+<c:set var='mypage' value="scheduler"/>
+	
 <section id="main-content">
-	<section class="wrapper" style="background: #607D8B;">
+	<section class="wrapper" style="background: #668fa296;">
 		<h1 class="mg_text">
 			<i class="fa fa-angle-right mt text-important"></i>개인 스케줄
 		</h1>
 		<!-- page start-->
 		<div class="row mt">
-			<aside class="col-lg-3"></aside>
-			<aside class="col-lg-9 mt">
+			<aside class="col-lg-12 mt">
 				<div id='calendar' ></div>
 			</aside>
 
 		</div>
 	</section>
 </section>
+
 <%@include file="../inc/bottom.jsp"%>
