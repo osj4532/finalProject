@@ -31,10 +31,11 @@
 		min-height:600px;
 		text-align: center;
 		float: left;
+		z-index:1;
 	}
 	
 	#div1 li:hover{
-		background-color: blue;
+		background-color: rgb(38,123,204);
 		color:white;
 		
 	}
@@ -44,6 +45,7 @@
 		min-height:600px;
 		text-align: center;
 		float: left;
+		z-index:1;
 	}
 	
 	table{
@@ -54,6 +56,13 @@
 	table th{
 		text-align: center;
 	}
+	
+	@media(max-width:512px){
+		#div1{
+			width:120px;
+		}
+	}
+	
 </style>
 
 <script type="text/javascript" src="<c:url value="/resources/lib/jquery/jquery.min.js"/>"></script>
@@ -119,9 +128,9 @@
 	
 </form>
 
-<div id="wraper1" class="container">
+<div id="wraper1" class="container panel">
 	<h1>결재라인 등록</h1>
-	<div class="row">
+	<div class="row mt">
 		<div id="div1" class="col-sm-3 col-md-3">
 			<h2>부서목록</h2>
 			<ul id="departList" class="list-group">

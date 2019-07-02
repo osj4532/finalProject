@@ -17,7 +17,8 @@
   <link href="<c:url value='/resources/img/apple-touch-icon.png'/>" rel="apple-touch-icon">
 
   <!-- Bootstrap core CSS -->
-  <link href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min.css'/>"  rel="stylesheet">
+  <%-- <link href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min.css'/>"  rel="stylesheet"> --%>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
   <!--external css-->
   <link href="<c:url value='/resources/lib/font-awesome/css/font-awesome.css'/>"  rel="stylesheet" />
@@ -28,6 +29,11 @@
   <link href="<c:url value='/resources/css/style-responsive.css'/>"  rel="stylesheet">
   <script src="<c:url value='/resources/lib/chart-master/Chart.js'/>" ></script>
 
+<style type="text/css">
+	#sidebar{
+		z-index: 5;
+	}
+</style>
 </head>
 
 <body>
