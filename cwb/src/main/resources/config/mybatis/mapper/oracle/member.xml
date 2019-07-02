@@ -3,7 +3,13 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.mybatis.mapper.member">
+	<select id="selectByCate" resultType="map" parameterType="int">
+		select * from memberview where dept_No = #{deptNo} and ranks_No > 1
+	</select>
 	
+	<select id="selectByNo" resultType="map" parameterType="int">
+		select * from memberview where mem_No = #{memberNo}
+	</select>
 </mapper>
 
 

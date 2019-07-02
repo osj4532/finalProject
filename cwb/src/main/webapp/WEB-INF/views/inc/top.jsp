@@ -18,6 +18,7 @@
 
   <!-- Bootstrap core CSS -->
   <link href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min.css'/>"  rel="stylesheet">
+  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
   <!--external css-->
   <link href="<c:url value='/resources/lib/font-awesome/css/font-awesome.css'/>"  rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/zabuto_calendar.css'/>" >
