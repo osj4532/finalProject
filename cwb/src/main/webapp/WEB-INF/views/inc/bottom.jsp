@@ -24,8 +24,9 @@
     <!--footer end  nav-expand.png-->
   </section>
   <!-- js placed at the end of the document so the pages load faster -->
-  <script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>
-
+	<c:if test="${mypage!='scheduler'}" >
+  		<script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>	
+	</c:if>
   <script src="<c:url value='/resources/lib/bootstrap/js/bootstrap.min.js'/>"></script>
   <script class="include" type="text/javascript" src="<c:url value='/resources/lib/jquery.dcjqaccordion.2.7.js'/>"></script>
   <script src="<c:url value='/resources/lib/jquery.scrollTo.min.js'/>"></script>

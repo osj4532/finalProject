@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mybatis.mapper.member">
+<mapper namespace="com.mybatis.mapper.oracle.member">
 	<select id="selectByCate" resultType="map" parameterType="int">
 		select * from memberview where dept_No = #{deptNo} and ranks_No > 1
 	</select>
