@@ -245,6 +245,8 @@
     <!-- **********************************************************************************************************************************************************
         MAIN SIDEBAR MENU
         *********************************************************************************************************************************************************** -->
+    
+    
     <!--sidebar start-->
     <aside>
       <div id="sidebar" class="nav-collapse ">
@@ -360,7 +362,21 @@
               <span>지도</span>
               </a>
           </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="far fa-file-alt fa-o"></i>
+              <span>전자결재</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/line/linereg.do"/>">결재라인등록</a></li>
+              <li><a href="<c:url value="/document/docType.do"/>">문서관리</a></li>
+            </ul>
+          </li>
+          
         </ul>
+        
+        
+        
         <!-- sidebar menu end-->
       </div>
     </aside>

@@ -10,7 +10,7 @@ public class LineDAOMybatis implements LineDAO{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	private static final String namespace="com.mybatis.mapper.line.";
+	private static final String namespace="com.mybatis.mapper.oracle.line.";
 	
 	public int insertLine(LineVO vo) {
 		return sqlSession.insert(namespace+"regLine",vo);

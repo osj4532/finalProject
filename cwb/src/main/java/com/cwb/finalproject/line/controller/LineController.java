@@ -86,16 +86,18 @@ public class LineController {
 		//1. linereg에 linename으로 insert 후
 		LineVO lineVo = new LineVO();
 
-		session.setAttribute("userNo", 9);
+		session.setAttribute("userNo", 1);
 		
 		lineVo.setMemNo((Integer)session.getAttribute("userNo"));
 		lineVo.setRegName(lineName);
+		logger.info("라인결재 vo = {}", lineVo);
 		
 		List<ConfirmlineVO> confirmList = new ArrayList<ConfirmlineVO>();
 		for(int i = 0; i < selArr.size(); i++) {
 			ConfirmlineVO confirmVo = new ConfirmlineVO();
-			confirmVo.setLineOrder(i);
+			confirmVo.setLineOrder(i+1);
 			confirmVo.setMemNo(Integer.parseInt(selArr.get(i)));
+			logger.info("결재자 vo = {}",confirmVo);
 			confirmList.add(confirmVo);
 		}
 		

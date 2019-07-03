@@ -11,7 +11,7 @@ public class DeptDAOMybatis implements DeptDAO{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	private static final String namespace="com.mybatis.mapper.dept.";
+	private static final String namespace="com.mybatis.mapper.oracle.dept.";
 	
 	public List<DeptVO> selectAll(){
 		return sqlSession.selectList(namespace+"selectAll");

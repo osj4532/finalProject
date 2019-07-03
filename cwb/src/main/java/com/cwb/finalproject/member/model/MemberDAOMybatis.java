@@ -12,7 +12,7 @@ public class MemberDAOMybatis implements MemberDAO{
 	
 	@Autowired
 	private SqlSessionTemplate sqlSession;
-	private static final String namespace = "com.mybatis.mapper.member.";
+	private static final String namespace = "com.mybatis.mapper.oracle.member.";
 	
 	public List<Map<String, Object>> selectByDeptNo(int deptNo){
 		return sqlSession.selectList(namespace+"selectByCate", deptNo);
