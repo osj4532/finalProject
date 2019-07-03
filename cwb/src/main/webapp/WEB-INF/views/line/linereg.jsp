@@ -6,8 +6,6 @@
 <c:import url="../inc/top.jsp"/>
 
 
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
-
 <style type="text/css">
 	#wraper1{
 		padding: 20px;
@@ -57,6 +55,11 @@
 		text-align: center;
 	}
 	
+	thead.thead-dark{
+		background: #000;
+		color:#fff;
+	}
+	
 	@media(max-width:512px){
 		#div1{
 			width:120px;
@@ -64,61 +67,6 @@
 	}
 	
 </style>
-
-<script type="text/javascript" src="<c:url value="/resources/lib/jquery/jquery.min.js"/>"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
-<script type="text/javascript">
-	var tmpArr = [];
-	var selArr = [];
-
-	<c:if test="${!empty selMemberList}">
-		<c:forEach var="map" items="${selMemberList}">
-			selArr.push("${map['MEM_NO']}");
-		</c:forEach>
-	</c:if>
-	
-	$(function(){
-		$('input[type=button]').click(function(){
-			$('input[name=sel]:checked').each(function(){
-				tmpArr.push($(this).val());
-			});
-			
-			for(var i = 0; i < tmpArr.length; i++){
-				selArr.push(tmpArr[i]);
-			}
-			
-			tmpArr = [];
-			sear('${memberList[0]["DEPT_NO"]}');
-		});
-		
-		
-		$('form[name=lineRegForm]').submit(function(){
-			$('input[name=sel]:checked').each(function(){
-				selArr.push($(this).val());
-			});
-			
-			$('#selArr').val(selArr);
-			var lineName = prompt("결제라인 이름 등록");
-			if(lineName == null){
-				event.preventDefault();
-			}
-			$('#lineName').val(lineName);
-		});
-		
-	});
-
-	function sear(deptNo){
-		$('form[name=tmpFrm]').find('input[name=selArr]').val(selArr);
-		$('form[name=tmpFrm]').find('input[name=deptNo]').val(deptNo);
-		$('form[name=tmpFrm]').submit();
-	}
-	
-	function delSel(item, deptNo){
-		selArr.splice(selArr.indexOf(item),1);
-		sear(deptNo);
-		event.preventDefault();
-	}
-</script>
 </head>
 <body>
 
@@ -145,7 +93,7 @@
 				<form name="lineRegForm" action="<c:url value="/line/lineproc.do"/>" method="post">
 					<input type="hidden" id="selArr" name="selArr">
 					<input type="hidden" id="lineName" name="lineName">
-					<table id="memList" class="table table-hover">
+					<table id="memList" class="table">
 						<thead class="thead-dark">
 							<tr>
 								<th>선택</th>
@@ -203,5 +151,59 @@
 			</div>
 	</div>
 </div>
+
+<script type="text/javascript" src="<c:url value="/resources/lib/jquery/jquery.min.js"/>"></script>
+<script type="text/javascript">
+	var tmpArr = [];
+	var selArr = [];
+
+	<c:if test="${!empty selMemberList}">
+		<c:forEach var="map" items="${selMemberList}">
+			selArr.push("${map['MEM_NO']}");
+		</c:forEach>
+	</c:if>
+	
+	$(function(){
+		$('input[type=button]').click(function(){
+			$('input[name=sel]:checked').each(function(){
+				tmpArr.push($(this).val());
+			});
+			
+			for(var i = 0; i < tmpArr.length; i++){
+				selArr.push(tmpArr[i]);
+			}
+			
+			tmpArr = [];
+			sear('${memberList[0]["DEPT_NO"]}');
+		});
+		
+		
+		$('form[name=lineRegForm]').submit(function(){
+			$('input[name=sel]:checked').each(function(){
+				selArr.push($(this).val());
+			});
+			
+			$('#selArr').val(selArr);
+			var lineName = prompt("결제라인 이름 등록");
+			if(lineName == null){
+				event.preventDefault();
+			}
+			$('#lineName').val(lineName);
+		});
+		
+	});
+
+	function sear(deptNo){
+		$('form[name=tmpFrm]').find('input[name=selArr]').val(selArr);
+		$('form[name=tmpFrm]').find('input[name=deptNo]').val(deptNo);
+		$('form[name=tmpFrm]').submit();
+	}
+	
+	function delSel(item, deptNo){
+		selArr.splice(selArr.indexOf(item),1);
+		sear(deptNo);
+		event.preventDefault();
+	}
+</script>
 
 <c:import url="../inc/bottom.jsp"></c:import>

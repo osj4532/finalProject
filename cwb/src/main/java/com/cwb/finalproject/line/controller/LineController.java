@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +16,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cwb.finalproject.confirmline.model.ConfirmlineVO;
 import com.cwb.finalproject.dept.model.DeptService;
 import com.cwb.finalproject.dept.model.DeptVO;
+import com.cwb.finalproject.line.model.LineService;
+import com.cwb.finalproject.line.model.LineVO;
 import com.cwb.finalproject.member.model.MemberService;
-import com.cwb.finalproject.member.model.MemberVO;
 
 @Controller
 public class LineController {
 	
 	@Autowired
 	private DeptService deptService;
-	
+	@Autowired
+	private LineService lineService;
 	@Autowired
 	private MemberService memberService;
 	
@@ -75,12 +80,28 @@ public class LineController {
 	
 	@RequestMapping(value="/line/lineproc.do", method = RequestMethod.POST)
 	public String lineReg_post(@RequestParam(required = false) List<String> selArr,
-			@RequestParam String lineName) {
+			@RequestParam String lineName, HttpSession session) {
 		logger.info("결재 라인 등록 처리 매개변수 selArr = {}, lineName = {}",selArr, lineName);
 		
 		//1. linereg에 linename으로 insert 후
+		LineVO lineVo = new LineVO();
+
+		session.setAttribute("userNo", 9);
+		
+		lineVo.setMemNo((Integer)session.getAttribute("userNo"));
+		lineVo.setRegName(lineName);
+		
+		List<ConfirmlineVO> confirmList = new ArrayList<ConfirmlineVO>();
+		for(int i = 0; i < selArr.size(); i++) {
+			ConfirmlineVO confirmVo = new ConfirmlineVO();
+			confirmVo.setLineOrder(i);
+			confirmVo.setMemNo(Integer.parseInt(selArr.get(i)));
+			confirmList.add(confirmVo);
+		}
 		
 		//2. confirmline에 insert
+		int cnt = lineService.regLine(lineVo, confirmList);
+		logger.info("결재라인 등록 처리 결과 cnt = {}",cnt);
 		
 		return "/line/linereg";
 	}
