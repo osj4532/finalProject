@@ -99,7 +99,7 @@
 	 }); */
 </script>
 
-<c:set var='mypage' value="scheduler"/>
+<c:set var='mypage' value="useJs"/>
 	
 <section id="main-content">
 	<section class="wrapper" style="background: #668fa296;">

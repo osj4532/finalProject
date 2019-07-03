@@ -24,7 +24,7 @@
     <!--footer end  nav-expand.png-->
   </section>
   <!-- js placed at the end of the document so the pages load faster -->
-	<c:if test="${mypage!='scheduler'}" >
+	<c:if test="${mypage!='useJs'}" >
   		<script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>	
 	</c:if>
   <script src="<c:url value='/resources/lib/bootstrap/js/bootstrap.min.js'/>"></script>
