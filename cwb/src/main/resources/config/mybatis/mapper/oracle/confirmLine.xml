@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mybatis.mapper.comfirmLine">
+	<insert id="insertComfirmLine" parameterType="confirmLineVo">
+		<selectKey keyProperty="lineNo" resultType="int" order="BEFORE">
+			select confirmLine_seq.nextval from dual
+		</selectKey>
+		insert into confirmLine
+		values(#{lineNo},#{regNo},#{memNo},#{lineOrder})
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+
