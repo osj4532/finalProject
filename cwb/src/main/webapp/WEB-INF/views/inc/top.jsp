@@ -19,6 +19,8 @@
   <link href="<c:url value='/resources/img/favicon.png'/>" rel="icon">
   <link href="<c:url value='/resources/img/apple-touch-icon.png'/>" rel="apple-touch-icon">
 
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+
   <!-- Bootstrap core CSS -->
   <link href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min1.css'/>"  rel="stylesheet">
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
@@ -30,7 +32,7 @@
   <link href="<c:url value='/resources/css/style.css'/>" rel="stylesheet">
   <link href="<c:url value='/resources/css/style-responsive.css'/>"  rel="stylesheet">
   <script src="<c:url value='/resources/lib/chart-master/Chart.js'/>" ></script>
-
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 <style type="text/css">
 	#sidebar{
 		z-index: 5;
@@ -49,7 +51,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="index.html" class="logo"><b>ComWor<span>Bal</span></b></a>
+      <a href="<c:url value="/index.do"/>" class="logo"><b>ComWor<span>Bal</span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
@@ -373,6 +375,15 @@
             <ul class="sub">
               <li><a href="<c:url value="/line/linereg.do"/>">결재라인등록</a></li>
               <li><a href="<c:url value="/document/docType.do"/>">문서관리</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fas fa-user-clock fa-o"></i>
+              <span>근태</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/commute/commute.do"/>">근태관리</a></li>
             </ul>
           </li>
           
