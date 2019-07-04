@@ -1,5 +1,7 @@
 package com.cwb.finalproject.commute.model;
 
-public interface CommuteService {
+import java.util.List;
 
+public interface CommuteService {
+	public List<CommuteVO> selectAll();
 }
