@@ -10,6 +10,19 @@
 		insert into restype
 		values(#{typeNo},#{typeName})
 	</insert>
+	
+	<select id="selectResType" resultType="restypeVo" >
+		select * from restype order by type_no
+	</select>
+	
+	<delete id="delResType" parameterType="int" >
+		delete from restype
+		where type_No=#{typeNo}
+	</delete>
+	
+	<select id="selectResTypeByNo" parameterType="int" resultType="String">
+		select type_Name from restype where type_no=#{typeNo}
+	</select>
 </mapper>
 
 
