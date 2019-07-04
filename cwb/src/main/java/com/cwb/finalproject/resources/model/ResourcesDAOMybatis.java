@@ -1,5 +1,6 @@
 package com.cwb.finalproject.resources.model;
 
+import java.util.List;
 import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
@@ -16,6 +17,24 @@ public class ResourcesDAOMybatis implements ResourcesDAO{
 	@Override
 	public int insertResType(Map<String, String> map) {
 		return sqlSession.insert(namespace+"insertResType", map);
+	}
+
+
+	@Override
+	public List<RestypeVO> selectResType() {
+		return sqlSession.selectList(namespace+"selectResType");
+	}
+
+
+	@Override
+	public int delResType(int typeNo) {
+		return sqlSession.delete(namespace+"delResType", typeNo);
+	}
+
+
+	@Override
+	public String selectResTypeByNo(int typeNo) {
+		return sqlSession.selectOne(namespace+"selectResTypeByNo", typeNo);
 	}
 	
 	

@@ -1,6 +1,7 @@
 package com.cwb.finalproject.resources.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -9,9 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cwb.finalproject.resources.model.ResourcesService;
+import com.cwb.finalproject.resources.model.RestypeVO;
 
 @Controller
 @RequestMapping("/resources")
@@ -22,8 +25,12 @@ public class ResourcesController {
 	private ResourcesService resourcesService;
 	
 	@RequestMapping("/list.do")
-	public String resources_view() {
+	public String resources_view(Model model) {
 		logger.info("자원 목록 화면");
+		
+		List<RestypeVO> ResTypelist = resourcesService.selectResType();
+		
+		model.addAttribute("ResTypelist", ResTypelist);
 		
 		return "resources/resourcesList";
 	}
@@ -47,5 +54,34 @@ public class ResourcesController {
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
 		return "common/message";
+	}
+	@RequestMapping("/restype/del.do")
+	public String restypeWrite(@RequestParam int typeNo
+			,Model model) {
+		logger.info("자원리스트 삭제,typeNo={}",typeNo);
+		
+		int cnt =resourcesService.delResType(typeNo);
+		logger.info("자원 리스트삭제 cnt={}",cnt);
+		String msg="",url="/resources/list.do";
+		if(cnt>0) {
+			msg="자원 리스트삭제 완료";
+		}else {
+			msg="자원 리스트삭제 실패";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
+	@RequestMapping(value = "/resourcesWrite.do",method = RequestMethod.GET)
+	public String resourcesWrite_get(@RequestParam int typeNo,
+			Model model) {
+		logger.info("자원 등록 화면 보여주기");
+		
+		String typeName = resourcesService.selectResTypeByNo(typeNo);
+		
+		model.addAttribute("typeName", typeName);
+		return "resources/resourcesWrite";
 	}
 }

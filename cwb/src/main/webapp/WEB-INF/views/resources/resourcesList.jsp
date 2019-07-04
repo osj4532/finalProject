@@ -24,12 +24,21 @@
 		
 		
 	});
-	function delRes(){
+	function delRes(idx){
 		alert("자원리스트을 삭제하시겠습니까?");
 		if(confirm('정말 삭제하시겠습니까?')){
-			
+			location.href="<c:url value='/resources/restype/del.do?typeNo='/>"+idx;
 		}		
 	};
+	function writeRes(idx){
+		if(confirm('자원등록하시겠습니까?')){
+			window.open(
+					"${pageContext.request.contextPath}/resources/resourcesWrite.do?typeNo="+idx, 
+					"resourceWrite", 
+					"left=450, top=150, width=800, height=800, scrollbars=yes,resizable=yes");
+		}		
+	};
+	
 	
 </script>
 <!--main content start-->
@@ -39,22 +48,26 @@
 			<i class="fa fa-angle-right"></i> 자원 관리 
 			<button type="button" id="findPlus" class="btn btn-round btn-info">자원 리스트추가</button>
 		</h3>
+					<!-- 자원 추가버튼 hide -->
 		
 		 <div class="row mt" id="resplus">
           <div class="col-lg-12">
             <h4><i class="fa fa-angle-right"></i>자원</h4>
             <div class="form-panel">
+            
 					<!-- 자원 리스트 -->
 			<div class="custom-check goleft">
                 <table id="todo" class="table table-hover custom-check">
                   <tbody>
+                    <c:forEach  var="RTlist" items="${ResTypelist }">
                     <tr>
                       <td>
                         <span class="check"><input type="checkbox" class="checked"></span>
-                        <a href="index.html#">회의실</a></span>
-                        <button class="close" aria-hidden="true" type="button" onclick="delRes()">×</button>
+                        <a href="index.html#">${RTlist.typeName }</a></span>
+                        <button class="close" aria-hidden="true" type="button" onclick="delRes(${RTlist.typeNo})">×</button>
                       </td>
                     </tr>
+                      </c:forEach>
                   </tbody>
                 </table>
               </div>
@@ -81,142 +94,16 @@
           <!-- /col-lg-12 -->
         </div>
 		
-	<!-- 	<div class="row mt">
-			<div class="col-md-12">
-				<section class="task-panel tasks-widget">
-					<div class="panel-heading">
-						<div class="pull-left">
-							<h5>
-								<i class="fa fa-tasks"></i> 회의실
-							</h5>
-						</div>
-						<br>
-					</div>
-					<div class="panel-body">
-						<div class="task-content">
-							<ul class="task-list">
-								<li>
-									<div class="task-checkbox">
-										<input type="checkbox" class="list-child" value="" />
-									</div>
-									<div class="task-title">
-										<span class="task-title-sp">Dashio - Admin Panel &
-											Front-end Theme</span> <span class="badge bg-theme">Done</span>
-										<div class="pull-right hidden-phone">
-											<button class="btn btn-success btn-xs">
-												<i class=" fa fa-check"></i>
-											</button>
-											<button class="btn btn-primary btn-xs">
-												<i class="fa fa-pencil"></i>
-											</button>
-											<button class="btn btn-danger btn-xs">
-												<i class="fa fa-trash-o "></i>
-											</button>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="task-checkbox">
-										<input type="checkbox" class="list-child" value="" />
-									</div>
-									<div class="task-title">
-										<span class="task-title-sp">Extensive collection of
-											plugins</span> <span class="badge bg-warning">Cool</span>
-										<div class="pull-right hidden-phone">
-											<button class="btn btn-success btn-xs">
-												<i class=" fa fa-check"></i>
-											</button>
-											<button class="btn btn-primary btn-xs">
-												<i class="fa fa-pencil"></i>
-											</button>
-											<button class="btn btn-danger btn-xs">
-												<i class="fa fa-trash-o "></i>
-											</button>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="task-checkbox">
-										<input type="checkbox" class="list-child" value="" />
-									</div>
-									<div class="task-title">
-										<span class="task-title-sp">Free updates always, no
-											extra fees.</span> <span class="badge bg-success">2 Days</span>
-										<div class="pull-right hidden-phone">
-											<button class="btn btn-success btn-xs">
-												<i class=" fa fa-check"></i>
-											</button>
-											<button class="btn btn-primary btn-xs">
-												<i class="fa fa-pencil"></i>
-											</button>
-											<button class="btn btn-danger btn-xs">
-												<i class="fa fa-trash-o "></i>
-											</button>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="task-checkbox">
-										<input type="checkbox" class="list-child" value="" />
-									</div>
-									<div class="task-title">
-										<span class="task-title-sp">More features coming soon</span> <span
-											class="badge bg-info">Tomorrow</span>
-										<div class="pull-right hidden-phone">
-											<button class="btn btn-success btn-xs">
-												<i class=" fa fa-check"></i>
-											</button>
-											<button class="btn btn-primary btn-xs">
-												<i class="fa fa-pencil"></i>
-											</button>
-											<button class="btn btn-danger btn-xs">
-												<i class="fa fa-trash-o "></i>
-											</button>
-										</div>
-									</div>
-								</li>
-								<li>
-									<div class="task-checkbox">
-										<input type="checkbox" class="list-child" value="" />
-									</div>
-									<div class="task-title">
-										<span class="task-title-sp">Hey, seriously, you should
-											buy this Dashboard</span> <span class="badge bg-important">Now</span>
-										<div class="pull-right">
-											<button class="btn btn-success btn-xs">
-												<i class=" fa fa-check"></i>
-											</button>
-											<button class="btn btn-primary btn-xs">
-												<i class="fa fa-pencil"></i>
-											</button>
-											<button class="btn btn-danger btn-xs">
-												<i class="fa fa-trash-o "></i>
-											</button>
-										</div>
-									</div>
-								</li>
-							</ul>
-						</div>
-						<div class=" add-task-row">
-							<a class="btn btn-success btn-sm pull-left"
-								href="todo_list.html#">Add New Tasks</a> <a
-								class="btn btn-default btn-sm pull-right" href="todo_list.html#">See
-								All Tasks</a>
-						</div>
-					</div>
-				</section>
-			</div>
-			/col-md-12
-		</div> -->
-		<!-- /row -->
 		<!-- SORTABLE TO DO LIST -->
+		
+		<c:forEach var="i" begin="0" end="${fn:length(ResTypelist)-1 }" >
 		<div class="row mt mb">
 			<div class="col-md-12">
 				<section class="task-panel tasks-widget">
 					<div class="panel-heading">
 						<div class="pull-left">
 							<h5>
-								<i class="fa fa-tasks"></i> 회의실
+								<i class="fa fa-tasks"></i> ${ResTypelist[i].typeName }
 							</h5>
 						</div>
 						<br>
@@ -242,7 +129,7 @@
 						</div>
 						<div class=" add-task-row">
 							<a class="btn btn-success btn-sm pull-left"
-								href="todo_list.html#">회의실 추가</a> <!-- <a
+								onclick="writeRes(${ResTypelist[i].typeNo})">${ResTypelist[i].typeName } 자원 추가</a> <!-- <a
 								class="btn btn-default btn-sm pull-right" href="todo_list.html#">See
 								All Tasks</a> -->
 						</div>
@@ -252,6 +139,9 @@
 			<!--/col-md-12 -->
 		</div>
 		<!-- /row -->
+		</c:forEach>
+		
+		
 	</section>
 	<!-- /wrapper -->
 </section>
