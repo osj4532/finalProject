@@ -1,6 +1,7 @@
 package com.cwb.finalproject.commute.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ public class CommuteServiceImpl implements CommuteService{
 	private CommuteDAO commuteDao;
 
 	@Override
-	public List<CommuteVO> selectAll() {
+	public List<Map<String, Object>> selectAll() {
 		return commuteDao.selectAll();
 	}
 	

@@ -1,6 +1,7 @@
 package com.cwb.finalproject.commute.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,12 +25,12 @@ public class CommuteController {
 	@RequestMapping("/commute.do")
 	public String comList(Model model) {
 		
-		List<CommuteVO> list = commuteService.selectAll();
+		List<Map<String, Object>> list = commuteService.selectAll();
 		logger.info("전체조회 결과 list.size={}", list.size());
 		
 		model.addAttribute("list", list);
 		
-		return "commute/commute.do";
+		return "commute/commute";
 		
 	}
 }

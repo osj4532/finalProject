@@ -1,6 +1,7 @@
 package com.cwb.finalproject.commute.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,7 @@ public class CommuteDAOMybatis implements CommuteDAO{
 	private String namespace = "config.mybatis.mapper.oracle.commute.";
 
 	@Override
-	public List<CommuteVO> selectAll() {
+	public List<Map<String, Object>> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
 }
