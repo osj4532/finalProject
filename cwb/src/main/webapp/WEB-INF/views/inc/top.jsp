@@ -16,6 +16,8 @@
   <link href="<c:url value='/resources/img/favicon.png'/>" rel="icon">
   <link href="<c:url value='/resources/img/apple-touch-icon.png'/>" rel="apple-touch-icon">
 
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+
   <!-- Bootstrap core CSS -->
   <link href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min1.css'/>"  rel="stylesheet">
   <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
@@ -46,7 +48,7 @@
         <div class="fa fa-bars tooltips" data-placement="right" data-original-title="Toggle Navigation"></div>
       </div>
       <!--logo start-->
-      <a href="index.html" class="logo"><b>ComWor<span>Bal</span></b></a>
+      <a href="<c:url value="/index.do"/>" class="logo"><b>ComWor<span>Bal</span></b></a>
       <!--logo end-->
       <div class="nav notify-row" id="top_menu">
         <!--  notification start -->
