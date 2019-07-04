@@ -9,7 +9,13 @@
 	}
 	#ulMenu li{
 		padding: 10px;
-		margin-top: 100px
+		margin-top: 50px;
+	}
+	#Menu{
+		min-height: 890px;
+	}
+	#content{
+		min-height: 890px;
 	}
 </style>
 
@@ -21,6 +27,10 @@
 			<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">개인출퇴근조회<span class="badge badge-primary badge-pill">14</span></a></li>
 			<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">부서출근조회</a></li>
 			<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">개인연차현황</a></li>
+			<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">(팀장)부서근태조회</a></li>
+			<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">(관리자)부서별근태조회</a></li>
+			<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">(관리자)전체근태조회</a></li>
+			<li class="list-group-item d-flex justify-content-between align-items-center"><a href="#">(관리자)전체연차조회</a></li>
 		</ul>
 	</div>
 	<div id="content" class="col-md-8">
@@ -46,12 +56,12 @@
 				</thead>
 				<tbody>
 					<tr>
-						<td>1</td>
-						<td>2</td>
-						<td>3</td>
-						<td>4</td>
-						<td>5</td>
-						<td>6</td>
+						<td>홍길동</td>
+						<td>영업부</td>
+						<td>과장</td>
+						<td>09:20:33</td>
+						<td>06:21:03</td>
+						<td>퇴근</td>
 					</tr>
 				</tbody>
 			</table>

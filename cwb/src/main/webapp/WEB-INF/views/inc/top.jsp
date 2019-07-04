@@ -27,7 +27,7 @@
   <link href="<c:url value='/resources/css/style.css'/>" rel="stylesheet">
   <link href="<c:url value='/resources/css/style-responsive.css'/>"  rel="stylesheet">
   <script src="<c:url value='/resources/lib/chart-master/Chart.js'/>" ></script>
-
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 <style type="text/css">
 	#sidebar{
 		z-index: 5;
@@ -370,6 +370,15 @@
             <ul class="sub">
               <li><a href="<c:url value="/line/linereg.do"/>">결재라인등록</a></li>
               <li><a href="<c:url value="/document/docType.do"/>">문서관리</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fas fa-user-clock fa-o"></i>
+              <span>근태</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/commute/commute.do"/>">근태관리</a></li>
             </ul>
           </li>
           
