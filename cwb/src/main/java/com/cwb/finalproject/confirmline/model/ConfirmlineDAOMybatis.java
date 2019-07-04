@@ -9,7 +9,7 @@ public class ConfirmlineDAOMybatis implements ConfirmlineDAO{
 	@Autowired
 	private SqlSessionTemplate sqlSession;
 	
-	private static final String namespace="com.mybatis.mapper.oracle.comfirmLine.";
+	private static final String namespace="config.mybatis.mapper.oracle.comfirmLine.";
 	
 	public int insertConfirmLine(ConfirmlineVO vo) {
 		return sqlSession.insert(namespace+"insertComfirmLine",vo);
