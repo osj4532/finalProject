@@ -31,9 +31,16 @@
 		padding:5px 30px;
 	}
 	
-	#typeDiv #tDiv1, #typeDiv #tDiv3, #typeDiv #tDiv4{
+	#typeDiv #tDiv1, #typeDiv #tDiv3{
 		float:left;
 		width:29%;
+		border-right: 1px solid silver;
+		min-height: 600px;
+	}
+	
+	#typeDiv #tDiv4{
+		float:left;
+		width:32%;
 		border-right: 1px solid silver;
 		min-height: 600px;
 	}
@@ -61,7 +68,7 @@
 	
 	#typeDiv #tDiv5{
 		float:left;
-		width:40%;
+		width:38%;
 		border-left: 1px solid silver;
 		min-height: 600px;
 	}
@@ -100,6 +107,9 @@
 	
     </style>
 </head>
+
+<c:set var="typeNo" value="0"/>
+
 <body>
     <div class="container" id="wraper1">
       <div class="row">
@@ -119,8 +129,9 @@
                 	<div id="tDiv1">
                 		<h3>문서종류</h3>
                 		<ul class="list-group">
-                			<li class="list-group-item"><i class="far fa-file-alt fa-lg"></i> test</li>
-                			<li class="list-group-item"><i class="far fa-file-alt fa-lg"></i> test</li>
+                			<c:forEach var="map" items="${typeList }">
+                				<li class="list-group-item"><i class="far fa-file-alt fa-lg"></i> ${map['TYPE_NAME'] }</li>
+                			</c:forEach>
                 		</ul>
                 	</div>
                 	<div id="tDiv2">
@@ -142,13 +153,17 @@
                 	<div id="tDiv3">
                 		<h3>문서종류</h3>
                 		<ul class="list-group">
-                			<a href="#"><li class="list-group-item"><i class="far fa-file-alt fa-lg"></i> testType1</li></a>
-                			<a href="#"><li class="list-group-item"><i class="far fa-file-alt fa-lg"></i> testType2</li></a>
+                			<c:forEach var="map" items="${typeList }">
+                				<li class="list-group-item">
+                					<i class="far fa-file-alt fa-lg"></i> 
+                					${map['TYPE_NAME'] }
+                				</li>
+                			</c:forEach>
                 		</ul>
                 	</div>
                 	<div id="tDiv4">
                 		<h3>문서양식종류</h3>
-                		<table id="memList" class="table">
+                		<table id="memList" class="table table-hover">
 						<thead class="thead-dark">
 							<tr>
 								<th>선택</th>
@@ -158,14 +173,16 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr>
-								<td>
-									<input type="checkbox" name="sel" value="${map['MEM_NO'] }">
-								</td>
-								<td>testType1</td>
-								<td>testForm1</td>
-								<td>팀장이상</td>
-							</tr>
+							<c:forEach var="map" items="${formList }">
+								<tr>
+									<td>
+										<input type="checkbox" name="sel" value="${map['MEM_NO'] }">
+									</td>
+									<td>${map['TYPE_NAME'] }</td>
+									<td>${map['FORM_NAME'] }</td>
+									<td>${map['RANKS_NAME'] }</td>
+								</tr>
+							</c:forEach>
 						</tbody>
 					</table>
                 	</div>
@@ -177,6 +194,9 @@
                 				<label for="ranksNo">문서종류</label>
                 				<select class="form-control" id="ranksNo" name="ranksNo">
                 					<option>선택해주세요.</option>
+                					<c:forEach var="map" items="${typeList }">
+                						<option value="${map['TYPE_NO'] }">${map['TYPE_NAME'] }</option>
+                					</c:forEach>
                 				</select>
                 			</div>
                 			<div class="form-group col-4">
@@ -186,7 +206,10 @@
                 			<div class="form-group col-4">
                 				<label for="ranksNo">보기권한</label>
                 				<select class="form-control" id="ranksNo" name="ranksNo">
-                					<option>선택해주세요.</option>
+                					<option value="0">선택해주세요.</option>
+                					<c:forEach var="vo" items="${rankList }">
+                						<option value="${vo.ranksNo }">${vo.ranksName }</option>
+                					</c:forEach>
                 				</select>
                 			</div>
                 			<div>
@@ -203,5 +226,9 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	<script type="text/javascript">
+		
+	</script>
+	
 	
     <c:import url="../inc/bottom.jsp"/>

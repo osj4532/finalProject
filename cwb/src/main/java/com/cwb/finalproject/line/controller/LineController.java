@@ -105,7 +105,7 @@ public class LineController {
 		int cnt = lineService.regLine(lineVo, confirmList);
 		logger.info("결재라인 등록 처리 결과 cnt = {}",cnt);
 		
-		return "/line/linereg";
+		return "redirect:/document/docSel.do";
 	}
 	
 	
