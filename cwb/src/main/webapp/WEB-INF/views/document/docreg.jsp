@@ -97,7 +97,7 @@
 			<tr>
 				<c:forEach var="map" items="${clList }">
 					<td>
-						<button type="button" class="btn btn-info btn-sm">결재</button>
+						<button type="button" class="btn btn-info btn-sm" disabled="disabled">결재</button>
 					</td>
 				</c:forEach>
 			

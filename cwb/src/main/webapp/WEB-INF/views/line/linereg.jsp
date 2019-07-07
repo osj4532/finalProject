@@ -183,6 +183,11 @@
 				selArr.push($(this).val());
 			});
 			
+			if(selArr.length == 0){
+				alert("결재라인에 등록될 사원을 선택해주세요.");
+				return false;
+			}
+			
 			$('#selArr').val(selArr);
 			var lineName = prompt("결제라인 이름 등록");
 			if(lineName == null){

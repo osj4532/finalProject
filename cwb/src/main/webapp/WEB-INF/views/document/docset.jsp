@@ -82,6 +82,17 @@
 		color:#fff;
 	}
 	
+	span#error1{
+		color:red;
+	}
+	
+	#tDiv1 li:hover{
+		background: rgb(38,123,204);
+		color:#FFF;
+	}
+	
+	
+	
 	@media(max-width:1200px){
 		#typeDiv #tDiv3{
 			width: 100%;
@@ -130,19 +141,26 @@
                 		<h3>문서종류</h3>
                 		<ul class="list-group">
                 			<c:forEach var="map" items="${typeList }">
-                				<li class="list-group-item"><i class="far fa-file-alt fa-lg"></i> ${map['TYPE_NAME'] }</li>
+                				<a onclick="selectType('${map['TYPE_NAME']}')">
+                					<li class="list-group-item">
+                						<i class="far fa-file-alt fa-lg"></i> 
+                						${map['TYPE_NAME'] }
+                					</li>
+                				</a>
                 			</c:forEach>
                 		</ul>
                 	</div>
                 	<div id="tDiv2">
                 		<h3>문서종류등록</h3>
-                		<form name="typeForm" method="post" action="">
+                		<form name="typeForm" method="post" action="<c:url value="/document/docTypeIn.do"/>">
                 			<div class="form-group">
                 				<label for="typeName">문서 종류 이름</label>
                 				<input type="text" name="typeName" class="form-control form-control-lg">
+                				<span id="error1">문서 종류 이름을 입력해 주세요.</span>
                 			</div>
                 			<div>
                 				<button type="submit" id="typeBtn" class="btn btn-info">등록하기</button>
+                				<button type="button" id="typeDel" class="btn btn-danger">삭제하기</button>
                 			</div>
                 		</form>
                 	</div>
@@ -176,7 +194,7 @@
 							<c:forEach var="map" items="${formList }">
 								<tr>
 									<td>
-										<input type="checkbox" name="sel" value="${map['MEM_NO'] }">
+										<input type="checkbox" name="sel" value="${map['FORM_NO'] }">
 									</td>
 									<td>${map['TYPE_NAME'] }</td>
 									<td>${map['FORM_NAME'] }</td>
@@ -185,15 +203,21 @@
 							</c:forEach>
 						</tbody>
 					</table>
+					<form name="formDelfrm" method="post" action="<c:url value="/document/docFormDel.do"/>">
+						<input type="hidden" name="selForm">
+					</form>
+					<div class="text-center">
+						<button id="formDel" class="btn btn-danger">삭제하기</button>
+					</div>
                 	</div>
                 	
                 	<div id="tDiv5">
                 		<h3>문서양식등록</h3>
-                		<form name="docForm">
+                		<form name="docForm" method="post" action="<c:url value='/document/docFormIn.do'/>">
                 			<div class="form-group col-4">
                 				<label for="ranksNo">문서종류</label>
-                				<select class="form-control" id="ranksNo" name="ranksNo">
-                					<option>선택해주세요.</option>
+                				<select class="form-control" id="typeNo" name="typeNo">
+                					<option value="0">선택해주세요.</option>
                 					<c:forEach var="map" items="${typeList }">
                 						<option value="${map['TYPE_NO'] }">${map['TYPE_NAME'] }</option>
                 					</c:forEach>
@@ -227,7 +251,88 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 	<script type="text/javascript">
-		
+		function selectType(typeName){
+			$('input[name=typeName]').val(typeName);
+		}
+	
+		$(function(){
+			var isDel = false;
+			$('span#error1').hide();
+			
+			$('#typeDel').click(function(){
+				isDel = confirm('삭제하시겠습니까?');
+				if(isDel){
+					$('form[name=typeForm]').attr("action","<c:url value='/document/docTypeDel.do'/>");
+					$('form[name=typeForm]').submit();
+				}
+			});
+			
+			$('form[name=typeForm]').submit(function(){
+				var typeNames = new Array;
+				<c:forEach var="map" items="${typeList}">
+					typeNames.push("${map['TYPE_NAME']}");
+				</c:forEach>
+				
+				
+				if($('input[name=typeName]').val() == ''){
+					$('span#error1').html("문서 종류 이름을 입력해 주세요.");
+					$('span#error1').show();
+					return false;
+				}else{
+						
+					if(!isDel){
+						var isDuple = false;
+						
+						$('form[name=typeForm]').attr("action","<c:url value='/document/docTypeIn.do'/>");
+						
+						for(var i = 0; i < typeNames.length; i++){
+							if(typeNames[i] == $('input[name=typeName]').val()){
+								isDuple = true;
+								break;
+							}
+						}
+						
+						if(isDuple){
+							$('span#error1').html("같은 이름의 문서 종류가 있습니다.");
+							$('span#error1').show();
+							return false;
+						}else{
+							$('span#error1').hide();
+						}
+					}
+				}
+			});
+			
+			//=======================================================================
+			//문서 양식 스크립트
+			var selForm = [];
+			$('#formDel').click(function(){
+				$('input[name=sel]:checked').each(function(idx,item){
+					selForm.push($(this).val());
+				});
+				
+				if(selForm.length == 0){
+					alert("삭제할 양식을 선택해주세요.");
+				}else{
+					$('input[name=selForm]').val(selForm);
+					$('form[name=formDelfrm]').submit();
+				}
+			});
+			
+			$('form[name=docForm]').submit(function(){
+				if($('form[name=docForm] #typeNo').val() == 0){
+					alert('양식 종류를 선택해주세요.');
+					return false;
+				}else if($('form[name=docForm] input[name=formName]').val() == ''){
+					alert("양식 이름을 입력해주세요");
+					return false;
+				}else if($('form[name=docForm] #ranksNo').val() == 0){
+					alert("문서보안등급을 선택해주세요.");
+					return false;
+				}
+			});
+			
+		});
 	</script>
 	
 	

@@ -6,5 +6,7 @@ import java.util.Map;
 public interface DocFormDAO {
 	public List<Map<String, Object>> selectDocForm();
 	public Map<String, Object> selectDocFormByNo(int formNo);
+	public int docFormInsert(DocFormVO vo);
+	public int docFormDel(int formNo);
 }
 

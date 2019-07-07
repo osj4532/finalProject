@@ -18,4 +18,12 @@ public class DocTypeDAOMybatis implements DocTypeDAO{
 	public List<Map<String, Object>> selectDocType(){
 		return sqlSession.selectList(namespace+"selectDocType");
 	}
+	
+	public int docTypeInsert(DocTypeVO vo) {
+		return sqlSession.insert(namespace+"docTypeInsert",vo);
+	}
+	
+	public int docTypeDel(String typeName) {
+		return sqlSession.update(namespace+"docTypeDel",typeName);
+	}
 }

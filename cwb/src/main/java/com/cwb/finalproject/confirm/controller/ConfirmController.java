@@ -56,7 +56,7 @@ public class ConfirmController {
 		
 		if(formNo != 0) {
 			logger.info("문서 양식 번호 formNo = {}", formNo);
-			Map<String, Object> formInfo = docFormList.get(formNo-1);
+			Map<String, Object> formInfo = docFormService.selectDocFormByNo(formNo);
 			model.addAttribute("formInfo",formInfo);
 		}
 		

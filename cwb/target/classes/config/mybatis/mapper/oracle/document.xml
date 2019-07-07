@@ -5,16 +5,45 @@
 <mapper namespace="config.mybatis.mapper.oracle.document">
 
 <select id="selectDocType" resultType="map">
-	select * from docType
+	select * from docType where type_del = 'N'
 </select>
 
 <select id="selectDocForm" resultType="map">
-	select * from formview
+	select * from formview where type_del = 'N' and form_del = 'N'
 </select>
 
 <select id="selectDocFormByNo" resultType="map" parameterType="int">
 	select * from formview where form_no = #{formNo}
 </select>
+
+<insert id="docTypeInsert" parameterType="docTypeVo">
+	<selectKey keyProperty="typeNo" resultType="int" order="BEFORE">
+		select docType_seq.nextval from dual
+	</selectKey>
+	insert into docType(type_no, type_name)
+	values(#{typeNo},#{typeName})
+</insert>
+
+<update id="docTypeDel" parameterType="string">
+	update docType
+	set type_del = 'Y'
+	where type_name = #{typeName}
+</update>
+
+<insert id="docFormInsert" parameterType="docFormVo">
+	<selectKey keyProperty="formNo" resultType="int" order="BEFORE">
+		select docForm_seq.nextval from dual
+	</selectKey>
+	insert into docForm(form_no, form_name, type_no, ranks_no)
+	values(#{formNo}, #{formName}, #{typeNo}, #{ranksNo})
+</insert>
+
+<update id="docFormDel" parameterType="int">
+	update docForm
+	set form_del = 'Y'
+	where form_no = #{formNo}
+</update>
+
 </mapper>
 
 

@@ -22,4 +22,12 @@ public class DocFormDAOMybatis implements DocFormDAO{
 	public Map<String, Object> selectDocFormByNo(int formNo){
 		return sqlSession.selectOne(namespace+"selectDocFormByNo",formNo);
 	}
+	
+	public int docFormInsert(DocFormVO vo) {
+		return sqlSession.insert(namespace+"docFormInsert",vo);
+	}
+	
+	public int docFormDel(int formNo) {
+		return sqlSession.update(namespace+"docFormDel",formNo);
+	}
 }

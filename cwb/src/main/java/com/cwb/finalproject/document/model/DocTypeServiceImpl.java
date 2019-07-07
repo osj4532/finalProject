@@ -15,4 +15,12 @@ public class DocTypeServiceImpl implements DocTypeService{
 	public List<Map<String, Object>> selectDocType(){
 		return docTypeDAO.selectDocType();
 	}
+	
+	public int docTypeInsert(DocTypeVO vo) {
+		return docTypeDAO.docTypeInsert(vo);
+	}
+	
+	public int docTypeDel(String typeName) {
+		return docTypeDAO.docTypeDel(typeName);
+	}
 }
