@@ -1,7 +1,5 @@
 package com.cwb.finalproject.sign.controller;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +13,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.cwb.finalproject.common.FileUploadUtil;
 import com.cwb.finalproject.sign.model.SignService;

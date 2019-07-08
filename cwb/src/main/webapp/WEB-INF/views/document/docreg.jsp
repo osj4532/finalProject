@@ -54,6 +54,10 @@
 	table th{
 		text-align: center;
 	}
+	
+	#cfContent{
+		min-width: 90%;
+	}
 </style>
 </head>
 <body>
@@ -118,34 +122,35 @@
 	</table>
 	
 	<br>
-	
-	<table class="table">
-		<tr>
-			<th scope="col">
-				<label for="cfTitle">제목</label>
-			</th>
-			<td>
-				<input class="form-control" type="text" name="cfTitle">
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2">	
-				<textarea id="cfContent" class="form-control" rows="25"></textarea>
-			</td>
-		</tr>
-		<tr>
-			<th><label for="fileName">첨부파일</label></th>
-			<td>
-				<input type="file" multiple="multiple" name="fileName">
-			</td>
-		</tr>
-	</table>
-	<hr>
-	<div>
-		<button id="save" class="btn btn-info">결재요청</button>
-		<button class="btn btn-warning">임시저장</button>
-		<button class="btn btn-danger">취소</button>
-	</div>
+	<form name="frm">
+		<table class="table">
+			<tr>
+				<th scope="col">
+					<label for="cfTitle">제목</label>
+				</th>
+				<td>
+					<input class="form-control" type="text" name="cfTitle">
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">	
+					<textarea id="cfContent" class="form-control" rows="25"></textarea>
+				</td>
+			</tr>
+			<tr>
+				<th><label for="fileName">첨부파일</label></th>
+				<td>
+					<input type="file" multiple="multiple" name="fileName">
+				</td>
+			</tr>
+		</table>
+		<hr>
+		<div>
+			<button id="save" class="btn btn-info">결재요청</button>
+			<button class="btn btn-warning">임시저장</button>
+			<button class="btn btn-danger">취소</button>
+		</div>
+	</form>
 </div>
 
 <script type="text/javascript" src="<c:url value="/resources/lib/HuskyEZCreator.js"/>"></script>
@@ -168,15 +173,15 @@
 			},
 			
 			fOnAppLoad : function(){
-	              oEditors.getById["ir1"].exec("PASTE_HTML", [""]);
+	              oEditors.getById["cfContent"].exec("PASTE_HTML", [""]);
 	          },
 	          fCreator: "createSEditor2"
 		});
 		
-		/* $("#save").click(function(){
-	          oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
+		$("#save").click(function(){
+	          oEditors.getById["cfContent"].exec("UPDATE_CONTENTS_FIELD", []);
 	          $("#frm").submit();
-	     }); */
+	     });
 	});
 	
 </script>
