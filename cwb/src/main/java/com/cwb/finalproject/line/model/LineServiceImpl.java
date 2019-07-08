@@ -35,4 +35,8 @@ public class LineServiceImpl implements LineService{
 		return cnt;
 	}
 	
+	public List<LineVO> selectAll(int userNo){
+		return lineDAO.selectAll(userNo);
+	}
+	
 }

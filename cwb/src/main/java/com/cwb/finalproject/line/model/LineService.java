@@ -7,4 +7,5 @@ import com.cwb.finalproject.confirmline.model.ConfirmlineVO;
 public interface LineService {
 	
 	public int regLine(LineVO vo, List<ConfirmlineVO> confirmList);
+	public List<LineVO> selectAll(int userNo);
 }

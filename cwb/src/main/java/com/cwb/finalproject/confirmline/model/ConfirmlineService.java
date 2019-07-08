@@ -1,5 +1,8 @@
 package com.cwb.finalproject.confirmline.model;
 
-public interface ConfirmlineService {
+import java.util.List;
+import java.util.Map;
 
+public interface ConfirmlineService {
+	public List<Map<String, Object>> selectAll(int regNo);
 }

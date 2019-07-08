@@ -10,6 +10,10 @@
 		insert into confirmLine
 		values(#{lineNo},#{regNo},#{memNo},#{lineOrder})
 	</insert>
+	
+	<select id="selectAll" resultType="map" parameterType="int">
+		select * from confirmlineview where reg_no = #{reg_no}
+	</select>
 </mapper>
 
 
