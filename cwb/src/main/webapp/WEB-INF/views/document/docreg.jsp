@@ -130,7 +130,7 @@
 		</tr>
 		<tr>
 			<td colspan="2">	
-				<textarea class="form-control" rows="25"></textarea>
+				<textarea id="cfContent" class="form-control" rows="25"></textarea>
 			</td>
 		</tr>
 		<tr>
@@ -142,10 +142,44 @@
 	</table>
 	<hr>
 	<div>
-		<button class="btn btn-info">결재요청</button>
+		<button id="save" class="btn btn-info">결재요청</button>
 		<button class="btn btn-warning">임시저장</button>
 		<button class="btn btn-danger">취소</button>
 	</div>
 </div>
+
+<script type="text/javascript" src="<c:url value="/resources/lib/HuskyEZCreator.js"/>"></script>
+<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<script type="text/javascript">
+	var oEditors = [];
+	
+	$(function(){
+		nhn.husky.EZCreator.createInIFrame({
+			oAppRef: oEditors,
+			elPlaceHolder: "cfContent",
+			sSkinURI: "<c:url value='/resources/lib/SmartEditor2Skin.html'/>",
+			htParams:{
+				bUseToolbar : true,
+				bUseVerticalResizer : true,
+				bUseModeChanger : true,
+				fOnBeforeUnload : function(){
+
+	            }
+			},
+			
+			fOnAppLoad : function(){
+	              oEditors.getById["ir1"].exec("PASTE_HTML", [""]);
+	          },
+	          fCreator: "createSEditor2"
+		});
+		
+		/* $("#save").click(function(){
+	          oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
+	          $("#frm").submit();
+	     }); */
+	});
+	
+</script>
+
 
 <c:import url="../inc/bottom.jsp"></c:import>

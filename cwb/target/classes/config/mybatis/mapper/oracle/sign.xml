@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="config.mybatis.mapper.oracle.sign">
+	<insert id="insertSign" parameterType="signVo">
+		insert into signreg
+		values(#{memNo}, #{signFileName}, #{signFileSize},
+		#{signOriginalFileName})
+	</insert>
+	
+	<select id="selectSign" parameterType="int" resultType="signVo">
+		select * from signreg
+		where mem_no = #{memNo}
+	</select>
+	
+	<update id="updateSign" parameterType="signVo">
+		update signreg
+		set sign_filename = #{signFileName}, sign_filesize = #{signFileSize},
+		sign_originalfilename = #{signOriginalFileName}
+		where mem_no = #{memNo}
+	</update>
+</mapper>

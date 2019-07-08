@@ -45,7 +45,7 @@ public class ConfirmController {
 	public String docSel_get(@RequestParam(required = false, defaultValue = "0") int formNo, 
 			@RequestParam(required = false, defaultValue = "0") int regNo, 
 			HttpSession session, Model model) {
-		session.setAttribute("userNo", 1);
+		session.setAttribute("userNo", 9);
 		int userNo = (Integer)session.getAttribute("userNo");
 		logger.info("문서양식 및 종류 선택 화면 보여주기 userNo = {}",userNo);
 		
