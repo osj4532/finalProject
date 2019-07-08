@@ -13,7 +13,7 @@
 		}); 
 		
 		
-		$("#insertTypeListPost").submit(function(){
+		$("#insertTypeListPost").click(function(){
 				if(confirm('자원리스트 추가하시겠습니까?')){
 					if($("#typeName").val()==''){
 						alert("자원명을 입력해주세요");
@@ -84,14 +84,14 @@
                   <label class="col-lg-1 control-label">자원 리스트명</label>
                   <div class="col-lg-10">
                     <input type="text" placeholder="" name="typeName" 
-                    	id="TypeName"
+                    	id="typeName"
                     class="form-control">
                     <p class="help-block">회사의 자원을 사랑합시다</p>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-lg-offset-5 col-lg-5">
-                    <button class="btn btn-theme" type="submit" >자원 리스트 추가</button>
+                    <button class="btn btn-theme" type="button" >자원 리스트 추가</button>
                   </div>
                 </div>
               </form>
@@ -137,7 +137,10 @@
 						</div>
 						<br>
 					</div>
+					
 					<div class="panel-body">
+					<c:if test="${!empty ResList[i] }">
+					<c:forEach var="j" begin="0" end="${fn:length(ResList[i])-1 }" >
 						<div class="task-content">
 							<ul id="sortable" class="task-list">
 								<li class="list-primary"><i class=" fa fa-ellipsis-v"></i>
@@ -145,8 +148,13 @@
 										<input type="checkbox" class="list-child" value="" />
 									</div>
 									<div class="task-title">
-										<span class="task-title-sp">13층 101호 회의실</span>
-										 <span class="badge bg-theme">예약완료</span>
+										<span class="task-title-sp">${ResList[i][j].resName }</span>
+										<c:if test="${ResList[i][j].reservFlag=='N'}">
+										 <span class="badge bg-theme04">사용중</span>
+										</c:if>
+										<c:if test="${ResList[i][j].reservFlag=='Y'}">
+										 <span class="badge bg-theme">사용가능</span>
+										</c:if>
 										<div class="pull-right hidden-phone">
 											<button class="btn btn-success btn-xs fa fa-check"></button>
 											<button class="btn btn-primary btn-xs fa fa-pencil"></button>
@@ -156,6 +164,8 @@
 									</li>
 							</ul>
 						</div>
+						</c:forEach>
+						</c:if>
 						
 						<div class=" add-task-row">
 							<a class="btn btn-success btn-sm pull-left"
@@ -171,6 +181,51 @@
 		<!-- /row -->
 		</c:forEach>
 		</c:if>
+	<c:forEach var="i" begin="0" end="${fn:length(ResTypelist)-1 }" >
+		    <div class="row mt">
+          <div class="col-md-12">
+            <div class="content-panel">
+              <table class="table table-striped table-advance table-hover">
+                <h4><i class="fa fa-tasks"></i> ${ResTypelist[i].typeName } 
+                <a class="btn btn-success btn-sm pull-right mr-2"
+						onclick="writeRes(${ResTypelist[i].typeNo})" >
+						${ResTypelist[i].typeName } 자원 추가</a>
+                </h4>
+                <hr>
+                <thead>
+                  <tr>
+                    <th><i class="fa fa-bullhorn"></i> 자원명</th>
+                    <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원 정보</th>
+                    <th><i class="fa fa-bookmark"></i> Profit</th>
+                    <th><i class=" fa fa-edit"></i> 상태 </th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a href="basic_table.html#">Company Ltd</a>
+                    </td>
+                    <td class="hidden-phone">Lorem Ipsum dolor</td>
+                    <td>12000.00$ </td>
+                    <td><span class="label label-info label-mini">Due</span></td>
+                    <td>
+                      <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
+                      <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+                      <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                    </td>
+                  </tr>
+                  
+                </tbody>
+              </table>
+              
+            </div>
+            <!-- /content-panel -->
+          </div>
+          <!-- /col-md-12 -->
+        </div>
+        <!-- /row -->
+		</c:forEach>
 		
 	</section>
 	<!-- /wrapper -->

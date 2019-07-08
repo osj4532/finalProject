@@ -8,4 +8,6 @@ public interface ResourcesDAO {
 	List<RestypeVO> selectResType();
 	int delResType(int typeNo);
 	String selectResTypeByNo(int typeNo);
+	int insertRes(ResourcesVO resourcesVo);
+	List<ResourcesVO> selectResBytype(int typeNo);
 }
