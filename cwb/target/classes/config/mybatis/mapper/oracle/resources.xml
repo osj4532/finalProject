@@ -23,6 +23,24 @@
 	<select id="selectResTypeByNo" parameterType="int" resultType="String">
 		select type_Name from restype where type_no=#{typeNo}
 	</select>
+	
+	<insert id="insertRes" parameterType="ResourcesVo">
+		<selectKey order="BEFORE" keyProperty="resNo" resultType="int">
+			select resources_seq.nextval from dual
+		</selectKey>
+		insert into resources(res_no,type_no,res_name,
+		res_price,res_regdate,res_location,
+		res_information,res_filename)
+		values(#{resNo},#{typeNo},#{resName},
+		#{resPrice},sysdate,#{resLocation},
+		#{resInformation},#{resFilename})
+	</insert>
+	
+	<select id="selectResBytype" parameterType="int" resultType="ResourcesVo">
+		select * from resources
+		where type_no=#{typeNo}
+	</select>
+	
 </mapper>
 
 

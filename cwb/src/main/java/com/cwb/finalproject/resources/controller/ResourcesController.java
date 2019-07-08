@@ -4,16 +4,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cwb.finalproject.common.ResImgUploadUtility;
 import com.cwb.finalproject.resources.model.ResourcesService;
+import com.cwb.finalproject.resources.model.ResourcesVO;
 import com.cwb.finalproject.resources.model.RestypeVO;
 
 @Controller
@@ -23,14 +28,17 @@ public class ResourcesController {
 	
 	@Autowired
 	private ResourcesService resourcesService;
+	@Autowired private  ResImgUploadUtility resImgUtility;
 	
 	@RequestMapping("/list.do")
 	public String resources_view(Model model) {
 		logger.info("자원 목록 화면");
 		
 		List<RestypeVO> ResTypelist = resourcesService.selectResType();
+		List<List<ResourcesVO>> ResList= resourcesService.selectAllRes();
 		
 		model.addAttribute("ResTypelist", ResTypelist);
+		model.addAttribute("ResList", ResList);
 		
 		return "resources/resourcesList";
 	}
@@ -83,5 +91,35 @@ public class ResourcesController {
 		
 		model.addAttribute("typeName", typeName);
 		return "resources/resourcesWrite";
+	}
+	
+	@RequestMapping(value = "/resourcesWrite.do",method = RequestMethod.POST)
+	public String resourcesWrite_post(@ModelAttribute ResourcesVO resourcesVo,
+			HttpServletRequest request,Model model) {
+		logger.info("자원 등록 ");
+		
+		//파일 업로드 
+		List<Map<String, Object>> list= resImgUtility.fileUpload(request,resImgUtility.PDS_FILE_UPLOAD);
+		
+		String resFilename = "";
+		for (Map<String, Object> map : list) {
+			resFilename = (String) map.get("fileName");
+		}
+		logger.info("체크 list={}",list.size());
+		resourcesVo.setResFilename(resFilename);
+		int cnt= resourcesService.insertRes(resourcesVo);
+
+		logger.info("자원 추가 cnt={}",cnt);
+		String msg = "",url="/resourcesWrite.do?typeNo="+resourcesVo.getTypeNo();
+		if(cnt>0) {
+			msg="자원 등록되었습니다.";
+		}else {
+			msg="자원 등록 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		return "common/message";
+		
 	}
 }

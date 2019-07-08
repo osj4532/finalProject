@@ -8,4 +8,6 @@ public interface ResourcesService {
 	List<RestypeVO> selectResType();
 	int delResType(int typeNo);
 	String selectResTypeByNo(int typeNo);
+	int insertRes(ResourcesVO resourcesVo);
+	List<List<ResourcesVO>> selectAllRes();
 }

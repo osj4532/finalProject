@@ -32,6 +32,7 @@
   <script src="<c:url value='/resources/lib/chart-master/Chart.js'/>" ></script>
 <link rel="stylesheet" type="text/css"
  href="<c:url value='/resources/lib/bootstrap-fileupload/bootstrap-fileupload.css'/>"/>
+
 <script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>	
 <script type="text/javascript">
 	$(function(){
@@ -39,16 +40,24 @@
 			$('input[type=text]').each(function(){
 				if($(this).val()==''){
 					$('.chkInfo').show();
+					$(this).focus();
 					event.preventDefault();
 				}
 			});
-			
+			if($('#hidetext').val()!='외부 위치지정'){
+				$("#mapLatlng").val("!"+$('#hidetext').val());			
+			}
 		});
 		
+		$("#map").hide();
+		$("#map").prev().hide();
 		$('#findView').click(function(){
-			
-			
-			
+			$("#map").toggle(500);
+			$("#map").prev().toggle(500);
+			 if($("#hidetext").is(":disabled")){
+				 $("#hidetext").removeAttr("disabled");
+				 $("#hidetext").val("");
+	        }
 		});
 		
 	});
@@ -65,48 +74,42 @@
             <div class="form-panel">
               <h4></h4>
               <form class="form-horizontal style-form" 
+              enctype="multipart/form-data"
               method="post" 
               name="resourcesWrite"
               action="<c:url value='/resources/resourcesWrite.do'/>">
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">추가 자원명</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control">
+                    <input type="hidden" class="form-control" name="typeNo" value="${param.typeNo }" >
+                    <input type="text" class="form-control" name="resName">
                   </div>	
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">자원 가격</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control round-form">
+                    <input type="text" class="form-control round-form" name="resPrice">
                   </div> 
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">자원 위치</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control round-form">
-                  <button class="badge btn-theme06" id="findView">외부 위치 지정</button>
+                    <input id='hidetext' type="text" class="form-control round-form">
+                    <input id='mapLatlng' type="hidden" name="resLocation">
+                  <button type="button" class="badge btn-theme06" id="findView">외부 위치 지정</button>
                   </div>
-                  <div id="map" style="width:500px;height:400px;"></div>
-<script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66fc63c70e3d4b0aa612be53665e59ba"></script>
-					<script>
-						var container = document.getElementById('map');
-						var options = {
-							center: new kakao.maps.LatLng(33.450701, 126.570667),
-							level: 3
-						};
-				
-						var map = new kakao.maps.Map(container, options);
-					</script>
+                  <label class="col-sm-2 col-sm-2 control-label">자원 위치지도</label>
+                  <div id="map" style="width:600px;height:400px;"></div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">자원 정보</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" placeholder="자세히(자원을 사랑합시다)">
+                    <input type="text" class="form-control" name="resInformation" placeholder="자세히(자원을 사랑합시다)">
                   </div>
                 </div>
 
              <div class="form-group last">
-                  <label class="control-label col-md-3">Image Upload</label>
+                  <label class="control-label col-md-3">자원 이미지등록</label>
                   <div class="col-md-9">
                     <div class="fileupload fileupload-new" data-provides="fileupload">
                       <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
@@ -117,7 +120,7 @@
                         <span class="btn btn-theme02 btn-file">
                           <span class="fileupload-new"><i class="fa fa-paperclip"></i> 사진 선택</span>
                         <span class="fileupload-exists"><i class="fa fa-undo"></i> 사진 변경</span>
-                        <input type="file" class="default" />
+                        <input type="file" class="default" name="upimg"/>
                         </span>
                         <br>
                         <br>
@@ -173,6 +176,47 @@
   <script type="text/javascript" src="<c:url value='/resources/lib/bootstrap-fileupload/bootstrap-fileupload.js'/>"></script>
   <script src="<c:url value='/resources/lib/sparkline-chart.js'/>"></script>
   <script src="<c:url value='/resources/lib/zabuto_calendar.js'/>"></script>
+   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66fc63c70e3d4b0aa612be53665e59ba"></script>
+ <script>
+			var container = document.getElementById('map');
+			var options = {
+				center: new kakao.maps.LatLng(37.50255739441079, 127.0247957449708),
+				level: 2
+			};
+			
+			var map = new kakao.maps.Map(container, options);
+			
+			// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
+			var zoomControl = new kakao.maps.ZoomControl();
+			map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+			
+			// 지도를 클릭한 위치에 표출할 마커입니다
+			var marker = new kakao.maps.Marker({ 
+			    // 지도 중심좌표에 마커를 생성합니다 
+			    position: map.getCenter() 
+			}); 
+			// 지도에 마커를 표시합니다
+			marker.setMap(map);
+
+			// 지도에 클릭 이벤트를 등록합니다
+			// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
+			kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
+			    
+			    // 클릭한 위도, 경도 정보를 가져옵니다 
+			    var latlng = mouseEvent.latLng; 
+			    
+			    // 마커 위치를 클릭한 위치로 옮깁니다
+			    marker.setPosition(latlng);
+			    
+			    var message =  latlng.getLat()+','+latlng.getLng();
+			    
+			    var hidetest = document.getElementById('hidetext'); 
+			    var resultinput = document.getElementById('mapLatlng'); 
+			    resultinput.value = message;
+			    hidetest.value="외부 위치지정";
+			    hidetest.disabled = true;
+			});  
+</script>
 </body>
 
 </html>

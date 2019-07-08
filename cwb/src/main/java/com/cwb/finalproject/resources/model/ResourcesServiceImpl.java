@@ -1,5 +1,6 @@
 package com.cwb.finalproject.resources.model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,6 +30,23 @@ public class ResourcesServiceImpl implements ResourcesService{
 	@Override
 	public String selectResTypeByNo(int typeNo) {
 		return resourcesDao.selectResTypeByNo(typeNo);
+	}
+
+	
+	@Override
+	public int insertRes(ResourcesVO resourcesVo) {
+		return resourcesDao.insertRes(resourcesVo);
+	}
+
+	@Override
+	public List<List<ResourcesVO>> selectAllRes() {
+		List<RestypeVO> typelist=resourcesDao.selectResType();
+		List<List<ResourcesVO>> resList=new ArrayList<List<ResourcesVO>>();
+		for (RestypeVO restypeVO : typelist) {
+			resList.add(resourcesDao.selectResBytype(restypeVO.getTypeNo()));
+		}
+		
+		return resList;
 	}
 
 }

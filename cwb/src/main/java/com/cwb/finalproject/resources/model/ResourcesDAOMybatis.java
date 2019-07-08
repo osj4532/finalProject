@@ -36,6 +36,18 @@ public class ResourcesDAOMybatis implements ResourcesDAO{
 	public String selectResTypeByNo(int typeNo) {
 		return sqlSession.selectOne(namespace+"selectResTypeByNo", typeNo);
 	}
+
+
+	@Override
+	public int insertRes(ResourcesVO resourcesVo) {
+		return sqlSession.insert(namespace+"insertRes", resourcesVo);
+	}
+
+
+	@Override
+	public List<ResourcesVO> selectResBytype(int typeNo) {
+		return sqlSession.selectList(namespace+"selectResBytype", typeNo);
+	}
 	
 	
 }
