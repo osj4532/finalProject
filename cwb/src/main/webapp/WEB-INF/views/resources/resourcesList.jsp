@@ -4,6 +4,7 @@
 <link rel="stylesheet" href="<c:url value='/resources/css/to-do.css'/>" >
 <c:set var="mypage" value="useJs"/>
 <script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>
+
 <script type="text/javascript">
 	$(function(){
 		$("#resplus").hide();
@@ -11,15 +12,17 @@
 			$("#resplus").toggle(500);   
 		}); 
 		
-		$("#insertTypeList").click(function(){
-			if(confirm('자원리스트 추가하시겠습니까?')){
-				if($("#typeName").val()==''){
-					alert("자원명을 입력해주세요");
-				}else{
-					var typeName = $("#typeName").val();
-					location.href="<c:url value='/resources/restype/write.do?typeName='/>"+typeName;
-				}
-			}		
+		
+		$("#insertTypeListPost").submit(function(){
+				if(confirm('자원리스트 추가하시겠습니까?')){
+					if($("#typeName").val()==''){
+						alert("자원명을 입력해주세요");
+						event.preventDefault();
+					}else{
+						var typeName = $("#typeName").val();
+						location.href="<c:url value='/resources/restype/write.do?typeName='/>"+typeName;
+					}
+				}	
 		});
 		
 		
@@ -74,17 +77,21 @@
               <!-- /table-responsive -->
 					
 					<!-- 자원 리스트 끝 -->
-              <form role="form" class="form-horizontal style-form">
+              <form role="form" method="post" 
+              	id="insertTypeListPost"
+               class="form-horizontal style-form" action="<c:url value='/resources/restype/write.do'/>">
                 <div class="form-group has-success">
                   <label class="col-lg-1 control-label">자원 리스트명</label>
                   <div class="col-lg-10">
-                    <input type="text" placeholder="" id="typeName" class="form-control">
+                    <input type="text" placeholder="" name="typeName" 
+                    	id="TypeName"
+                    class="form-control">
                     <p class="help-block">회사의 자원을 사랑합시다</p>
                   </div>
                 </div>
                 <div class="form-group">
                   <div class="col-lg-offset-5 col-lg-5">
-                    <button class="btn btn-theme" type="button" id="insertTypeList">자원 리스트 추가</button>
+                    <button class="btn btn-theme" type="submit" >자원 리스트 추가</button>
                   </div>
                 </div>
               </form>
@@ -95,7 +102,29 @@
         </div>
 		
 		<!-- SORTABLE TO DO LIST -->
-		
+		<c:if test="${empty ResTypelist}">
+		<div class="row mt mb">
+			<div class="col-md-12">
+				<section class="task-panel tasks-widget">
+					<div class="panel-heading">
+						<div class="pull-left">
+							<h5>
+								<i class="fa fa-tasks"></i> 등록된 자원이 없습니다
+							</h5>
+						</div>
+						<br>
+					</div>
+					<div class="panel-body">
+						
+						<div class=" add-task-row">
+						</div>
+					</div>
+				</section>
+			</div>
+			<!--/col-md-12 -->
+		</div>
+		</c:if>
+		<c:if test="${!empty ResTypelist }">
 		<c:forEach var="i" begin="0" end="${fn:length(ResTypelist)-1 }" >
 		<div class="row mt mb">
 			<div class="col-md-12">
@@ -127,10 +156,11 @@
 									</li>
 							</ul>
 						</div>
+						
 						<div class=" add-task-row">
 							<a class="btn btn-success btn-sm pull-left"
-								onclick="writeRes(${ResTypelist[i].typeNo})">${ResTypelist[i].typeName } 자원 추가</a> <!-- <a
-								class="btn btn-default btn-sm pull-right" href="todo_list.html#">See
+								onclick="writeRes(${ResTypelist[i].typeNo})" >${ResTypelist[i].typeName } 자원 추가</a>
+								 <!-- <a class="btn btn-default btn-sm pull-right" href="todo_list.html#">See
 								All Tasks</a> -->
 						</div>
 					</div>
@@ -140,7 +170,7 @@
 		</div>
 		<!-- /row -->
 		</c:forEach>
-		
+		</c:if>
 		
 	</section>
 	<!-- /wrapper -->
