@@ -384,6 +384,7 @@
               <span>근태</span>
               </a>
             <ul class="sub">
+              <li><a href="<c:url value="/commute/commute.do"/>">근태조회</a></li>
               <li><a href="<c:url value="/commute/commute.do"/>">근태관리</a></li>
             </ul>
           </li>

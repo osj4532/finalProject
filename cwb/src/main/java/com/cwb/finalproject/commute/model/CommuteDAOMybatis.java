@@ -19,4 +19,5 @@ public class CommuteDAOMybatis implements CommuteDAO{
 	public List<Map<String, Object>> selectAll() {
 		return sqlSession.selectList(namespace+"selectAll");
 	}
+
 }

@@ -16,6 +16,7 @@ public class CommuteServiceImpl implements CommuteService{
 	public List<Map<String, Object>> selectAll() {
 		return commuteDao.selectAll();
 	}
+
 	
 	
 }

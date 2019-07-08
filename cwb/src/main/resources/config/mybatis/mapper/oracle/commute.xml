@@ -4,13 +4,20 @@
 
 <mapper namespace="config.mybatis.mapper.oracle.commute">
 	<select id="selectAll" resultType="map">
-		select m.MEM_NAME, d.DEPT_NAME, p.POS_NAME, c.COM_INDATE, c.COM_OUTDATE, c.COM_STATUS 
-	from commute c
-	join member m
-	on c.MEM_NO = m.MEM_NO
-	join department d
-	on m.DEPT_NO = d.DEPT_NO
-	join position p
-	on m.POS_NO = p.POS_NO
+		select c.MEM_NO as memNo, m.MEM_NAME as memName, d.DEPT_NAME as deptName, p.POS_NAME as posName, c.COM_INDATE as comIndate, c.COM_OUTDATE as comOutdate, c.COM_STATUS as comStatus 
+		from commute c
+		join member m
+		on c.MEM_NO = m.MEM_NO
+		join department d
+		on m.DEPT_NO = d.DEPT_NO
+		join position p
+		on m.POS_NO = p.POS_NO
 	</select>
+	
+	
+	<select id="chkPos" parameterType="string" resultType="string">
+		
+	</select>
+	
+	
 </mapper>

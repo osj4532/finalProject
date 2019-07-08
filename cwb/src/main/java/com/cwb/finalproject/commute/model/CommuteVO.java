@@ -4,12 +4,12 @@ import java.sql.Timestamp;
 
 public class CommuteVO {
 
-	private int comNo;
-	private int memNo;
-	private Timestamp comIndate;
-	private Timestamp comOutdate;
-	private String comStatus;
-	private String comEval;
+	private int comNo;				//근태관리번호
+	private int memNo;				//사원번호
+	private Timestamp comIndate;	//출근시간
+	private Timestamp comOutdate;	//퇴근시간
+	private String comStatus;		//근무상태
+	private String comEval;			//근무평가
 	
 	public CommuteVO() {
 		super();
