@@ -3,6 +3,8 @@ package com.cwb.finalproject.confirm.model;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,18 +14,26 @@ public class ConfirmServiceImpl implements ConfirmService{
 	@Autowired
 	private ConfirmDAO confirmDAO;
 
+	private Logger logger = LoggerFactory.getLogger(ConfirmServiceImpl.class);
+	
 	@Transactional
 	public int insertDoc(ConfirmVO vo, List<Map<String, Object>> fileList) {
 		int cnt = 0;
 		try {
 		
 			cnt = confirmDAO.insertDoc(vo);
+			logger.info("문서 내용등록 결과 cnt = ", cnt);
 			
 			if(vo.getCfFile() == "Y") {
+				
+				logger.info("매개변수 List사이즈 = {}", fileList.size());
+				
 				for(Map<String, Object> map : fileList) {
 					String fileName = (String)map.get("fileName");
 					String originalFileName = (String)map.get("originalFileName");
 					long fileSize = (Long)map.get("fileSize");
+					
+					logger.info("파일이름 = {}", fileName);
 					
 					ConfirmFileVO cfFileVo = new ConfirmFileVO();
 					cfFileVo.setFileName(fileName);
@@ -31,7 +41,10 @@ public class ConfirmServiceImpl implements ConfirmService{
 					cfFileVo.setFileSize(fileSize);
 					cfFileVo.setCfNo(vo.getCfNo());
 					
+					logger.info("파일이름vo = {}", cfFileVo);
+					
 					cnt = confirmDAO.insertDocFile(cfFileVo);
+					logger.info("문서 파일등록 결과 cnt = ", cnt);
 				}
 			}
 		
