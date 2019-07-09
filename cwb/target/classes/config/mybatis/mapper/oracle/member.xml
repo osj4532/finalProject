@@ -10,6 +10,15 @@
 	<select id="selectByNo" resultType="map" parameterType="int">
 		select * from memberview where mem_No = #{memberNo}
 	</select>
+	
+	<select id="selectPwdForLogin" parameterType="string" resultType="string">
+		select mem_Pwd from member
+		where mem_Id=#{memId} and mem_ResignDate is null
+	</select>
+	
+	<select id="selectMember" parameterType="string" resultType="memberVo">
+		select * from member where mem_Id=#{memId}
+	</select>
 </mapper>
 
 

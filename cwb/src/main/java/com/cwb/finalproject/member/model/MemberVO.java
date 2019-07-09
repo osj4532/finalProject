@@ -12,6 +12,8 @@ public class MemberVO {
 	private String memHp3;	//사원연락처3
 	private String memEmail1;	//사원이메일1
 	private String memEmail2;	//사원이메일2
+	private String memId;	//사원아이디
+	private String memPwd;	//사원비밀번호
 	private String memZipcode;	//사원우편번호
 	private String memAddress;	//사원주소
 	private String memAddressDetail;	//사원상세주소
@@ -24,7 +26,6 @@ public class MemberVO {
 	private int memHoliday;	//사원연차
 	private int memUseHoliday;	//사원사용한연차
 	private int posNo;	//직급번호
-	
 	public int getMemNo() {
 		return memNo;
 	}
@@ -78,6 +79,18 @@ public class MemberVO {
 	}
 	public void setMemEmail2(String memEmail2) {
 		this.memEmail2 = memEmail2;
+	}
+	public String getMemId() {
+		return memId;
+	}
+	public void setMemId(String memId) {
+		this.memId = memId;
+	}
+	public String getMemPwd() {
+		return memPwd;
+	}
+	public void setMemPwd(String memPwd) {
+		this.memPwd = memPwd;
 	}
 	public String getMemZipcode() {
 		return memZipcode;
@@ -155,12 +168,14 @@ public class MemberVO {
 	public String toString() {
 		return "MemberVO [memNo=" + memNo + ", ranksNo=" + ranksNo + ", deptNo=" + deptNo + ", memName=" + memName
 				+ ", memHp1=" + memHp1 + ", memHp2=" + memHp2 + ", memHp3=" + memHp3 + ", memEmail1=" + memEmail1
-				+ ", memEmail2=" + memEmail2 + ", memZipcode=" + memZipcode + ", memAddress=" + memAddress
-				+ ", memAddressDetail=" + memAddressDetail + ", memFileName=" + memFileName + ", memOriginalFileName="
-				+ memOriginalFileName + ", memJoinDate=" + memJoinDate + ", memResignDate=" + memResignDate
-				+ ", memAchievement=" + memAchievement + ", memPay=" + memPay + ", memHoliday=" + memHoliday
-				+ ", memUseHoliday=" + memUseHoliday + ", posNo=" + posNo + "]";
+				+ ", memEmail2=" + memEmail2 + ", memId=" + memId + ", memPwd=" + memPwd + ", memZipcode=" + memZipcode
+				+ ", memAddress=" + memAddress + ", memAddressDetail=" + memAddressDetail + ", memFileName="
+				+ memFileName + ", memOriginalFileName=" + memOriginalFileName + ", memJoinDate=" + memJoinDate
+				+ ", memResignDate=" + memResignDate + ", memAchievement=" + memAchievement + ", memPay=" + memPay
+				+ ", memHoliday=" + memHoliday + ", memUseHoliday=" + memUseHoliday + ", posNo=" + posNo + "]";
 	}
+	
+	
 	
 	
 }

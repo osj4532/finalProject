@@ -4,6 +4,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 
 <c:import url="../inc/top.jsp"></c:import>
+
 <style type="text/css">
 	
 	#wraper1{
@@ -55,10 +56,12 @@
 		text-align: center;
 	}
 	
-	#cfContent{
-		min-width: 90%;
+	.align-left{
+		text-align: left;
 	}
+	
 </style>
+<link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
 </head>
 <body>
 <div id="wraper1" class="container panel">
@@ -122,7 +125,11 @@
 	</table>
 	
 	<br>
-	<form name="frm">
+	<form name="frm" method="post" enctype="multipart/form-data">
+		<input type="hidden" name="formNo" value="${formInfo['FORM_NO']}">
+		<input type="hidden" name="memNo" value="${member['MEM_NO'] }">
+		<input type="hidden" name="deptNo" value="${member['DEPT_NO'] }">
+		<input type="hidden" name="regNo" value="${clList[0]['REG_NO'] }">
 		<table class="table">
 			<tr>
 				<th scope="col">
@@ -132,9 +139,10 @@
 					<input class="form-control" type="text" name="cfTitle">
 				</td>
 			</tr>
+			
 			<tr>
-				<td colspan="2">	
-					<textarea id="cfContent" class="form-control" rows="25"></textarea>
+				<td colspan="2" class="align-left">
+					<textarea id="summernote" name="cfContent"></textarea>
 				</td>
 			</tr>
 			<tr>
@@ -145,46 +153,49 @@
 			</tr>
 		</table>
 		<hr>
+	</form>
 		<div>
 			<button id="save" class="btn btn-info">결재요청</button>
-			<button class="btn btn-warning">임시저장</button>
-			<button class="btn btn-danger">취소</button>
+			<button id="temSave" class="btn btn-warning">임시저장</button>
+			<button id="cancel" class="btn btn-danger">취소</button>
 		</div>
-	</form>
 </div>
 
-<script type="text/javascript" src="<c:url value="/resources/lib/HuskyEZCreator.js"/>"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
+<c:import url="../inc/bottom.jsp"></c:import>
+<script type="text/javascript" src="<c:url value="/resources/summernote/summernote.js"/>"></script>
+<script type="text/javascript" src="<c:url value="/resources/summernote/lang/summernote-ko-KR.js"/>"></script>
 <script type="text/javascript">
-	var oEditors = [];
+	$(document).ready(function() {
+	    $('#summernote').summernote({
+	    	height:500,
+	    	lang: 'ko-KR',
+	    	fontNames: ['돋움','휴먼모음T','궁서','휴먼옛체' ]
+	    });
+	});
+	
 	
 	$(function(){
-		nhn.husky.EZCreator.createInIFrame({
-			oAppRef: oEditors,
-			elPlaceHolder: "cfContent",
-			sSkinURI: "<c:url value='/resources/lib/SmartEditor2Skin.html'/>",
-			htParams:{
-				bUseToolbar : true,
-				bUseVerticalResizer : true,
-				bUseModeChanger : true,
-				fOnBeforeUnload : function(){
-
-	            }
-			},
+		$('#save').click(function(){
 			
-			fOnAppLoad : function(){
-	              oEditors.getById["cfContent"].exec("PASTE_HTML", [""]);
-	          },
-	          fCreator: "createSEditor2"
+			if($('input[name=cfTitle]').val() == ""){
+				alert("제목을 입력해 주세요.");
+				
+			}else{
+				$('form[name=frm]').attr("action","<c:url value='/document/docReg.do'/>");
+				$('form[name=frm]').submit();
+			}
 		});
 		
-		$("#save").click(function(){
-	          oEditors.getById["cfContent"].exec("UPDATE_CONTENTS_FIELD", []);
-	          $("#frm").submit();
-	     });
+		$('#temSave').click(function(){
+			
+		});
+		
+		$('#cancel').click(function(){
+	
+		});
 	});
 	
 </script>
 
 
-<c:import url="../inc/bottom.jsp"></c:import>
+
