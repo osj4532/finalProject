@@ -53,6 +53,19 @@
 		res_filename=#{resFilename}
 		where res_no=#{resNo}
 	</update>
+	
+	<delete id="deleteResByno" parameterType="int">
+		delete from resources
+		where res_no=#{resNo}
+	</delete>
+	<select id="selectImgNameBytype" parameterType="int" resultType="ResourcesVo">
+		select * from resources
+		where type_no=#{typeNo}
+	</select>
+	<delete id="deleteResByTypeNo" parameterType="int">
+		delete from resources
+		where type_no=#{typeNo}
+	</delete>
 </mapper>
 
 

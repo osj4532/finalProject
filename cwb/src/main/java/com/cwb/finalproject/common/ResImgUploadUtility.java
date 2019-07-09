@@ -65,7 +65,7 @@ public class ResImgUploadUtility {
 				
 				//업로드 처리
 				//업로드 폴더 구하기
-				String upPath=getUploadPath(request, uploadPathGb);
+				String upPath=getUploadPath(request);
 				
 				File file = new File(upPath,fileName);
 				try {
@@ -109,7 +109,7 @@ public class ResImgUploadUtility {
 		
 	}
 	
-	public String getUploadPath(HttpServletRequest request, int uploadPathGb) {
+	public String getUploadPath(HttpServletRequest request) {
 		//업로드 경로 구하기
 		String result="";
 		String type =props.getProperty("file.upload.type");

@@ -1,5 +1,6 @@
 package com.cwb.finalproject.resources.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,14 +68,25 @@ public class ResourcesController {
 	
 	@RequestMapping("/restype/del.do")
 	public String restypeWrite(@RequestParam int typeNo
-			,Model model) {
+			,Model model,HttpServletRequest request) {
 		logger.info("자원리스트 삭제,typeNo={}",typeNo);
 		
-		int cnt =resourcesService.delResType(typeNo);
-		logger.info("자원 리스트삭제 cnt={}",cnt);
+		List<ResourcesVO> resVo = resourcesService.selectImgNameBytype(typeNo);
+		int cnt =resourcesService.delAlltypeandRes(typeNo);
+		logger.info("자원 리스트삭제 cnt={},resVo.size={}",cnt,resVo.size());
+		
+		
 		String msg="",url="/resources/list.do";
 		if(cnt>0) {
 			msg="자원 리스트삭제 완료";
+			for (ResourcesVO vo : resVo) {
+				String path =resImgUtility.getUploadPath(request);
+				File file = new File(path,vo.getResFilename());
+				if(file.exists()) {
+					boolean bool = file.delete();
+					logger.info("자원리스트 속 리스트이미지 삭제 결과={}",bool);
+				}
+			}
 		}else {
 			msg="자원 리스트삭제 실패";
 		}
@@ -172,18 +184,53 @@ public class ResourcesController {
 		
 		int cnt= resourcesService.updateResByNo(resourcesVo);
 		
-		logger.info("자원 변경 cnt={}",cnt);
+		logger.info("자원 수정 결과 cnt={}",cnt);
 		
-		String msg = "",url="resources/close.do";
+		String msg = "",url="/resources/close.do";
 		if(cnt>0) {
-			msg="자원 등록되었습니다.";
+			msg="자원 수정 완료";
+			if(fixImg) {
+				String path =resImgUtility.getUploadPath(request);
+				File file = new File(path,oldImg);
+				if(file.exists()) {
+					boolean bool = file.delete();
+					logger.info("변경 후 기존 이미지 삭제 결과={}",bool);
+				}
+			}
+			
 		}else {
-			msg="자원 등록 실패";
+			msg="자원 수정 실패";
 		}
 		
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
 		return "common/message"; 
+	}
+	
+	@RequestMapping("/resourcesDelete.do")
+	public String deleteRes(@RequestParam int resNo,
+			Model model,HttpServletRequest request) {
+		logger.info("자원삭제 기능 resNo={}",resNo);
+		
+		ResourcesVO resVo= resourcesService.selectResByNo(resNo);
+		int cnt =resourcesService.deleteResByno(resNo);
+		
+		String msg="",url="/resources/list.do";
+		if(cnt>0) {
+			msg="자원 삭제 성공";
+			String path =resImgUtility.getUploadPath(request);
+			File file = new File(path,resVo.getResFilename());
+			if(file.exists()) {
+				boolean bool = file.delete();
+				logger.info("자원 삭제 후 이미지 삭제 결과={}",bool);
+			}
+		}else {
+			msg="자원 삭제 실패!";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
 	}
 	
 	@RequestMapping("/close.do")

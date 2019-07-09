@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ResourcesServiceImpl implements ResourcesService{
@@ -22,10 +23,6 @@ public class ResourcesServiceImpl implements ResourcesService{
 		return resourcesDao.selectResType();
 	}
 
-	@Override
-	public int delResType(int typeNo) {
-		return resourcesDao.delResType(typeNo);
-	}
 
 	@Override
 	public String selectResTypeByNo(int typeNo) {
@@ -57,6 +54,24 @@ public class ResourcesServiceImpl implements ResourcesService{
 	@Override
 	public int updateResByNo(ResourcesVO resourcesVo) {
 		return resourcesDao.updateResByNo(resourcesVo);
+	}
+
+	@Override
+	public int deleteResByno(int resNo) {
+		return resourcesDao.deleteResByno(resNo);
+	}
+
+	@Override
+	public List<ResourcesVO> selectImgNameBytype(int typeNo) {
+		return resourcesDao.selectImgNameBytype(typeNo);
+	}
+	
+	@Override
+	@Transactional
+	public int delAlltypeandRes(int typeNo) {
+		int result=resourcesDao.deleteResByTypeNo(typeNo);
+		result+=resourcesDao.delResType(typeNo);
+		return result;
 	}
 
 }
