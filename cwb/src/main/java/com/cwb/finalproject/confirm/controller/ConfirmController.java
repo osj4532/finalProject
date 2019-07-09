@@ -55,7 +55,7 @@ public class ConfirmController {
 	public String docSel_get(@RequestParam(required = false, defaultValue = "0") int formNo, 
 			@RequestParam(required = false, defaultValue = "0") int regNo, 
 			HttpSession session, Model model) {
-		session.setAttribute("userNo", 9);
+		session.setAttribute("userNo", 1);
 		int userNo = (Integer)session.getAttribute("userNo");
 		logger.info("문서양식 및 종류 선택 화면 보여주기 userNo = {}",userNo);
 		
@@ -114,18 +114,20 @@ public class ConfirmController {
 	}
 	
 	@RequestMapping("/docReg.do")
-	public String docReg(HttpServletRequest request, @ModelAttribute ConfirmVO confirmVo,Model model) {
+	public String docReg(HttpServletRequest request, @ModelAttribute ConfirmVO confirmVo, 
+			@RequestParam("fileName") MultipartFile[] files, Model model) {
 		logger.info("등록처리 confirmVo = {}", confirmVo);
-		String[] fileName = request.getParameterValues("fileName");
-		logger.info("첨부된 파일 = {}",fileName);
+		logger.info("첨부된 파일 크기= {}",files.length);
 		
 		List<Map<String, Object>> fileList = null;
-		/*
-		 * if(fileName) { confirmVo.setCfFile("Y"); fileList =
-		 * fileUtil.multipleUpload(request); }else { confirmVo.setCfFile("N"); }
-		 */
+		if(files.length > 0) { 
+			confirmVo.setCfFile("Y"); 
+			fileList = fileUtil.multipleUpload(request); 
+		}else { 
+			confirmVo.setCfFile("N"); 
+		}
 		
-		/*
+		
 		int cnt = confirmService.insertDoc(confirmVo, fileList);
 		logger.info("문서 등록 결과 cnt = {}",cnt);
 		
@@ -141,7 +143,29 @@ public class ConfirmController {
 		model.addAttribute("url",url);
 		
 		return "common/message";
-		*/
-		return null;
+	}
+	
+	@RequestMapping("/docList.do")
+	public String docList(@RequestParam(required = false, defaultValue = "1") int cfState, Model model) {
+		logger.info("문서 리스트 보여주기");
+		//1. 대기(기안자, 결재순서자)
+		
+		//2. 완료(등급에 따라, 모든 사용자)
+		
+		//3. 반려(기안자, 반려자)
+		
+		//4. 임시저장(기안자)
+		
+		return "document/doclist";
+	}
+	
+	@RequestMapping("/docDetail.do")
+	public String docDetail(@RequestParam int cfNo, Model model) {
+		logger.info("문서 자세히 보여주기 문서번호 cfNo={}",cfNo);
+		//결재 사인(현재 결재 순서 2)
+		//결재 순서 < 2 인 멤버의 사인을 보여준다.
+		
+		
+		return "document/docdetail";
 	}
 }
