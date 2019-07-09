@@ -14,18 +14,15 @@
   <meta name="keyword" content="Dashboard, Bootstrap, Admin, Template, Theme, Responsive, Fluid, Retina">
   <title>컴워밸 - Company&Worker balance</title>
 
-  <!-- Favicons -->
   <link href="<c:url value='/resources/img/favicon.png'/>" rel="icon">
   <link href="<c:url value='/resources/img/apple-touch-icon.png'/>" rel="apple-touch-icon">
 
-  <!-- Bootstrap core CSS -->
   <link href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min1.css'/>"  rel="stylesheet">
-  <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css"> -->
-  <!--external css-->
   <link href="<c:url value='/resources/lib/font-awesome/css/font-awesome.css'/>"  rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="<c:url value='/resources/css/zabuto_calendar.css'/>" >
   <link rel="stylesheet" type="text/css" href="<c:url value='/resources/lib/gritter/css/jquery.gritter.css'/>"/>
   <!-- Custom styles for this template -->
+   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
   
   <link href="<c:url value='/resources/css/style.css'/>" rel="stylesheet">
   <link href="<c:url value='/resources/css/style-responsive.css'/>"  rel="stylesheet">
@@ -36,7 +33,7 @@
 <script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>	
 <script type="text/javascript">
 	$(function(){
-		$('form[name=resourcesWrite]').submit(function(){
+		$('form[name=resourcesEdit]').submit(function(){
 			$('input[type=text]').each(function(){
 				if($(this).val()==''){
 					$('.chkInfo').show();
@@ -44,14 +41,20 @@
 					event.preventDefault();
 				}
 			});
-			if($('#hidetext').val()!='외부 위치지정'){
+			if($('#hidetext').val()!='외부 위치지정' || $('#hidetext').val()==''){
 				$("#mapLatlng").val("!"+$('#hidetext').val());			
 			}
-			
 		});
 		
-		$("#map").hide();
-		$("#map").prev().hide();
+		<c:if test="${fn:indexOf(resVo.resLocation,'!')==0}">                 
+			$("#map").hide();	
+			$("#map").prev().hide();
+	    </c:if>
+	    
+	    <c:if test="${fn:indexOf(resVo.resLocation,'!')!=0}">                 
+			$("#hidetext").attr("disabled",true);
+    	</c:if>
+	   
 		$('#findView').click(function(){
 			$("#map").toggle(500);
 			$("#map").prev().toggle(500);
@@ -67,37 +70,50 @@
 </head>
 <body>
  <section id="container">
-       <section class="wrapper" style="margin-top: 10px">
-        <h3 style="margin-left: 15px"><i class="fa fa-plus-square"></i> ${typeName}자원 추가</h3>
+      <section class="wrapper" style="margin-top: 10px">
+        <h3 style="margin-left: 15px"><i class="fas fa-edit"></i> 자원 수정 <b>${resVo.resName}</b></h3>
         <!-- BASIC FORM ELELEMNTS -->
-        <div class="row">
-          <div class="col-lg-12">
-            <div class="form-panel">
+        <div class="row">  
+          <div class="col-lg-12"> 
+            <div class="form-panel"> 
               <h4></h4>
               <form class="form-horizontal style-form" 
               enctype="multipart/form-data"
               method="post" 
-              name="resourcesWrite"
-              action="<c:url value='/resources/resourcesWrite.do'/>">
+              name="resourcesEdit"
+              action="<c:url value='/resources/resourcesEdit.do'/>">
                 <div class="form-group">
-                  <label class="col-sm-2 col-sm-2 control-label">추가 자원명</label>
+                  <label class="col-sm-2 col-sm-2 control-label">자원명</label>
                   <div class="col-sm-10">
-                    <input type="hidden" class="form-control" name="typeNo" value="${param.typeNo }" >
-                    <input type="text" class="form-control" name="resName">
+                    <input type="hidden" class="form-control" name="resNo" value="${param.resNo}" >
+                    <input type="text" class="form-control" name="resName" value="${resVo.resName}">
                   </div>	
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">자원 가격</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control round-form" name="resPrice">
+                    <input type="text" class="form-control round-form" 
+                    name="resPrice"
+                    <c:if test="${resVo.resPrice!=0}">
+                     value="${resVo.resPrice }"
+                     </c:if>
+                     >
                   </div> 
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">자원 위치</label>
                   <div class="col-sm-10">
-                    <input id='hidetext' type="text" class="form-control round-form">
+                    <input id='hidetext' type="text" class="form-control round-form" 
+                    <c:if test="${fn:indexOf(resVo.resLocation,'!')!=0}">                 
+                    value="외부 위치지정"
+    				</c:if>
+                    <c:if test="${fn:indexOf(resVo.resLocation,'!')==0}">                 
+                  	  value="${fn:substringAfter(resVo.resLocation,'!')}" 
+    				</c:if>
+                    >
                     <input id='mapLatlng' type="hidden" name="resLocation">
-                  <button type="button" class="badge btn-theme06" id="findView">외부 위치 지정</button>
+                  <button type="button" class="badge btn-theme06" 
+                  id="findView">외부 위치 지정</button>
                   </div>
                   <label class="col-sm-2 col-sm-2 control-label">자원 위치지도</label>
                   <div id="map" style="width:600px;height:400px;"></div>
@@ -105,29 +121,32 @@
                 <div class="form-group">
                   <label class="col-sm-2 col-sm-2 control-label">자원 정보</label>
                   <div class="col-sm-10">
-                    <input type="text" class="form-control" name="resInformation" placeholder="자세히(자원을 사랑합시다)">
+                    <input type="text" class="form-control" 
+                    name="resInformation" value="${resVo.resInformation }">
                   </div>
                 </div>
 
              <div class="form-group last">
                   <label class="control-label col-md-3">자원 이미지등록</label>
+                  <input type="hidden" value="${resVo.resFilename }" name="oldImg"> 
                   <div class="col-md-9">
                     <div class="fileupload fileupload-new" data-provides="fileupload">
                       <div class="fileupload-new thumbnail" style="width: 200px; height: 150px;">
-                        <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&text=no+image" alt="" />
+                        <img src="<c:url value='/resimg_file/${resVo.resFilename }'/>" alt="" />
                       </div>
                       <div class="fileupload-preview fileupload-exists thumbnail" style="max-width: 200px; max-height: 150px; line-height: 20px;"></div>
                       <div>
                         <span class="btn btn-theme02 btn-file">
-                          <span class="fileupload-new"><i class="fa fa-paperclip"></i> 사진 선택</span>
-                        <span class="fileupload-exists"><i class="fa fa-undo"></i> 사진 변경</span>
+                        <span class="fileupload-new"><i class="fa fa-undo"></i> 기존 사진 변경</span>
+                        <span class="fileupload-exists"><i class="fa fa-undo"></i> 기존 사진 변경</span>
                         <input type="file" class="default" name="upimg"/>
+                        
                         </span>
                         <br>
                         <br>
                         <button type="submit"
-                        class="btn btn-theme fileupload-exists">
-                        <i class="fa fa-check"></i> 자원 등록</button>
+                        class="btn btn-theme">
+                        <i class="fa fa-check"></i> 자원 변경</button>
                       </div>
                     </div>
                     <div class="chkInfo" style="display:none;">
@@ -181,7 +200,14 @@
  <script>
 			var container = document.getElementById('map');
 			var options = {
-				center: new kakao.maps.LatLng(37.50255739441079, 127.0247957449708),
+				center: new kakao.maps.LatLng(
+					<c:if test="${fn:indexOf(resVo.resLocation,'!')==0}">                 
+    					37.50255739441079, 127.0247957449708
+                    </c:if>
+    				<c:if test="${fn:indexOf(resVo.resLocation,'!')!=0}"> 
+	                    ${resVo.resLocation}
+                    </c:if> 
+				),
 				level: 2
 			};
 			

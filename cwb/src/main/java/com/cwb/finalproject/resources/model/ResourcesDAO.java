@@ -10,4 +10,6 @@ public interface ResourcesDAO {
 	String selectResTypeByNo(int typeNo);
 	int insertRes(ResourcesVO resourcesVo);
 	List<ResourcesVO> selectResBytype(int typeNo);
+	ResourcesVO selectResByNo(int resNo);
+	int updateResByNo(ResourcesVO resourcesVo);
 }

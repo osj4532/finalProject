@@ -63,6 +63,8 @@ public class ResourcesController {
 		model.addAttribute("url", url);
 		return "common/message";
 	}
+	
+	
 	@RequestMapping("/restype/del.do")
 	public String restypeWrite(@RequestParam int typeNo
 			,Model model) {
@@ -110,7 +112,7 @@ public class ResourcesController {
 		int cnt= resourcesService.insertRes(resourcesVo);
 
 		logger.info("자원 추가 cnt={}",cnt);
-		String msg = "",url="/resourcesWrite.do?typeNo="+resourcesVo.getTypeNo();
+		String msg = "",url="/resources/close.do";
 		if(cnt>0) {
 			msg="자원 등록되었습니다.";
 		}else {
@@ -121,5 +123,73 @@ public class ResourcesController {
 		model.addAttribute("url", url);
 		return "common/message";
 		
+	}
+	
+	@RequestMapping("resourcesMap.do")
+	public String resourcesFindMap(@RequestParam int resNo,
+			Model model) {
+		logger.info("자원 위치 확인! resNo={}",resNo);
+		
+		ResourcesVO resVo= resourcesService.selectResByNo(resNo);
+		
+		model.addAttribute("resVo", resVo);
+		
+		return "resources/resourcesMap";
+	}
+	
+	@RequestMapping(value = "/resourcesEdit.do",method = RequestMethod.GET)
+	public String resourcesEdit_get(@RequestParam int resNo,
+			Model model) {
+		logger.info("자원 수정 화면 보여주기");
+		
+		ResourcesVO  resVo= resourcesService.selectResByNo(resNo);
+		
+		model.addAttribute("resVo", resVo);
+		return "resources/resourcesEdit";
+	}
+	
+	@RequestMapping(value = "/resourcesEdit.do",method = RequestMethod.POST)
+	public String resourcesEdit_post(@ModelAttribute ResourcesVO resourcesVo,
+			HttpServletRequest request,Model model,String oldImg) {
+		logger.info("자원 등록 oldImg={},resourcesVo={}",oldImg,resourcesVo);
+		
+		//파일 업로드 
+		List<Map<String, Object>> list= resImgUtility.fileUpload(request,resImgUtility.PDS_FILE_UPLOAD);
+		logger.info("체크 list={}",list.size());
+		String resFilename = "";
+		boolean fixImg=false;
+		for (Map<String, Object> map : list) {
+			resFilename = (String) map.get("fileName");
+		}
+		logger.info("체크 list={}",list.size());
+		
+		if(resFilename==null || resFilename.isEmpty()) {
+			resourcesVo.setResFilename(oldImg);
+		}else {
+			resourcesVo.setResFilename(resFilename);
+			fixImg=true;
+		}
+		
+		int cnt= resourcesService.updateResByNo(resourcesVo);
+		
+		logger.info("자원 변경 cnt={}",cnt);
+		
+		String msg = "",url="resources/close.do";
+		if(cnt>0) {
+			msg="자원 등록되었습니다.";
+		}else {
+			msg="자원 등록 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		return "common/message"; 
+	}
+	
+	@RequestMapping("/close.do")
+	public String openerAndclose() {
+		logger.info("부모창 새로고침 후 닫기");
+		
+		return "resources/close";
 	}
 }

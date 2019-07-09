@@ -10,4 +10,6 @@ public interface ResourcesService {
 	String selectResTypeByNo(int typeNo);
 	int insertRes(ResourcesVO resourcesVo);
 	List<List<ResourcesVO>> selectAllRes();
+	ResourcesVO selectResByNo(int resNo); 
+	int updateResByNo(ResourcesVO resourcesVo);
 }

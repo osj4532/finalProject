@@ -49,4 +49,14 @@ public class ResourcesServiceImpl implements ResourcesService{
 		return resList;
 	}
 
+	@Override
+	public ResourcesVO selectResByNo(int resNo) {
+		return resourcesDao.selectResByNo(resNo);
+	}
+
+	@Override
+	public int updateResByNo(ResourcesVO resourcesVo) {
+		return resourcesDao.updateResByNo(resourcesVo);
+	}
+
 }

@@ -41,6 +41,18 @@
 		where type_no=#{typeNo}
 	</select>
 	
+	<select id="selectResByNo" parameterType="int" resultType="ResourcesVo">
+		select * from resources
+		where res_no=#{resNo}
+	</select>
+	
+	<update id="updateResByNo" parameterType="ResourcesVo">
+		update resources
+		set res_name=#{resName},res_price=#{resPrice},
+		res_location=#{resLocation},res_information=#{resInformation},
+		res_filename=#{resFilename}
+		where res_no=#{resNo}
+	</update>
 </mapper>
 
 
