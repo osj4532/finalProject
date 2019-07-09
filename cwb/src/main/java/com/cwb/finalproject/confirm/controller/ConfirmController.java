@@ -1,9 +1,12 @@
 package com.cwb.finalproject.confirm.controller;
 
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.annotation.MultipartConfig;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -15,7 +18,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.cwb.finalproject.common.FileUploadUtil;
+import com.cwb.finalproject.confirm.model.ConfirmService;
 import com.cwb.finalproject.confirm.model.ConfirmVO;
 import com.cwb.finalproject.confirmline.controller.ConfirmlineController;
 import com.cwb.finalproject.confirmline.model.ConfirmlineService;
@@ -40,12 +46,16 @@ public class ConfirmController {
 	private ConfirmlineService confirmlineService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private ConfirmService confirmService;
+	@Autowired
+	private FileUploadUtil fileUtil;
 	
 	@RequestMapping(value="/docSel.do", method = RequestMethod.GET)
 	public String docSel_get(@RequestParam(required = false, defaultValue = "0") int formNo, 
 			@RequestParam(required = false, defaultValue = "0") int regNo, 
 			HttpSession session, Model model) {
-		session.setAttribute("userNo", 1);
+		session.setAttribute("userNo", 9);
 		int userNo = (Integer)session.getAttribute("userNo");
 		logger.info("문서양식 및 종류 선택 화면 보여주기 userNo = {}",userNo);
 		
@@ -101,5 +111,37 @@ public class ConfirmController {
 		model.addAttribute("today", new Date());
 		
 		return "document/docreg";
+	}
+	
+	@RequestMapping("/docReg.do")
+	public String docReg(HttpServletRequest request, @ModelAttribute ConfirmVO confirmVo,Model model) {
+		logger.info("등록처리 confirmVo = {}", confirmVo);
+		String[] fileName = request.getParameterValues("fileName");
+		logger.info("첨부된 파일 = {}",fileName);
+		
+		List<Map<String, Object>> fileList = null;
+		/*
+		 * if(fileName) { confirmVo.setCfFile("Y"); fileList =
+		 * fileUtil.multipleUpload(request); }else { confirmVo.setCfFile("N"); }
+		 */
+		
+		/*
+		int cnt = confirmService.insertDoc(confirmVo, fileList);
+		logger.info("문서 등록 결과 cnt = {}",cnt);
+		
+		String url = "/document/docSel.do", msg = "";
+		if(cnt > 0) {
+			msg = "문서 등록 성공!";
+			url = "/document/docList.do";
+		}else {
+			msg = "문서 등록 실패!";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url",url);
+		
+		return "common/message";
+		*/
+		return null;
 	}
 }

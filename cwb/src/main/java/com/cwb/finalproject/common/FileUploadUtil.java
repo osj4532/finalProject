@@ -3,8 +3,10 @@ package com.cwb.finalproject.common;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -23,11 +25,52 @@ public class FileUploadUtil {
 	public static final int MEMBER_UPLOAD = 1;
 	public static final int BOARD_UPLOAD = 2;
 	public static final int SIGN_UPLOAD = 3;
+	public static final int DOC_FILE_UPLOAD = 4;
 	
 	@Resource(name="fileProperties")
 	private Properties props;
 	
 	private Logger logger = LoggerFactory.getLogger(FileUploadUtil.class);
+	
+	public List<Map<String, Object>> multipleUpload(HttpServletRequest request){
+		String fileName="", originalFileName = "";
+		long fileSize = 0;
+		
+		MultipartHttpServletRequest mr = (MultipartHttpServletRequest)request;
+		List<MultipartFile> fileList = mr.getFiles("fileName");
+		
+		List<Map<String, Object>> fileMapList = new ArrayList<Map<String,Object>>();
+		
+		String uppath = getUploadPath(request, DOC_FILE_UPLOAD);
+		logger.info("파일 저장 경로 = {}",uppath);
+		
+		for(MultipartFile mf : fileList) {
+			originalFileName = mf.getOriginalFilename();
+			fileSize = mf.getSize();
+			fileName = getUniqueFileName(originalFileName);
+			
+			Map<String, Object> fileMap = new HashMap<String, Object>();
+			fileMap.put("fileName",fileName);
+			fileMap.put("fileSize",fileSize);
+			fileMap.put("originalFileName",originalFileName);
+			fileMapList.add(fileMap);
+			
+			File file = new File(uppath,fileName);
+			try {
+				mf.transferTo(file);
+			} catch (IllegalStateException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		return fileMapList;
+		
+		
+	}
 	
 	public Map<String, Object> singleUpload(HttpServletRequest request){
 		
@@ -78,6 +121,8 @@ public class FileUploadUtil {
 				result = props.getProperty("file.board.path.test");
 			}else if(uploadPathKey == SIGN_UPLOAD) {
 				result = props.getProperty("file.sign.path.test");
+			}else if(uploadPathKey == DOC_FILE_UPLOAD) {
+				result = props.getProperty("file.doc.path.test");
 			}
 			
 		}else {
@@ -88,6 +133,8 @@ public class FileUploadUtil {
 				path = props.getProperty("file.board.path");
 			}else if(uploadPathKey == SIGN_UPLOAD) {
 				path = props.getProperty("file.sign.path");
+			}else if(uploadPathKey == DOC_FILE_UPLOAD) {
+				result = props.getProperty("file.doc.path");
 			}
 			
 			result = request.getServletContext().getRealPath(path);

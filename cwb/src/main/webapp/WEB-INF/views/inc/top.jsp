@@ -35,7 +35,7 @@
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 <style type="text/css">
 	#sidebar{
-		z-index: 5;
+		z-index: 501;
 	}
 </style>
 </head>
