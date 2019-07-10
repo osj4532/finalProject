@@ -17,6 +17,11 @@ public class CommuteServiceImpl implements CommuteService{
 		return commuteDao.selectAll();
 	}
 
+	@Override
+	public List<Map<String, Object>> selectIndiv(int memNo) {
+		return commuteDao.selectIndiv(memNo);
+	}
+
 	
 	
 }

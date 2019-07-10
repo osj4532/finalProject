@@ -5,4 +5,5 @@ import java.util.Map;
 
 public interface CommuteService {
 	public List<Map<String, Object>> selectAll();
+	public List<Map<String, Object>> selectIndiv(int memNo);
 }

@@ -26,26 +26,30 @@ public class CommuteController {
 	
 	//전체근태조회
 	@RequestMapping("/commute.do")
-	public String comMenu(@RequestParam(defaultValue = "0") String menu, HttpSession session, Model model) {
+	public String comMenu(@RequestParam(defaultValue = "indWork") String menu, HttpSession session, Model model) {
 		String memId = "tester1";
-		logger.info("유저 아이디 파라미터 memId={}", memId);
+		int memNo = 1;
+		logger.info("유저 아이디 파라미터 memId={}, menu={}", memId, menu);
 		
-		
-		logger.info("메뉴선택 파라미터 menu = {}", menu);
-		
-		
-			if(menu.equals("AllAssiduity")) {
+			if(menu.equals("allAssiduity")) {
 				List<Map<String, Object>> list = commuteService.selectAll();
 				logger.info("전체조회 결과 list.size={}", list.size());
 	
 				model.addAttribute("list", list);
 				return "commute/commute";
-			}else if(menu.equals("")) {
+			}else if(menu.equals("indWork")) {
+				List<Map<String, Object>> list = commuteService.selectIndiv(memNo);
+				logger.info("개인출퇴근 조회 결과 list.size={}", list.size());
+				
+				model.addAttribute("list", list);
+				return "commute/commute";
+			}else if(menu.equals("depWork")) {
 				
 			}
 
 		return "commute/commute";
 		
 	}
+	
 	
 }
