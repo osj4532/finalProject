@@ -1,6 +1,7 @@
 package com.cwb.finalproject.confirm.controller;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cwb.finalproject.common.FileUploadUtil;
+import com.cwb.finalproject.confirm.model.ConfirmFileVO;
 import com.cwb.finalproject.confirm.model.ConfirmService;
 import com.cwb.finalproject.confirm.model.ConfirmVO;
 import com.cwb.finalproject.confirmline.controller.ConfirmlineController;
@@ -55,7 +57,7 @@ public class ConfirmController {
 	public String docSel_get(@RequestParam(required = false, defaultValue = "0") int formNo, 
 			@RequestParam(required = false, defaultValue = "0") int regNo, 
 			HttpSession session, Model model) {
-		session.setAttribute("userNo", 1);
+		session.setAttribute("userNo", 9);
 		int userNo = (Integer)session.getAttribute("userNo");
 		logger.info("문서양식 및 종류 선택 화면 보여주기 userNo = {}",userNo);
 		
@@ -113,12 +115,45 @@ public class ConfirmController {
 		return "document/docreg";
 	}
 	
+	@RequestMapping("/docTmp.do")
+	public String docTmp(HttpServletRequest request, @ModelAttribute ConfirmVO confirmVo, 
+			@RequestParam("fileName") MultipartFile[] files,Model model) {
+		logger.info("임시등록처리 confirmVo = {}", confirmVo);
+		logger.info("첨부된 파일 크기= {}",files.length);
+		confirmVo.setCfTmpstorage("Y");
+		
+		List<Map<String, Object>> fileList = null;
+		if(files.length > 0) { 
+			confirmVo.setCfFile("Y"); 
+			fileList = fileUtil.multipleUpload(request); 
+		}else { 
+			confirmVo.setCfFile("N"); 
+		}
+		
+		int cnt = confirmService.insertDoc(confirmVo, fileList);
+		logger.info("문서 임시 등록 결과 cnt = {}",cnt);
+		
+		String url = "/document/docSel.do", msg = "";
+		if(cnt > 0) {
+			msg = "문서 임시 등록 성공!";
+			url = "/document/docList.do";
+		}else {
+			msg = "문서 임시 등록 실패!";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url",url);
+		
+		return "common/message";
+	}
+	
 	@RequestMapping("/docReg.do")
 	public String docReg(HttpServletRequest request, @ModelAttribute ConfirmVO confirmVo, 
 			@RequestParam("fileName") MultipartFile[] files, Model model) {
 		logger.info("등록처리 confirmVo = {}", confirmVo);
 		logger.info("첨부된 파일 크기= {}",files.length);
 		
+		confirmVo.setCfState(1);
 		List<Map<String, Object>> fileList = null;
 		if(files.length > 0) { 
 			confirmVo.setCfFile("Y"); 
@@ -146,25 +181,61 @@ public class ConfirmController {
 	}
 	
 	@RequestMapping("/docList.do")
-	public String docList(@RequestParam(required = false, defaultValue = "1") int cfState, Model model) {
-		logger.info("문서 리스트 보여주기");
-		//1. 대기(기안자, 결재순서자)
+	public String docList(@RequestParam(required = false, defaultValue = "1") int cfState, 
+			HttpSession session ,Model model) {
+		session.setAttribute("userNo", 9);
+		int userNo = (Integer)session.getAttribute("userNo");
+		session.setAttribute("ranksNo", 4);
+		int ranksNo = (Integer)session.getAttribute("ranksNo");
+		logger.info("문서 리스트 보여주기 userNo = {}, 매개변수 cfState = {}",userNo, cfState);
 		
-		//2. 완료(등급에 따라, 모든 사용자)
+		String title = "";
 		
-		//3. 반려(기안자, 반려자)
+		List<Map<String, Object>> list = null;
+		if(cfState == ConfirmService.DOC_WAIT) {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("memNo",userNo);
+			map.put("state",1);
+			list = confirmService.selectWaitOrBackList(map);
+			title = "대기 문서 함";
+		}else if(cfState == ConfirmService.DOC_OK) {
+			list = confirmService.selectOkList(ranksNo);
+			title = "결재 완료 문서 함";
+		}else if(cfState == ConfirmService.DOC_BACK) {
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			map.put("memNo",userNo);
+			map.put("state",3);
+			list = confirmService.selectWaitOrBackList(map);
+			title = "결재 반려 문서 함";
+		}else if(cfState == ConfirmService.DOC_TMP) {
+			list = confirmService.selectTmpList(userNo);
+			title = "임시 저장 문서 함";
+		}
 		
-		//4. 임시저장(기안자)
-		
+		model.addAttribute("list",list);
+		model.addAttribute("title", title);
 		return "document/doclist";
 	}
 	
 	@RequestMapping("/docDetail.do")
-	public String docDetail(@RequestParam int cfNo, Model model) {
+	public String docDetail(@RequestParam int cfNo,
+			Model model) {
 		logger.info("문서 자세히 보여주기 문서번호 cfNo={}",cfNo);
 		//결재 사인(현재 결재 순서 2)
 		//결재 순서 < 2 인 멤버의 사인을 보여준다.
 		
+		ConfirmVO cfVo = confirmService.confirmDetail(cfNo);
+		
+		Map<String, Object> member = memberService.selectByNo(cfVo.getMemNo());
+		List<Map<String, Object>> clList = confirmlineService.selectAll(cfVo.getRegNo());
+		Map<String, Object> formInfo = docFormService.selectDocFormByNo(cfVo.getFormNo());
+		List<ConfirmFileVO> files = confirmService.selectDocFiles(cfVo.getCfNo());
+		
+		model.addAttribute("member", member);
+		model.addAttribute("clList",clList);
+		model.addAttribute("formInfo",formInfo);
+		model.addAttribute("cfVo",cfVo);
+		model.addAttribute("files",files);
 		
 		return "document/docdetail";
 	}

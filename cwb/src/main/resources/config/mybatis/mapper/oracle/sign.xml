@@ -20,4 +20,22 @@
 		sign_originalfilename = #{signOriginalFileName}
 		where mem_no = #{memNo}
 	</update>
+	
+	<select id="getSignImg" parameterType="int" resultType="signVO">
+		select * from signreg
+		where mem_no in
+		(
+		select mem_no from confirmline
+		where reg_No = (
+		                    select reg_no 
+		                    from confirm 
+		                    where cf_no = #{cfNo} 
+		                )
+		<![CDATA[and line_order < (]]>
+		                    select cf_order 
+		                    from confirm 
+		                    where cf_no = #{cfNo}
+		                )
+		)
+	</select>
 </mapper>
