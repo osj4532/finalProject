@@ -45,9 +45,9 @@
         <h3 style="margin-left: 15px"> <i class="fas fa-map-marked-alt"></i> 자원 현위치</h3>
         <!-- BASIC FORM ELELEMNTS -->
         <div class="row">
-          <div class="col-lg-11">
+          <div class="col-lg-12"> 
             <div class="form-panel">
-                  <div id="map" style="width:750px;height:400px;"></div>
+                  <div id="map" style="width:730px;height:400px;"></div>
             </div>
           </div> 
           <!-- col-lg-12-->
