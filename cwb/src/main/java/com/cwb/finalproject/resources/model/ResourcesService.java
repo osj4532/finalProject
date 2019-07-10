@@ -6,10 +6,12 @@ import java.util.Map;
 public interface ResourcesService {
 	int insertResType(Map<String, String> map);
 	List<RestypeVO> selectResType();
-	int delResType(int typeNo);
 	String selectResTypeByNo(int typeNo);
 	int insertRes(ResourcesVO resourcesVo);
 	List<List<ResourcesVO>> selectAllRes();
 	ResourcesVO selectResByNo(int resNo); 
 	int updateResByNo(ResourcesVO resourcesVo);
+	int deleteResByno(int resNo);
+	List<ResourcesVO> selectImgNameBytype(int typeNo);
+	int delAlltypeandRes(int typeNo);
 }

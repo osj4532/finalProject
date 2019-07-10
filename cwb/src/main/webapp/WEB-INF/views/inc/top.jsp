@@ -376,6 +376,7 @@
               <li><a href="<c:url value="/line/linereg.do"/>">결재라인등록</a></li>
               <li><a href="<c:url value="/document/docSet.do"/>">문서관리</a></li>
               <li><a href="<c:url value="/document/docSel.do"/>">문서작성</a></li>
+              <li><a href="<c:url value="/document/docList.do"/>">문서함</a></li>
             </ul>
           </li>
           <li class="sub-menu">

@@ -60,6 +60,24 @@ public class ResourcesDAOMybatis implements ResourcesDAO{
 	public int updateResByNo(ResourcesVO resourcesVo) {
 		return sqlSession.update(namespace+"updateResByNo", resourcesVo);
 	}
+
+
+	@Override
+	public int deleteResByno(int resNo) {
+		return sqlSession.delete(namespace+"deleteResByno", resNo);
+	}
+
+
+	@Override
+	public List<ResourcesVO> selectImgNameBytype(int typeNo) {
+		return sqlSession.selectList(namespace+"selectImgNameBytype", typeNo);
+	}
+
+
+	@Override
+	public int deleteResByTypeNo(int typeNo) {
+		return sqlSession.delete(namespace+"deleteResByTypeNo", typeNo);
+	}
 	
 	
 }

@@ -16,7 +16,7 @@
 			select confirmfile_seq.nextval from dual
 		</selectKey>
 		insert into confirmfile
-		values(#{fileNo},#{fileName},#{fileOriginalFileName},#{fileSize},#{cfNo})
+		values(#{fileNo},#{fileName},#{fileOriginalName},#{fileSize},#{cfNo})
 	</insert>
 </mapper>
 

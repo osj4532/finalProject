@@ -12,4 +12,7 @@ public interface ResourcesDAO {
 	List<ResourcesVO> selectResBytype(int typeNo);
 	ResourcesVO selectResByNo(int resNo);
 	int updateResByNo(ResourcesVO resourcesVo);
+	int deleteResByno(int resNo);
+	List<ResourcesVO> selectImgNameBytype(int typeNo);
+	int deleteResByTypeNo(int typeNo);
 }

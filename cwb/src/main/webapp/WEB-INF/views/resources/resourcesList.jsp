@@ -13,7 +13,7 @@
 		}); 
 		
 		
-		$("#insertTypeListPost").click(function(){
+		$("#insertTypeListPost").submit(function(){
 				if(confirm('자원리스트 추가하시겠습니까?')){
 					if($("#typeName").val()==''){
 						alert("자원명을 입력해주세요");
@@ -53,8 +53,13 @@
 				"resourcesMap", 
 				"left=450, top=150, width=800, height=600, scrollbars=yes,resizable=yes");
 	};
+	function deleteRes(resNo){
+		if(confirm('정말 삭제하시겠습니까?')){
+			location.href="<c:url value='/resources/resourcesDelete.do?resNo='/>"+resNo;
+		}
+	};
 	
-	
+	 
 </script>
 <!--main content start-->
 <section id="main-content">
@@ -78,7 +83,7 @@
                     <tr>
                       <td>
                         <span class="check"><input type="checkbox" class="checked"></span>
-                        <a href="index.html#">${RTlist.typeName }</a></span>
+                        <b>${RTlist.typeName }</b></span>
                         <button class="close" aria-hidden="true" type="button" onclick="delRes(${RTlist.typeNo})">×</button>
                       </td>
                     </tr>
@@ -103,7 +108,7 @@
                 </div>
                 <div class="form-group">
                   <div class="col-lg-offset-5 col-lg-5">
-                    <button class="btn btn-theme" type="button" >자원 리스트 추가</button>
+                    <button class="btn btn-theme" type="submit" >자원 리스트 추가</button>
                   </div>
                 </div>
               </form>
@@ -188,8 +193,10 @@
 						</c:if>
                     <td>  
                       <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
-                      <button class="btn btn-primary btn-xs" onclick="editRes(${ResList[i][j].resNo})"><i class="fas fa-edit"></i></button>
-                      <button class="btn btn-danger btn-xs"><i class="fas fa-trash-alt"></i></button>
+                      <button class="btn btn-primary btn-xs" onclick="editRes(${ResList[i][j].resNo})">
+                      <i class="fas fa-edit"></i></button>
+                      <button class="btn btn-danger btn-xs" onclick="deleteRes(${ResList[i][j].resNo})">
+                      <i class="fas fa-trash-alt"></i></button>
                     </td> 
                   </tr> 
                   <!--자원 반복 -->
