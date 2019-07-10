@@ -84,7 +84,7 @@
 			</tr>
 			<tr>
 				<th>기안일</th>
-				<td><fmt:formatDate value="${today }" pattern="yyyy-MM-dd (E)"/></td>
+				<td><fmt:formatDate value="${cfVo.cfRegdate }" pattern="yyyy-MM-dd (E)"/></td>
 			</tr>
 		</table>
 		<table border="1px solid black" id="info2">
@@ -136,17 +136,29 @@
 					<label for="cfTitle">제목</label>
 				</th>
 				<td>
-					<input class="form-control" type="text" name="cfTitle">
+					<input class="form-control" type="text" name="cfTitle" value="${cfVo.cfTitle }">
 				</td>
 			</tr>
 			
 			<tr>
 				<td colspan="2" class="align-left">
-					<textarea id="summernote" name="cfContent"></textarea>
+					<textarea id="summernote" name="cfContent">${cfVo.cfContent }</textarea>
 				</td>
 			</tr>
 			<tr>
 				<th><label for="fileName">첨부파일</label></th>
+				<c:if test="${cfVo.cfFile == 'N' }">
+					<td>
+						<p>첨부파일이 없습니다.</p>
+					</td>
+				</c:if>
+				<c:if test="${cfVo.cfFile == 'Y' }">
+					<td>
+						<c:forEach var="vo" items="${files }">
+							<p>${vo.fileOriginalName } [${vo.fileSize}B] <i class="fas fa-trash-alt" id="delFile"></i></p>
+						</c:forEach>
+					</td>
+				</c:if>
 				<td>
 					<input type="file" multiple="multiple" name="fileName">
 				</td>
