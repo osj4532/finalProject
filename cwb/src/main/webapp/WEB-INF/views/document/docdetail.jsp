@@ -84,7 +84,7 @@
 			</tr>
 			<tr>
 				<th>기안일</th>
-				<td><fmt:formatDate value="${today }" pattern="yyyy-MM-dd (E)"/></td>
+				<td><fmt:formatDate value="${cfVo.cfRegdate }" pattern="yyyy-MM-dd (E)"/></td>
 			</tr>
 		</table>
 		<table border="1px solid black" id="info2">
@@ -104,7 +104,7 @@
 			<tr>
 				<c:forEach var="map" items="${clList }">
 					<td>
-						<button type="button" class="btn btn-info btn-sm" disabled="disabled">결재</button>
+						
 					</td>
 				</c:forEach>
 			
@@ -125,39 +125,40 @@
 	</table>
 	
 	<br>
-	<form name="frm" method="post" enctype="multipart/form-data">
-		<input type="hidden" name="formNo" value="${formInfo['FORM_NO']}">
-		<input type="hidden" name="memNo" value="${member['MEM_NO'] }">
-		<input type="hidden" name="deptNo" value="${member['DEPT_NO'] }">
-		<input type="hidden" name="regNo" value="${clList[0]['REG_NO'] }">
 		<table class="table">
 			<tr>
 				<th scope="col">
 					<label for="cfTitle">제목</label>
 				</th>
 				<td>
-					<input class="form-control" type="text" name="cfTitle">
+					<p>${cfVo.cfTitle }</p>
 				</td>
 			</tr>
 			
 			<tr>
-				<td colspan="2" class="align-left">
-					<textarea id="summernote" name="cfContent"></textarea>
+				<td colspan="2" class="align-left" height="400px">
+					<p>${cfVo.cfContent }</p>
 				</td>
 			</tr>
 			<tr>
 				<th><label for="fileName">첨부파일</label></th>
-				<td>
-					<input type="file" multiple="multiple" name="fileName">
-				</td>
+				<c:if test="${cfVo.cfFile == 'N' }">
+					<td>
+						<p>첨부파일이 없습니다.</p>
+					</td>
+				</c:if>
+				<c:if test="${cfVo.cfFile == 'Y' }">
+					<td>
+						<c:forEach var="vo" items="${files }">
+							<p>${vo.fileOriginalName } [${vo.fileSize}B]</p>
+						</c:forEach>
+					</td>
+				</c:if>
 			</tr>
 		</table>
 		<hr>
-	</form>
 		<div>
-			<button id="save" class="btn btn-info">결재요청</button>
-			<button id="temSave" class="btn btn-warning">임시저장</button>
-			<button id="cancel" class="btn btn-danger">취소</button>
+			<button id="save" class="btn btn-info">문서수정</button>
 		</div>
 </div>
 
@@ -165,11 +166,5 @@
 <script type="text/javascript" src="<c:url value="/resources/summernote/summernote.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/summernote/lang/summernote-ko-KR.js"/>"></script>
 <script type="text/javascript">
-	$(document).ready(function() {
-	    $('#summernote').summernote({
-	    	height:500,
-	    	lang: 'ko-KR',
-	    	fontNames: ['돋움','휴먼모음T','궁서','휴먼옛체' ]
-	    });
-	});
+	
 </script>

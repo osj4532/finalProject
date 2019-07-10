@@ -44,8 +44,8 @@
 			<a href="#" onclick="select('indHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">개인연차현황</li></a>
 			<a href="#" onclick="select('depAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">(팀장)부서근태조회</li></a>
 			<a href="#" onclick="select('depAssi')"><li class="list-group-item d-flex justify-content-between align-items-center">(관리자)부서별근태조회</li></a>
-			<a href="#" onclick="select('AllAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">(관리자)전체근태조회</li></a>
-			<a href="#" onclick="select('AllHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">(관리자)전체연차조회</li></a>
+			<a href="#" onclick="select('allAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">(관리자)전체근태조회</li></a>
+			<a href="#" onclick="select('allHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">(관리자)전체연차조회</li></a>
 		</ul>
 	</div>
 	<div id="content" class="col-md-8">
@@ -56,6 +56,8 @@
 	<!-- 메뉴 선택을 위한 form 끝 -->
 		<form name="frmCommute" action="<c:url value='/commute/commute.do'/>" method="post">
 			<table id="tblCommute" class="table table-hover">
+				<!-- 전체근태, 개인 출퇴근조회, 부서출퇴근조회, 부서근태조회 -->
+				<c:if test="${param.menu == 'allAssiduity' || param.menu == 'indWork' || param.menu == 'depWork' || param.menu == 'depAssiduity'}">
 				<colgroup>
 					<col style="width:10%;" />
 					<col style="width:15%;" />
@@ -80,7 +82,7 @@
 					<!-- 반복시작 -->
 					<c:if test="${empty list }">
 						<tr>
-							<td colspan="6" class="align_center">데이터가 없습니다.</td>
+							<td colspan="7" class="align_center">데이터가 없습니다.</td>
 						</tr>
 					</c:if>
 					<c:if test="${!empty list }">
@@ -97,6 +99,97 @@
 						<!-- 반복끝 -->
 						</c:forEach>
 					</c:if>
+				</c:if>
+				<!-- 전체근태, 개인 출퇴근조회, 부서출퇴근조회, 부서근태조회 끝 -->
+				
+				<!-- 개인연차, 전체연차 조회 -->
+				<c:if test="${param.menu == 'indHoly' || param.menu == 'allHoly' }">
+				<colgroup>
+					<col style="width:15%;" />
+					<col style="width:15%;" />
+					<col style="width:15%;" />
+					<col style="width:15%;" />
+					<col style="width:20%;" />
+					<col style="width:20%;" />		
+				</colgroup>
+				<thead>
+					<tr>
+						<th>사원번호</th>
+						<th>사원이름</th>
+						<th>부서</th>
+						<th>직급</th>
+						<th>총연차</th>
+						<th>사용연차</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 반복시작 -->
+					<c:if test="${empty list }">
+						<tr>
+							<td colspan="6" class="align_center">데이터가 없습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty list }">
+						<c:forEach var="map" items="${list }">
+						<tr>
+							<td>${map['MEMNO'] }</td>
+							<td>${map['MEMNAME'] }</td>
+							<td>${map['DEPTNAME'] }</td>
+							<td>${map['POSNAME'] }</td>
+							<td>${map[''] }</td>
+							<td>${map[''] }</td>
+						</tr>
+						<!-- 반복끝 -->
+						</c:forEach>
+					</c:if>
+				
+				</c:if>
+				<!-- 개인연차, 전체연차 조회 끝 -->
+				
+				<!-- 부서별 근태 조회 -->
+				<c:if test="${param.menu == 'indHoly' || param.menu == 'allHoly' }">
+				<colgroup>
+					<col style="width:15%;" />
+					<col style="width:15%;" />
+					<col style="width:15%;" />
+					<col style="width:15%;" />
+					<col style="width:20%;" />
+					<col style="width:20%;" />		
+				</colgroup>
+				<thead>
+					<tr>
+						<th>사원번호</th>
+						<th>사원이름</th>
+						<th>부서</th>
+						<th>직급</th>
+						<th>총연차</th>
+						<th>사용연차</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 반복시작 -->
+					<c:if test="${empty list }">
+						<tr>
+							<td colspan="6" class="align_center">데이터가 없습니다.</td>
+						</tr>
+					</c:if>
+					<c:if test="${!empty list }">
+						<c:forEach var="map" items="${list }">
+						<tr>
+							<td>${map['MEMNO'] }</td>
+							<td>${map['MEMNAME'] }</td>
+							<td>${map['DEPTNAME'] }</td>
+							<td>${map['POSNAME'] }</td>
+							<td>${map[''] }</td>
+							<td>${map[''] }</td>
+						</tr>
+						<!-- 반복끝 -->
+						</c:forEach>
+					</c:if>
+				
+				</c:if>
+				<!-- 부서별 근태조회 끝 -->
+				
 				</tbody>
 			</table>
 		</form>

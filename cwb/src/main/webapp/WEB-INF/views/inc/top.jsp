@@ -239,11 +239,26 @@
         <!--  notification end -->
       </div>
       
+      
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="login.html">Logout</a></li>
+          <li><a class="logout" href="<c:url value='/login/login.do'/>">Logout</a></li>
         </ul>
       </div>
+      <c:if test="${empty sessionScope.memId }">
+	      <div class="top-menu">
+	      	<ul class="nav pull-right top-menu">
+	          <li><a class="attendance" href="#">출근</a></li>
+	        </ul>
+	      </div>
+      </c:if>
+      <c:if test="${!empty sessionScope.memId }">
+	      <div class="top-menu">
+	      	<ul class="nav pull-right top-menu">
+	          <li><a class="leaveWork" href="#">퇴근</a></li>
+	        </ul>
+	      </div>
+      </c:if>
       
     </header>
     <!--header end-->

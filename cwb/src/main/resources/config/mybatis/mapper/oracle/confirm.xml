@@ -3,6 +3,18 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="config.mybatis.mapper.oracle.confirm">
+	<resultMap type="HashMap" id="getWaitOrBackListResult">
+		<result property="CF_NO" column="CF_NO"/>
+		<result property="FORM_NO" column="FORM_NO"/>
+		<result property="MEM_NO" column="MEM_NO"/>
+		<result property="CF_TITLE" column="CF_TITLE"/>
+		<result property="CF_STATE" column="CF_STATE"/>
+		<result property="CF_REGDATE" column="CF_REGDATE" jdbcType="TIMESTAMP" javaType="java.sql.Timestamp"/>
+		<result property="MEM_NAME" column="MEM_NAME"/>
+		<result property="FORM_NAME" column="FORM_NAME"/>
+	</resultMap>
+	
+	
 	<insert id="insertDoc" parameterType="confirmVo">
 		<selectKey keyProperty="cfNo" resultType="int" order="BEFORE">
 			select confirm_seq.nextval from dual
@@ -18,6 +30,57 @@
 		insert into confirmfile
 		values(#{fileNo},#{fileName},#{fileOriginalName},#{fileSize},#{cfNo})
 	</insert>
+	
+	<!-- cf_status 1.대기 문서,  2.완료 문서, 3. 반려 분서, 4. 임시저장 문서-->
+	<select id="selectWaitOrBackList" resultMap="getWaitOrBackListResult" parameterType="map">
+		select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
+		C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
+		join confirmline CL
+		on C.REG_NO = CL.REG_NO
+		join member M
+		on M.MEM_NO = C.MEM_NO
+		join docform F
+		on F.FORM_NO = C.FORM_NO
+		where C.CF_ORDER = CL.LINE_ORDER
+		and (CL.MEM_NO = #{memNo}     
+		or C.mem_no = #{memNo})      
+		and C.CF_STATE = #{state}
+		and C.cf_TMPSTORAGE = 'N'
+	</select>
+	
+	<select id="selectOkList" resultType="map" parameterType="int">
+		select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
+		C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
+		join member M
+		on M.MEM_NO = C.MEM_NO
+		join docform F
+		on F.FORM_NO = C.FORM_NO
+		<![CDATA[where C.form_no in (select form_no from formview where ranks_no <= #{memNo})]]>
+		and C.cf_okdate is not null
+		and C.cf_TMPSTORAGE = 'N'
+	</select>
+	
+	
+	<select id="selectTmpList" resultMap="getWaitOrBackListResult" parameterType="int">
+		select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
+		C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
+		join member M
+		on M.MEM_NO = C.MEM_NO
+		join docform F
+		on F.FORM_NO = C.FORM_NO
+		where C.mem_no = #{memNo}
+		and C.cf_TMPSTORAGE = 'Y'
+	</select>
+	
+	<select id="confirmDetail" resultType="confirmVo" parameterType="int">
+		select * from confirm
+		where cf_no = #{cfNo}
+	</select>
+	
+	<select id="selectDocFiles" resultType="confirmFileVo" parameterType="int">
+		select * from confirmFile
+		where cf_no = #{cfNo}
+	</select>
 </mapper>
 
 
