@@ -16,9 +16,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cwb.finalproject.common.FileUploadUtil;
@@ -57,7 +59,7 @@ public class ConfirmController {
 	public String docSel_get(@RequestParam(required = false, defaultValue = "0") int formNo, 
 			@RequestParam(required = false, defaultValue = "0") int regNo, 
 			HttpSession session, Model model) {
-		session.setAttribute("userNo", 9);
+		session.setAttribute("userNo", 1);
 		int userNo = (Integer)session.getAttribute("userNo");
 		logger.info("문서양식 및 종류 선택 화면 보여주기 userNo = {}",userNo);
 		
@@ -115,6 +117,7 @@ public class ConfirmController {
 		return "document/docreg";
 	}
 	
+	
 	@RequestMapping("/docTmp.do")
 	public String docTmp(HttpServletRequest request, @ModelAttribute ConfirmVO confirmVo, 
 			@RequestParam("fileName") MultipartFile[] files,Model model) {
@@ -153,7 +156,6 @@ public class ConfirmController {
 		logger.info("등록처리 confirmVo = {}", confirmVo);
 		logger.info("첨부된 파일 크기= {}",files.length);
 		
-		confirmVo.setCfState(1);
 		List<Map<String, Object>> fileList = null;
 		if(files.length > 0) { 
 			confirmVo.setCfFile("Y"); 
@@ -162,6 +164,7 @@ public class ConfirmController {
 			confirmVo.setCfFile("N"); 
 		}
 		
+		confirmVo.setCfState(1);
 		
 		int cnt = confirmService.insertDoc(confirmVo, fileList);
 		logger.info("문서 등록 결과 cnt = {}",cnt);
@@ -183,7 +186,7 @@ public class ConfirmController {
 	@RequestMapping("/docList.do")
 	public String docList(@RequestParam(required = false, defaultValue = "1") int cfState, 
 			HttpSession session ,Model model) {
-		session.setAttribute("userNo", 9);
+		session.setAttribute("userNo", 1);
 		int userNo = (Integer)session.getAttribute("userNo");
 		session.setAttribute("ranksNo", 4);
 		int ranksNo = (Integer)session.getAttribute("ranksNo");
@@ -217,6 +220,26 @@ public class ConfirmController {
 		return "document/doclist";
 	}
 	
+	@RequestMapping(value="/docEdit.do", method = RequestMethod.GET)
+	public String docEdit_get(@RequestParam int cfNo, Model model) {
+		logger.info("문서 수정 화면 보여주기 cfNo={}",cfNo);
+		
+		ConfirmVO cfVo = confirmService.confirmDetail(cfNo);
+		
+		Map<String, Object> member = memberService.selectByNo(cfVo.getMemNo());
+		List<Map<String, Object>> clList = confirmlineService.selectAll(cfVo.getRegNo());
+		Map<String, Object> formInfo = docFormService.selectDocFormByNo(cfVo.getFormNo());
+		List<ConfirmFileVO> files = confirmService.selectDocFiles(cfVo.getCfNo());
+		
+		model.addAttribute("member", member);
+		model.addAttribute("clList",clList);
+		model.addAttribute("formInfo",formInfo);
+		model.addAttribute("cfVo",cfVo);
+		model.addAttribute("files",files);
+		
+		return "document/docedit";
+	}
+	
 	@RequestMapping("/docDetail.do")
 	public String docDetail(@RequestParam int cfNo,
 			Model model) {
@@ -238,5 +261,14 @@ public class ConfirmController {
 		model.addAttribute("files",files);
 		
 		return "document/docdetail";
+	}
+	
+	@RequestMapping("/docFileDel.do")
+	@ResponseBody
+	public int docFileDel(@RequestParam String fileNo) {
+		logger.info("파일 삭제 처리하기 fileNo={}",fileNo);
+		int cnt = 1/*confirmService.deleteDocFile(Integer.parseInt(fileNo))*/;
+		
+		return cnt;
 	}
 }

@@ -60,6 +60,10 @@
 		text-align: left;
 	}
 	
+	.align-right{
+		text-align: right;
+	}
+	
 </style>
 <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.12/summernote.css" rel="stylesheet">
 </head>
@@ -146,29 +150,29 @@
 				</td>
 			</tr>
 			<tr>
-				<th><label for="fileName">첨부파일</label></th>
+				<th><label for="fileName">첨부 된 파일</label></th>
 				<c:if test="${cfVo.cfFile == 'N' }">
 					<td>
 						<p>첨부파일이 없습니다.</p>
 					</td>
 				</c:if>
 				<c:if test="${cfVo.cfFile == 'Y' }">
-					<td>
+					<td class="align-right">
 						<c:forEach var="vo" items="${files }">
-							<p>${vo.fileOriginalName } [${vo.fileSize}B] <i class="fas fa-trash-alt" id="delFile"></i></p>
+							<p>${vo.fileOriginalName } [${vo.fileSize}B] <i class="fas fa-trash-alt" onclick="delFile('${vo.fileNo}')"></i></p>
 						</c:forEach>
 					</td>
 				</c:if>
-				<td>
-					<input type="file" multiple="multiple" name="fileName">
-				</td>
+			</tr>
+			<tr>
+				<th><label for="fileName">첨부 파일</label></th>
+				<td><input class="form-control" type="file" multiple="multiple" name="fileName"></td>
 			</tr>
 		</table>
 		<hr>
 	</form>
 		<div>
 			<button id="save" class="btn btn-info">결재요청</button>
-			<button id="temSave" class="btn btn-warning">임시저장</button>
 			<button id="cancel" class="btn btn-danger">취소</button>
 		</div>
 </div>
@@ -198,22 +202,27 @@
 			}
 		});
 		
-		$('#temSave').click(function(){
-			
-			if($('input[name=cfTitle]').val() == ""){
-				alert("제목을 입력해 주세요.");
-				
-			}else{
-				$('form[name=frm]').attr("action","<c:url value='/document/docTmp.do'/>");
-				$('form[name=frm]').submit();
-			}
-			
-		});
 		
 		$('#cancel').click(function(){
 	
 		});
 	});
+	
+	function delFile(fileNo){
+		$.ajax({
+			url:"<c:url value='/document/docFileDel.do'/>",
+			type:"post",
+			data: fileNo,
+			dataType:"json",
+			success:function(res){
+				alert(res);
+			},
+			error:function(jqXHP, status, error){
+				alert("에러 발생!!\n"+status+" : "+error);
+			}
+		});
+		event.preventDefault();
+	};
 	
 </script>
 

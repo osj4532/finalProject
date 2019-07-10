@@ -24,4 +24,6 @@ public interface ConfirmService {
 	
 	public ConfirmVO confirmDetail(int cfNo);
 	public List<ConfirmFileVO> selectDocFiles(int cfNo);
+	
+	public int deleteDocFile(int fileNo);
 }

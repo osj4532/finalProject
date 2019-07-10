@@ -1,5 +1,6 @@
 package com.cwb.finalproject.confirm.model;
 
+import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -75,5 +76,9 @@ public class ConfirmServiceImpl implements ConfirmService{
 	
 	public List<ConfirmFileVO> selectDocFiles(int cfNo){
 		return confirmDAO.selectDocFiles(cfNo);
+	}
+	
+	public int deleteDocFile(int fileNo) {
+		return confirmDAO.deleteDocFile(fileNo);
 	}
 }

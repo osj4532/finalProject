@@ -62,6 +62,8 @@
                 		</li>
                 </a>
        		</ul>
+       		
+       		<a href="<c:url value="/document/docSel.do"/>" class="btn btn-info">문서 작성</a>
 		</div>
 		<div class="info2 col-sm-10">
 			<h2>${title }</h2>

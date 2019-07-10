@@ -158,7 +158,7 @@
 		</table>
 		<hr>
 		<div>
-			<button id="save" class="btn btn-info">문서수정</button>
+			<button id="edit" class="btn btn-info">문서수정</button>
 		</div>
 </div>
 
@@ -166,5 +166,7 @@
 <script type="text/javascript" src="<c:url value="/resources/summernote/summernote.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/summernote/lang/summernote-ko-KR.js"/>"></script>
 <script type="text/javascript">
-	
+	$('#edit').click(function(){
+		location.href="<c:url value='/document/docEdit.do?cfNo=${cfVo.cfNo}'/>"
+	});
 </script>
