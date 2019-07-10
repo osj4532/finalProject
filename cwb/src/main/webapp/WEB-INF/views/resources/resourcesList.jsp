@@ -145,7 +145,7 @@
 		<c:forEach var="i" begin="0" end="${fn:length(ResTypelist)-1 }" >
 		    <div class="row mt">
           <div class="col-md-12">
-            <div class="content-panel">
+            <div class="content-panel" style="border-radius: 15px;"> 
               <table class="table table-striped table-advance table-hover">
                 <h4><i class="fa fa-tasks"></i> ${ResTypelist[i].typeName } 
                 
