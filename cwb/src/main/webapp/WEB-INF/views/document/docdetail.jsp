@@ -148,7 +148,7 @@
 					</td>
 				</c:if>
 				<c:if test="${cfVo.cfFile == 'Y' }">
-					<td>
+					<td style="text-align: right">
 						<c:forEach var="vo" items="${files }">
 							<p>${vo.fileOriginalName } [${vo.fileSize}B]</p>
 						</c:forEach>
@@ -159,6 +159,7 @@
 		<hr>
 		<div>
 			<button id="edit" class="btn btn-info">문서수정</button>
+			<button id="list" class="btn btn-info">문서목록</button>
 		</div>
 </div>
 
@@ -168,5 +169,9 @@
 <script type="text/javascript">
 	$('#edit').click(function(){
 		location.href="<c:url value='/document/docEdit.do?cfNo=${cfVo.cfNo}'/>"
+	});
+	
+	$('#list').click(function(){
+		location.href="<c:url value='/document/docList.do'/>"
 	});
 </script>

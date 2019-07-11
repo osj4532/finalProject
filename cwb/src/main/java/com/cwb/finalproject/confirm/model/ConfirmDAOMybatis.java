@@ -44,7 +44,19 @@ public class ConfirmDAOMybatis implements ConfirmDAO{
 		return sqlSession.selectList(namespace+"selectDocFiles",cfNo);
 	}
 	
-	public int deleteDocFile(int fileNo) {
-		return sqlSession.delete(namespace+"deleteDocFile",fileNo);
+	public int deleteDocFile(String fileName) {
+		return sqlSession.delete(namespace+"deleteDocFile",fileName);
+	}
+	
+	public int selectFileCount(int cfNo) {
+		return sqlSession.selectOne(namespace+"selectFileCount",cfNo);
+	}
+	
+	public int updateCFFileN(int cfNo) {
+		return sqlSession.update(namespace+"updateCFFileN",cfNo);
+	}
+	
+	public int updateConfirm(ConfirmVO vo) {
+		return sqlSession.update(namespace+"updateConfirm",vo);
 	}
 }

@@ -134,6 +134,7 @@
 		<input type="hidden" name="memNo" value="${member['MEM_NO'] }">
 		<input type="hidden" name="deptNo" value="${member['DEPT_NO'] }">
 		<input type="hidden" name="regNo" value="${clList[0]['REG_NO'] }">
+		<input type="hidden" name="cfNo" value="${cfVo.cfNo }">
 		<table class="table">
 			<tr>
 				<th scope="col">
@@ -147,22 +148,12 @@
 			<tr>
 				<td colspan="2" class="align-left">
 					<textarea id="summernote" name="cfContent">${cfVo.cfContent }</textarea>
+					<span style="color:green;">※ 파일 삭제버튼을 누르면 취소를 눌러도 복구되지 않습니다.</span>
 				</td>
 			</tr>
 			<tr>
 				<th><label for="fileName">첨부 된 파일</label></th>
-				<c:if test="${cfVo.cfFile == 'N' }">
-					<td>
-						<p>첨부파일이 없습니다.</p>
-					</td>
-				</c:if>
-				<c:if test="${cfVo.cfFile == 'Y' }">
-					<td class="align-right">
-						<c:forEach var="vo" items="${files }">
-							<p>${vo.fileOriginalName } [${vo.fileSize}B] <i class="fas fa-trash-alt" onclick="delFile('${vo.fileNo}')"></i></p>
-						</c:forEach>
-					</td>
-				</c:if>
+				<td id="fileList"></td>
 			</tr>
 			<tr>
 				<th><label for="fileName">첨부 파일</label></th>
@@ -191,36 +182,83 @@
 	
 	
 	$(function(){
+		$.showFile(${cfVo.cfNo });
+		
+		
 		$('#save').click(function(){
 			
 			if($('input[name=cfTitle]').val() == ""){
 				alert("제목을 입력해 주세요.");
 				
 			}else{
-				$('form[name=frm]').attr("action","<c:url value='/document/docReg.do'/>");
+				$('form[name=frm]').attr("action","<c:url value='/document/docEdit.do'/>");
 				$('form[name=frm]').submit();
 			}
 		});
 		
 		
 		$('#cancel').click(function(){
-	
+			var check = confirm("현재 내용은 저장되지 않습니다. 화면을 나가시겠습니까?");
+			if(check){
+				location.href="<c:url value='/document/docList.do'/>";
+			}
 		});
 	});
 	
-	function delFile(fileNo){
+	$.showFile = function(cfNo){
 		$.ajax({
-			url:"<c:url value='/document/docFileDel.do'/>",
+			url:"<c:url value='/document/docFileSel.do'/>",
 			type:"post",
-			data: fileNo,
+			data: {"cfNo":cfNo },
 			dataType:"json",
 			success:function(res){
-				alert(res);
+				$('#fileList').html('');
+				
+				if(res.length == 0){
+					$('#fileList').append("첨부된 파일이 없습니다.");
+				}
+				
+				$.each(res, function(idx, item){
+					
+					let originalFileName = item.fileOriginalName;
+					let fileSize = item.fileSize;
+					let fileName = item.fileName;
+					
+					let pEl = $('<p></p>').html(originalFileName+"["+fileSize+"B]");
+					let iEl = $('<i></i>');
+					
+					$(iEl).attr('class',"fas fa-trash-alt");
+					$(iEl).attr('onclick',"delFile('"+fileName+"',"+cfNo+")");
+					
+					pEl.append(iEl);
+					
+					$('#fileList').append(pEl);
+					$('#fileList').css('text-align','right');
+					
+				});
 			},
 			error:function(jqXHP, status, error){
 				alert("에러 발생!!\n"+status+" : "+error);
 			}
 		});
+	};
+	
+	function delFile(fileName,cfNo){
+		$.ajax({
+			url:"<c:url value='/document/docFileDel.do'/>",
+			type:"post",
+			data: {"fileName":fileName, "cfNo": cfNo},
+			dataType:"json",
+			success:function(res){
+				if(res != 1){
+					alert("파일 제거 실패!");
+				}
+			},
+			error:function(jqXHP, status, error){
+				alert("에러 발생!!\n"+status+" : "+error);
+			}
+		});
+		$.showFile(${cfVo.cfNo });
 		event.preventDefault();
 	};
 	
