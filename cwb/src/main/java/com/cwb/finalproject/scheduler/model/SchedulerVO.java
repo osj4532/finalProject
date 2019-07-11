@@ -41,6 +41,8 @@ public class SchedulerVO {
 		return "SchedulerVO [scdNo=" + scdNo + ", memNo=" + memNo + ", scdStart=" + scdStart + ", scdEnd=" + scdEnd
 				+ ", scdContent=" + scdContent + "]";
 	}
+
+	
 	
 	
 }

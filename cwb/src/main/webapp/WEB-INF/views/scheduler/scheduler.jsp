@@ -73,29 +73,40 @@ element.style {
 				aspectRatio : 1.8,
 				selectHelper : true,
 				eventLimit: true, 
-				select : function(start, end,  timezone, callback) {
+				select : function(start, end,  allDay) {
 					var title = prompt('일정을 입력하세요.');
-					$.ajax({
-								type : "post",
-								url : "<c:url value='/scheduler/userScdWrite.do'/>",
-								data : {
-									"scdContent" : title,
-									"scdStart" : start.format(),
-									"scdEnd" : end.format()
-								}, 
-								if (title) { //true
-									calendar.fullCalendar('renderEvent', 
-											//월이나 연도가 바뀌어도 없어지지않게(등록한 것이)
-									{
-										title : schedulerVo.scdContent, //입력값 
-										start : schedulerVo.scdStart, //인자값
-										end : schedulerVo.scdEnd //인자값
-									}, true // make the event "stick"
-									);
-								}//if
-								//입력이 안되면 선택취소 (메서드)
-							});
-
+					alert(start.format());
+					if(title){
+						$.ajax({
+							type : "post",
+							url : "<c:url value='/scheduler/userScdWrite.do'/>",
+							data : {
+								"scdContent" : title,
+								"scdStart" :start.format(),
+								"scdEnd" : end.format()
+								
+								//"scdStart" :moment(start).format('YYYY/MM/DD a hh:mm:ssSSSS'),
+								//"scdEnd" :moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS') 
+							}, 
+							success : function(data) {
+								alert("저장 완료");
+								$("#calendar").fullCalendar("refetchEvents");
+							},
+							error : function(xhr, err) { 
+								//alert(moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS')); 
+								alert("ERROR! - readyState: "
+										+ xhr.readyState
+										+ "<br/>status: "
+										+ xhr.status
+										+ "<br/>responseText: "
+										+ xhr.responseText);
+							}
+						}); 
+					}else if(title==null){
+					}else {
+						alert('입력값이 없습니다!');
+					}
+					
 					/* if (title) { //true
 						calendar.fullCalendar('renderEvent', 
 								//월이나 연도가 바뀌어도 없어지지않게(등록한 것이)
@@ -111,7 +122,7 @@ element.style {
 				},
 				/* editable : true, //수정 가능 */
 				//DB에서 가져온 값으로 해당 날짜에 붙이는 기능
-				events : function(start, end, timezone, callback) {
+				events : function(start, end, allDay, callback) {
 					$.ajax({
 						type : "post",
 						url : "<c:url value='/scheduler/userScdFind.do'/>",
@@ -124,8 +135,7 @@ element.style {
 								events.push({
 									title : this.scdContent,
 									start : this.scdStart,
-									end : this.scdEnd,
-								//all data 
+									end : this.scdEnd
 								}); 
 								console.log($(this))
 							});  
@@ -240,7 +250,7 @@ element.style {
 <section id="main-content">
 	<section class="wrapper">
 		<h1 class="mg_text">
-			<i class="fa fa-angle-right mt text-important"></i>개인 스케줄
+			<i class="fa fa-angle-right mt text-important"></i>개인 스케줄 
 		</h1>
 		<!-- page start-->
 		<div class="row">

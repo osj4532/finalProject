@@ -1,5 +1,9 @@
 package com.cwb.finalproject.scheduler.controller;
 
+import java.sql.Timestamp;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -36,7 +40,6 @@ public class SchedulerController {
 		
 		//int memNo = (Integer)session.getAttribute("memNo");
 		schedulerVo.setMemNo(1);
-		
 		int cnt =schedulerService.insertUserScd(schedulerVo);
 		logger.info("ajax 이용 스케줄 완료 결과 int={}",cnt);
 		
@@ -51,10 +54,10 @@ public class SchedulerController {
 		int memNo = 1;
 		List<SchedulerVO> list= schedulerService.selectByUser(memNo);
 		logger.info("ajax 스케줄 결과 list.size={},list={}",list.size(),list);
-		for (SchedulerVO vo : list) {
-			vo.setScdStart(vo.getScdStart().substring(0, 10));
-			vo.setScdEnd(vo.getScdEnd().substring(0, 10));
-		}
+		/*
+		 * for (SchedulerVO vo : list) { vo.setScdStart(vo.getScdStart().substring(0,
+		 * 10)); vo.setScdEnd(vo.getScdEnd().substring(0, 10)); }
+		 */
 		
 		return list;
 	}
