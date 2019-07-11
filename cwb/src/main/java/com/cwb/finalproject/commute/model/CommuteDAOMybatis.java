@@ -25,4 +25,25 @@ public class CommuteDAOMybatis implements CommuteDAO{
 		return sqlSession.selectList(namespace+"selectIndiv", memNo);
 	}
 
+
+	@Override
+	public List<Map<String, Object>> selectDep(String deptName) {
+		return sqlSession.selectList(namespace+"selectDep", deptName);
+	}
+
+	@Override
+	public String selectByMemNo(int memNo) {
+		return sqlSession.selectOne(namespace+"selectByMemNo", memNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectIndivHoly(int memNo) {
+		return sqlSession.selectList(namespace+"selectIndivHoly", memNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectAllHoly() {
+		return sqlSession.selectList(namespace+"selectAllHoly");
+	}
+
 }

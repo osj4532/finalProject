@@ -1,6 +1,5 @@
 package com.cwb.finalproject.confirm.model;
 
-import java.io.File;
 import java.util.List;
 import java.util.Map;
 
@@ -78,7 +77,55 @@ public class ConfirmServiceImpl implements ConfirmService{
 		return confirmDAO.selectDocFiles(cfNo);
 	}
 	
-	public int deleteDocFile(int fileNo) {
-		return confirmDAO.deleteDocFile(fileNo);
+	public int deleteDocFile(String fileName) {
+		return confirmDAO.deleteDocFile(fileName);
+	}
+	
+	public int checkFile(int cfNo) {
+		int cnt = confirmDAO.selectFileCount(cfNo);
+		logger.info("저장된 파일 개수 = {}",cnt);
+		if(cnt == 0) {
+			cnt = confirmDAO.updateCFFileN(cfNo);
+			logger.info("문서 파일여부 update 결과 cnt = {}",cnt);
+		}
+		
+		return cnt;
+	}
+	
+	@Transactional
+	public int updateConfirm(ConfirmVO vo, List<Map<String, Object>> fileList) {
+		int cnt = 0;
+		try {
+		
+			cnt = confirmDAO.updateConfirm(vo);
+			logger.info("문서 내용수정 결과 cnt = ", cnt);
+			
+			if(vo.getCfFile() == "Y") {
+				logger.info("매개변수 List사이즈 = {}", fileList.size());
+				
+				for(Map<String, Object> map : fileList) {
+					String fileName = (String)map.get("fileName");
+					String originalFileName = (String)map.get("originalFileName");
+					long fileSize = (Long)map.get("fileSize");
+					
+					logger.info("파일이름 = {}", fileName);
+					
+					ConfirmFileVO cfFileVo = new ConfirmFileVO();
+					cfFileVo.setFileName(fileName);
+					cfFileVo.setFileOriginalName(originalFileName);
+					cfFileVo.setFileSize(fileSize);
+					cfFileVo.setCfNo(vo.getCfNo());
+					
+					logger.info("파일이름vo = {}", cfFileVo);
+					
+					cnt = confirmDAO.insertDocFile(cfFileVo);
+					logger.info("문서 파일등록 결과 cnt = ", cnt);
+				}
+			}
+		}catch (RuntimeException e) {
+			cnt = -1;
+		}
+		
+		return cnt;
 	}
 }

@@ -14,5 +14,8 @@ public interface ConfirmDAO {
 	public List<Map<String, Object>> selectTmpList(int memNo);
 	public ConfirmVO confirmDetail(int cfNo);
 	public List<ConfirmFileVO> selectDocFiles(int cfNo);
-	public int deleteDocFile(int fileNo);
+	public int deleteDocFile(String fileName);
+	public int selectFileCount(int cfNo);
+	public int updateCFFileN(int cfNo);
+	public int updateConfirm(ConfirmVO vo);
 }

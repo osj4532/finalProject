@@ -7,14 +7,42 @@
 		select * from commuteview
 	</select>
 	
+	<select id="selectByMemNo" parameterType="int" resultType="String">
+		select deptName from commuteview
+		where memNo=#{memNo}
+	</select>
+	
 	<select id="selectIndiv" parameterType="int" resultType="map">
 		select * from commuteview
 		where memno=#{memNo}
 	</select>
 	
-	<!-- <select id="selectDep" parameterType="string" resultType="map">
-		select memNo
-		from commute
+	<select id="selectDep" parameterType="String" resultType="map">
+		select * from commuteview
+		where deptName=#{deptName}
+	</select>
+
+	<select id="selectIndivHoly" parameterType="int" resultType="map">
+		select mem_no, mem_name, dept_name, pos_name, mem_holiday, mem_useholiday
+		from member m
+		join department d
+		on m.DEPT_NO = d.DEPT_NO
+		join position p
+		on m.POS_NO = p.POS_NO
+		where mem_no=#{memNo}
+	</select>
+	
+	<select id="selectAllHoly" resultType="map">
+		select mem_no, mem_name, dept_name, pos_name, mem_holiday, mem_useholiday
+		from member m
+		join department d
+		on m.DEPT_NO = d.DEPT_NO
+		join position p
+		on m.POS_NO = p.POS_NO
+	</select>
+	
+	<!-- <select id="selectDepAssi" resultType="map">
+		
 	</select> -->
 
 </mapper>

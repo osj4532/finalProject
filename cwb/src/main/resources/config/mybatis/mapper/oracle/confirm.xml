@@ -46,6 +46,7 @@
 		or C.mem_no = #{memNo})      
 		and C.CF_STATE = #{state}
 		and C.cf_TMPSTORAGE = 'N'
+		order by C.CF_NO desc
 	</select>
 	
 	<select id="selectOkList" resultType="map" parameterType="int">
@@ -58,6 +59,7 @@
 		<![CDATA[where C.form_no in (select form_no from formview where ranks_no <= #{memNo})]]>
 		and C.cf_okdate is not null
 		and C.cf_TMPSTORAGE = 'N'
+		order by C.CF_NO desc
 	</select>
 	
 	
@@ -70,6 +72,7 @@
 		on F.FORM_NO = C.FORM_NO
 		where C.mem_no = #{memNo}
 		and C.cf_TMPSTORAGE = 'Y'
+		order by C.CF_NO desc
 	</select>
 	
 	<select id="confirmDetail" resultType="confirmVo" parameterType="int">
@@ -82,10 +85,26 @@
 		where cf_no = #{cfNo}
 	</select>
 	
-	<delete id="deleteDocFile" parameterType="int">
+	<delete id="deleteDocFile" parameterType="string">
 		delete from confirmFile
-		where file_no = #{fileNo}
+		where file_name = #{fileName}
 	</delete>
+	
+	<select id="selectFileCount" parameterType="int" resultType="int">
+		select count(*) from confirmfile
+		where cf_no = #{cfNo}
+	</select>
+	
+	<update id="updateCFFileN" parameterType="int">
+		update confirm
+		set cf_file = 'N' where cf_no = #{cfNo}
+	</update>
+	
+	<update id="updateConfirm" parameterType="confirmVo">
+		update confirm
+		set cf_title = #{cfTitle}, cf_content = #{cfContent}, cf_state = #{cfState}
+		where cf_No = #{cfNo}
+	</update>
 </mapper>
 
 
