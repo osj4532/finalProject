@@ -80,7 +80,7 @@ public class SignController {
 	@RequestMapping(value="/signEdit.do", method = RequestMethod.POST)
 	public String signEdit_post(@ModelAttribute SignVO signVo, HttpServletRequest request,
 			Model model) {
-		logger.info("사인 등록 처리 매개변수 signVo = {}", signVo);
+		logger.info("사인 수정 처리 매개변수 signVo = {}", signVo);
 		
 		HttpSession session = request.getSession();
 		int memberNo = (Integer)session.getAttribute("userNo");
