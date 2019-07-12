@@ -242,7 +242,7 @@
       
       <div class="top-menu">
         <ul class="nav pull-right top-menu">
-          <li><a class="logout" href="<c:url value='/login/login.do'/>">Logout</a></li>
+          <li><a class="logout" href="<c:url value='/logout/logout.do'/>">Logout</a></li>
         </ul>
       </div>
       <c:if test="${empty sessionScope.memId }">

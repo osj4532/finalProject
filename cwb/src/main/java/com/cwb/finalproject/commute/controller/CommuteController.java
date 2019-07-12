@@ -34,11 +34,12 @@ public class CommuteController {
 		int memNo = (Integer) session.getAttribute("memNo");
 		
 		logger.info("유저 아이디 파라미터 memId={}, menu={}", memId, menu);
-		
+			String title = "";
 			if(menu.equals("allAssiduity")) {	//전체 조회
 				List<Map<String, Object>> list = commuteService.selectAll();
 				logger.info("전체조회 결과 list.size={}", list.size());
-	
+				title = "전체 조회";
+				model.addAttribute("title", title);
 				model.addAttribute("list", list);
 				return "commute/commute";
 				
@@ -46,6 +47,8 @@ public class CommuteController {
 				List<Map<String, Object>> list = commuteService.selectIndiv(memNo);
 				logger.info("개인출퇴근 조회 결과 list.size={}", list.size());
 				
+				title = "개인 출퇴근 조회";
+				model.addAttribute("title", title);
 				model.addAttribute("list", list);
 				return "commute/commute";
 				
@@ -56,6 +59,8 @@ public class CommuteController {
 				List<Map<String, Object>> list = commuteService.selectDep(deptName);
 				logger.info("부서이름으로 조회 결과 list.size={}", list.size());
 				
+				title = "부서 근태 조회";
+				model.addAttribute("title", title);
 				model.addAttribute("list", list);
 				
 				return "commute/commute";
@@ -64,6 +69,8 @@ public class CommuteController {
 				List<Map<String, Object>> list = commuteService.selectIndivHoly(memNo);
 				logger.info("개인 연차 조회 결과 list.size={}", list.size());
 				
+				title = "개인 연차 조회";
+				model.addAttribute("title", title);
 				model.addAttribute("list", list);
 				
 				return "commute/commute";
@@ -71,6 +78,8 @@ public class CommuteController {
 				List<Map<String, Object>> list = commuteService.selectAllHoly();
 				logger.info("전체 연차 조회 결과 list.size={}", list.size());
 				
+				title = "전체 연차 조회";
+				model.addAttribute("title", title);
 				model.addAttribute("list", list);
 				
 				return "commute/commute";

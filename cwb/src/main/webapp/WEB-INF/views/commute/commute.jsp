@@ -4,11 +4,71 @@
 <c:import url="../inc/top.jsp"/>
 <c:set var="mypage" value="useJs"/>
 <script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>
-
+<script src="<c:url value='/resources/js/paging.js'/>"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-		
+			$.send(1);
 	});
+	
+	$.send=function(curPage){
+		$('input[name=currentPage]').val(curPage);
+		$.ajax({
+			url:"<c:url value='/commute/comPage.do'/>",
+			type:"post",
+			data:$("form[name=frmPage]").serialize(),
+			dataType:"json",
+			success:function(res){
+				if(res != null){
+					makePage(res);
+				}
+			},
+			error:function(xhr, status, error){
+				alert(status+":"+error);
+			}
+		});
+	}
+	
+	function makePage(res){
+		$('#divPage').html("");
+		var totalCount=$(res).find("totalCount").text();
+		
+		var p_recordCount=10, p_blockSize=10;
+		var p_curPage = $('input[name=currentPage]').val();
+		
+		pagination(p_curPage, p_recordCount, p_blockSize, totalCount);
+		
+		$.pageSetting();
+		
+	}
+	$.pageSetting=function(){
+		if(firstPage>1){
+			var anchor=$('<a href="#"></a>')
+			.html("<img src='<c:url value='/resources/img/first.JPG'/>' alt='이전블럭으로 이동'>")
+			.attr("onclick", "$.send("+(firstPage-1)+")");
+			
+			$("#page").html(anchor);
+		}
+		
+		for(var i=firstPage;i<=lastPage;i++){
+			if(i==currentPage){
+				var spanEl = $("<span style='color:blue;font-size:1em'></span>")
+				.html(i);
+				$('#page').append(spanEl);
+			}else{
+				var anchor = $("<a href='#'></a>").html("["+i+"]")
+				.attr("onclick", "$.send("+i+")");
+				$('#page').append(anchor);
+			}
+		}
+		
+		if(lastPage<totalPage){
+			var anchor=$("<a href='#'></a>")
+			.html("<img src='<c:url value='/resources/img/last.JPG'/>' alt='다음블럭으로 이동'>")
+			.attr("onclick", "$.send("+(lastPage+1)+")");
+			$('#page').append(anchor);
+		}
+	}
+	
 	
 	function select(menu){
 		$('input[name=menu]').val(menu);
@@ -48,11 +108,19 @@
 		</ul>
 	</div>
 	<div id="content" class="col-md-8">
+	<div id="title" class="col-md-8">
+		<h1 style="text-align: center;background-color: white;">${title }</h1>
+	</div>
 	<!-- 메뉴 선택을 위한 form -->
 	<form name="frmMenu" method="post" action="<c:url value='/commute/commute.do'/>">
 		<input type="hidden" name="menu">	
 	</form>
 	<!-- 메뉴 선택을 위한 form 끝 -->
+	<form name="frmPage" method="post" action="<c:url value='/commute/commute.do'/>">
+		<input type="hidden" name="currentPage" value="1">	
+		<input type="hidden" name="countPerPage" value="10">	
+		
+	</form>
 		<form name="frmCommute" action="<c:url value='/commute/commute.do'/>" method="post">
 			<table id="tblCommute" class="table table-hover">
 				<!-- 전체근태, 개인 출퇴근조회, 부서근태조회 -->
@@ -180,6 +248,7 @@
 				</tbody>
 			</table>
 		</form>
+		<div id="page"></div>
 	</div>
 	</div>
 </div>
