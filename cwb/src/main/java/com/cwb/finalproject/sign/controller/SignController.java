@@ -33,8 +33,7 @@ public class SignController {
 	@RequestMapping(value="/signReg.do", method = RequestMethod.GET)
 	public String signReg_get(Model model, HttpSession session) {
 		logger.info("사인 등록 화면 보여주기");
-		session.setAttribute("userNo", 9);
-		int memberNo = (Integer)session.getAttribute("userNo");
+		int memberNo = (Integer)session.getAttribute("memNo");
 		
 		SignVO vo = signService.selectSign(memberNo);
 		
@@ -49,7 +48,7 @@ public class SignController {
 		logger.info("사인 등록 처리 매개변수 signVo = {}", signVo);
 		
 		HttpSession session = request.getSession();
-		int memberNo = (Integer)session.getAttribute("userNo");
+		int memberNo = (Integer)session.getAttribute("memNo");
 		
 		Map<String, Object> map = fileUtil.singleUpload(request);
 		String fileName = (String)map.get("fileName");
@@ -83,7 +82,7 @@ public class SignController {
 		logger.info("사인 수정 처리 매개변수 signVo = {}", signVo);
 		
 		HttpSession session = request.getSession();
-		int memberNo = (Integer)session.getAttribute("userNo");
+		int memberNo = (Integer)session.getAttribute("memNo");
 		
 		Map<String, Object> map = fileUtil.singleUpload(request);
 		String fileName = (String)map.get("fileName");
@@ -110,4 +109,6 @@ public class SignController {
 		
 		return "common/message";
 	}
+	
+	
 }

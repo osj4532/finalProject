@@ -59,4 +59,16 @@ public class ConfirmDAOMybatis implements ConfirmDAO{
 	public int updateConfirm(ConfirmVO vo) {
 		return sqlSession.update(namespace+"updateConfirm",vo);
 	}
+	
+	public int deleteConfirm(int cfNo) {
+		return sqlSession.delete(namespace+"deleteConfirm",cfNo);
+	}
+	
+	public int deleteDocFileAll(int cfNo) {
+		return sqlSession.delete(namespace+"deleteDocFileAll",cfNo);
+	}
+	
+	public int docBack(int cfNo) {
+		return sqlSession.update(namespace+"docBack",cfNo);
+	}
 }

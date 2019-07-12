@@ -85,10 +85,8 @@ public class LineController {
 		
 		//1. linereg에 linename으로 insert 후
 		LineVO lineVo = new LineVO();
-
-		session.setAttribute("userNo", 9);
 		
-		lineVo.setMemNo((Integer)session.getAttribute("userNo"));
+		lineVo.setMemNo((Integer)session.getAttribute("memNo"));
 		lineVo.setRegName(lineName);
 		logger.info("라인결재 vo = {}", lineVo);
 		
