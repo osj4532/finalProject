@@ -206,6 +206,7 @@
 	});
 	
 	$.showFile = function(cfNo){
+		console.log("파일목록 보여주기");
 		$.ajax({
 			url:"<c:url value='/document/docFileSel.do'/>",
 			type:"post",

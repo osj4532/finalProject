@@ -18,4 +18,7 @@ public interface ConfirmDAO {
 	public int selectFileCount(int cfNo);
 	public int updateCFFileN(int cfNo);
 	public int updateConfirm(ConfirmVO vo);
+	public int deleteConfirm(int cfNo);
+	public int deleteDocFileAll(int cfNo);
+	public int docBack(int cfNo);
 }

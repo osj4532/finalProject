@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.cwb.finalproject.common.FileUploadUtil;
 import com.cwb.finalproject.confirm.model.ConfirmFileVO;
@@ -57,8 +58,7 @@ public class ConfirmController {
 	public String docSel_get(@RequestParam(required = false, defaultValue = "0") int formNo, 
 			@RequestParam(required = false, defaultValue = "0") int regNo, 
 			HttpSession session, Model model) {
-		session.setAttribute("userNo", 9);
-		int userNo = (Integer)session.getAttribute("userNo");
+		int userNo = (Integer)session.getAttribute("memNo");
 		logger.info("문서양식 및 종류 선택 화면 보여주기 userNo = {}",userNo);
 		
 		//1 문서 종류, 문서 양식 종류
@@ -99,7 +99,7 @@ public class ConfirmController {
 		// cf_file, cf_tmpstorage, cf_del, cf_order, cf_regdate, cf_okdate
 		
 		//form_no, mem_no, reg_no, 
-		int memNo = (Integer)session.getAttribute("userNo");
+		int memNo = (Integer)session.getAttribute("memNo");
 		vo.setMemNo(memNo);
 		logger.info("문서 작성화면으로 넘기기 매개변수 vo = {}",vo);
 		
@@ -184,9 +184,7 @@ public class ConfirmController {
 	@RequestMapping("/docList.do")
 	public String docList(@RequestParam(required = false, defaultValue = "1") int cfState, 
 			HttpSession session ,Model model) {
-		session.setAttribute("userNo", 9);
-		int userNo = (Integer)session.getAttribute("userNo");
-		session.setAttribute("ranksNo", 4);
+		int userNo = (Integer)session.getAttribute("memNo");
 		int ranksNo = (Integer)session.getAttribute("ranksNo");
 		logger.info("문서 리스트 보여주기 userNo = {}, 매개변수 cfState = {}",userNo, cfState);
 		
@@ -324,5 +322,81 @@ public class ConfirmController {
 		}
 		
 		return cnt;
+	}
+	
+	@RequestMapping("/download.do")
+	public ModelAndView download(@ModelAttribute ConfirmFileVO vo, HttpServletRequest request ) {
+		logger.info("첨부파일 다운로드 하기 vo = {}",vo);
+		
+		String path = fileUtil.getUploadPath(request, FileUploadUtil.DOC_FILE_UPLOAD);
+		File file = new File(path,vo.getFileName());
+		File file1 = new File(vo.getFileOriginalName());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("downFile",file);
+		map.put("downFileName",file1);
+		
+		logger.info("첨부파일 다운로드 하기 map.size = {}",map.size());
+		
+		ModelAndView mav = new ModelAndView("downloadView",map);
+		return mav;
+	}
+	
+	@RequestMapping("/docDelete.do")
+	public String docDelete(@ModelAttribute ConfirmVO cfVo, Model model, HttpServletRequest request) {
+		logger.info("파일 지우기 매개변수 cfVo = {}",cfVo);
+		
+		int cnt = 0;
+		if(cfVo.getCfFile().equals("Y")) { 
+			cnt = confirmService.deleteDocFileAll(cfVo.getCfNo());
+			List<ConfirmFileVO> files = confirmService.selectDocFiles(cfVo.getCfNo());
+			for(ConfirmFileVO vo : files) {
+				String uppath = fileUtil.getUploadPath(request, FileUploadUtil.DOC_FILE_UPLOAD);
+				File file = new File(uppath, vo.getFileName());
+				if(file.exists()) {
+					boolean bool = file.delete();
+					logger.info("문서 파일 결과 bool = {}",bool);
+				}
+			}
+		}
+		
+		cnt = confirmService.deleteConfirm(cfVo.getCfNo());
+		
+		logger.info("문서 삭제 결과 cnt = {}",cnt);
+		
+		String url = "/document/docDetail.do?cfNo="+cfVo.getCfNo(), msg = "";
+		if(cnt > 0) {
+			msg = "문서 삭제 성공!";
+			url = "/document/docList.do";
+		}else {
+			msg = "문서 삭제 실패!";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url",url);
+		
+		return "common/message";
+	}
+	
+	@RequestMapping("docBack.do")
+	public String docBack(@RequestParam int cfNo, Model model) {
+		logger.info("문서 반려 됨 문서 번호 = {}", cfNo);
+		int cnt = confirmService.docBack(cfNo);
+		
+		logger.info("문서 반려 결과 cnt = {}",cnt);
+		
+		String url = "/document/docDetail.do?cfNo="+cfNo, msg = "";
+		if(cnt > 0) {
+			msg = "문서 반려 성공!";
+			url = "/document/docList.do";
+		}else {
+			msg = "문서 반려 실패!";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url",url);
+		
+		return "common/message";
+		
 	}
 }

@@ -21,8 +21,8 @@
 		where mem_no = #{memNo}
 	</update>
 	
-	<select id="getSignImg" parameterType="int" resultType="signVO">
-		select * from signreg
+	<select id="getSignImg" parameterType="confirmVo" resultType="signVO">
+		<!-- select * from signreg
 		where mem_no in
 		(
 		select mem_no from confirmline
@@ -36,6 +36,16 @@
 		                    from confirm 
 		                    where cf_no = #{cfNo}
 		                )
+		) -->
+		select * from signreg
+		where mem_no in
+		(
+		select CF.mem_no from confirmline CF
+		join confirm C
+		on CF.REG_NO = C.REG_NO
+		where C.reg_no = #{regNo}
+		and C.CF_NO = #{cfNo}
+		and C.CF_ORDER > CF.LINE_ORDER
 		)
 	</select>
 </mapper>
