@@ -128,4 +128,16 @@ public class ConfirmServiceImpl implements ConfirmService{
 		
 		return cnt;
 	}
+	
+	public int deleteConfirm(int cfNo) {
+		return confirmDAO.deleteConfirm(cfNo);
+	}
+	
+	public int deleteDocFileAll(int cfNo) {
+		return confirmDAO.deleteDocFileAll(cfNo);
+	}
+	
+	public int docBack(int cfNo) {
+		return confirmDAO.docBack(cfNo);
+	}
 }

@@ -75,33 +75,43 @@ element.style {
 				eventLimit: true, 
 				select : function(start, end,  allDay) {
 					var title = prompt('일정을 입력하세요.');
-					alert(start.format());
-					if(title){
-						$.ajax({
-							type : "post",
-							url : "<c:url value='/scheduler/userScdWrite.do'/>",
-							data : {
-								"scdContent" : title,
-								"scdStart" :start.format(),
-								"scdEnd" : end.format()
-								
-								//"scdStart" :moment(start).format('YYYY/MM/DD a hh:mm:ssSSSS'),
-								//"scdEnd" :moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS') 
-							}, 
-							success : function(data) {
-								alert("저장 완료");
-								$("#calendar").fullCalendar("refetchEvents");
-							},
-							error : function(xhr, err) { 
-								//alert(moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS')); 
-								alert("ERROR! - readyState: "
-										+ xhr.readyState
-										+ "<br/>status: "
-										+ xhr.status
-										+ "<br/>responseText: "
-										+ xhr.responseText);
-							}
-						}); 
+					alert(start.format('YYYY/MM/DD HH:mm:ss'));
+					var st=start.format(); 
+					var en=end.format(); 
+					if(st.length==10){
+						st=start.format();
+						en=end.format();
+					}else{
+						st=start.format('YYYY/MM/DD HH:mm:ss');
+						en=end.format('YYYY/MM/DD HH:mm:ss');
+					}
+						if(title){ 
+							$.ajax({
+								type : "post",
+								url : "<c:url value='/scheduler/userScdWrite.do'/>",
+								data : { 
+									"scdContent" : title,
+									"scdStart" :st,
+				 					"scdEnd" : en 
+									
+									//"scdStart" :moment(start).format('YYYY/MM/DD a hh:mm:ssSSSS'),
+									//"scdEnd" :moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS') 
+								}, 
+								success : function(data) {
+									alert("저장 완료");
+									$("#calendar").fullCalendar("refetchEvents");
+								},
+								error : function(xhr, err) { 
+									//alert(moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS')); 
+									alert("ERROR! - readyState: "
+											+ xhr.readyState
+											+ "<br/>status: "
+											+ xhr.status
+											+ "<br/>responseText: "
+											+ xhr.responseText);
+								}
+							}); 
+					
 					}else if(title==null){
 					}else {
 						alert('입력값이 없습니다!');

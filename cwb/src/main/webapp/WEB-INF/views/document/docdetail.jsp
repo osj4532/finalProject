@@ -104,7 +104,11 @@
 			<tr>
 				<c:forEach var="map" items="${clList }">
 					<td>
-						
+						<c:if test="${map['MEM_NO'] == sessionScope.memNo &&
+							map['LINE_ORDER'] == cfVo.cfOrder && cfVo.cfState == 1 }">
+							<button id="btOk" class="btn btn-success btn-sm">결재</button>
+							<button id="btBack" class="btn btn-warning btn-sm">반려</button>
+						</c:if>
 					</td>
 				</c:forEach>
 			
@@ -150,7 +154,8 @@
 				<c:if test="${cfVo.cfFile == 'Y' }">
 					<td style="text-align: right">
 						<c:forEach var="vo" items="${files }">
-							<p>${vo.fileOriginalName } [${vo.fileSize}B]</p>
+							<p><a 
+	href="<c:url value='/document/download.do?fileName=${vo.fileName }&fileOriginalName=${vo.fileOriginalName }'/>">${vo.fileOriginalName }</a> [${vo.fileSize}B]</p>
 						</c:forEach>
 					</td>
 				</c:if>
@@ -158,10 +163,23 @@
 		</table>
 		<hr>
 		<div>
-			<button id="edit" class="btn btn-info">문서수정</button>
+			<c:if test="${sessionScope.memNo == member['MEM_NO'] &&
+			cfVo.cfState == 1 && cfVo.cfOrder == 1 }">
+				<button id="edit" class="btn btn-warning">문서수정</button>
+			</c:if>
+			<c:if test = "${(cfVo.cfState == 1 || cfVo.cfState == 4) && 
+			(sessionScope.memNo == member['MEM_NO']) && cfVo.cfOrder == 1}">
+				<button id="del" class="btn btn-danger">문서삭제</button>
+			</c:if>
 			<button id="list" class="btn btn-info">문서목록</button>
+			
 		</div>
 </div>
+
+<form name="delfrm" method="post" action="<c:url value='/document/docDelete.do?'/>">
+	<input type="hidden" name = "cfNo" value="${cfVo.cfNo }">
+	<input type="hidden" name = "cfFile" value="${cfVo.cfFile }">
+</form>
 
 <c:import url="../inc/bottom.jsp"></c:import>
 <script type="text/javascript" src="<c:url value="/resources/summernote/summernote.js"/>"></script>
@@ -171,7 +189,15 @@
 		location.href="<c:url value='/document/docEdit.do?cfNo=${cfVo.cfNo}'/>"
 	});
 	
+	$('#del').click(function(){
+		$('form[name=delfrm]').submit();
+	});
+	
 	$('#list').click(function(){
 		location.href="<c:url value='/document/docList.do'/>"
+	});
+	
+	$('#btBack').click(function(){
+		location.href="<c:url value='/document/docBack.do?cfNo=${cfVo.cfNo}'/>"
 	});
 </script>

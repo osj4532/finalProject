@@ -1,6 +1,7 @@
 package com.cwb.finalproject.sign.model;
 
 import java.io.File;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cwb.finalproject.common.FileUploadUtil;
+import com.cwb.finalproject.confirm.model.ConfirmVO;
 
 @Service
 public class SignServiceImpl implements SignService{
@@ -40,5 +42,9 @@ public class SignServiceImpl implements SignService{
 		}
 		
 		return signDao.updateSign(vo);
+	}
+	
+	public List<SignVO> getSignList(ConfirmVO vo){
+		return signDao.getSignList(vo);
 	}
 }

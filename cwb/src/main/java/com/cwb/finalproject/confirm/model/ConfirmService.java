@@ -14,20 +14,15 @@ public interface ConfirmService {
 	public static final int DOC_TMP = 4;
 	
 	public int insertDoc(ConfirmVO vo, List<Map<String, Object>> fileList);
-	// 대기, 반려 문서 조회
-	//map key => memNo, state = 1 or state = 3
 	public List<Map<String, Object>> selectWaitOrBackList(Map<String,Integer> map);
-	// 완료 문서 조회
 	public List<Map<String, Object>> selectOkList(int ranksNo);
-	// 임시 저장 문서 조회
 	public List<Map<String, Object>> selectTmpList(int memNo);
-	
 	public ConfirmVO confirmDetail(int cfNo);
 	public List<ConfirmFileVO> selectDocFiles(int cfNo);
-	
 	public int deleteDocFile(String fileName);
-	
 	public int checkFile(int cfNo);
-	
 	public int updateConfirm(ConfirmVO vo, List<Map<String, Object>> fileList);
+	public int deleteConfirm(int cfNo);
+	public int deleteDocFileAll(int cfNo);
+	public int docBack(int cfNo);
 }

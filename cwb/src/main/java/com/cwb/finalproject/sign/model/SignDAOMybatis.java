@@ -1,8 +1,12 @@
 package com.cwb.finalproject.sign.model;
 
+import java.util.List;
+
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.cwb.finalproject.confirm.model.ConfirmVO;
 
 @Repository
 public class SignDAOMybatis implements SignDAO{
@@ -22,5 +26,9 @@ public class SignDAOMybatis implements SignDAO{
 	
 	public int updateSign(SignVO vo) {
 		return sqlSession.update(namespace+"updateSign",vo);
+	}
+	
+	public List<SignVO> getSignList(ConfirmVO vo){
+		return sqlSession.selectList(namespace+"getSignImg",vo);
 	}
 }

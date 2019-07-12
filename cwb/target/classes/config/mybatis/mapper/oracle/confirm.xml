@@ -49,7 +49,7 @@
 		order by C.CF_NO desc
 	</select>
 	
-	<select id="selectOkList" resultType="map" parameterType="int">
+	<select id="selectOkList" resultMap="getWaitOrBackListResult" parameterType="int">
 		select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
 		C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
 		join member M
@@ -102,8 +102,24 @@
 	
 	<update id="updateConfirm" parameterType="confirmVo">
 		update confirm
-		set cf_title = #{cfTitle}, cf_content = #{cfContent}, cf_state = #{cfState}
+		set cf_title = #{cfTitle}, cf_content = #{cfContent}, cf_state = #{cfState}, cf_file = #{cfFile}
 		where cf_No = #{cfNo}
+	</update>
+	
+	<delete id="deleteConfirm" parameterType="int">
+		delete from confirm
+		where cf_no = #{cfNo}
+	</delete>
+	
+	<delete id="deleteDocFileAll" parameterType="int">
+		delete from confirmFile
+		where cf_no = #{cfNo}
+	</delete>
+	
+	<update id="docBack" parameterType="int">
+		update confirm
+		set cf_state = 3
+		where cf_no = #{cfNo}
 	</update>
 </mapper>
 

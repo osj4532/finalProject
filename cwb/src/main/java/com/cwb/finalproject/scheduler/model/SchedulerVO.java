@@ -6,6 +6,7 @@ public class SchedulerVO {
 	private String scdStart; /* 시작날짜 */
 	private String scdEnd; /* 끝날짜 */
 	private String scdContent; /* 스케줄내용 */
+	
 	public int getScdNo() {
 		return scdNo;
 	}
