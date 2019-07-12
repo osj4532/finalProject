@@ -95,7 +95,7 @@ public class ResourcesController {
 		
 		return "common/message";
 	}
-	
+	//
 	@RequestMapping(value = "/resourcesWrite.do",method = RequestMethod.GET)
 	public String resourcesWrite_get(@RequestParam int typeNo,
 			Model model) {
@@ -148,7 +148,7 @@ public class ResourcesController {
 		
 		return "resources/resourcesMap";
 	}
-	
+	//
 	@RequestMapping(value = "/resourcesEdit.do",method = RequestMethod.GET)
 	public String resourcesEdit_get(@RequestParam int resNo,
 			Model model) {

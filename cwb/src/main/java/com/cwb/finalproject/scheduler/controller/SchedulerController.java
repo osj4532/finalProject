@@ -1,9 +1,5 @@
 package com.cwb.finalproject.scheduler.controller;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -23,42 +19,51 @@ import com.cwb.finalproject.scheduler.model.SchedulerVO;
 @RequestMapping("/scheduler")
 public class SchedulerController {
 	private Logger logger = LoggerFactory.getLogger(SchedulerController.class);
-	
-	@Autowired private SchedulerService schedulerService;
-	
+
+	@Autowired
+	private SchedulerService schedulerService;
+
 	@RequestMapping("/scheduler.do")
 	public String scheduler_view() {
 		logger.info("개인스케줄러 보여주기");
 		return "scheduler/scheduler";
 	}
-	
+
 	@RequestMapping("/userScdWrite.do")
 	@ResponseBody
-	public SchedulerVO userScdput(@ModelAttribute SchedulerVO schedulerVo
-			,HttpSession session) {
-		logger.info("ajax 이용 스케줄 입력 schedulerVo={}",schedulerVo);
-		
-		//int memNo = (Integer)session.getAttribute("memNo");
+	public SchedulerVO userScdput(@ModelAttribute SchedulerVO schedulerVo, HttpSession session) {
+		logger.info("ajax 이용 스케줄 입력 schedulerVo={}", schedulerVo);
+
+		// int memNo = (Integer)session.getAttribute("memNo");
 		schedulerVo.setMemNo(1);
-		int cnt =schedulerService.insertUserScd(schedulerVo);
-		logger.info("ajax 이용 스케줄 완료 결과 int={}",cnt);
-		
+		boolean isday = false;
+		if (schedulerVo.getScdStart().length() == 10 && schedulerVo.getScdEnd().length() == 10) {
+			isday = true;
+		}
+		logger.info("종일 결과 is={}", isday);
+
+		int cnt = schedulerService.insertUserScd(schedulerVo, isday);
+		logger.info("ajax 이용 스케줄 완료 결과 int={}", cnt);
+
 		return schedulerVo;
 	}
-	
+
 	@RequestMapping("/userScdFind.do")
 	@ResponseBody
-	public List<SchedulerVO> userScdFind(HttpSession session){
-		//int memNo = (Integer)session.getAttribute("memNo");
+	public List<SchedulerVO> userScdFind(HttpSession session) {
+		// int memNo = (Integer)session.getAttribute("memNo");
 		logger.info("ajax 이용 스케줄 가지고오기");
 		int memNo = 1;
-		List<SchedulerVO> list= schedulerService.selectByUser(memNo);
-		logger.info("ajax 스케줄 결과 list.size={},list={}",list.size(),list);
-		/*
-		 * for (SchedulerVO vo : list) { vo.setScdStart(vo.getScdStart().substring(0,
-		 * 10)); vo.setScdEnd(vo.getScdEnd().substring(0, 10)); }
-		 */
-		
-		return list;
+		List<SchedulerVO> list = schedulerService.selectByUser(memNo);
+		logger.info("ajax 스케줄 결과 list.size={},list={}", list.size(), list);
+
+		for (SchedulerVO vo : list) {
+			if(vo.getScdStart().substring(11).equals("00:00:00")) {
+				vo.setScdStart(vo.getScdStart().substring(0, 10));
+				vo.setScdEnd(vo.getScdEnd().substring(0, 10));
+			}
+		}
+
+		return list; 
 	}
 }

@@ -22,6 +22,11 @@ public class SchedulerDAOMybatis implements SchedulerDAO{
 	public List<SchedulerVO> selectByUser(int memNo) {
 		return sqlSesson.selectList(namespace+"selectByUser", memNo);
 	}
+
+	@Override
+	public int insertUserDayScd(SchedulerVO schedulerVo) {
+		return sqlSesson.insert(namespace+"insertUserDayScd", schedulerVo);
+	}
 	
 	
 	
