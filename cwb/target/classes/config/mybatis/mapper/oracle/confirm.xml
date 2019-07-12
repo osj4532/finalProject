@@ -121,6 +121,19 @@
 		set cf_state = 3
 		where cf_no = #{cfNo}
 	</update>
+	
+	<update id="docOk" parameterType="int">
+		update confirm
+		set cf_order = cf_order + 1
+		where cf_no = #{cfNo}
+	</update>
+	
+	<update id="docOkComplete" parameterType="int">
+		update confirm
+		set cf_state = 2,
+		cf_okdate = sysdate
+		where cf_no = #{cfNo}
+	</update>
 </mapper>
 
 

@@ -1,6 +1,8 @@
 package com.cwb.finalproject.confirm.controller;
 
 import java.io.File;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,8 @@ import com.cwb.finalproject.document.model.DocTypeService;
 import com.cwb.finalproject.line.model.LineService;
 import com.cwb.finalproject.line.model.LineVO;
 import com.cwb.finalproject.member.model.MemberService;
+import com.cwb.finalproject.sign.model.SignService;
+import com.cwb.finalproject.sign.model.SignVO;
 
 @Controller
 @RequestMapping("/document")
@@ -51,6 +55,8 @@ public class ConfirmController {
 	private MemberService memberService;
 	@Autowired
 	private ConfirmService confirmService;
+	@Autowired
+	private SignService signService;
 	@Autowired
 	private FileUploadUtil fileUtil;
 	
@@ -279,12 +285,15 @@ public class ConfirmController {
 		List<Map<String, Object>> clList = confirmlineService.selectAll(cfVo.getRegNo());
 		Map<String, Object> formInfo = docFormService.selectDocFormByNo(cfVo.getFormNo());
 		List<ConfirmFileVO> files = confirmService.selectDocFiles(cfNo);
+		List<SignVO> signs = signService.getSignList(cfVo);
+		logger.info("사인 개수 = {}",signs.size());
 		
 		model.addAttribute("member", member);
 		model.addAttribute("clList",clList);
 		model.addAttribute("formInfo",formInfo);
 		model.addAttribute("files",files );
 		model.addAttribute("cfVo",cfVo);
+		model.addAttribute("signs", signs);
 		
 		return "document/docdetail";
 	}
@@ -378,7 +387,7 @@ public class ConfirmController {
 		return "common/message";
 	}
 	
-	@RequestMapping("docBack.do")
+	@RequestMapping("/docBack.do")
 	public String docBack(@RequestParam int cfNo, Model model) {
 		logger.info("문서 반려 됨 문서 번호 = {}", cfNo);
 		int cnt = confirmService.docBack(cfNo);
@@ -397,6 +406,41 @@ public class ConfirmController {
 		model.addAttribute("url",url);
 		
 		return "common/message";
+	}
+	
+	@RequestMapping("/docOk.do")
+	public String docOk(HttpSession session, @ModelAttribute ConfirmVO cfVo, Model model) {
+		// 매개변수 memberNo, 문서 번호
+		// 1. member sign 확인
+		int memNo = (Integer)session.getAttribute("memNo");
+		int cnt = signService.checkSign(memNo);
+		logger.info("사인 등록 체크 cnt = {}",cnt);
 		
+		String msg = "", url = "/sign/signReg.do";
+		
+		if(cnt > 0) {
+			// 2. cfOrder + 1
+			int maxOrder = confirmlineService.getMaxOrder(cfVo.getRegNo());
+			logger.info("마지막 사인 순서 체크 maxOrder={}",maxOrder);
+			//다음 사람으로 결재 넘어가기
+			cnt = confirmService.docOk(cfVo.getCfNo());
+			logger.info("다음 사람으로 결재 넘어가기 결과 cnt={}",cnt);
+			logger.info("cfOrder={}",cfVo.getCfOrder());
+			if(cfVo.getCfOrder()+1 > maxOrder && cnt > 0) {
+				// 3. confirmline max(line_order) < cfOrder => cf_state = 2, cf_okdate = sysdate
+				//모두 결재 완료
+				cnt = confirmService.docOkComplete(cfVo.getCfNo());
+				logger.info("결재 완료 만들기 cfOrder = {}, 결과 cnt = {}", cfVo.getCfOrder(),cnt);
+			}
+			msg="결재 완료";
+			url="/document/docList.do";
+		}else {
+			msg="결재 사인을 등록해 주세요.";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
 	}
 }

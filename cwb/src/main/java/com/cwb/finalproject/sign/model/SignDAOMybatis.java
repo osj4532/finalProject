@@ -31,4 +31,8 @@ public class SignDAOMybatis implements SignDAO{
 	public List<SignVO> getSignList(ConfirmVO vo){
 		return sqlSession.selectList(namespace+"getSignImg",vo);
 	}
+	
+	public int checkSign(int memNo) {
+		return sqlSession.selectOne(namespace+"checkSign",memNo);
+	}
 }

@@ -21,4 +21,8 @@ public class ConfirmlineDAOMybatis implements ConfirmlineDAO{
 	public List<Map<String, Object>> selectAll(int regNo){
 		return sqlSession.selectList(namespace+"selectAll",regNo);
 	}
+	
+	public int getMaxOrder(int regNo) {
+		return sqlSession.selectOne(namespace+"getMaxOrder",regNo);
+	}
 }

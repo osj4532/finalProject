@@ -15,4 +15,9 @@ public class ConfirmlineServiceImpl implements ConfirmlineService{
 	public List<Map<String, Object>> selectAll(int regNo){
 		return confirmlineDAO.selectAll(regNo);
 	}
+
+	@Override
+	public int getMaxOrder(int regNo) {
+		return confirmlineDAO.getMaxOrder(regNo);
+	}
 }

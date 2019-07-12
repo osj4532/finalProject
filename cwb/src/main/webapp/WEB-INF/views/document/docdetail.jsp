@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <c:import url="../inc/top.jsp"></c:import>
 
@@ -96,8 +97,16 @@
 					
 			</tr>
 			<tr>
-				<c:forEach var="map" items="${clList }">
-					<td style="height: 60%">사인</td>
+				<c:forEach var="i" begin="0" end="${fn:length(clList)-1 }">
+					<c:if test="${!empty signs[i]}">
+						<td style="height: 60%">
+							<img src="<c:url value='/sign_file/${signs[i].signFileName }'/>"
+								width="90px">
+						</td>
+					</c:if>
+					<c:if test="${empty signs[i]}">
+						<td style="height: 60%">사인</td>
+					</c:if>
 				</c:forEach>
 				
 			</tr>
@@ -181,6 +190,12 @@
 	<input type="hidden" name = "cfFile" value="${cfVo.cfFile }">
 </form>
 
+<form name="okfrm" method="post" action="<c:url value='/document/docOk.do?'/>">
+	<input type="hidden" name = "cfNo" value="${cfVo.cfNo }">
+	<input type="hidden" name = "regNo" value="${cfVo.regNo }">
+	<input type="hidden" name = "cfOrder" value="${cfVo.cfOrder }">
+</form>
+
 <c:import url="../inc/bottom.jsp"></c:import>
 <script type="text/javascript" src="<c:url value="/resources/summernote/summernote.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/summernote/lang/summernote-ko-KR.js"/>"></script>
@@ -200,4 +215,9 @@
 	$('#btBack').click(function(){
 		location.href="<c:url value='/document/docBack.do?cfNo=${cfVo.cfNo}'/>"
 	});
+	
+	$('#btOk').click(function(){
+		$('form[name=okfrm]').submit();
+	});
+	
 </script>

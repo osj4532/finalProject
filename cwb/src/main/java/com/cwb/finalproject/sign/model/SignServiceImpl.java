@@ -47,4 +47,8 @@ public class SignServiceImpl implements SignService{
 	public List<SignVO> getSignList(ConfirmVO vo){
 		return signDao.getSignList(vo);
 	}
+	
+	public int checkSign(int memNo) {
+		return signDao.checkSign(memNo);
+	}
 }

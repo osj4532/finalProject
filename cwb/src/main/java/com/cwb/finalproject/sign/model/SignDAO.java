@@ -9,4 +9,5 @@ public interface SignDAO {
 	public SignVO selectSign(int memberNo);
 	public int updateSign(SignVO vo);
 	public List<SignVO> getSignList(ConfirmVO vo);
+	public int checkSign(int memNo);
 }

@@ -140,4 +140,12 @@ public class ConfirmServiceImpl implements ConfirmService{
 	public int docBack(int cfNo) {
 		return confirmDAO.docBack(cfNo);
 	}
+	
+	public int docOk(int cfNo) {
+		return confirmDAO.docOk(cfNo);
+	}
+	
+	public int docOkComplete(int cfNo) {
+		return confirmDAO.docOkComplete(cfNo);
+	}
 }

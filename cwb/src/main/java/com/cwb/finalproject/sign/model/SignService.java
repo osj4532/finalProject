@@ -11,4 +11,5 @@ public interface SignService {
 	public SignVO selectSign(int memberNo);
 	public int updateSign(SignVO vo, HttpServletRequest request);
 	public List<SignVO> getSignList(ConfirmVO vo);
+	public int checkSign(int memNo);
 }

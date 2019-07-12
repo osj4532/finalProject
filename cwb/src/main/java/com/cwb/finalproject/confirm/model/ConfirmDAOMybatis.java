@@ -71,4 +71,12 @@ public class ConfirmDAOMybatis implements ConfirmDAO{
 	public int docBack(int cfNo) {
 		return sqlSession.update(namespace+"docBack",cfNo);
 	}
+	
+	public int docOk(int cfNo) {
+		return sqlSession.update(namespace+"docOk",cfNo);
+	}
+	
+	public int docOkComplete(int cfNo) {
+		return sqlSession.update(namespace+"docOkComplete",cfNo);
+	}
 }

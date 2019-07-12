@@ -21,4 +21,6 @@ public interface ConfirmDAO {
 	public int deleteConfirm(int cfNo);
 	public int deleteDocFileAll(int cfNo);
 	public int docBack(int cfNo);
+	public int docOk(int cfNo);
+	public int docOkComplete(int cfNo);
 }
