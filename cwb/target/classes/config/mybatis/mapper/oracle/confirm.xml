@@ -32,19 +32,56 @@
 	</insert>
 	
 	<!-- cf_status 1.대기 문서,  2.완료 문서, 3. 반려 분서, 4. 임시저장 문서-->
+	<select id="countWBList" resultType="int" parameterType="map">
+		select count(*) from confirm C
+					join confirmline CL
+					on C.REG_NO = CL.REG_NO
+					join member M
+					on M.MEM_NO = C.MEM_NO
+					join docform F
+					on F.FORM_NO = C.FORM_NO
+					where C.CF_ORDER = CL.LINE_ORDER
+					and (CL.MEM_NO = #{memNo}     
+					or C.mem_no = #{memNo})      
+					and C.CF_STATE = #{state}
+					and C.cf_TMPSTORAGE = 'N'
+					order by C.CF_NO desc
+	</select>
+	
 	<select id="selectWaitOrBackList" resultMap="getWaitOrBackListResult" parameterType="map">
-		select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
-		C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
-		join confirmline CL
-		on C.REG_NO = CL.REG_NO
+		select B.*
+		from
+		(
+		select rownum as rnum, A.*
+				from(
+					select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
+					C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
+					join confirmline CL
+					on C.REG_NO = CL.REG_NO
+					join member M
+					on M.MEM_NO = C.MEM_NO
+					join docform F
+					on F.FORM_NO = C.FORM_NO
+					where C.CF_ORDER = CL.LINE_ORDER
+					and (CL.MEM_NO = #{memNo}     
+					or C.mem_no = #{memNo})      
+					and C.CF_STATE = #{state}
+					and C.cf_TMPSTORAGE = 'N'
+					order by C.CF_NO desc
+				)A 
+<![CDATA[		where rownum <=  #{firstRecordIndex}+#{recordCountPerPage}]]>
+			)B
+			where B.RNUM > #{firstRecordIndex}
+	</select>
+	
+	<select id="countOkList" resultType="int" parameterType="int">
+		select count(*) from confirm C
 		join member M
 		on M.MEM_NO = C.MEM_NO
 		join docform F
 		on F.FORM_NO = C.FORM_NO
-		where C.CF_ORDER = CL.LINE_ORDER
-		and (CL.MEM_NO = #{memNo}     
-		or C.mem_no = #{memNo})      
-		and C.CF_STATE = #{state}
+		<![CDATA[where C.form_no in (select form_no from formview where ranks_no <= #{ranksNo})]]>
+		and C.cf_okdate is not null
 		and C.cf_TMPSTORAGE = 'N'
 		order by C.CF_NO desc
 	</select>
@@ -56,12 +93,22 @@
 		on M.MEM_NO = C.MEM_NO
 		join docform F
 		on F.FORM_NO = C.FORM_NO
-		<![CDATA[where C.form_no in (select form_no from formview where ranks_no <= #{memNo})]]>
+		<![CDATA[where C.form_no in (select form_no from formview where ranks_no <= #{ranksNo})]]>
 		and C.cf_okdate is not null
 		and C.cf_TMPSTORAGE = 'N'
 		order by C.CF_NO desc
 	</select>
 	
+	<select id="countTmpList" resultType="int" parameterType="int">
+		select count(*) from confirm C
+		join member M
+		on M.MEM_NO = C.MEM_NO
+		join docform F
+		on F.FORM_NO = C.FORM_NO
+		where C.mem_no = #{memNo}
+		and C.cf_TMPSTORAGE = 'Y'
+		order by C.CF_NO desc
+	</select>
 	
 	<select id="selectTmpList" resultMap="getWaitOrBackListResult" parameterType="int">
 		select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 

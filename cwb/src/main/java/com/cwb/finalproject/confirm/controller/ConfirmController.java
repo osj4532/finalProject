@@ -1,16 +1,25 @@
 package com.cwb.finalproject.confirm.controller;
 
 import java.io.File;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.HSSFColor.HSSFColorPredefined;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.cwb.finalproject.common.FileUploadUtil;
+import com.cwb.finalproject.common.PaginationInfo;
 import com.cwb.finalproject.confirm.model.ConfirmFileVO;
 import com.cwb.finalproject.confirm.model.ConfirmService;
 import com.cwb.finalproject.confirm.model.ConfirmVO;
@@ -60,6 +70,23 @@ public class ConfirmController {
 	@Autowired
 	private FileUploadUtil fileUtil;
 	
+	@RequestMapping("/docSelForm.do")
+	@ResponseBody
+	public Map<String, Object> docSelForm(@RequestParam int formNo){
+		Map<String, Object> formInfo = docFormService.selectDocFormByNo(formNo);
+		return formInfo;
+	}
+	
+	
+	@RequestMapping("/docSelLine.do")
+	@ResponseBody 
+	public List<Map<String, Object>> docSelLine(@RequestParam int regNo){
+		logger.info("결재라인 번호 regNo = {}", regNo);
+		List<Map<String, Object>> clList = confirmlineService.selectAll(regNo);
+		return clList;
+	}
+	
+	
 	@RequestMapping(value="/docSel.do", method = RequestMethod.GET)
 	public String docSel_get(@RequestParam(required = false, defaultValue = "0") int formNo, 
 			@RequestParam(required = false, defaultValue = "0") int regNo, 
@@ -71,24 +98,10 @@ public class ConfirmController {
 		List<Map<String, Object>> docTypeList = docTypeService.selectDocType();
 		List<Map<String, Object>> docFormList = docFormService.selectDocForm();
 		
-		
-		if(formNo != 0) {
-			logger.info("문서 양식 번호 formNo = {}", formNo);
-			Map<String, Object> formInfo = docFormService.selectDocFormByNo(formNo);
-			model.addAttribute("formInfo",formInfo);
-		}
-		
-		
 		logger.info("docTypeList 사이즈 = {}, docFormList 사이즈 = {}", docTypeList.size(), docFormList.size());
 
 		//2 그사람이 등록한 결재라인 목록
 		List<LineVO> lineList = lineService.selectAll(userNo);
-		
-		if(regNo != 0) {
-			logger.info("결재라인 번호 regNo = {}", regNo);
-			List<Map<String, Object>> clList = confirmlineService.selectAll(regNo);
-			model.addAttribute("clList", clList);
-		}
 		
 		model.addAttribute("docTypeList", docTypeList);
 		model.addAttribute("docFormList", docFormList);
@@ -187,38 +200,61 @@ public class ConfirmController {
 		return "common/message";
 	}
 	
-	@RequestMapping("/docList.do")
-	public String docList(@RequestParam(required = false, defaultValue = "1") int cfState, 
-			HttpSession session ,Model model) {
+	@RequestMapping("/docListShow.do")
+	@ResponseBody
+	public List<Map<String, Object>> showList(@RequestParam int cfState, 
+			@RequestParam(required = false, defaultValue = "1") int currentPage, 
+			HttpServletRequest request){
+		List<Map<String, Object>> list = null;
+		
+		HttpSession session = request.getSession();
+		
 		int userNo = (Integer)session.getAttribute("memNo");
 		int ranksNo = (Integer)session.getAttribute("ranksNo");
+		
 		logger.info("문서 리스트 보여주기 userNo = {}, 매개변수 cfState = {}",userNo, cfState);
 		
-		String title = "";
+		Map<String, Integer> map = new HashMap<String, Integer>();
 		
-		List<Map<String, Object>> list = null;
+		PaginationInfo pageInfo = new PaginationInfo();
+		pageInfo.setBlockSize(10);
+		pageInfo.setRecordCountPerPage(5);
+		pageInfo.setCurrentPage(currentPage);
+		
+		map.put("firstRecordIndex",pageInfo.getFirstRecordIndex());
+		map.put("recordCountPerPage",5);
+		
+		int totalRec = 0;
 		if(cfState == ConfirmService.DOC_WAIT) {
-			Map<String, Integer> map = new HashMap<String, Integer>();
 			map.put("memNo",userNo);
 			map.put("state",1);
 			list = confirmService.selectWaitOrBackList(map);
-			title = "대기 문서 함";
+			totalRec = confirmService.countWBList(map);
 		}else if(cfState == ConfirmService.DOC_OK) {
 			list = confirmService.selectOkList(ranksNo);
-			title = "결재 완료 문서 함";
+			totalRec = confirmService.countOkList(ranksNo);
 		}else if(cfState == ConfirmService.DOC_BACK) {
-			Map<String, Integer> map = new HashMap<String, Integer>();
 			map.put("memNo",userNo);
 			map.put("state",3);
 			list = confirmService.selectWaitOrBackList(map);
-			title = "결재 반려 문서 함";
+			totalRec = confirmService.countWBList(map);
 		}else if(cfState == ConfirmService.DOC_TMP) {
 			list = confirmService.selectTmpList(userNo);
-			title = "임시 저장 문서 함";
+			totalRec = confirmService.countTmpList(userNo);
 		}
 		
-		model.addAttribute("list",list);
-		model.addAttribute("title", title);
+		pageInfo.setTotalRecord(totalRec);
+		Map<String, Object> page = new HashMap<String, Object>();
+		page.put("page",pageInfo);
+		list.add(0, page);
+		
+		return list;
+	}
+	
+	@RequestMapping("/docList.do")
+	public String docList() {
+		logger.info("문서 리스트 보여주기 ");
+		
 		return "document/doclist";
 	}
 	
@@ -348,6 +384,30 @@ public class ConfirmController {
 		logger.info("첨부파일 다운로드 하기 map.size = {}",map.size());
 		
 		ModelAndView mav = new ModelAndView("downloadView",map);
+		return mav;
+	}
+	
+	@RequestMapping("/docExcelDown.do")
+	public ModelAndView docExcel(@RequestParam int cfNo){
+		
+		ConfirmVO cfVo = confirmService.confirmDetail(cfNo);
+		
+		Map<String, Object> member = memberService.selectByNo(cfVo.getMemNo());
+		List<Map<String, Object>> clList = confirmlineService.selectAll(cfVo.getRegNo());
+		Map<String, Object> formInfo = docFormService.selectDocFormByNo(cfVo.getFormNo());
+		List<ConfirmFileVO> files = confirmService.selectDocFiles(cfNo);
+		List<SignVO> signs = signService.getSignList(cfVo);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("cfVo",cfVo);
+		map.put("member", member);
+		map.put("clList", clList);
+		map.put("formInfo", formInfo);
+		map.put("files", files);
+		map.put("signs", signs);
+		
+		ModelAndView mav = new ModelAndView("downExcelView",map);
+		
 		return mav;
 	}
 	

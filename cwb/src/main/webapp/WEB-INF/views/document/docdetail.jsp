@@ -181,7 +181,7 @@
 				<button id="del" class="btn btn-danger">문서삭제</button>
 			</c:if>
 			<button id="list" class="btn btn-info">문서목록</button>
-			
+			<button id="excel" class="btn btn-primary">엑셀파일 받기</button>
 		</div>
 </div>
 
@@ -200,6 +200,10 @@
 <script type="text/javascript" src="<c:url value="/resources/summernote/summernote.js"/>"></script>
 <script type="text/javascript" src="<c:url value="/resources/summernote/lang/summernote-ko-KR.js"/>"></script>
 <script type="text/javascript">
+	$('#excel').click(function(){
+		location.href="<c:url value='/document/docExcelDown.do?cfNo=${cfVo.cfNo}'/>"
+	});
+
 	$('#edit').click(function(){
 		location.href="<c:url value='/document/docEdit.do?cfNo=${cfVo.cfNo}'/>"
 	});

@@ -90,8 +90,8 @@ tabel th{
 								<c:if test="${typeMap['TYPE_NO'] == formMap['TYPE_NO'] }">
 									<li>
 										<span id="tree">&#9507;</span>
-										<a id="inputInfo" 
-										href="<c:url value="/document/docSel.do?formNo=${formMap['FORM_NO']}&regNo=${param.regNo }"/>"> ${formMap['FORM_NAME'] }</a>
+										<a id="inputInfo" onclick="getFormInfo(${formMap['FORM_NO']})"
+										> ${formMap['FORM_NAME'] }</a>
 									</li>
 								</c:if>
 							</c:forEach>
@@ -105,18 +105,18 @@ tabel th{
 		<div id="selInfo2" class="col-sm-6">
 			<h3>상세정보</h3>
 			<hr>
-				<input type="hidden" name="formNo" value="${formInfo['FORM_NO'] }">
+				<input type="hidden" name="formNo">
 				<div class="form-group">
 					<label>문서종류</label>
-					<input name="doc" type="text" class="form-control" value="${formInfo['TYPE_NAME'] }" readonly="readonly">
+					<input name="doc" type="text" class="form-control" readonly="readonly">
 				</div>
 				<div class="form-group">
 					<label>문서양식종류</label>
-					<input type="text" class="form-control" value="${formInfo['FORM_NAME'] }" readonly="readonly">
+					<input name="form" type="text" class="form-control" readonly="readonly">
 				</div>
 				<div class="form-group">
 					<label>양식보안등급</label>
-					<input type="text" class="form-control" value="${formInfo['RANKS_NAME'] }" readonly="readonly">
+					<input name="ranks" type="text" class="form-control" readonly="readonly">
 				</div>
 				<div class="form-group">
 					<label>결재라인지정</label>
@@ -134,19 +134,8 @@ tabel th{
 					<a id="btnline" class="btn btn-info btn-sm">결재라인등록</a>
 				</div>
 				<div>
-					<table class="table table">
-						<tr>
-							<th>부서</th>
-							<th>직책</th>
-							<th>이름</th>
-						</tr>
-						<c:forEach var="map" items="${clList }">
-							<tr>
-								<td>${map['DEPT_NAME'] }</td>
-								<td>${map['POS_NAME'] }</td>
-								<td>${map['MEM_NAME'] }</td>
-							</tr>
-						</c:forEach>
+					<table id="regMem" class="table table">
+						
 					</table>
 				</div>
 			</div>
@@ -183,7 +172,38 @@ $(function(){
 	});
 	
 	$('#lineSel').change(function(){
-		location.href="<c:url value='/document/docSel.do?formNo=${param.formNo}'/>&regNo="+$('#lineSel').val();
+		$.ajax({
+			url:"<c:url value='/document/docSelLine.do'/>",
+			type:"post",
+			data:{"regNo":$('#lineSel').val()},
+			dataType:"json",
+			success:function(data){
+				
+				let table = $('#regMem');
+				table.html("<tr><th>부서</th><th>직책</th><th>이름</th></tr>");
+				
+				
+				
+
+				
+				for(let i = 0; i < data.length; i++){
+					let map = data[i];
+					let trEl = $("<tr></tr>");
+					let tdEl1 = $("<td></td>").html(map['DEPT_NAME']);
+					let tdEl2 = $("<td></td>").html(map['POS_NAME']);
+					let tdEl3 = $("<td></td>").html(map['MEM_NAME']);
+					
+					trEl.append(tdEl1);
+					trEl.append(tdEl2);
+					trEl.append(tdEl3);
+					
+					table.append(trEl);
+				}
+			},
+			error:function(xhr, status, error){
+				alert("에러 발생!!\n"+status+" : "+error);
+			}
+		});
 	});
 	
 	$('form[name=frm1]').submit(function(){
@@ -195,7 +215,26 @@ $(function(){
 			return false;
 		}
 	});
+	
 });
+
+function getFormInfo(formNo){
+	$.ajax({
+		url:"<c:url value='/document/docSelForm.do'/>",
+		type:"post",
+		data:{"formNo":formNo},
+		dataType:"json",
+		success:function(data){
+			$('input[name=formNo]').val(data['FORM_NO']);
+			$('input[name=doc]').val(data['TYPE_NAME']);
+			$('input[name=form]').val(data['FORM_NAME']);
+			$('input[name=ranks]').val(data['RANKS_NAME']);
+		},
+		error:function(xhr, status, error){
+			alert("에러 발생!!\n"+status+" : "+error);
+		}
+	});
+}
 
 </script>
 

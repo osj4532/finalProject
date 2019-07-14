@@ -8,10 +8,14 @@ public interface ConfirmDAO {
 	public int insertDocFile(ConfirmFileVO vo);
 	// 대기, 반려 문서 조회
 	public List<Map<String, Object>> selectWaitOrBackList(Map<String,Integer> map);
+	public int countWBList(Map<String, Integer> map);
 	// 완료 문서 조회
 	public List<Map<String, Object>> selectOkList(int ranksNo);
+	public int countOkList(int ranksNo);
 	// 임시 저장 문서 조회
 	public List<Map<String, Object>> selectTmpList(int memNo);
+	public int countTmpList(int memNo);
+	
 	public ConfirmVO confirmDetail(int cfNo);
 	public List<ConfirmFileVO> selectDocFiles(int cfNo);
 	public int deleteDocFile(String fileName);

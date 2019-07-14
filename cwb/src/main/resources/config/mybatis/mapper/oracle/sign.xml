@@ -21,6 +21,11 @@
 		where mem_no = #{memNo}
 	</update>
 	
+	<select id="checkSign" parameterType="int" resultType="int">
+		select count(*) from signreg
+		where mem_no = #{memNo}
+	</select> 
+	
 	<select id="getSignImg" parameterType="confirmVo" resultType="signVO">
 		<!-- select * from signreg
 		where mem_no in

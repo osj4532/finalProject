@@ -14,8 +14,11 @@ public interface ConfirmService {
 	public static final int DOC_TMP = 4;
 	
 	public int insertDoc(ConfirmVO vo, List<Map<String, Object>> fileList);
+	public int countWBList(Map<String, Integer> map);
 	public List<Map<String, Object>> selectWaitOrBackList(Map<String,Integer> map);
+	public int countOkList(int ranksNo);
 	public List<Map<String, Object>> selectOkList(int ranksNo);
+	public int countTmpList(int memNo);
 	public List<Map<String, Object>> selectTmpList(int memNo);
 	public ConfirmVO confirmDetail(int cfNo);
 	public List<ConfirmFileVO> selectDocFiles(int cfNo);

@@ -265,6 +265,13 @@
 			<artifactId>spring-context-support</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		
+		<!-- Java POI API (EXCEL) -->
+		<dependency>
+    		<groupId>org.apache.poi</groupId>
+	    	<artifactId>poi</artifactId>
+		    <version>3.17</version>
+		</dependency>
 	</dependencies>
 
 	<repositories>
