@@ -16,4 +16,6 @@ public interface MemberService {
 	public int loginCheck(String memId, String memPwd);
 	
 	public MemberVO selectByUserid(String memId);
+	
+	public List<Map<String, Object>> selectOrSearch(String keyword);
 }

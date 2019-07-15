@@ -10,10 +10,10 @@ public interface ConfirmDAO {
 	public List<Map<String, Object>> selectWaitOrBackList(Map<String,Integer> map);
 	public int countWBList(Map<String, Integer> map);
 	// 완료 문서 조회
-	public List<Map<String, Object>> selectOkList(int ranksNo);
+	public List<Map<String, Object>> selectOkList(Map<String,Integer> map);
 	public int countOkList(int ranksNo);
 	// 임시 저장 문서 조회
-	public List<Map<String, Object>> selectTmpList(int memNo);
+	public List<Map<String, Object>> selectTmpList(Map<String,Integer> map);
 	public int countTmpList(int memNo);
 	
 	public ConfirmVO confirmDetail(int cfNo);

@@ -79,7 +79,6 @@ tabel th{
 			<hr>
 			<ul id="docType">
 				<c:forEach var="typeMap" items="${docTypeList}">
-				
 					<li>
 			  			<span class="box">
 			  	 			<i class="fas fa-folder" name="ficon"></i>${typeMap['TYPE_NAME'] }

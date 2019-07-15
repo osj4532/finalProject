@@ -144,6 +144,14 @@
 		pageUl.html('');
 		let pageLi;
 		let pageA;
+		
+		if(pageInfo.firstPage != 1){
+			pageA = $("<a class='page-link' href='#'></a>").html("Prev");
+			pageLi = $('<li class="page-item"></li>').html(pageA);
+			pageLi.attr("onclick","movePage("+(pageInfo.firstPage-1)+")");
+			pageUl.append(pageLi);
+		}
+		
 		for(let i = pageInfo.firstPage; i<=pageInfo.lastPage; i++){
 			pageA = $("<a class='page-link' href='#'></a>").html(i);
 			if(i == $('input[name=currentPage]').val()){
@@ -154,6 +162,15 @@
 			pageLi.attr("onclick","movePage("+i+")");
 			pageUl.append(pageLi);
 		}
+		
+		
+		if(pageInfo.totalPage > pageInfo.lastPage){
+			pageA = $("<a class='page-link' href='#'></a>").html("Next");
+			pageLi = $('<li class="page-item"></li>').html(pageA);
+			pageLi.attr("onclick","movePage("+(pageInfo.lastPage+1)+")");
+			pageUl.append(pageLi);
+		}
+		
 		
 		$('#pageInfo').html(pageUl);
 		
@@ -207,7 +224,7 @@
 					
 					let regdate = new Date(map['CF_REGDATE']);
 					let year = regdate.getFullYear();
-					let month = regdate.getMonth();
+					let month = regdate.getMonth()+1;
 					let day = regdate.getDate();
 					
 					

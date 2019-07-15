@@ -19,6 +19,14 @@
 	<select id="selectMember" parameterType="string" resultType="memberVo">
 		select * from member where mem_Id=#{memId}
 	</select>
+	
+	<select id="selectOrSearch" resultType="memberVo" parameterType="string">
+		select * from memberview
+		<if test="keyword != null">
+			where mem_name||dept_name||pos_name like '%'||${keyword}||'%'
+		</if>
+	</select>
+	
 </mapper>
 
 

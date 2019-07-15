@@ -143,7 +143,7 @@ public class ConfirmController {
 		confirmVo.setCfTmpstorage("Y");
 		
 		List<Map<String, Object>> fileList = null;
-		if(files.length > 0) { 
+		if(files[0].getOriginalFilename() != null && !files[0].getOriginalFilename().isEmpty()) { 
 			confirmVo.setCfFile("Y"); 
 			fileList = fileUtil.multipleUpload(request); 
 		}else { 
@@ -231,7 +231,8 @@ public class ConfirmController {
 			list = confirmService.selectWaitOrBackList(map);
 			totalRec = confirmService.countWBList(map);
 		}else if(cfState == ConfirmService.DOC_OK) {
-			list = confirmService.selectOkList(ranksNo);
+			map.put("ranksNo",ranksNo);
+			list = confirmService.selectOkList(map);
 			totalRec = confirmService.countOkList(ranksNo);
 		}else if(cfState == ConfirmService.DOC_BACK) {
 			map.put("memNo",userNo);
@@ -239,7 +240,8 @@ public class ConfirmController {
 			list = confirmService.selectWaitOrBackList(map);
 			totalRec = confirmService.countWBList(map);
 		}else if(cfState == ConfirmService.DOC_TMP) {
-			list = confirmService.selectTmpList(userNo);
+			map.put("userNo",userNo);
+			list = confirmService.selectTmpList(map);
 			totalRec = confirmService.countTmpList(userNo);
 		}
 		

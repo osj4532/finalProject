@@ -12,4 +12,6 @@ public interface MemberDAO {
 	public String selectForLogin(String memId);
 	
 	public MemberVO selectByUserid(String memId);
+	
+	public List<Map<String, Object>> selectOrSearch(String keyword);
 }

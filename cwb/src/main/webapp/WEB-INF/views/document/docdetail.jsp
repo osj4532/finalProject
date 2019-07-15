@@ -173,10 +173,11 @@
 		<hr>
 		<div>
 			<c:if test="${sessionScope.memNo == member['MEM_NO'] &&
-			cfVo.cfState == 1 && cfVo.cfOrder == 1 }">
+			(cfVo.cfTmpstorage == 'Y'||
+			cfVo.cfState == 1 && cfVo.cfOrder == 1) }">
 				<button id="edit" class="btn btn-warning">문서수정</button>
 			</c:if>
-			<c:if test = "${(cfVo.cfState == 1 || cfVo.cfState == 4) && 
+			<c:if test = "${(cfVo.cfState == 1 || cfVo.cfTmpstorage == 'Y') && 
 			(sessionScope.memNo == member['MEM_NO']) && cfVo.cfOrder == 1}">
 				<button id="del" class="btn btn-danger">문서삭제</button>
 			</c:if>

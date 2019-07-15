@@ -28,4 +28,8 @@ public class MemberDAOMybatis implements MemberDAO{
 	public MemberVO selectByUserid(String memId) {
 		return sqlSession.selectOne(namespace+"selectMember", memId);
 	}
+	@Override
+	public List<Map<String, Object>> selectOrSearch(String keyword){
+		return sqlSession.selectList(namespace+"selectOrSearch",keyword);
+	}
 }

@@ -73,5 +73,9 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public MemberVO selectByUserid(String memId) {
 		return memberDAO.selectByUserid(memId);
-	}	
+	}
+	@Override
+	public List<Map<String, Object>> selectOrSearch(String keyword){
+		return memberDAO.selectOrSearch(keyword);
+	}
 }

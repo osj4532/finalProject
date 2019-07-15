@@ -35,15 +35,15 @@ public class ConfirmDAOMybatis implements ConfirmDAO{
 	public int countOkList(int ranksNo){
 		return sqlSession.selectOne(namespace+"countOkList",ranksNo);
 	}
-	public List<Map<String, Object>> selectOkList(int ranksNo){
-		return sqlSession.selectList(namespace+"selectOkList",ranksNo);
+	public List<Map<String, Object>> selectOkList(Map<String,Integer> map){
+		return sqlSession.selectList(namespace+"selectOkList",map);
 	}
 	// 임시 저장 문서 조회
 	public int countTmpList(int memNo) {
 		return sqlSession.selectOne(namespace+"countTmpList",memNo);
 	}
-	public List<Map<String, Object>> selectTmpList(int memNo){
-		return sqlSession.selectList(namespace+"selectTmpList",memNo);
+	public List<Map<String, Object>> selectTmpList(Map<String,Integer> map){
+		return sqlSession.selectList(namespace+"selectTmpList",map);
 	}
 	
 	public ConfirmVO confirmDetail(int cfNo) {

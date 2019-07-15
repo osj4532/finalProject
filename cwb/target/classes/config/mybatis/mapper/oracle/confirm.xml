@@ -19,8 +19,8 @@
 		<selectKey keyProperty="cfNo" resultType="int" order="BEFORE">
 			select confirm_seq.nextval from dual
 		</selectKey>
-			insert into confirm(cf_No, form_No, cf_state, mem_No, dept_No, reg_No, cf_Title, cf_Content, cf_file)
-			values(#{cfNo}, #{formNo}, #{cfState}, #{memNo}, #{deptNo}, #{regNo}, #{cfTitle}, #{cfContent}, #{cfFile})
+			insert into confirm(cf_No, form_No, cf_state, mem_No, dept_No, reg_No, cf_Title, cf_Content, cf_file, cf_tmpstorage)
+			values(#{cfNo}, #{formNo}, #{cfState}, #{memNo}, #{deptNo}, #{regNo}, #{cfTitle}, #{cfContent}, #{cfFile}, #{cfTmpstorage})
 	</insert>
 	
 	<insert id="insertDocFile" parameterType="confirmFileVo">
@@ -86,17 +86,26 @@
 		order by C.CF_NO desc
 	</select>
 	
-	<select id="selectOkList" resultMap="getWaitOrBackListResult" parameterType="int">
-		select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
-		C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
-		join member M
-		on M.MEM_NO = C.MEM_NO
-		join docform F
-		on F.FORM_NO = C.FORM_NO
-		<![CDATA[where C.form_no in (select form_no from formview where ranks_no <= #{ranksNo})]]>
-		and C.cf_okdate is not null
-		and C.cf_TMPSTORAGE = 'N'
-		order by C.CF_NO desc
+	<select id="selectOkList" resultMap="getWaitOrBackListResult" parameterType="map">
+		select B.*
+		from
+		(
+		select rownum as rnum, A.*
+				from(
+					select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
+					C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
+					join member M
+					on M.MEM_NO = C.MEM_NO
+					join docform F
+					on F.FORM_NO = C.FORM_NO
+					<![CDATA[where C.form_no in (select form_no from formview where ranks_no <= #{ranksNo})]]>
+					and C.cf_okdate is not null
+					and C.cf_TMPSTORAGE = 'N'
+					order by C.CF_NO desc
+				)A 
+<![CDATA[		where rownum <=  #{firstRecordIndex}+#{recordCountPerPage}]]>
+			)B
+			where B.RNUM > #{firstRecordIndex}
 	</select>
 	
 	<select id="countTmpList" resultType="int" parameterType="int">
@@ -110,16 +119,25 @@
 		order by C.CF_NO desc
 	</select>
 	
-	<select id="selectTmpList" resultMap="getWaitOrBackListResult" parameterType="int">
-		select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
-		C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
-		join member M
-		on M.MEM_NO = C.MEM_NO
-		join docform F
-		on F.FORM_NO = C.FORM_NO
-		where C.mem_no = #{memNo}
-		and C.cf_TMPSTORAGE = 'Y'
-		order by C.CF_NO desc
+	<select id="selectTmpList" resultMap="getWaitOrBackListResult" parameterType="map">
+		select B.*
+		from
+		(
+		select rownum as rnum, A.*
+				from(
+					select C.CF_NO, C.FORM_NO, C.MEM_NO, C.CF_TITLE, C.CF_STATE, 
+					C.CF_REGDATE, M.MEM_NAME, F.FORM_NAME from confirm C
+					join member M
+					on M.MEM_NO = C.MEM_NO
+					join docform F
+					on F.FORM_NO = C.FORM_NO
+					where C.mem_no = #{userNo}
+					and C.cf_TMPSTORAGE = 'Y'
+					order by C.CF_NO desc
+				)A 
+<![CDATA[		where rownum <=  #{firstRecordIndex}+#{recordCountPerPage}]]>
+			)B
+			where B.RNUM > #{firstRecordIndex}
 	</select>
 	
 	<select id="confirmDetail" resultType="confirmVo" parameterType="int">

@@ -67,15 +67,15 @@ public class ConfirmServiceImpl implements ConfirmService{
 		return confirmDAO.countOkList(ranksNo);
 	}
 	// 완료 문서 조회
-	public List<Map<String, Object>> selectOkList(int ranksNo){
-		return confirmDAO.selectOkList(ranksNo);
+	public List<Map<String, Object>> selectOkList(Map<String,Integer> map){
+		return confirmDAO.selectOkList(map);
 	}
 	public int countTmpList(int memNo) {
 		return confirmDAO.countTmpList(memNo);
 	}
 	// 임시 저장 문서 조회
-	public List<Map<String, Object>> selectTmpList(int memNo){
-		return confirmDAO.selectTmpList(memNo);
+	public List<Map<String, Object>> selectTmpList(Map<String,Integer> map){
+		return confirmDAO.selectTmpList(map);
 	}
 	
 	public ConfirmVO confirmDetail(int cfNo) {

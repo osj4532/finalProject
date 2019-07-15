@@ -164,6 +164,9 @@
 	</form>
 		<div>
 			<button id="save" class="btn btn-info">결재요청</button>
+			<c:if test="${cfVo.cfTmpstorage=='Y' }">
+				<button id="tmpSave" class="btn btn-warning">문서임시저장</button>
+			</c:if>
 			<button id="cancel" class="btn btn-danger">취소</button>
 		</div>
 </div>
@@ -183,6 +186,17 @@
 	
 	$(function(){
 		$.showFile(${cfVo.cfNo });
+		
+		
+		$('#tmpSave').click(function(){
+			if($('input[name=cfTitle]').val() == ""){
+				alert("제목을 입력해 주세요.");
+				
+			}else{
+				$('form[name=frm]').attr("action","<c:url value='/document/docTmp.do'/>");
+				$('form[name=frm]').submit();
+			}
+		});
 		
 		
 		$('#save').click(function(){

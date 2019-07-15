@@ -384,6 +384,17 @@
           </li>
           <li class="sub-menu">
             <a href="javascript:;">
+              <i class="fas fa-address-book"></i>
+              <span>주소록</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/address/companyAddr.do"/>">사내주소록</a></li>
+              <li><a href="<c:url value="/address/privateAddr.do"/>">개인주소록</a></li>
+            </ul>
+          </li>
+          
+          <li class="sub-menu">
+            <a href="javascript:;">
               <i class="far fa-file-alt fa-o"></i>
               <span>전자결재</span>
               </a>
@@ -424,10 +435,8 @@
             </ul>
           </li>
         </ul>
-        
-        
         <!-- sidebar menu end-->
       </div>
+      
+      
     </aside>
-    
-    
