@@ -22,10 +22,32 @@ public class SchedulerServiceImpl implements SchedulerService{
 		}
 		return cnt;
 	}
+	@Override
+	public int updateUserScd(SchedulerVO schedulerVo, boolean isday) {
+		int cnt = 0;
+		if(isday) {
+			cnt = schedulerDao.updateUserDayScd(schedulerVo);
+		}else {
+			cnt = schedulerDao.updateUserScd(schedulerVo);
+		}
+		
+		return cnt;
+	}
 
 	@Override
 	public List<SchedulerVO> selectByUser(int memNo) {
 		return schedulerDao.selectByUser(memNo);
 	}
+
+	@Override
+	public int deleteByscdNo(int scdNo) {
+		return schedulerDao.deleteByscdNo( scdNo);
+	}
+	@Override
+	public int updateUserScdContent(SchedulerVO schedulerVo) {
+		return schedulerDao.updateUserScdContent(schedulerVo);
+	}
+
+	
 	
 }

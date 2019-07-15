@@ -12,7 +12,6 @@
 	src="<c:url value='/resources/lib/scheduler/fullcalendar.min.js'/>"></script>
 <script
 	src="<c:url value='/resources/lib/scheduler/fullcalendar-ko.js'/>"></script>
-
 <style type="text/css">
 .mg_text {
 	font-size: 36px;
@@ -66,10 +65,12 @@ element.style {
 					right : 'month,agendaWeek,agendaDay,listMonth '  
 				},
 				defaultDate : new Date(),
-				selectable : true,
 				aspectRatio : 1.8,
+				eventLimit: true, 
+				<c:if test="${ranksNo>=2}">    
+				
 				selectHelper : true,
-				eventLimit: true,
+				selectable : true,
 				select : function(start, end,  allDay) {
 					var title = prompt('일정을 입력하세요.');
 					var st=start.format(); 
@@ -84,11 +85,11 @@ element.style {
 						if(title){ 
 							$.ajax({
 								type : "post",
-								url : "<c:url value='/scheduler/userScdWrite.do'/>",
+								url : "<c:url value='/teamscheduler/TeamScdWrite.do'/>",
 								data : { 
-									"scdContent" : title,
-									"scdStart" :st,
-				 					"scdEnd" : en 
+									"tscdContent" : title,
+									"tscdStartdate" :st,
+				 					"tscdEnddate" : en 
 									
 								}, 
 								success : function(data) {
@@ -107,9 +108,8 @@ element.style {
 					
 					}else if(title==null){
 					}else {
-						alert('입력값이 없습니다!'); 
+						alert('입력값이 없습니다!');
 					}
-					 
 					
 				}, 
 				eventClick: function(event, element){ 
@@ -118,10 +118,10 @@ element.style {
 						if(title){ 
 							$.ajax({
 								type : "post",
-								url : "<c:url value='/scheduler/userScdEditCon.do'/>",
+								url : "<c:url value='/teamscheduler/TeamScdEditCon.do'/>",
 								data : { 
-									"scdNo" :event.id,
-									"scdContent" : title 
+									"tscdNo" :event.id,
+									"tscdContent" : title 
 								}, 
 								success : function(data) {
 									alert("내용 수정 완료");
@@ -145,9 +145,9 @@ element.style {
 						if(confirm("일정을 삭제하시겠습니까?")){
 							$.ajax({
 								type:"post",
-								url:"<c:url value='/scheduler/userScdDel.do'/>",
+								url:"<c:url value='/teamscheduler/TeamScdDel.do'/>",
 								data:{ 
-									"scdNo":event.id,
+									"tscdNo":event.id,
 								},
 								success : function(data) {
 									alert("삭제 완료");
@@ -164,7 +164,7 @@ element.style {
 							});
 						}
 					}
-				}, 
+				},
 				editable : true, //수정 가능  
 				eventDrop: function( event, dayDelta, allDay ) {//이벤트 드롭 수정
 	                var st=event.start.format(); 
@@ -177,12 +177,12 @@ element.style {
 						en=event.end.format('YYYY/MM/DD HH:mm:ss');
 					}
 					$.ajax({
-						url:"<c:url value='/scheduler/userScdEdit.do'/>",
+						url:"<c:url value='/teamscheduler/TeamScdEdit.do'/>",
 						type:"post",
 						data:{ 
-							"scdNo":event.id,
-							"scdStart" :st,
-		 					"scdEnd" : en 
+							"tscdNo":event.id,
+							"tscdStartdate" :st,
+		 					"tscdEnddate" : en 
 							
 						},
 						success : function(data) {
@@ -212,12 +212,12 @@ element.style {
 							en=event.end.format('YYYY/MM/DD HH:mm:ss');
 						}
 						$.ajax({
-							url:"<c:url value='/scheduler/userScdEdit.do'/>",
+							url:"<c:url value='/teamscheduler/TeamScdEdit.do'/>",
 							type:"post",
 							data:{ 
-								"scdNo":event.id,
-								"scdStart" :st,
-			 					"scdEnd" : en 
+								"tscdContent":event.id,
+								"tscdStartdate" :st,
+			 					"tscdEnddate" : en 
 								
 							},
 							success : function(data) {
@@ -225,7 +225,6 @@ element.style {
 								$("#calendar").fullCalendar("refetchEvents");
 							},
 							error : function(xhr, err) { 
-								//alert(moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS')); 
 								alert("ERROR! - readyState: "
 										+ xhr.readyState
 										+ "<br/>status: "
@@ -235,20 +234,22 @@ element.style {
 							}
 						});
 	            },
+	            </c:if>  
+	            
 				events : function(start, end, allDay, callback) {
 					$.ajax({
 						type : "post",
-						url : "<c:url value='/scheduler/userScdFind.do'/>",
+						url : "<c:url value='/teamscheduler/TeamScdFind.do'/>",
 						dataType : 'json',
 						success : function(data) {
 							var events = [];
 							$.each(data, function(index,
 									item) { 
 								events.push({
-									id:this.scdNo, 
-									title : this.scdContent,
-									start : this.scdStart,
-									end : this.scdEnd
+									id:this.tscdNo, 
+									title : this.tscdContent,
+									start : this.tscdStartdate,
+									end : this.tscdEnddate
 								}); 
 								console.log($(this))
 							});  
@@ -275,15 +276,17 @@ element.style {
 <section id="main-content">
 	<section class="wrapper">
 		<h1 class="mg_text">
-			<i class="fa fa-angle-right mt text-important"></i>개인 스케줄 
+			<i class="fa fa-angle-right mt text-important"></i> 부서 스케줄 
 		</h1>
 		<!-- page start-->
 		<div class="row"> 
-			<div class="col-lg-12">    
-				<span id="switchinfo"> Click    </span>      
+			<div class="col-lg-12">   
+			<c:if test="${ranksNo>=2}">  
+				<span id="switchinfo" > Click    </span>      
                   <div class="switch switch-square" data-on-label="수정" data-off-label="삭제">
                     <input type="checkbox" id="EditChk"/>
                   </div>
+            </c:if>
 				<div class="darkblue-panel"
 					style="padding: 30px; border-radius: 35px;">
 					<div id='calendar'></div> 

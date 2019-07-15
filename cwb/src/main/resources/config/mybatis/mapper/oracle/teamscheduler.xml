@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="config.mybatis.mapper.oracle.teamscheduler">
+
+	<insert id="insertTeamScd" parameterType="teamSchedulerVo">
+		<selectKey order="BEFORE" keyProperty="tscdNo" resultType="int">
+			select TEAMSCHEDULE_SEQ.nextval from dual
+		</selectKey>
+		insert into teamschedule
+		values(#{tscdNo},#{memNo},#{deptNo},
+to_date(#{tscdStartdate},'YYYY/MM/DD HH24:MI:SS'),to_date(#{tscdEnddate},'YYYY/MM/DD HH24:MI:SS')
+		,#{tscdContent})
+	</insert>
+	
+	<insert id="insertTeamDayScd" parameterType="teamSchedulerVo">
+		<selectKey order="BEFORE" keyProperty="tscdNo" resultType="int">
+			select schedule_seq.nextval from dual
+		</selectKey>
+		insert into teamschedule
+		values(#{tscdNo},#{memNo},#{deptNo},#{tscdStartdate},#{tscdEnddate}
+		,#{tscdContent})
+	</insert>
+	
+
+	<select id="selectByTeam" parameterType="int" resultType="teamSchedulerVo">
+			select * from teamschedule
+			where dept_no=#{deptNo}
+	</select>
+	
+	<delete id="deleteByscdNo" parameterType="int">
+		delete from teamschedule
+		where tscd_no=#{tscdNo}
+	</delete>
+	
+	<update id="updateTeamDayScd" parameterType="teamSchedulerVo">
+		update teamschedule
+		set tscd_startdate=#{tscdStartdate},tscd_enddate=#{tscdEnddate}
+		where tscd_no=#{tscdNo}
+	</update>
+	<update id="updateTeamScd" parameterType="teamSchedulerVo">
+		update teamschedule
+		set tscd_startdate=to_date(#{tscdStartdate},'YYYY/MM/DD HH24:MI:SS'),
+			tscd_enddate=to_date(#{tscdEnddate},'YYYY/MM/DD HH24:MI:SS')
+		where tscd_no=#{tscdNo}
+	</update>
+	<update id="updateTeamScdContent" parameterType="teamSchedulerVo">
+		update teamschedule
+		set tscd_content=#{tscdContent} 
+		where tscd_no=#{tscdNo}
+	</update> 
+	
+	
+</mapper>
+
+
+
+
+
+
+
+
+

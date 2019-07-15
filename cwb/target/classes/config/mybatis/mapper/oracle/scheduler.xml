@@ -27,6 +27,28 @@ to_date(#{scdStart},'YYYY/MM/DD HH24:MI:SS'),to_date(#{scdEnd},'YYYY/MM/DD HH24:
 			select * from schedule
 			where mem_No=#{memNo}
 	</select>
+	
+	<delete id="deleteByscdNo" parameterType="int">
+		delete from schedule
+		where scd_no=#{scdNo}
+	</delete>
+	
+	<update id="updateUserDayScd" parameterType="schedulerVo">
+		update schedule
+		set scd_start=#{scdStart},scd_end=#{scdEnd}
+		where scd_no=#{scdNo}
+	</update>
+	<update id="updateUserScd" parameterType="schedulerVo">
+		update schedule
+		set scd_start=to_date(#{scdStart},'YYYY/MM/DD HH24:MI:SS'),
+			scd_end=to_date(#{scdEnd},'YYYY/MM/DD HH24:MI:SS')
+		where scd_no=#{scdNo}
+	</update>
+	<update id="updateUserScdContent" parameterType="schedulerVo">
+		update schedule
+		set scd_content=#{scdContent} 
+		where scd_no=#{scdNo}
+	</update> 
 </mapper>
 
 

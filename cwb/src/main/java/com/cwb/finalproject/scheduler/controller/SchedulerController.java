@@ -31,11 +31,11 @@ public class SchedulerController {
 
 	@RequestMapping("/userScdWrite.do")
 	@ResponseBody
-	public SchedulerVO userScdput(@ModelAttribute SchedulerVO schedulerVo, HttpSession session) {
-		logger.info("ajax 이용 스케줄 입력 schedulerVo={}", schedulerVo);
+	public void userScdput(@ModelAttribute SchedulerVO schedulerVo, HttpSession session) {
 
-		// int memNo = (Integer)session.getAttribute("memNo");
-		schedulerVo.setMemNo(1);
+		int memNo = (Integer)session.getAttribute("memNo");
+		logger.info("ajax 이용 스케줄 입력 schedulerVo={},memNo={}", schedulerVo,memNo);
+		schedulerVo.setMemNo(memNo);
 		boolean isday = false;
 		if (schedulerVo.getScdStart().length() == 10 && schedulerVo.getScdEnd().length() == 10) {
 			isday = true;
@@ -45,25 +45,58 @@ public class SchedulerController {
 		int cnt = schedulerService.insertUserScd(schedulerVo, isday);
 		logger.info("ajax 이용 스케줄 완료 결과 int={}", cnt);
 
-		return schedulerVo;
 	}
 
 	@RequestMapping("/userScdFind.do")
 	@ResponseBody
 	public List<SchedulerVO> userScdFind(HttpSession session) {
-		// int memNo = (Integer)session.getAttribute("memNo");
-		logger.info("ajax 이용 스케줄 가지고오기");
-		int memNo = 1;
+		int memNo = (Integer)session.getAttribute("memNo");
+		logger.info("ajax 이용 스케줄 가지고오기 memNo={}",memNo);
 		List<SchedulerVO> list = schedulerService.selectByUser(memNo);
 		logger.info("ajax 스케줄 결과 list.size={},list={}", list.size(), list);
 
 		for (SchedulerVO vo : list) {
-			if(vo.getScdStart().substring(11).equals("00:00:00")) {
+			if(vo.getScdStart().substring(11).equals("00:00:00")
+					&& vo.getScdEnd().substring(11).equals("00:00:00")) {
 				vo.setScdStart(vo.getScdStart().substring(0, 10));
 				vo.setScdEnd(vo.getScdEnd().substring(0, 10));
 			}
 		}
 
 		return list; 
+	}
+	
+	@RequestMapping("/userScdDel.do")
+	@ResponseBody
+	public void userScdDel(@ModelAttribute SchedulerVO schedulerVo) {
+		logger.info("개인스케줄 삭제 파라미터 schedulerVo={}",schedulerVo);
+		
+		int cnt = schedulerService.deleteByscdNo(schedulerVo.getScdNo());
+		logger.info("개인스케줄 삭제 결과 cnt={}",cnt); 
+		
+	}
+	
+	@RequestMapping("/userScdEdit.do")
+	@ResponseBody
+	public void userScdEdit(@ModelAttribute SchedulerVO schedulerVo) {
+		logger.info("개인스케줄 수정 파라미터 schedulerVo={}",schedulerVo);
+		boolean isday = false;
+		if (schedulerVo.getScdStart().length() == 10
+				&& schedulerVo.getScdEnd().length() == 10) {
+			isday = true;
+		}
+		logger.info("종일 결과 is={}", isday);
+		
+		int cnt =schedulerService.updateUserScd(schedulerVo, isday);
+		logger.info("개인스케줄 수정 결과 cnt={}",cnt); 
+	}
+	
+	@RequestMapping("/userScdEditCon.do")
+	@ResponseBody
+	public void userScdEditCon(@ModelAttribute SchedulerVO schedulerVo) {
+		logger.info("개인스케줄 내용 수정 파라미터 schedulerVo={}",schedulerVo);
+		
+		int cnt =schedulerService.updateUserScdContent(schedulerVo);
+		logger.info("개인스케줄 내용 수정 결과 cnt={}",cnt); 
 	}
 }

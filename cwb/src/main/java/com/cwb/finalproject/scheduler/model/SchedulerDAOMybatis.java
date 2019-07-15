@@ -27,6 +27,26 @@ public class SchedulerDAOMybatis implements SchedulerDAO{
 	public int insertUserDayScd(SchedulerVO schedulerVo) {
 		return sqlSesson.insert(namespace+"insertUserDayScd", schedulerVo);
 	}
+
+	@Override
+	public int deleteByscdNo(int scdNo) {
+		return sqlSesson.delete(namespace+"deleteByscdNo",scdNo);
+	}
+
+	@Override
+	public int updateUserDayScd(SchedulerVO schedulerVo) {
+		return sqlSesson.update(namespace+"updateUserDayScd", schedulerVo);
+	}
+
+	@Override
+	public int updateUserScd(SchedulerVO schedulerVo) {
+		return sqlSesson.update(namespace+"updateUserScd", schedulerVo);
+	}
+
+	@Override
+	public int updateUserScdContent(SchedulerVO schedulerVo) {
+		return sqlSesson.update(namespace+"updateUserScdContent", schedulerVo);
+	}
 	
 	
 	

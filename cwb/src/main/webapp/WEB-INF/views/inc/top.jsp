@@ -404,9 +404,26 @@
               <li><a href="<c:url value="/commute/commute.do"/>">근태관리</a></li>
             </ul>
           </li>
-          
+           <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="far fa-calendar-alt"></i>
+              <span>스케줄러</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/scheduler/scheduler.do"/>">개인 스케줄</a></li>
+              <li><a href="<c:url value="/teamscheduler/scheduler.do"/>">부서 스케줄</a></li>
+            </ul>
+          </li>
+           <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fas fa-box"></i> 
+              <span>자원 관리</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/resources/list.do"/>">자원</a></li>
+            </ul>
+          </li>
         </ul>
-        
         
         
         <!-- sidebar menu end-->
