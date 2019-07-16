@@ -17,5 +17,5 @@ public interface MemberService {
 	
 	public MemberVO selectByUserid(String memId);
 	
-	public List<Map<String, Object>> selectOrSearch(String keyword);
+	public List<Map<String, Object>> selectOrSearch(Map<String, Object> map);
 }
