@@ -7,7 +7,7 @@
 <script src="<c:url value='/resources/js/paging.js'/>"></script>
 <script type="text/javascript">
 	$(document).ready(function(){
-			$.send(1);
+		$.send(1);	
 	});
 	
 	$.send=function(curPage){
@@ -92,6 +92,13 @@
 		min-height: 890px;
 		background-color: white;
 	}
+	#Main > h1 {
+		margin-top: 70px;
+	}
+	#title h2{
+		text-align: center;
+		background-color: white;
+	}
 </style>
 
 <div id="Main" class="container">
@@ -109,7 +116,7 @@
 	</div>
 	<div id="content" class="col-md-8">
 	<div id="title" class="col-md-8">
-		<h1 style="text-align: center;background-color: white;">${title }</h1>
+		<h2>${title }</h2>
 	</div>
 	<!-- 메뉴 선택을 위한 form -->
 	<form name="frmMenu" method="post" action="<c:url value='/commute/commute.do'/>">
