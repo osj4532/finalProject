@@ -2,7 +2,9 @@ package com.cwb.finalproject.commute.model;
 
 import java.sql.Timestamp;
 
-public class CommuteVO {
+import com.cwb.finalproject.common.SearchVO;
+
+public class CommuteVO extends SearchVO{
 
 	private int comNo;				//근태관리번호
 	private int memNo;				//사원번호

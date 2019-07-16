@@ -5,21 +5,27 @@
 <mapper namespace="config.mybatis.mapper.oracle.commute">
 	<select id="selectAll" resultType="map">
 		select * from commuteview
+		order by comindate desc
 	</select>
 	
 	<select id="selectByMemNo" parameterType="int" resultType="String">
-		select deptName from commuteview
-		where memNo=#{memNo}
+		select d.DEPT_NAME
+		from member m
+		join department d
+		on m.DEPT_NO = d.DEPT_NO
+		where mem_no = #{memNo}
 	</select>
 	
 	<select id="selectIndiv" parameterType="int" resultType="map">
 		select * from commuteview
 		where memno=#{memNo}
+		order by comindate desc
 	</select>
 	
 	<select id="selectDep" parameterType="String" resultType="map">
 		select * from commuteview
 		where deptName=#{deptName}
+		order by comindate desc
 	</select>
 
 	<select id="selectIndivHoly" parameterType="int" resultType="map">
@@ -39,10 +45,11 @@
 		on m.DEPT_NO = d.DEPT_NO
 		join position p
 		on m.POS_NO = p.POS_NO
+		order by mem_name
 	</select>
 	
-	<!-- <select id="selectDepAssi" resultType="map">
+	<select id="selectDepAssi" resultType="map">
 		
-	</select> -->
+	</select>
 
 </mapper>
