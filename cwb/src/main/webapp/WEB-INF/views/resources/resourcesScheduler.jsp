@@ -71,7 +71,6 @@ element.style {
 				selectHelper : true,
 				eventLimit: true,
 				select : function(start, end,  allDay) {
-					var title = prompt('일정을 입력하세요.');
 					var st=start.format(); 
 					var en=end.format(); 
 					if(st.length==10){
@@ -81,18 +80,19 @@ element.style {
 						st=start.format('YYYY/MM/DD HH:mm:ss');
 						en=end.format('YYYY/MM/DD HH:mm:ss');
 					}
-						if(title){ 
+						if(confirm("${resVo.resName}의 대여를 신청하시겠습니까?")){ 
 							$.ajax({
 								type : "post",
-								url : "<c:url value='/scheduler/userScdWrite.do'/>",
+								url : "<c:url value='/resScheduler/ResScdWrite.do'/>",
 								data : { 
-									"scdContent" : title,
-									"scdStart" :st,
-				 					"scdEnd" : en 
+									"resNo": '${param.resNo}', 
+									"reservContent" : '${resVo.resName}',
+									"useRegdate" :st,
+				 					"returnRegdate" : en 
 									
 								}, 
 								success : function(data) {
-									alert("저장 완료");
+									alert("신청 완료");
 									$("#calendar").fullCalendar("refetchEvents");
 								},
 								error : function(xhr, err) { 
@@ -165,7 +165,7 @@ element.style {
 						}
 					}
 				}, 
-				editable : true, //수정 가능  
+				//editable : true, //수정 가능  
 				eventDrop: function( event, dayDelta, allDay ) {//이벤트 드롭 수정
 	                var st=event.start.format(); 
 					var en=event.end.format(); 
@@ -238,21 +238,24 @@ element.style {
 				events : function(start, end, allDay, callback) {
 					$.ajax({
 						type : "post",
-						url : "<c:url value='/scheduler/userScdFind.do'/>",
-						dataType : 'json',
+						url : "<c:url value='/resScheduler/ResScdFind.do'/>",
+						data:{
+							"resNo": ${param.resNo} 
+						},
+						dataType : 'json', 
 						success : function(data) {
 							var events = [];
 							$.each(data, function(index,
 									item) {
-								var color= "#50e6ffa3";
-								if(this.isday){   
-									color="#d0d882";  
+								var color= "red";
+								if(this.apprFlag=='Y'){   
+									color="green";  
 								}
 								events.push({
-									id:this.scdNo, 
-									title : this.scdContent,
-									start : this.scdStart,
-									end : this.scdEnd,
+									id:this.reservNo, 
+									title : this.reservContent,
+									start : this.useRegdate,
+									end : this.returnRegdate,
 									backgroundColor: color 
 								}); 
 								console.log($(this))
@@ -280,13 +283,13 @@ element.style {
 <section id="main-content">
 	<section class="wrapper">
 		<h1 class="mg_text">
-			<i class="fa fa-angle-right mt text-important"></i>개인 스케줄 
+			<i class="fa fa-angle-right mt text-important"></i>${resVo.resName} 자원 스케줄
 		</h1>
 		<!-- page start-->
 		<div class="row"> 
 			<div class="col-lg-12">    
 				<span id="switchinfo"> Click    </span>      
-                  <div class="switch switch-square" data-on-label="수정" data-off-label="삭제">
+                  <div class="switch switch-square" data-on-label="승인" data-off-label="반려">
                     <input type="checkbox" id="EditChk"/>
                   </div>
 				<div class="darkblue-panel"

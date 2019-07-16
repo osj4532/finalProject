@@ -58,6 +58,9 @@
 			location.href="<c:url value='/resources/resourcesDelete.do?resNo='/>"+resNo;
 		}
 	};
+	function resScheduler(resNo){
+		location.href="<c:url value='/resScheduler/resScheduler.do?resNo='/>"+resNo;
+	};
 	
 	 
 </script>
@@ -192,7 +195,7 @@
 					 		<span class="badge bg-theme">사용가능</span>
 						</c:if>
                     <td>  
-                      <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
+                      <button class="btn btn-success btn-xs" onclick="resScheduler(${ResList[i][j].resNo})"><i class="far fa-calendar-alt"></i></button>
                       <button class="btn btn-primary btn-xs" onclick="editRes(${ResList[i][j].resNo})">
                       <i class="fas fa-edit"></i></button>
                       <button class="btn btn-danger btn-xs" onclick="deleteRes(${ResList[i][j].resNo})">

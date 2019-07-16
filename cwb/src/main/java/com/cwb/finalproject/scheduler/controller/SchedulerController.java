@@ -36,13 +36,12 @@ public class SchedulerController {
 		int memNo = (Integer)session.getAttribute("memNo");
 		logger.info("ajax 이용 스케줄 입력 schedulerVo={},memNo={}", schedulerVo,memNo);
 		schedulerVo.setMemNo(memNo);
-		boolean isday = false;
 		if (schedulerVo.getScdStart().length() == 10 && schedulerVo.getScdEnd().length() == 10) {
-			isday = true;
+			schedulerVo.setIsday(true);
 		}
-		logger.info("종일 결과 is={}", isday);
+		logger.info("종일 결과 is={}", schedulerVo.isIsday());
 
-		int cnt = schedulerService.insertUserScd(schedulerVo, isday);
+		int cnt = schedulerService.insertUserScd(schedulerVo, schedulerVo.isIsday());
 		logger.info("ajax 이용 스케줄 완료 결과 int={}", cnt);
 
 	}
@@ -60,6 +59,7 @@ public class SchedulerController {
 					&& vo.getScdEnd().substring(11).equals("00:00:00")) {
 				vo.setScdStart(vo.getScdStart().substring(0, 10));
 				vo.setScdEnd(vo.getScdEnd().substring(0, 10));
+				vo.setIsday(true);
 			}
 		}
 
