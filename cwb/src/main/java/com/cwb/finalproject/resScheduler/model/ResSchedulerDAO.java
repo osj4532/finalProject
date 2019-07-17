@@ -6,5 +6,11 @@ public interface ResSchedulerDAO {
 	int insertResScd(ResSchedulerVO resSchedulerVo);
 	int insertResDayScd(ResSchedulerVO resSchedulerVo);
 	List<ResSchedulerVO> selectResScdByResNo(int resNo);
-	
+	int updateResScdApprove(int reservNo);
+	int updateResScdRefuse(int reservNo);
+	int updateResScdWait(int reservNo);
+	int selectFrontDay(ResSchedulerVO resSchedulerVo);
+	int selectBackDay(ResSchedulerVO resSchedulerVo);
+	int selectFrontSys(ResSchedulerVO resSchedulerVo);
+	int selectBackSys(ResSchedulerVO resSchedulerVo);
 }

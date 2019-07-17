@@ -26,6 +26,41 @@ public class ResSchedulerDAOMybatis implements ResSchedulerDAO{
 	public List<ResSchedulerVO> selectResScdByResNo(int resNo) {
 		return sqlSession.selectList(namespace+"selectResScdByResNo", resNo);
 	}
+
+	@Override
+	public int updateResScdApprove(int reservNo) {
+		return sqlSession.update(namespace+"updateResScdApprove", reservNo);
+	}
+
+	@Override
+	public int updateResScdRefuse(int reservNo) {
+		return sqlSession.update(namespace+"updateResScdRefuse", reservNo);
+	}
+ 
+	@Override
+	public int updateResScdWait(int reservNo) {
+		return sqlSession.update(namespace+"updateResScdWait", reservNo);
+	}
+
+	@Override
+	public int selectFrontDay(ResSchedulerVO resSchedulerVo) {
+		return sqlSession.selectOne(namespace+"selectFrontDay", resSchedulerVo);
+	}
+
+	@Override
+	public int selectBackDay(ResSchedulerVO resSchedulerVo) {
+		return sqlSession.selectOne(namespace+"selectBackDay", resSchedulerVo);
+	}
+
+	@Override
+	public int selectFrontSys(ResSchedulerVO resSchedulerVo) {
+		return sqlSession.selectOne(namespace+"selectFrontSys", resSchedulerVo);
+	}
+
+	@Override
+	public int selectBackSys(ResSchedulerVO resSchedulerVo) {
+		return  sqlSession.selectOne(namespace+"selectBackSys", resSchedulerVo);
+	}
 	
 	
 }
