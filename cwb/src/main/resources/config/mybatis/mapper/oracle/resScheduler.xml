@@ -9,10 +9,10 @@
 			select resschedule_seq.nextval from dual
 		</selectKey>
 		insert into resschedule(reserv_no,mem_no,res_no,
-		use_regdate,return_regdate,reserv_content)
+		use_regdate,return_regdate,reserv_content,appr_flag)
 values(#{reservNo},#{memNo},#{resNo},
 to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS'),to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS')
-		,#{reservContent})
+		,#{reservContent},#{apprFlag})
 	</insert>
 	
 	
@@ -21,13 +21,57 @@ to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS'),to_date(#{returnRegdate},'YYYY/MM
 			select resschedule_seq.nextval from dual
 		</selectKey>
 		insert into resschedule(reserv_no,mem_no,res_no,
-		use_regdate,return_regdate,reserv_content)
+		use_regdate,return_regdate,reserv_content,appr_flag)
 values(#{reservNo},#{memNo},#{resNo},
-#{useRegdate},#{returnRegdate},#{reservContent})
+#{useRegdate},#{returnRegdate},#{reservContent},#{apprFlag})
 	</insert>
 	<select id="selectResScdByResNo" parameterType="int" resultType="resSchedulerVO">
 			select * from resschedule
 			where res_No=#{resNo}
+	</select>
+	
+	<update id="updateResScdApprove" parameterType="int" >
+		update resschedule
+		set appr_flag='Y'
+		where reserv_no=#{reservNo}
+	</update>
+	
+	<update id="updateResScdRefuse" parameterType="int">
+		update resschedule
+		set appr_flag='N'
+		where reserv_no=#{reservNo}
+	</update>
+	<update id="updateResScdWait" parameterType="int">
+		update resschedule
+		set appr_flag='W'
+		where reserv_no=#{reservNo}
+	</update>
+	
+	<select id="selectFrontDay" parameterType="resSchedulerVO" resultType="int">
+		select count(*) from resschedule
+		where to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS') between 
+		use_regdate
+		and return_regdate-1
+		and appr_flag in('Y','W')
+		and res_no=#{resNo}
+	</select>
+	
+	<select id="selectBackDay" parameterType="resSchedulerVO" resultType="int">
+		select count(*) from resschedule
+		where to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS') between 
+		use_regdate+1
+		and return_regdate
+		and appr_flag in('Y','W')
+		and res_no=#{resNo}
+	</select> 
+	
+	<select id="selectFrontSys" parameterType="resSchedulerVO" resultType="int">
+		select count(*) from dual
+		<![CDATA[ where to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS')<=sysdate]]>
+	</select>
+	<select id="selectBackSys" parameterType="resSchedulerVO" resultType="int">
+		select count(*) from dual 
+		<![CDATA[ where to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS')<=sysdate]]>
 	</select>
 	<!-- 
 	<delete id="deleteByscdNo" parameterType="int">
