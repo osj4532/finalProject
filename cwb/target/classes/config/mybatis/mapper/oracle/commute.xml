@@ -3,8 +3,24 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="config.mybatis.mapper.oracle.commute">
-	<select id="selectAll" resultType="map">
-		select * from commuteview
+	<select id="selectAll" resultType="map" parameterType="map">
+		select *
+		from
+		(
+			select A.*, rownum as rnum
+			from(
+				select * from commuteview
+				order by comindate desc
+			)A
+		)
+		<![CDATA[
+		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
+		]]>
+	</select>
+	<select id="countSelectAll" resultType="int">
+		
+		select count(*)
+		from commuteview
 		order by comindate desc
 	</select>
 	
@@ -16,20 +32,75 @@
 		where mem_no = #{memNo}
 	</select>
 	
-	<select id="selectIndiv" parameterType="int" resultType="map">
-		select * from commuteview
+	<select id="selectIndiv" parameterType="map" resultType="map">
+		select *
+		from
+		(
+			select A.*, rownum as rnum
+			from(
+				select * from commuteview
+				where memno=#{memNo}
+				order by comindate desc
+			)
+		)
+		<![CDATA[
+		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="countSelectIndiv" resultType="int" parameterType="int">
+		select count(*)
+		from commuteview
 		where memno=#{memNo}
 		order by comindate desc
 	</select>
 	
-	<select id="selectDep" parameterType="String" resultType="map">
-		select * from commuteview
+	<select id="selectDep" parameterType="map" resultType="map">
+		select *
+		from
+		(
+			select A.*, rownum as rnum
+			from
+			(
+				select * from commuteview
+				where deptName=#{deptName}
+				order by comindate desc
+			)
+		)
+		<![CDATA[
+		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="countSelectDep" parameterType="String" resultType="int">
+		select count(*) from commuteview
 		where deptName=#{deptName}
 		order by comindate desc
 	</select>
 
-	<select id="selectIndivHoly" parameterType="int" resultType="map">
-		select mem_no, mem_name, dept_name, pos_name, mem_holiday, mem_useholiday
+	<select id="selectIndivHoly" parameterType="map" resultType="map">
+		select *
+		from
+		(
+			select A.*, rownum as rnum
+			from
+			(
+				select mem_no, mem_name, dept_name, pos_name, mem_holiday, mem_useholiday
+				from member m
+				join department d
+				on m.DEPT_NO = d.DEPT_NO
+				join position p
+				on m.POS_NO = p.POS_NO
+				where mem_no=#{memNo}
+			)
+		)
+		<![CDATA[
+		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="countSelectIndivHoly" parameterType="int" resultType="int">
+		select count(*)
 		from member m
 		join department d
 		on m.DEPT_NO = d.DEPT_NO
@@ -38,8 +109,29 @@
 		where mem_no=#{memNo}
 	</select>
 	
-	<select id="selectAllHoly" resultType="map">
-		select mem_no, mem_name, dept_name, pos_name, mem_holiday, mem_useholiday
+	<select id="selectAllHoly" parameterType="map" resultType="map">
+		select
+		from
+		(		
+			select A.*, rownum as rnum
+			from
+			(
+				select mem_no, mem_name, dept_name, pos_name, mem_holiday, mem_useholiday
+				from member m
+				join department d
+				on m.DEPT_NO = d.DEPT_NO
+				join position p
+				on m.POS_NO = p.POS_NO
+				order by mem_name
+			)
+		)
+		<![CDATA[
+		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
+		]]>
+	</select>
+	
+	<select id="countSelectAllHoly" resultType="int">
+		select count(*)
 		from member m
 		join department d
 		on m.DEPT_NO = d.DEPT_NO
@@ -48,8 +140,8 @@
 		order by mem_name
 	</select>
 	
-	<select id="selectDepAssi" resultType="map">
+	<!-- <select id="selectDepAssi" resultType="map">
 		
-	</select>
+	</select> -->
 
 </mapper>

@@ -1,11 +1,13 @@
 package com.cwb.finalproject.commute.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.record.pivottable.PageItemRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cwb.finalproject.common.PaginationInfo;
 import com.cwb.finalproject.common.WebUtility;
@@ -31,82 +34,89 @@ public class CommuteController {
 	
 	
 	
-	@RequestMapping(value="/commute.do", method = RequestMethod.GET) 
-	public String comMenu(@RequestParam(defaultValue = "indWork") String menu,	HttpSession session, Model model) {
-	  
-		int memNo = (Integer) session.getAttribute("memNo");
-		  
-		List<Map<String, Object>> list = commuteService.selectIndiv(memNo);
-		logger.info("초기화면 결과 list.size={}", list.size());
-		  
-		String title = "개인 출퇴근 조회";
-		model.addAttribute("title", title);
-		model.addAttribute("list", list);
-		  
+	@RequestMapping("/commute.do") 
+	public String commute() {
+		logger.info("근태관리 화면");
+		
 		return "commute/commute";
-	  
 	}
-	 
 	
-	@RequestMapping(value="/commute.do", method = RequestMethod.POST)
-	public String comMenu(@RequestParam String menu, String currentPage, String countPerPage, HttpSession session, Model model) {
+	
+	@RequestMapping("/comPage.do")
+	public List<Map<String, Object>> comShow(@RequestParam String menu, @RequestParam(required = false, defaultValue = "1")int currentPage, String countPerPage, HttpSession session, Model model) {
 		
 		String memId = (String) session.getAttribute("memId");
 		int memNo = (Integer) session.getAttribute("memNo");
 		
 		logger.info("유저 아이디 파라미터 memId={}, menu={}", memId, menu);
 		
+		Map<String, Object> map = new HashMap<String, Object>();
 		
 		PaginationInfo pagingInfo = new PaginationInfo();
 		pagingInfo.setBlockSize(WebUtility.BLOCK_SIZE);
 		pagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
-		pagingInfo.setCurrentPage(Integer.parseInt(currentPage));
-		 
+		pagingInfo.setCurrentPage(currentPage);
 		
+		map.put("firstRecordIndex", pagingInfo.getFirstRecordIndex());
+		map.put("recordCountPerPage", pagingInfo.getRecordCountPerPage());
 		
-		
-			String title = "";
-			List<Map<String, Object>> list = null;
-			if(menu.equals("allAssiduity")) {	//전체 조회
-				list = commuteService.selectAll();
-				logger.info("전체조회 결과 list.size={}", list.size());
-				title = "전체 조회";
-				
-			}else if(menu.equals("indWork")) {	//개인 출퇴근 조회
-				list = commuteService.selectIndiv(memNo);
-				logger.info("개인출퇴근 조회 결과 list.size={}", list.size());
-				
-				title = "개인 출퇴근 조회";
-				
-			}else if(menu.equals("depAssiduity")) {	//부서 근태조회
-				String deptName = commuteService.selectByMemNo(memNo);
-				logger.info("번호로 부서이름 조회 결과 deptName={}", deptName);
-				
-				list = commuteService.selectDep(deptName);
-				logger.info("부서이름으로 조회 결과 list.size={}", list.size());
-				
-				title = "부서 근태 조회";
-				
-			}else if(menu.equals("indHoly")) {
-				list = commuteService.selectIndivHoly(memNo);
-				logger.info("개인 연차 조회 결과 list.size={}", list.size());
-				
-				title = "개인 연차 조회";
-			}else if(menu.equals("allHoly")) {
-				list = commuteService.selectAllHoly();
-				logger.info("전체 연차 조회 결과 list.size={}", list.size());
-				
-				title = "전체 연차 조회";
-			}
-
-			model.addAttribute("title", title);
-			model.addAttribute("list", list);
-			//model.addAttribute("pagingInfo", pagingInfo);
+		String title = "";
+		List<Map<String, Object>> list = null;
+		int totalRecord = 0;
+		if(menu.equals("allAssiduity")) {	//전체 조회
+			list = commuteService.selectAll(map);
+			logger.info("전체조회 결과 list.size={}", list.size());
 			
-			return "commute/commute";
+			totalRecord = commuteService.countSelectAll();
+			logger.info("전체조회 결과 갯수 totalRecord={}", totalRecord);
+			title = "전체 조회";
+
+		}else if(menu.equals("indWork")) {	//개인 출퇴근 조회
+			map.put("memNo", memNo);
+			list = commuteService.selectIndiv(map);
+			logger.info("개인출퇴근 조회 결과 list.size={}", list.size());
+			
+			totalRecord = commuteService.countSelectIndiv(memNo);
+			logger.info("개인출퇴근 조회 결과 갯수 totalRecord={}", totalRecord);
+			title = "개인 출퇴근 조회";
+
+		}else if(menu.equals("depAssiduity")) {	//부서 근태조회
+			String deptName = commuteService.selectByMemNo(memNo);
+			logger.info("번호로 부서이름 조회 결과 deptName={}", deptName);
+			
+			map.put("deptName", deptName);
+			list = commuteService.selectDep(map);
+			logger.info("부서이름으로 조회 결과 list.size={}", list.size());
+
+			totalRecord = commuteService.countSelectDep(deptName);
+			logger.info("부서이름으로 조회 결과 갯수 totalRecord={}", totalRecord);
+			title = "부서 근태 조회";
+
+		}else if(menu.equals("indHoly")) {
+			map.put("memNo", memNo);
+			
+			list = commuteService.selectIndivHoly(map);
+			logger.info("개인 연차 조회 결과 list.size={}", list.size());
+			
+			totalRecord = commuteService.countSelectIndivHoly(memNo);
+			logger.info("개인연차 조회 결과 갯수 totalRecord={}", totalRecord);
+			title = "개인 연차 조회";
+		}else if(menu.equals("allHoly")) {
+			list = commuteService.selectAllHoly(map);
+			logger.info("전체 연차 조회 결과 list.size={}", list.size());
+			
+			totalRecord = commuteService.countSelectAllHoly();
+			logger.info("전체연차 조회 결과 갯수 totalRecord={}", totalRecord);
+			title = "전체 연차 조회";
+		}
 		
+		pagingInfo.setTotalRecord(totalRecord);
+		Map<String, Object> page = new HashMap<String, Object>();
+		page.put("page", pagingInfo);
+		list.add(page);
+		
+		return list;
+
 	}
-	
-	
 	
 }

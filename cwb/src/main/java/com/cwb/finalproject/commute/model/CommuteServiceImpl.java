@@ -13,18 +13,18 @@ public class CommuteServiceImpl implements CommuteService{
 	private CommuteDAO commuteDao;
 
 	@Override
-	public List<Map<String, Object>> selectAll() {
-		return commuteDao.selectAll();
+	public List<Map<String, Object>> selectAll(Map<String, Object> map) {
+		return commuteDao.selectAll(map);
 	}
 
 	@Override
-	public List<Map<String, Object>> selectIndiv(int memNo) {
-		return commuteDao.selectIndiv(memNo);
+	public List<Map<String, Object>> selectIndiv(Map<String, Object> map) {
+		return commuteDao.selectIndiv(map);
 	}
 
 	@Override
-	public List<Map<String, Object>> selectDep(String deptName) {
-		return commuteDao.selectDep(deptName);
+	public List<Map<String, Object>> selectDep(Map<String, Object> map) {
+		return commuteDao.selectDep(map);
 	}
 
 	@Override
@@ -33,13 +33,38 @@ public class CommuteServiceImpl implements CommuteService{
 	}
 
 	@Override
-	public List<Map<String, Object>> selectIndivHoly(int memNo) {
-		return commuteDao.selectIndivHoly(memNo);
+	public List<Map<String, Object>> selectIndivHoly(Map<String, Object> map) {
+		return commuteDao.selectIndivHoly(map);
 	}
 
 	@Override
-	public List<Map<String, Object>> selectAllHoly() {
-		return commuteDao.selectAllHoly();
+	public List<Map<String, Object>> selectAllHoly(Map<String, Object> map) {
+		return commuteDao.selectAllHoly(map);
+	}
+
+	@Override
+	public int countSelectAll() {
+		return commuteDao.countSelectAll();
+	}
+
+	@Override
+	public int countSelectIndiv(int memNo) {
+		return commuteDao.countSelectIndiv(memNo);
+	}
+
+	@Override
+	public int countSelectDep(String deptName) {
+		return commuteDao.countSelectDep(deptName);
+	}
+
+	@Override
+	public int countSelectIndivHoly(int memNo) {
+		return commuteDao.countSelectIndivHoly(memNo);
+	}
+
+	@Override
+	public int countSelectAllHoly() {
+		return commuteDao.countSelectAllHoly();
 	}
 
 	

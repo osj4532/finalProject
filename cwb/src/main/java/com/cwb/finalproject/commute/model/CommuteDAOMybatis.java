@@ -16,19 +16,19 @@ public class CommuteDAOMybatis implements CommuteDAO{
 	private String namespace = "config.mybatis.mapper.oracle.commute.";
 
 	@Override
-	public List<Map<String, Object>> selectAll() {
-		return sqlSession.selectList(namespace+"selectAll");
+	public List<Map<String, Object>> selectAll(Map<String, Object> map) {
+		return sqlSession.selectList(namespace+"selectAll", map);
 	}
 
 	@Override
-	public List<Map<String, Object>> selectIndiv(int memNo) {
-		return sqlSession.selectList(namespace+"selectIndiv", memNo);
+	public List<Map<String, Object>> selectIndiv(Map<String, Object> map) {
+		return sqlSession.selectList(namespace+"selectIndiv", map);
 	}
 
 
 	@Override
-	public List<Map<String, Object>> selectDep(String deptName) {
-		return sqlSession.selectList(namespace+"selectDep", deptName);
+	public List<Map<String, Object>> selectDep(Map<String, Object> map) {
+		return sqlSession.selectList(namespace+"selectDep", map);
 	}
 
 	@Override
@@ -37,13 +37,38 @@ public class CommuteDAOMybatis implements CommuteDAO{
 	}
 
 	@Override
-	public List<Map<String, Object>> selectIndivHoly(int memNo) {
-		return sqlSession.selectList(namespace+"selectIndivHoly", memNo);
+	public List<Map<String, Object>> selectIndivHoly(Map<String, Object> map) {
+		return sqlSession.selectList(namespace+"selectIndivHoly", map);
 	}
 
 	@Override
-	public List<Map<String, Object>> selectAllHoly() {
-		return sqlSession.selectList(namespace+"selectAllHoly");
+	public List<Map<String, Object>> selectAllHoly(Map<String, Object> map) {
+		return sqlSession.selectList(namespace+"selectAllHoly", map);
+	}
+
+	@Override
+	public int countSelectAll() {
+		return sqlSession.selectOne(namespace+"countSelectAll");
+	}
+
+	@Override
+	public int countSelectIndiv(int memNo) {
+		return sqlSession.selectOne(namespace+"countSelectIndiv", memNo);
+	}
+
+	@Override
+	public int countSelectDep(String deptName) {
+		return sqlSession.selectOne(namespace+"countSelectDep", deptName);
+	}
+
+	@Override
+	public int countSelectIndivHoly(int memNo) {
+		return sqlSession.selectOne(namespace+"countSelectIndivHoly", memNo);
+	}
+
+	@Override
+	public int countSelectAllHoly() {
+		return sqlSession.selectOne(namespace+"countSelectAllHoly");
 	}
 
 }
