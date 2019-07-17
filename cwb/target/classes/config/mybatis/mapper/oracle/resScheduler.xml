@@ -50,8 +50,16 @@ values(#{reservNo},#{memNo},#{resNo},
 	<select id="selectFrontDay" parameterType="resSchedulerVO" resultType="int">
 		select count(*) from resschedule
 		where to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS') between 
-		use_regdate
-		and return_regdate-1
+		use_regdate-1/24/60/60
+		and return_regdate-1/24/60/60
+		and appr_flag in('Y','W')
+		and res_no=#{resNo}
+	</select>
+	<select id="selectFrontAllDay" parameterType="resSchedulerVO" resultType="int">
+		select count(*) from resschedule
+		where to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS') between 
+		TRUNC(use_regdate-1/24/60/60,'DD')
+		and TRUNC(return_regdate+1/24/60/60,'DD')
 		and appr_flag in('Y','W')
 		and res_no=#{resNo}
 	</select>
@@ -59,8 +67,17 @@ values(#{reservNo},#{memNo},#{resNo},
 	<select id="selectBackDay" parameterType="resSchedulerVO" resultType="int">
 		select count(*) from resschedule
 		where to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS') between 
-		use_regdate+1
-		and return_regdate
+		use_regdate+1/24/60/60
+		and return_regdate-1/24/60/60
+		and appr_flag in('Y','W')
+		and res_no=#{resNo}
+	</select> 
+	
+	<select id="selectBackAllDay" parameterType="resSchedulerVO" resultType="int">
+		select count(*) from resschedule
+		where to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS') between 
+		TRUNC(use_regdate-1/24/60/60,'DD')
+		and TRUNC(return_regdate+1/24/60/60,'DD')
 		and appr_flag in('Y','W')
 		and res_no=#{resNo}
 	</select> 

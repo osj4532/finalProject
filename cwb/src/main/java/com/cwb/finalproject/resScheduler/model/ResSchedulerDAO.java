@@ -11,6 +11,8 @@ public interface ResSchedulerDAO {
 	int updateResScdWait(int reservNo);
 	int selectFrontDay(ResSchedulerVO resSchedulerVo);
 	int selectBackDay(ResSchedulerVO resSchedulerVo);
+	int selectFrontAllDay(ResSchedulerVO resSchedulerVo);
+	int selectBackAllDay(ResSchedulerVO resSchedulerVo);
 	int selectFrontSys(ResSchedulerVO resSchedulerVo);
 	int selectBackSys(ResSchedulerVO resSchedulerVo);
 }

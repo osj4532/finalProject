@@ -47,6 +47,8 @@ public class ResSchedulerServiceImp implements ResSchedulerService{
 		
 		int cnt= resSchedulerDao.selectFrontDay(resSchedulerVo);
 		cnt+=resSchedulerDao.selectBackDay(resSchedulerVo);
+		//cnt+=resSchedulerDao.selectFrontAllDay(resSchedulerVo);
+		//cnt+=resSchedulerDao.selectBackAllDay(resSchedulerVo);
 		int ccnt=resSchedulerDao.selectFrontSys(resSchedulerVo);
 		ccnt+=resSchedulerDao.selectBackSys(resSchedulerVo);
 		if(cnt>0) {
@@ -54,7 +56,7 @@ public class ResSchedulerServiceImp implements ResSchedulerService{
 		}
 		if(ccnt>0) {
 			result="D";//현시간보다 전에 일때
-		}
+		} 
 		return result;
 	}
 
