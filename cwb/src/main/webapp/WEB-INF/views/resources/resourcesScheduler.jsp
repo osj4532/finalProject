@@ -79,153 +79,53 @@ element.style {
 					}else{
 						st=start.format('YYYY/MM/DD HH:mm:ss');
 						en=end.format('YYYY/MM/DD HH:mm:ss');
-					}
-						if(confirm("${resVo.resName}의 대여를 신청하시겠습니까?")){ 
-							$.ajax({
-								type : "post",
-								url : "<c:url value='/resScheduler/ResScdWrite.do'/>",
-								data : { 
-									"resNo": '${param.resNo}', 
-									"reservContent" : '${resVo.resName}',
-									"useRegdate" :st,
-				 					"returnRegdate" : en 
-									
-								}, 
-								success : function(data) {
-									alert("신청 완료");
-									$("#calendar").fullCalendar("refetchEvents");
-								},
-								error : function(xhr, err) { 
-									alert("ERROR! - readyState: "
-											+ xhr.readyState
-											+ "<br/>status: "
-											+ xhr.status
-											+ "<br/>responseText: "
-											+ xhr.responseText);
-								}
-							}); 
-					
-					}else if(title==null){
-					}else {
-						alert('입력값이 없습니다!'); 
-					}
-					 
-					
-				}, 
-				eventClick: function(event, element){ 
-					if($("#EditChk").is(":checked")){
-						var title = prompt('['+event.title+']을 수정합니다.');
-						if(title){ 
-							$.ajax({
-								type : "post",
-								url : "<c:url value='/scheduler/userScdEditCon.do'/>",
-								data : { 
-									"scdNo" :event.id,
-									"scdContent" : title 
-								}, 
-								success : function(data) {
-									alert("내용 수정 완료");
-									$("#calendar").fullCalendar("refetchEvents");
-								},
-								error : function(xhr, err) { 
-									alert("ERROR! - readyState: "
-											+ xhr.readyState
-											+ "<br/>status: "
-											+ xhr.status
-											+ "<br/>responseText: "
-											+ xhr.responseText);
-								}
-							}); 
-					
-						}else if(title==null){
-						}else {
-							alert('입력값이 없습니다!');
-						}
-					}else {
-						if(confirm("일정을 삭제하시겠습니까?")){
-							$.ajax({
-								type:"post",
-								url:"<c:url value='/scheduler/userScdDel.do'/>",
-								data:{ 
-									"scdNo":event.id,
-								},
-								success : function(data) {
-									alert("삭제 완료");
-									$("#calendar").fullCalendar("refetchEvents");
-								},
-								error : function(xhr, err) { 
-									alert("ERROR! - readyState: "
-											+ xhr.readyState
-											+ "<br/>status: "
-											+ xhr.status
-											+ "<br/>responseText: "
-											+ xhr.responseText);
-								}
-							});
-						}
-					}
-				}, 
-				//editable : true, //수정 가능  
-				eventDrop: function( event, dayDelta, allDay ) {//이벤트 드롭 수정
-	                var st=event.start.format(); 
-					var en=event.end.format(); 
-					if(st.length==10){
-						st=event.start.format();
-						en=event.end.format();
-					}else{
-						st=event.start.format('YYYY/MM/DD HH:mm:ss');
-						en=event.end.format('YYYY/MM/DD HH:mm:ss');
-					}
-					$.ajax({
-						url:"<c:url value='/scheduler/userScdEdit.do'/>",
-						type:"post",
-						data:{ 
-							"scdNo":event.id,
-							"scdStart" :st,
-		 					"scdEnd" : en 
-							
-						},
-						success : function(data) {
-							alert("수정 완료");
-							$("#calendar").fullCalendar("refetchEvents");
-						},
-						error : function(xhr, err) { 
-							//alert(moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS')); 
-							alert("ERROR! - readyState: "
-									+ xhr.readyState
-									+ "<br/>status: "
-									+ xhr.status
-									+ "<br/>responseText: "
-									+ xhr.responseText);
-						}
-					});
-				
-				},
-	            eventResize:function(event,jsEvent){ // 이벤트 드래그 수정
-		                var st=event.start.format(); 
-						var en=event.end.format(); 
-						if(st.length==10){
-							st=event.start.format();
-							en=event.end.format();
-						}else{
-							st=event.start.format('YYYY/MM/DD HH:mm:ss');
-							en=event.end.format('YYYY/MM/DD HH:mm:ss');
-						}
+					};
 						$.ajax({
-							url:"<c:url value='/scheduler/userScdEdit.do'/>",
-							type:"post",
-							data:{ 
-								"scdNo":event.id,
-								"scdStart" :st,
-			 					"scdEnd" : en 
-								
+							type : "post",
+							url : "<c:url value='/resScheduler/ExistDay.do'/>",
+							data : { 
+								"resNo": '${param.resNo}',
+								"useRegdate": start.format('YYYY/MM/DD HH:mm:ss'),
+								"returnRegdate" : end.format('YYYY/MM/DD HH:mm:ss')
 							},
-							success : function(data) {
-								alert("수정 완료");
-								$("#calendar").fullCalendar("refetchEvents");
-							},
+							success : function(exist) {
+								if(exist=="O"){								
+											if(confirm("${resVo.resName}의 대여를 신청하시겠습니까?")){ 
+												$.ajax({
+													type : "post",
+													url : "<c:url value='/resScheduler/ResScdWrite.do'/>",
+													data : { 
+														"resNo": '${param.resNo}', 
+														"reservContent" : '${resVo.resName}',
+														"useRegdate" :st,
+									 					"returnRegdate" : en 
+														
+													}, 
+													success : function(data) {
+														alert("신청 완료");
+														$("#calendar").fullCalendar("refetchEvents");
+													},
+													error : function(xhr, err) { 
+														alert("ERROR! - readyState: "
+																+ xhr.readyState
+																+ "<br/>status: "
+																+ xhr.status
+																+ "<br/>responseText: "
+																+ xhr.responseText);
+													}
+												}); 
+										
+										}else if(title==null){
+										}else {
+											alert('입력값이 없습니다!'); 
+										}
+								}else if(exist=="E"){ //Exist
+									alert("이미 대여신청 및 대여중입니다.");
+								}else if (exist=="D") {
+									alert("지난 날짜입니다.");
+								}			
+							}, 
 							error : function(xhr, err) { 
-								//alert(moment(end).format('YYYY/MM/DD a hh:mm:ssSSSS')); 
 								alert("ERROR! - readyState: "
 										+ xhr.readyState
 										+ "<br/>status: "
@@ -233,8 +133,90 @@ element.style {
 										+ "<br/>responseText: "
 										+ xhr.responseText);
 							}
-						});
-	            },
+
+						});//사용가능여부 찾는 ajax
+					
+					
+				}, 
+				eventClick: function(event, element){
+					
+				<c:if test="${ranksNo>=2}">  
+						if(event.title=='승인' || event.title=='거절'){
+							alert("이미 완료된 문서입니다 변경은 자원사용 내역에서 가능합니다.")
+							return;
+						}; 
+						$.ajax({
+							type: "post",
+							url: "<c:url value='/resScheduler/findMember.do'/>",
+							data:{
+								memNo: event.memNo 
+							}, 
+							success : function(mem) {
+								if($("#EditChk").is(":checked")){
+									if(confirm(mem+"님이 신청하셨습니다. 승인하시겠습니까?")){ 
+										$.ajax({ 
+											type : "post", 
+											url : "<c:url value='/resScheduler/approve.do'/>",
+											data : { 
+												"reservNo": event.id 
+											}, 
+											success : function(data) {
+												alert("승인 완료");
+												$("#calendar").fullCalendar("refetchEvents");
+											},
+											error : function(xhr, err) { 
+												alert("ERROR! - readyState: "
+														+ xhr.readyState
+														+ "<br/>status: "
+														+ xhr.status
+														+ "<br/>responseText: "
+														+ xhr.responseText);
+											}
+										}); //승인 ajax
+									}
+								}else {
+									if(confirm(mem+"님이 신청하셨습니다. 반려하시겠습니까?")){
+										$.ajax({
+											type:"post",
+											url:"<c:url value='/resScheduler/refuse.do'/>",
+											data:{ 
+												"reservNo": event.id 
+											}, 
+											success : function(data) {
+												alert("반려 완료");
+												$("#calendar").fullCalendar("refetchEvents");
+											},
+											error : function(xhr, err) { 
+												alert("ERROR! - readyState: "
+														+ xhr.readyState
+														+ "<br/>status: "
+														+ xhr.status
+														+ "<br/>responseText: "
+														+ xhr.responseText);
+											}
+										});//반려 ajax
+									}
+								}//내부 ajax
+							},
+							error : function(xhr, err) { 
+								alert("ERROR! - readyState: "
+										+ xhr.readyState
+										+ "<br/>status: "
+										+ xhr.status
+										+ "<br/>responseText: "
+										+ xhr.responseText);
+							}
+						});//외부 ajax
+					</c:if> 
+					<c:if test="${ranksNo<2}">  
+						if(event.memNo==${memNo}){
+							if(event.title=='승인' || event.title=='신청하신 대여건 검토중'){
+								alert("신청 취소?") 
+								return;
+							}; 
+						}
+					</c:if> 
+				}, 
 				events : function(start, end, allDay, callback) {
 					$.ajax({
 						type : "post",
@@ -247,16 +229,29 @@ element.style {
 							var events = [];
 							$.each(data, function(index,
 									item) {
-								var color= "red";
+								var color="skyblue"; 
+								var Flagtitle="검토중"; 
 								if(this.apprFlag=='Y'){   
 									color="green";  
-								}
+									Flagtitle="승인";
+								}else if (this.apprFlag=='N') {
+									color= "red"; 
+									Flagtitle="거절";
+								}else if (this.apprFlag=='W') {
+									color="skyblue";  
+									Flagtitle="검토중";
+									if(this.memNo==${memNo}){
+										color="skyblue";   
+										Flagtitle="신청하신 대여건 검토중";
+									}
+								}  
 								events.push({
 									id:this.reservNo, 
-									title : this.reservContent,
+									title : Flagtitle,
 									start : this.useRegdate,
 									end : this.returnRegdate,
-									backgroundColor: color 
+									backgroundColor: color,
+									memNo: this.memNo
 								}); 
 								console.log($(this))
 							});  
@@ -283,15 +278,17 @@ element.style {
 <section id="main-content">
 	<section class="wrapper">
 		<h1 class="mg_text">
-			<i class="fa fa-angle-right mt text-important"></i>${resVo.resName} 자원 스케줄
+			<i class="fa fa-angle-right mt text-important"></i>${resVo.resName} 자원 신청 스케줄
 		</h1>
-		<!-- page start-->
+		<!-- page start-->  
 		<div class="row"> 
 			<div class="col-lg-12">    
+			<c:if test="${ranksNo>=2}">  
 				<span id="switchinfo"> Click    </span>      
                   <div class="switch switch-square" data-on-label="승인" data-off-label="반려">
                     <input type="checkbox" id="EditChk"/>
                   </div>
+            </c:if>
 				<div class="darkblue-panel"
 					style="padding: 30px; border-radius: 35px;">
 					<div id='calendar'></div> 

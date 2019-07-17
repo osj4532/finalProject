@@ -5,12 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
-<link rel="stylesheet" href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min1.css'/>">
+<%-- <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+<link rel="stylesheet" href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min1.css'/>"> --%>
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <title>Insert title here</title>
 <style type="text/css">
-	a{color: #fff;}
 	#optionLayer{
 		position:fixed;
 		bottom:0;
@@ -63,15 +62,15 @@
 	  content: "\2611"; 
 	  color: dodgerblue;
 	}
-	.nested {
+	.ad_nested {
 	  display: none;
 	}
 	
-	.active {
+	.ad_active {
 	  display: block;
 	}
 	
-	.nested a{
+	.ad_nested a{
 		color:#000;
 		text-decoration: none;
 	}
@@ -102,9 +101,12 @@
 	.align-center{
 		text-align: center;
 	}
+	.modal-dialog{
+		margin-top: 70px;
+	}
 	
 	.modal-dialog.modal-infosize{
-		width: 40%;
+		width: 400px;
 	}
 	
 </style>
@@ -129,7 +131,7 @@
 					${deptVo.deptName }
 				</span>
 				
-				<ul class="nested">
+				<ul class="ad_nested">
 					<c:forEach var="memMap" items="${members }">
 						<c:if test="${deptVo.deptNo == memMap['DEPT_NO'] }">
 							<li>
@@ -159,95 +161,17 @@
         <h5 class="modal-title" id="memInfoLabel">사원 정보</h5>
       </div>
       <div class="modal-body align-center">
-        <img class="rounded-circle" src="<c:url value='/sign_file/bear_PNG2343720190715143157139.png'/>" alt="" width="100" height="100">
-        <h2>[부서-직책] - 이름</h2>
-        <p>연락처 : 010-1234-4567</p>
-        <p>이메일 : test@test.com</p>
-        <button class="btn btn-info">쪽지쓰기</button>
-        <button class="btn btn-success">이메일쓰기</button>
+      	<input type="hidden" id="memNo">
+        <img id="pic" class="rounded-circle" src="<c:url value='/sign_file/bear_PNG2343720190715143157139.png'/>" alt="" width="100" height="100">
+        <h3 id="dept">[부서]</h3>
+        <h4><span id="pos">[직책]</span><span id="name">이름</span></h4>
+        <p id="tel">연락처 : 010-1234-4567</p>
+        <p>이메일 : <span id="email">test@test.com</span></p>
+        <button class="btn btn-info" onclick="sendMessage()">쪽지쓰기</button>
+        <button class="btn btn-success" onclick="sendEmail()">이메일쓰기</button>
       </div>
     </div>
   </div>
 </div>
-
-<script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script type="text/javascript" src="<c:url value='/resources/lib/bootstrap/js/bootstrap1.min.js'/>"></script>
-<script type="text/javascript">
-	$(function(){
-		var toggler = $('.box');
-		$(toggler).each(function(){
-			$(this).click(function(){
-				$(this).next().toggleClass("active");
-				$(this).toggleClass("check-box");
-			});
-		});
-		
-		$('input[name=keyword]').keyup(function(){
-			showList();
-		});
-		
-	});
-	
-	function showList(){
-		let keyword = $('input[name=keyword]').val();
-		$.ajax({
-			url:"<c:url value='/address/companySearch.do'/>",
-			type:"post",
-			dataType:"json",
-			data:{
-				"keyword":keyword,
-			},
-			success:function(data){
-				
-				let ulEl = $('#result');
-				
-				if(keyword != ""){
-					$('#dept').hide();
-					ulEl.show();
-					if(data.length == 0){
-						let liEl = $('<li></li>').html("검색 결과가 없습니다.");
-						ulEl.html(liEl);
-					}else{
-						ulEl.html("");
-						
-						for(let i = 0; i < data.length; i++){
-							let map = data[i];
-							let aEl = $('<a href="#"></a>')
-							let liEl = $('<li></li>');
-							aEl.html("["+map['DEPT_NAME']+"-"+map['POS_NAME']+"] "+map['MEM_NAME'])
-							.attr("onclick","showMemInfo('"+map['MEM_NO']+"')");							
-							liEl.html(aEl);
-							ulEl.append(liEl);
-						}
-					}
-					
-				}else{
-					$('#dept').show();
-					ulEl.hide();
-				}
-			},
-			error:function(xhr, status, error){
-				alert(status+" : "+error);
-			}
-		});
-	};
-	function showMemInfo(map){
-		alert(map);
-		$('#memInfo').modal('show');
-	}
-	
-	function openOptions(){
-		let toOpen = $('#optionLayerTop');
-		
-		if($('#openText').html() == '<i class="fas fa-arrow-down"></i>'){
-			$(toOpen).hide();
-			$('#openText').html('<i class="fas fa-arrow-up"></i>');
-		}else{
-			$(toOpen).show();
-			$('#openText').html('<i class="fas fa-arrow-down"></i>');
-		}
-	};
-</script>
-
 </body>
 </html>

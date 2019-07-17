@@ -1,14 +1,14 @@
 package com.cwb.finalproject.address.controller;
 
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -63,5 +63,41 @@ public class AddressController {
 		}
 		logger.info("검색 결과 리스트 사이즈 = {}",members.size());
 		return members;
+	}
+	
+	@RequestMapping("/memInfo.do")
+	@ResponseBody
+	public Map<String, Object> memInfo(@RequestParam int memNo){
+		logger.info("멤버 정보 보여주기 memNo = {}", memNo);
+		Map<String, Object> member = memberService.selectByNo(memNo);
+		String memberPic = (String)member.get("MEM_FILENAME"); 
+		if(memberPic == null || memberPic.isEmpty()) {
+			member.put("MEM_FILENAME","user.png");
+		}
+		member.put("MEM_JOINDATE",null);
+		return member;
+	}
+	
+	@RequestMapping("/sendEmail.do")
+	public String sendEmail(@RequestParam(required = false) String email, 
+			HttpSession session, Model model) {
+		logger.info("이메일 보내기 화면 보여주기 매개변수 = {}", email);
+		int memNo = (Integer)session.getAttribute("memNo");
+		Map<String, Object> member = memberService.selectByNo(memNo);
+		
+		String senderMail = member.get("MEM_EMAIL1")+"@"+member.get("MEM_EMAIL2");
+		model.addAttribute("sender", senderMail);
+		model.addAttribute("receiver", email);
+		
+		return "address/sendEmail";
+	}
+	
+	
+	@RequestMapping("/sendMessage.do")
+	public String sendMessage(@RequestParam(required = false) int memNo, Model model) {
+		logger.info("쪽지 보내기 화면 보여주기 매개변수 = {}", memNo);
+		
+		model.addAttribute("memNo", memNo);
+		return "address/sendMessage";
 	}
 }

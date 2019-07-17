@@ -20,10 +20,10 @@
 		select * from member where mem_Id=#{memId}
 	</select>
 	
-	<select id="selectOrSearch" resultType="memberVo" parameterType="string">
+	<select id="selectOrSearch" resultType="map" parameterType="map">
 		select * from memberview
 		<if test="keyword != null">
-			where mem_name||dept_name||pos_name like '%'||${keyword}||'%'
+			where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 		</if>
 	</select>
 	
