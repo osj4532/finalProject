@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -11,10 +12,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.cwb.finalproject.address.model.EmailVO;
+import com.cwb.finalproject.common.FileUploadUtil;
 import com.cwb.finalproject.dept.model.DeptService;
 import com.cwb.finalproject.dept.model.DeptVO;
 import com.cwb.finalproject.member.model.MemberService;
@@ -28,6 +34,11 @@ public class AddressController {
 	private DeptService deptService;
 	@Autowired
 	private MemberService memberService;
+	@Autowired
+	private FileUploadUtil fileUtil;
+	@Autowired
+	private EmailSender emailSender;
+	
 	@RequestMapping("/privateAddr.do")
 	public String showPrivAddr() {
 		logger.info("개인 주소록 보여주기");
@@ -78,20 +89,50 @@ public class AddressController {
 		return member;
 	}
 	
-	@RequestMapping("/sendEmail.do")
-	public String sendEmail(@RequestParam(required = false) String email, 
+	@RequestMapping(value="/sendEmail.do", method = RequestMethod.GET)
+	public String sendEmail_get(@RequestParam(required = false) String email, 
 			HttpSession session, Model model) {
 		logger.info("이메일 보내기 화면 보여주기 매개변수 = {}", email);
 		int memNo = (Integer)session.getAttribute("memNo");
 		Map<String, Object> member = memberService.selectByNo(memNo);
 		
 		String senderMail = member.get("MEM_EMAIL1")+"@"+member.get("MEM_EMAIL2");
+		
+		model.addAttribute("memNo", memNo);
 		model.addAttribute("sender", senderMail);
 		model.addAttribute("receiver", email);
 		
 		return "address/sendEmail";
 	}
 	
+	@RequestMapping(value="/sendEmailProc.do")
+	public String sendEmail_post(@ModelAttribute EmailVO vo,HttpServletRequest request) {
+		logger.info("보낸 메일 저장하기 vo = {}",vo);
+		Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.MAIL_UPLOAD);
+		vo.setMailFileName((String)map.get("fileName"));
+		vo.setMailFileSize((Long)map.get("fileSize"));
+		vo.setMailOriginalFileName((String)map.get("originalFileName"));
+		logger.info("파일 넣은 후 vo = {}",vo);
+		
+		try {
+			emailSender.sendEmail(vo.getMailTitle(), vo.getMailContent(), vo.getMailSenAddr(), vo.getMailRevAddr());
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		// 메일 보낼때 필요한 설정 하고 메일 보내고 확인해보기
+		
+		
+		return null;
+	}
+	
+	
+	
+	@RequestMapping("/emailList.do")
+	public String emailList() {
+		logger.info("보낸 메일 리스트 보기");
+		return "address/emailList";
+	}
 	
 	@RequestMapping("/sendMessage.do")
 	public String sendMessage(@RequestParam(required = false) int memNo, Model model) {

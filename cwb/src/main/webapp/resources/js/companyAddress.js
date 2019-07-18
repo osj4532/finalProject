@@ -12,7 +12,7 @@ $(function(){
 	});
 
 	$('input[name=keyword]').keyup(function(){
-		showList();
+		ca_showList();
 	});
 
 });
@@ -21,7 +21,7 @@ function getContextPath(){
 	return window.location.pathname.substring(0, window.location.pathname.indexOf("/",2));
 }
 
-function showList(){
+function ca_showList(){
 	let keyword = $('input[name=keyword]').val();
 	$.ajax({
 		url:getContextPath()+'/address/companySearch.do',

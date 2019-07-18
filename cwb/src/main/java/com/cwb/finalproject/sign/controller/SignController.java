@@ -50,7 +50,7 @@ public class SignController {
 		HttpSession session = request.getSession();
 		int memberNo = (Integer)session.getAttribute("memNo");
 		
-		Map<String, Object> map = fileUtil.singleUpload(request);
+		Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.SIGN_UPLOAD);
 		String fileName = (String)map.get("fileName");
 		long fileSize = (Long)map.get("fileSize");
 		String originalFileName = (String)map.get("originalFileName");
@@ -84,7 +84,7 @@ public class SignController {
 		HttpSession session = request.getSession();
 		int memberNo = (Integer)session.getAttribute("memNo");
 		
-		Map<String, Object> map = fileUtil.singleUpload(request);
+		Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.SIGN_UPLOAD);
 		String fileName = (String)map.get("fileName");
 		long fileSize = (Long)map.get("fileSize");
 		String originalFileName = (String)map.get("originalFileName");

@@ -145,7 +145,7 @@ public class ConfirmController {
 		List<Map<String, Object>> fileList = null;
 		if(files[0].getOriginalFilename() != null && !files[0].getOriginalFilename().isEmpty()) { 
 			confirmVo.setCfFile("Y"); 
-			fileList = fileUtil.multipleUpload(request); 
+			fileList = fileUtil.multipleUpload(request, FileUploadUtil.DOC_FILE_UPLOAD); 
 		}else { 
 			confirmVo.setCfFile("N"); 
 		}
@@ -176,7 +176,7 @@ public class ConfirmController {
 		List<Map<String, Object>> fileList = null;
 		if(files[0].getOriginalFilename() != null && !files[0].getOriginalFilename().isEmpty()) { 
 			confirmVo.setCfFile("Y"); 
-			fileList = fileUtil.multipleUpload(request); 
+			fileList = fileUtil.multipleUpload(request, FileUploadUtil.DOC_FILE_UPLOAD); 
 		}else { 
 			confirmVo.setCfFile("N"); 
 		}
@@ -290,7 +290,7 @@ public class ConfirmController {
 		List<Map<String, Object>> fileList = null;
 		if(files[0].getOriginalFilename() != null && !files[0].getOriginalFilename().isEmpty()) {
 			confirmVo.setCfFile("Y");
-			fileList = fileUtil.multipleUpload(request);
+			fileList = fileUtil.multipleUpload(request, FileUploadUtil.DOC_FILE_UPLOAD);
 		}
 		
 		int cnt = confirmService.updateConfirm(confirmVo, fileList);
