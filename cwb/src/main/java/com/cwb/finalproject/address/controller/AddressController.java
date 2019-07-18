@@ -106,21 +106,30 @@ public class AddressController {
 	}
 	
 	@RequestMapping(value="/sendEmailProc.do")
-	public String sendEmail_post(@ModelAttribute EmailVO vo,HttpServletRequest request) {
+	public String sendEmail_post(@ModelAttribute EmailVO vo,
+			@RequestParam MultipartFile file,HttpServletRequest request) {
 		logger.info("보낸 메일 저장하기 vo = {}",vo);
-		Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.MAIL_UPLOAD);
-		vo.setMailFileName((String)map.get("fileName"));
-		vo.setMailFileSize((Long)map.get("fileSize"));
-		vo.setMailOriginalFileName((String)map.get("originalFileName"));
-		logger.info("파일 넣은 후 vo = {}",vo);
+		
+		if(file != null && !file.isEmpty()) {
+			Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.MAIL_UPLOAD);
+			vo.setMailFileName((String)map.get("fileName"));
+			vo.setMailFileSize((Long)map.get("fileSize"));
+			vo.setMailOriginalFileName((String)map.get("originalFileName"));
+			logger.info("파일 넣은 후 vo = {}",vo);
+		}
+		
+		String savePath = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
 		
 		try {
-			emailSender.sendEmail(vo.getMailTitle(), vo.getMailContent(), vo.getMailSenAddr(), vo.getMailRevAddr());
+			emailSender.init();
+			emailSender.addMsg(vo.getMailContent());
+			emailSender.addFile(savePath, vo.getMailFileName(), vo.getMailOriginalFileName());
+			emailSender.sendEmail(vo.getMailTitle(), vo.getMailSenAddr(), vo.getMailRevAddr());
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		// 메일 보낼때 필요한 설정 하고 메일 보내고 확인해보기
+		//메일 보내고 확인해보기
 		
 		
 		return null;
