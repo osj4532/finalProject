@@ -26,13 +26,14 @@ public class FileUploadUtil {
 	public static final int BOARD_UPLOAD = 2;
 	public static final int SIGN_UPLOAD = 3;
 	public static final int DOC_FILE_UPLOAD = 4;
+	public static final int MAIL_UPLOAD = 5;
 	
 	@Resource(name="fileProperties")
 	private Properties props;
 	
 	private Logger logger = LoggerFactory.getLogger(FileUploadUtil.class);
 	
-	public List<Map<String, Object>> multipleUpload(HttpServletRequest request){
+	public List<Map<String, Object>> multipleUpload(HttpServletRequest request, int type){
 		String fileName="", originalFileName = "";
 		long fileSize = 0;
 		
@@ -41,7 +42,7 @@ public class FileUploadUtil {
 		
 		List<Map<String, Object>> fileMapList = new ArrayList<Map<String,Object>>();
 		
-		String uppath = getUploadPath(request, DOC_FILE_UPLOAD);
+		String uppath = getUploadPath(request, type);
 		logger.info("파일 저장 경로 = {}",uppath);
 		
 		for(MultipartFile mf : fileList) {
@@ -72,7 +73,7 @@ public class FileUploadUtil {
 		
 	}
 	
-	public Map<String, Object> singleUpload(HttpServletRequest request){
+	public Map<String, Object> singleUpload(HttpServletRequest request, int type){
 		
 		String fileName="", originalFileName = "";
 		long fileSize = 0;
@@ -80,13 +81,13 @@ public class FileUploadUtil {
 		MultipartHttpServletRequest mr = (MultipartHttpServletRequest)request;
 		
 		Map<String, MultipartFile> fileMap = mr.getFileMap();
-		MultipartFile multiFile = fileMap.get("signName");
+		MultipartFile multiFile = fileMap.get("file");
 		
 		originalFileName = multiFile.getOriginalFilename();
 		fileName = getUniqueFileName(originalFileName);
 		fileSize = multiFile.getSize();
 		
-		String uppath = getUploadPath(request, FileUploadUtil.SIGN_UPLOAD);
+		String uppath = getUploadPath(request, type);
 		logger.info("파일 저장 경로 = {}",uppath);
 		File file = new File(uppath, fileName);
 		
@@ -123,6 +124,8 @@ public class FileUploadUtil {
 				result = props.getProperty("file.sign.path.test");
 			}else if(uploadPathKey == DOC_FILE_UPLOAD) {
 				result = props.getProperty("file.doc.path.test");
+			}else if(uploadPathKey == MAIL_UPLOAD) {
+				result = props.getProperty("file.mail.path.test");
 			}
 			
 		}else {
@@ -135,6 +138,8 @@ public class FileUploadUtil {
 				path = props.getProperty("file.sign.path");
 			}else if(uploadPathKey == DOC_FILE_UPLOAD) {
 				result = props.getProperty("file.doc.path");
+			}else if(uploadPathKey == MAIL_UPLOAD) {
+				result = props.getProperty("file.mail.path");
 			}
 			
 			result = request.getServletContext().getRealPath(path);

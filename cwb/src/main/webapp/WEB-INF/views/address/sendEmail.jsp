@@ -121,19 +121,24 @@
     color: transparent;
 }
 
+.align-center{
+	text-align: center;
+}
 
 </style>
 </head>
 <body>
 
-<form>
+<form action="<c:url value='/address/sendEmailProc.do'/>" method="post" enctype="multipart/form-data">
+	<input type="hidden" name="mailRev" value="${memNo }"/>
 	<input type="hidden" name="mailRevAddr" value="${sender }">
-	
 	<div class="lab-grid-cell lab-grid-cell--mb-2x w-third--d w-half--t w-full--m">
 	    <div class="floating-label-wrap">
 	      <input type="text" class="floating-label-field floating-label-field--s1" name="mailSenAddr" 
 	      	id="mailSenAddr" placeholder="받는사람" value="${receiver }">
-	      <label for="mailSenAddr" class="floating-label">받는사람</label>
+	      <label for="mailSenAddr" class="floating-label">
+	      	받는사람
+	      </label>
 	    </div><!-- .floating-label-wrap -->        
 	</div>
 	
@@ -152,7 +157,10 @@
 	</div>
 	<div>
 		<label>첨부파일</label>
-		<input type="file" multiple="multiple" name="mailFileName">
+		<input type="file" name="file">
+	</div>
+	<div class="align-center">
+		<button type="submit" class="btn btn-primary">메일 보내기</button>
 	</div>
 </form>
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>

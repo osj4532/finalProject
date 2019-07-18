@@ -68,7 +68,7 @@
 				</c:if>
 				<div class="form-group">
 					<label>사인 파일</label>
-					<input type="file" name="signName" id="signFileName" class="form-control">			
+					<input type="file" name="file" id="signFileName" class="form-control">			
 				</div>
 				<div class="form-group text-center">
 					<c:if test="${empty signVo.signFileName }">
