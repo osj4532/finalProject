@@ -29,6 +29,7 @@ public class LoginController {
 	@RequestMapping(value="/login.do", method=RequestMethod.GET)
 	public void login_get() {
 		logger.info("로그인 화면 보여주기");
+		
 	}
 	
 	@RequestMapping(value="/login.do", method=RequestMethod.POST)

@@ -42,13 +42,18 @@ public class ResSchedulerServiceImp implements ResSchedulerService{
 	}
 
 	@Override
-	public String selectExistDay(ResSchedulerVO resSchedulerVo) {
+	public String selectExistDay(ResSchedulerVO resSchedulerVo,boolean isday) {
 		String result ="O"; // 사용가능
-		
-		int cnt= resSchedulerDao.selectFrontDay(resSchedulerVo);
-		cnt+=resSchedulerDao.selectBackDay(resSchedulerVo);
-		//cnt+=resSchedulerDao.selectFrontAllDay(resSchedulerVo);
-		//cnt+=resSchedulerDao.selectBackAllDay(resSchedulerVo);
+		int cnt =0;
+		if(isday) {
+			cnt+=resSchedulerDao.selectFrontAllDay(resSchedulerVo);
+			cnt+=resSchedulerDao.selectFrontAllnotDay(resSchedulerVo);
+			cnt+=resSchedulerDao.selectBackAllDay(resSchedulerVo);
+			cnt+=resSchedulerDao.selectBackAllnotDay(resSchedulerVo);
+		}else {
+			cnt+= resSchedulerDao.selectFrontDay(resSchedulerVo);
+			cnt+=resSchedulerDao.selectBackDay(resSchedulerVo);
+		}
 		int ccnt=resSchedulerDao.selectFrontSys(resSchedulerVo);
 		ccnt+=resSchedulerDao.selectBackSys(resSchedulerVo);
 		if(cnt>0) {
@@ -59,5 +64,13 @@ public class ResSchedulerServiceImp implements ResSchedulerService{
 		} 
 		return result;
 	}
+
+	@Override
+	public int findsysday(ResSchedulerVO resSchedulerVo) {
+		int cnt=resSchedulerDao.selectFrontSys(resSchedulerVo);
+		cnt+=resSchedulerDao.selectBackSys(resSchedulerVo);
+		return cnt;
+	}
+	
 
 }

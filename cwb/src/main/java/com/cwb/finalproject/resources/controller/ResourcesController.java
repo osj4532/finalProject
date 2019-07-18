@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cwb.finalproject.common.ResImgUploadUtility;
 import com.cwb.finalproject.resources.model.ResourcesService;
@@ -238,5 +239,15 @@ public class ResourcesController {
 		logger.info("부모창 새로고침 후 닫기");
 		
 		return "resources/close";
+	}
+	
+	@RequestMapping("/canRes.do")
+	@ResponseBody
+	public String canRes(@RequestParam(defaultValue = "0") int resNo){
+		logger.info("자원 사용중 확인 resNo={}",resNo);
+		
+		
+		
+		return "resNo";
 	}
 }

@@ -188,6 +188,28 @@
                     </c:if>
                     </td>
                     <td>
+                    <script type="text/javascript">
+                   		 $(function() {
+                   			 $.ajax({ 
+                   				type : "post",
+    							url : "<c:url value='//resources/canRes.do'/>",
+    							data : { 
+    								"resNo": ${ResList[i][j].resNo} 
+    							},
+								success : function(data) {
+									alert("신청 완료");
+								},
+								error : function(xhr, err) { 
+									alert("ERROR! - readyState: "
+											+ xhr.readyState
+											+ "<br/>status: "
+											+ xhr.status
+											+ "<br/>responseText: "
+											+ xhr.responseText);
+								}
+                   			 });
+                   		 });
+                    </script>
               			<c:if test="${ResList[i][j].reservFlag=='N'}">
 							<span class="badge bg-theme04">사용중</span>
 						</c:if>

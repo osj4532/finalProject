@@ -73,7 +73,12 @@ public class ResSchedulerController {
 		if (resSchedulerVo.getUseRegdate().length() == 10 && resSchedulerVo.getReturnRegdate().length() == 10) {
 			resSchedulerVo.setIsday(true);
 		}
-		resSchedulerVo.setApprFlag("W");
+		int ranksNo = (Integer)session.getAttribute("ranksNo");
+		if(ranksNo>=2) {
+			resSchedulerVo.setApprFlag("Y");
+		}else {
+			resSchedulerVo.setApprFlag("W");
+		}
 		logger.info("종일 결과 is={},flag={}",
 				resSchedulerVo.isIsday(),resSchedulerVo.getApprFlag());
 
@@ -118,11 +123,27 @@ public class ResSchedulerController {
 	@ResponseBody
 	public String ExistDay(@ModelAttribute ResSchedulerVO resSchedulerVo) {
 		logger.info("신청 가능 여부 확인 resSchedulerVo={}",resSchedulerVo);
+		resSchedulerVo.setIsday(false);
+		if (resSchedulerVo.getUseRegdate().length() == 10 && resSchedulerVo.getReturnRegdate().length() == 10) {
+			resSchedulerVo.setIsday(true);
+		}
 		
-		String result =resSchedulerService.selectExistDay(resSchedulerVo);
+		
+		String result =resSchedulerService.selectExistDay(resSchedulerVo,
+				resSchedulerVo.isIsday());
 		logger.info("신청 가능 여부 result={}",result);
 		
 		return result;
+	}
+	@RequestMapping("/findsysday.do")
+	@ResponseBody
+	public String findsysday(@ModelAttribute ResSchedulerVO resSchedulerVo) {
+		int cnt =resSchedulerService.findsysday(resSchedulerVo);
+		String isSysDay= "Y";
+		if(cnt>0) {
+			isSysDay="N";
+		}
+		return isSysDay;
 	}
 	
 }

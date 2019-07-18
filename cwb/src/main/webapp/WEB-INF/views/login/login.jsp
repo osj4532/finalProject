@@ -40,11 +40,16 @@
       <form class="form-login" action="<c:url value='/login/login.do'/>" method="post">
         <h2 class="form-login-heading">sign in now</h2>
         <div class="login-wrap">
-          <input type="text" name = "memId" class="form-control" placeholder="User ID" autofocus>
+          <input type="text" name = "memId" class="form-control" placeholder="User ID" autofocus
+          	value="${cookie.ck_memid.value }">
           <br>
           <input type="password" name="memPwd" class="form-control" placeholder="Password">
           <label class="checkbox">
-            <input type="checkbox" value="remember-me" id="rememberId" name="rememberId"> Remember me
+            <input type="checkbox" value="remember-me" id="rememberId" name="rememberId" 
+            	<c:if test="${!empty cookie.ck_memid.value }">
+            		checked="checked"
+            	</c:if>
+            > Remember me
             <span class="pull-right">
             <a data-toggle="modal" href="/login/login.do"> Forgot Password?</a>
             </span>
