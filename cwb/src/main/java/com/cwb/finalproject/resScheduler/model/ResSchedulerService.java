@@ -8,5 +8,6 @@ public interface ResSchedulerService {
 	int updateResScdApprove(int reservNo);
 	int updateResScdRefuse(int reservNo);
 	int updateResScdWait(int reservNo);
-	String selectExistDay(ResSchedulerVO resSchedulerVo);
+	String selectExistDay(ResSchedulerVO resSchedulerVo,boolean isday);
+	int findsysday(ResSchedulerVO resSchedulerVo);
 }

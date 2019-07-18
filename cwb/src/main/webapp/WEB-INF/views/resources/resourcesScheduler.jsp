@@ -85,8 +85,8 @@ element.style {
 							url : "<c:url value='/resScheduler/ExistDay.do'/>",
 							data : { 
 								"resNo": '${param.resNo}',
-								"useRegdate": start.format('YYYY/MM/DD HH:mm:ss'),
-								"returnRegdate" : end.format('YYYY/MM/DD HH:mm:ss')
+								"useRegdate": st,
+								"returnRegdate" : en 
 							},
 							success : function(exist) {
 								if(exist=="O"){								
@@ -139,8 +139,9 @@ element.style {
 					
 				}, 
 				eventClick: function(event, element){
+
+					<c:if test="${ranksNo>=2}">   
 					
-				<c:if test="${ranksNo>=2}">  
 						if(event.title=='승인' || event.title=='거절'){
 							alert("이미 완료된 문서입니다 변경은 자원사용 내역에서 가능합니다.")
 							return;
@@ -210,10 +211,9 @@ element.style {
 					</c:if> 
 					<c:if test="${ranksNo<2}">  
 						if(event.memNo==${memNo}){
-							if(event.title=='승인' || event.title=='신청하신 대여건 검토중'){
-								alert("신청 취소?") 
-								return;
-							}; 
+							if(event.title=='승인'||event.title=='신청하신 대여건 검토중'){
+								alert('자원 내역에서 취소 및 변경 가능합니다.'); 
+							} 
 						}
 					</c:if> 
 				}, 

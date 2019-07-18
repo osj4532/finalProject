@@ -15,4 +15,6 @@ public interface ResSchedulerDAO {
 	int selectBackAllDay(ResSchedulerVO resSchedulerVo);
 	int selectFrontSys(ResSchedulerVO resSchedulerVo);
 	int selectBackSys(ResSchedulerVO resSchedulerVo);
+	int selectFrontAllnotDay(ResSchedulerVO resSchedulerVo);
+	int selectBackAllnotDay(ResSchedulerVO resSchedulerVo);
 }
