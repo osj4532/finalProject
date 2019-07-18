@@ -15,7 +15,7 @@
 		$.ajax({
 			url:"<c:url value='/commute/comPage.do'/>",
 			type:"post",
-			data:$("form[name=frmPage]").serialize(),
+			data:{"menu":$('input[name=menu]').val(), "currentPage":$('input[name=currentPage]').val()},
 			dataType:"json",
 			success:function(res){
 				if(res != null){
@@ -28,10 +28,17 @@
 		});
 	}
 	
-	function setTitle(){
+	function setTitle(res){
 		var title = $('<h2></h2>');
-		title.html($(title));	
+		title.html(res.title);
 		$('#title').html(title);
+	}
+	
+	function page(curPage){
+		var menu = $('input[name=menu]').val();
+		$('input[name=currentPage]').val(curPage);
+		
+		showPage();
 	}
 	
 	function makeList(res){
@@ -45,7 +52,7 @@
 		
 		
 		//전체근태, 개인 출퇴근조회, 부서근태조회
-		if(menu == 'allAssiduity' || menu == 'indWork' || menu == 'depAssiduity'){
+		if(res[res.length-1]['page']['menu'] == 'allAssiduity' || res[res.length-1]['page']['menu'] == 'indWork' || res[res.length-1]['page']['menu'] == 'depAssiduity'){
 			var colstyleEl1 = $('<col style="width:10%;"/>');
 			var colstyleEl2 = $('<col style="width:15%;"/>');
 			var colstyleEl3 = $('<col style="width:10%;"/>');
@@ -83,7 +90,7 @@
 			thead.append(trEl);
 			
 			
-			if(list.length < 1){
+			if(res.length < 1){
 				var trEl = $('<tr></tr>');
 				var tdEl = $('<td colspan="7"></td>').html("데이터가 없습니다.");
 				
@@ -91,7 +98,7 @@
 				tbody.append(trEl);
 			}
 			for(var i=1;i<res.length;i++){
-				var map = res[i];
+				var map = res[0][i];
 				
 				var trEl = $('<tr></tr>');
 				var tdEl1 = $('<td></td>').html(map['MEMNO']);
@@ -113,11 +120,11 @@
 				tbody.append(trEl);
 			}
 			
-			setTitle();
+			setTitle(res);
 		//전체근태, 개인 출퇴근조회, 부서근태조회 끝
 			
 		//개인연차, 전체연차 조회
-		}else if(menu == 'indHoly' || menu == 'allHoly'){
+		}else if(res[res.length-1]['page']['menu'] == 'indHoly' || res[res.length-1]['page']['menu'] == 'allHoly'){
 			var colstyleEl1 = $('<col style="width:15%;"/>');
 			var colstyleEl2 = $('<col style="width:15%;"/>');
 			var colstyleEl3 = $('<col style="width:15%;"/>');
@@ -150,7 +157,7 @@
 			
 			thead.append(trEl);
 			
-			if(list.length < 1){
+			if(res.length < 1){
 				var trEl = $('<tr></tr>');
 				var tdEl = $('<td colspan="6"></td>').html("데이터가 없습니다.");
 				
@@ -179,12 +186,12 @@
 				tbody.append(trEl);
 				
 			}
-				setTitle();
+				setTitle(res);
 		//개인연차, 전체연차 조회 끝
 		
 		
 		//부서별 근태 조회
-		}else if(menu == 'depAssi'){
+		}else if(res[res.length-1]['page']['menu'] == 'depAssi'){
 			var colstyleEl1 = $('<col style="width:50%;"/>');
 			var colstyleEl2 = $('<col style="width:50%;"/>');
 			
@@ -201,7 +208,7 @@
 			
 			thead.append(trEl);
 			
-			if(list.length < 1){
+			if(res.length < 1){
 				var trEl = $('<tr></tr>');
 				var tdEl = $('<td colspan="2"></td>').html("데이터가 없습니다.");
 				
@@ -221,50 +228,40 @@
 				
 				tbody.append(trEl);
 			}
-			setTitle();
+			setTitle(res);
 			
 		}
 		//부서별 근태조회 끝
-		var pagingInfo = res.length-1;
+		var pagingInfo = res[res.length-1]['page'];
 			
-		setPage(pagingInfo);
-		
-		
-		var totalCount=$(res).find("totalCount").text();
-		
-		var p_recordCount=10, p_blockSize=10;
-		var p_curPage = $('input[name=currentPage]').val();
-		
-		pagination(p_curPage, p_recordCount, p_blockSize, totalCount);
-		
-		$.pageSetting();
+		pageSetting(pagingInfo);
 		
 	}
-	$.pageSetting=function(){
-		if(firstPage>1){
+	function pageSetting(pagingInfo){
+		if(pagingInfo.firstPage>1){
 			var anchor=$('<a href="#"></a>')
 			.html("<img src='<c:url value='/resources/img/first.JPG'/>' alt='이전블럭으로 이동'>")
-			.attr("onclick", "$.send("+(firstPage-1)+")");
+			.attr("onclick", "page("+(pagingInfo.firstPage-1)+")");
 			
 			$("#page").html(anchor);
 		}
 		
-		for(var i=firstPage;i<=lastPage;i++){
-			if(i==currentPage){
+		for(var i=pagingInfo.firstPage;i<=pagingInfo.lastPage;i++){
+			if(i==pagingInfo.currentPage){
 				var spanEl = $("<span style='color:blue;font-size:1em'></span>")
 				.html(i);
 				$('#page').append(spanEl);
 			}else{
 				var anchor = $("<a href='#'></a>").html("["+i+"]")
-				.attr("onclick", "$.send("+i+")");
+				.attr("onclick", "page("+i+")");
 				$('#page').append(anchor);
 			}
 		}
 		
-		if(lastPage<totalPage){
+		if(pagingInfo.lastPage<pagingInfo.totalPage){
 			var anchor=$("<a href='#'></a>")
 			.html("<img src='<c:url value='/resources/img/last.JPG'/>' alt='다음블럭으로 이동'>")
-			.attr("onclick", "$.send("+(lastPage+1)+")");
+			.attr("onclick", "page("+(pagingInfo.lastPage+1)+")");
 			$('#page').append(anchor);
 		}
 	}
@@ -284,7 +281,7 @@
 	#ulMenu li{
 		padding: 10px;
 		margin-top: 50px;
-		min-width: 180px;
+		min-width: 185px;
 	}
 	#Menu{
 		min-height: 890px;

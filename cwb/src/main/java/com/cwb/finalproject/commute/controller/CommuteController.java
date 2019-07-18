@@ -43,7 +43,8 @@ public class CommuteController {
 	
 	
 	@RequestMapping("/comPage.do")
-	public List<Map<String, Object>> comShow(@RequestParam String menu, @RequestParam(required = false, defaultValue = "1")int currentPage, String countPerPage, HttpSession session, Model model) {
+	@ResponseBody
+	public List<Map<String, Object>> comShow(@RequestParam(required = false, defaultValue = "indWork") String menu, @RequestParam(required = false, defaultValue = "1")int currentPage, String countPerPage, HttpSession session, Model model) {
 		
 		String memId = (String) session.getAttribute("memId");
 		int memNo = (Integer) session.getAttribute("memNo");
@@ -113,10 +114,12 @@ public class CommuteController {
 		pagingInfo.setTotalRecord(totalRecord);
 		Map<String, Object> page = new HashMap<String, Object>();
 		page.put("page", pagingInfo);
+		page.put("menu", menu);
+		page.put("title", title);
+		
 		list.add(page);
 		
 		return list;
-
 	}
 	
 }

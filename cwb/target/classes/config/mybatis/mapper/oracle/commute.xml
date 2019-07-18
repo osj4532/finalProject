@@ -41,7 +41,7 @@
 				select * from commuteview
 				where memno=#{memNo}
 				order by comindate desc
-			)
+			)A
 		)
 		<![CDATA[
 		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
@@ -65,7 +65,7 @@
 				select * from commuteview
 				where deptName=#{deptName}
 				order by comindate desc
-			)
+			)A
 		)
 		<![CDATA[
 		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
@@ -92,7 +92,7 @@
 				join position p
 				on m.POS_NO = p.POS_NO
 				where mem_no=#{memNo}
-			)
+			)A
 		)
 		<![CDATA[
 		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
@@ -110,7 +110,7 @@
 	</select>
 	
 	<select id="selectAllHoly" parameterType="map" resultType="map">
-		select
+		select *
 		from
 		(		
 			select A.*, rownum as rnum
@@ -123,7 +123,7 @@
 				join position p
 				on m.POS_NO = p.POS_NO
 				order by mem_name
-			)
+			)A
 		)
 		<![CDATA[
 		where rnum > #{firstRecordIndex} and rnum <= #{firstRecordIndex}+#{recordCountPerPage}
