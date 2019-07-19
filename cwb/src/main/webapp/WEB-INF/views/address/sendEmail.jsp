@@ -129,12 +129,12 @@
 </head>
 <body>
 
-<form action="<c:url value='/address/sendEmailProc.do'/>" method="post" enctype="multipart/form-data">
+<form name="mailfrm" action="<c:url value='/address/sendEmailProc.do'/>" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="mailRev" value="${memNo }"/>
 	<input type="hidden" name="mailRevAddr" value="${sender }">
 	<div class="lab-grid-cell lab-grid-cell--mb-2x w-third--d w-half--t w-full--m">
 	    <div class="floating-label-wrap">
-	      <input type="text" class="floating-label-field floating-label-field--s1" name="mailSenAddr" 
+	      <input type="email" class="floating-label-field floating-label-field--s1" name="mailSenAddr" 
 	      	id="mailSenAddr" placeholder="받는사람" value="${receiver }">
 	      <label for="mailSenAddr" class="floating-label">
 	      	받는사람
@@ -175,6 +175,24 @@
 	    	fontNames: ['돋움','휴먼모음T','궁서','휴먼옛체' ]
 	    });
 	});
+	
+	
+	$(function(){
+		$('form[name=mailfrm]').submit(function(){
+			if($('#mailSenAddr').val() == ''){
+				alert("보낼 주소를 입력해 주세요.");
+				$('#mailSenAddr').focus();
+				event.preventDefault();
+			}else if($('#mailTitle').val() == ''){
+				alert("보낼 이메일 제목을 입력해 주세요.");
+				$('#mailTitle').focus();
+				event.preventDefault();
+			}
+			opener.location.href="<c:url value='/address/emailList.do'/>";
+			window.close();
+			
+		});
+	})
 </script>
 </body>
 </html>

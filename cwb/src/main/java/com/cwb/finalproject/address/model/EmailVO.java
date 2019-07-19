@@ -2,7 +2,9 @@ package com.cwb.finalproject.address.model;
 
 import java.sql.Timestamp;
 
-public class EmailVO {
+import com.cwb.finalproject.common.SearchVO;
+
+public class EmailVO extends SearchVO{
 	private int mailNo;
 	private int mailRev;
 	private String mailRevAddr;
@@ -78,6 +80,6 @@ public class EmailVO {
 		return "EmailVO [mailNo=" + mailNo + ", mailRev=" + mailRev + ", mailRevAddr=" + mailRevAddr + ", mailSenAddr="
 				+ mailSenAddr + ", mailTitle=" + mailTitle + ", mailContent=" + mailContent + ", mailFileName="
 				+ mailFileName + ", mailOriginalFileName=" + mailOriginalFileName + ", mailFileSize=" + mailFileSize
-				+ ", mailRegdate=" + mailRegdate + "]";
+				+ ", mailRegdate=" + mailRegdate + super.toString()+ "]";
 	}
 }
