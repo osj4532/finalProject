@@ -202,12 +202,12 @@ public class AddressController {
 	
 	@RequestMapping("/emailDelete.do")
 	@ResponseBody
-	public int emailDelete(@RequestParam(value = "selNum") List<String> selNum, HttpServletRequest request) {
-		logger.info("메일 삭제 처리하기 삭제 할 개수 = {}", selNum.size());
+	public int emailDelete(@RequestParam(value = "sel[]") List<Integer> sel, HttpServletRequest request) {
+		logger.info("메일 삭제 처리하기 삭제 할 개수 = {}", sel.size());
 		int cnt = -1;
-		if(selNum.size() != 0) {
-			for(String i : selNum) {
-				EmailVO vo = emailService.selectDetail(Integer.parseInt(i));
+		if(sel.size() != 0) {
+			for(int i : sel) {
+				EmailVO vo = emailService.selectDetail(i);
 				if(vo.getMailFileName() !=null) {
 					String path = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
 					File file = new File(path, vo.getMailFileName());
@@ -215,7 +215,7 @@ public class AddressController {
 						file.delete();
 					}
 				}
-				cnt = emailService.deleteMail(Integer.parseInt(i));
+				cnt = emailService.deleteMail(i);
 			}
 		}
 		return cnt;
@@ -227,5 +227,11 @@ public class AddressController {
 		
 		model.addAttribute("memNo", memNo);
 		return "address/sendMessage";
+	}
+	
+	@RequestMapping("/selAddr.do")
+	public String selAddr() {
+		logger.info("연락처 선택창 보여주기");
+		return "address/addrSel";
 	}
 }

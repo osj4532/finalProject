@@ -138,11 +138,8 @@
 	function deleteMail(){
 		$.ajax({
 			url:"<c:url value='/address/emailDelete.do'/>",
-			type:"post",
-			dataType:"json",
-			data:{
-				"selNum":email_sel
-			},
+			type:"get",
+			data:{"sel":email_sel},
 			success:function(edata){
 				alert(edata);
 				if(edata > 0){
