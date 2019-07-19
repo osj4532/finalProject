@@ -282,7 +282,7 @@
               </a>
             <ul class="sub">
               <li><a href="<c:url value="/address/privateAddr.do"/>">개인주소록</a></li>
-              <li><a href="#">보낸 메일함</a></li>
+              <li><a href="<c:url value="/address/emailList.do"/>">보낸 메일함</a></li>
               <li><a href="#">쪽지 함</a></li>
             </ul>
           </li>
@@ -326,6 +326,7 @@
               </a>
             <ul class="sub">
               <li><a href="<c:url value="/resources/list.do"/>">자원</a></li>
+              <li><a href="<c:url value="/useResource/useResList.do"/>">자원 내역</a></li>
             </ul>
           </li>
         </ul>

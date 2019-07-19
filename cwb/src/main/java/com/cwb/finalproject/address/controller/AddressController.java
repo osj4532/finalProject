@@ -1,5 +1,6 @@
 package com.cwb.finalproject.address.controller;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,11 +21,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cwb.finalproject.address.model.EmailService;
 import com.cwb.finalproject.address.model.EmailVO;
 import com.cwb.finalproject.common.FileUploadUtil;
+import com.cwb.finalproject.common.PaginationInfo;
+import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.dept.model.DeptService;
 import com.cwb.finalproject.dept.model.DeptVO;
 import com.cwb.finalproject.member.model.MemberService;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Controller
 @RequestMapping("/address")
@@ -38,6 +44,8 @@ public class AddressController {
 	private FileUploadUtil fileUtil;
 	@Autowired
 	private EmailSender emailSender;
+	@Autowired
+	private EmailService emailService;
 	
 	@RequestMapping("/privateAddr.do")
 	public String showPrivAddr() {
@@ -96,10 +104,12 @@ public class AddressController {
 		int memNo = (Integer)session.getAttribute("memNo");
 		Map<String, Object> member = memberService.selectByNo(memNo);
 		
-		String senderMail = member.get("MEM_EMAIL1")+"@"+member.get("MEM_EMAIL2");
+		if((String)member.get("MEM_EMAIL1") != null) {
+			String senderMail = member.get("MEM_EMAIL1")+"@"+member.get("MEM_EMAIL2");
+			model.addAttribute("sender", senderMail);
+		}
 		
 		model.addAttribute("memNo", memNo);
-		model.addAttribute("sender", senderMail);
 		model.addAttribute("receiver", email);
 		
 		return "address/sendEmail";
@@ -118,6 +128,9 @@ public class AddressController {
 			logger.info("파일 넣은 후 vo = {}",vo);
 		}
 		
+		int cnt = emailService.insertEmail(vo);
+		logger.info("DB에 저장 결과 cnt = {}",cnt);
+		
 		String savePath = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
 		
 		try {
@@ -129,18 +142,83 @@ public class AddressController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//메일 보내고 확인해보기
-		
-		
-		return null;
+		return "redirect:/address/emailList.do";
 	}
 	
-	
-	
 	@RequestMapping("/emailList.do")
-	public String emailList() {
-		logger.info("보낸 메일 리스트 보기");
+	public String emailList(@ModelAttribute EmailVO emailVo, HttpSession session, Model model) {
+		int memNo = (Integer)session.getAttribute("memNo");
+		logger.info("보낸 메일 리스트 보기 memNo={}",memNo);
+		logger.info("현재 페이지 ={}",emailVo.getCurrentPage());
+		
+		emailVo.setMailRev(memNo);
+		
+		PaginationInfo pageInfo = new PaginationInfo();
+		pageInfo.setBlockSize(10);
+		pageInfo.setRecordCountPerPage(5);
+		pageInfo.setCurrentPage(emailVo.getCurrentPage());
+		
+		emailVo.setRecordCountPerPage(5);
+		emailVo.setFirstRecordIndex(pageInfo.getFirstRecordIndex());
+		logger.info("셋팅후 ={}",emailVo);
+		
+		
+		List<EmailVO> list = emailService.sendMailList(emailVo);
+		logger.info("리스트 크기 ={}",list.size());
+		
+		int totalRec = 0;
+		totalRec = emailService.totalCount(memNo);
+		logger.info("총 레코드 개수 ={}",totalRec);
+		
+		pageInfo.setTotalRecord(totalRec);
+		
+		model.addAttribute("list", list);
+		model.addAttribute("pageInfo", pageInfo);
+		
 		return "address/emailList";
+	}
+	
+	@RequestMapping("/emailDetail.do")
+	public String emailDetail(@RequestParam int mailNo, Model model) {
+		logger.info("보낸 메일 상세 보기 매개변수 mailNo={}",mailNo);
+		EmailVO vo = emailService.selectDetail(mailNo);
+		
+		int count = emailService.countNext(mailNo);
+		if(count > 0) {
+			int next = emailService.selectNext(mailNo);
+			model.addAttribute("next",next);
+		}
+
+		count = emailService.countPre(mailNo);
+		if(count > 0) {
+			int pre = emailService.selectPre(mailNo);
+			model.addAttribute("pre",pre);
+		}
+		
+		model.addAttribute("vo",vo);
+		
+		return "address/emailDetail";
+	}
+	
+	@RequestMapping("/emailDelete.do")
+	@ResponseBody
+	public int emailDelete(@RequestParam(value = "selNum") List<String> selNum, HttpServletRequest request) {
+		logger.info("메일 삭제 처리하기 삭제 할 개수 = {}", selNum.size());
+		int cnt = -1;
+		if(selNum.size() != 0) {
+			for(String i : selNum) {
+				EmailVO vo = emailService.selectDetail(Integer.parseInt(i));
+				if(vo.getMailFileName() !=null) {
+					String path = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
+					File file = new File(path, vo.getMailFileName());
+					if(file.exists()) {
+						file.delete();
+					}
+				}
+				cnt = emailService.deleteMail(Integer.parseInt(i));
+			}
+		}
+		return cnt;
 	}
 	
 	@RequestMapping("/sendMessage.do")

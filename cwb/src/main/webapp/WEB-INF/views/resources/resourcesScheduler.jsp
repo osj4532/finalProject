@@ -142,7 +142,8 @@ element.style {
 
 					<c:if test="${ranksNo>=2}">   
 					
-						if(event.title=='승인' || event.title=='거절'){
+						if(event.title=='승인' || event.title=='거절' ||
+								event.title=='대여 완료'){
 							alert("이미 완료된 문서입니다 변경은 자원사용 내역에서 가능합니다.")
 							return;
 						}; 
@@ -234,8 +235,11 @@ element.style {
 								if(this.apprFlag=='Y'){   
 									color="green";  
 									Flagtitle="승인";
+									if(this.memNo==${memNo}){
+										Flagtitle="대여 완료";
+									}
 								}else if (this.apprFlag=='N') {
-									color= "red"; 
+									color= "red";  
 									Flagtitle="거절";
 								}else if (this.apprFlag=='W') {
 									color="skyblue";  

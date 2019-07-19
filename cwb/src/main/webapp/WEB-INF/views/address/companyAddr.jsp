@@ -162,7 +162,7 @@
       </div>
       <div class="modal-body align-center">
       	<input type="hidden" id="memNo">
-        <img id="pic" class="rounded-circle" src="<c:url value='/sign_file/bear_PNG2343720190715143157139.png'/>" alt="" width="100" height="100">
+        <img id="pic" class="rounded-circle" src="" alt="" width="100" height="100">
         <h3 id="dept">[부서]</h3>
         <h4><span id="pos">[직책]</span><span id="name">이름</span></h4>
         <p id="tel">연락처 : 010-1234-4567</p>
