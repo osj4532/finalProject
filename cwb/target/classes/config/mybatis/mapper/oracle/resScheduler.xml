@@ -127,28 +127,14 @@ values(#{reservNo},#{memNo},#{resNo},
 		select count(*) from dual 
 		<![CDATA[ where to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS')<=sysdate]]>
 	</select>
-	<!-- 
-	<delete id="deleteByscdNo" parameterType="int">
-		delete from schedule
-		where scd_no=#{scdNo}
-	</delete>
 	
-	<update id="updateUserDayScd" parameterType="schedulerVo">
-		update schedule
-		set scd_start=#{scdStart},scd_end=#{scdEnd}
-		where scd_no=#{scdNo}
-	</update>
-	<update id="updateUserScd" parameterType="schedulerVo">
-		update schedule
-		set scd_start=to_date(#{scdStart},'YYYY/MM/DD HH24:MI:SS'),
-			scd_end=to_date(#{scdEnd},'YYYY/MM/DD HH24:MI:SS')
-		where scd_no=#{scdNo}
-	</update>
-	<update id="updateUserScdContent" parameterType="schedulerVo">
-		update schedule
-		set scd_content=#{scdContent} 
-		where scd_no=#{scdNo}
-	</update>  -->
+	<select id="selectNowSysDay" parameterType="int" resultType="int">
+		select count(*) from resschedule
+		where sysdate between
+		use_regdate and  return_regdate
+		and res_no=#{resNO}
+		and appr_flag= 'Y'
+	</select>
 </mapper>
 
 
