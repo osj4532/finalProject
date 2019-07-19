@@ -135,6 +135,32 @@ values(#{reservNo},#{memNo},#{resNo},
 		and res_no=#{resNO}
 		and appr_flag= 'Y'
 	</select>
+	
+	<select id="selectMyUseRes" parameterType="int" resultType="useResourceVO"> 
+		select * from ResUseListView
+			where mem_no=#{memNo} and appr_flag='Y'
+			<![CDATA[	and use_regdate <= sysdate ]]>
+		 order by res_no,use_regdate 
+	</select>
+	
+	<select id="selectMyNotUseRes" parameterType="int" resultType="useResourceVO">
+		select * from ResUseListView
+			where mem_no=#{memNo} and appr_flag='Y'
+			and use_regdate > sysdate
+		order by res_no,use_regdate 
+	</select>
+	<select id="selectMyNotWaitRes" parameterType="int" resultType="useResourceVO">
+		select * from ResUseListView
+			where mem_no=#{memNo} and appr_flag='W'
+			and use_regdate > sysdate
+		order by res_no,use_regdate 
+	</select>
+	<select id="selectMyNotRefuseRes" parameterType="int" resultType="useResourceVO">
+		select * from ResUseListView
+			where mem_no=#{memNo} and appr_flag='N'
+			and use_regdate > sysdate
+		order by res_no,use_regdate 
+	</select>
 </mapper>
 
 
