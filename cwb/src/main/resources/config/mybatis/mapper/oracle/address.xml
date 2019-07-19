@@ -4,15 +4,72 @@
 
 <mapper namespace="config.mybatis.mapper.oracle.address">
 	<insert id="insertEmail" parameterType="emailVo">
-		<selectKey keyColumn="mailNo" resultType="int" order="BEFORE">
-			select mail_seq.nextval from dual
-		</selectKey>
-		insert into mail
-		values(#{mailNo},#{mailRev},#{mailRevAddr},
-		#{mailSenAddr},#{mailTitle},#{mailContent},
-		#{mailFileName},#{mailFileSize},#{mailOriginalFileName},
-		#{mailRegdate})
+		insert into mail(mail_no,mail_rev,mail_revAddr,mail_senAddr,mail_title,mail_content
+		<if test="mailFileName != null and mailFileName != ''">
+			,mail_filename, mail_filesize, mail_originalfilename
+		</if>
+		)
+		values(mail_seq.nextval,#{mailRev},#{mailRevAddr},
+		#{mailSenAddr},#{mailTitle},#{mailContent}
+		<if test="mailFileName != null and mailFileName != ''">
+			,#{mailFileName},#{mailFileSize},#{mailOriginalFileName}		
+		</if>
+		)
 	</insert>
+	
+	<select id="totalCount" parameterType="int" resultType="int">
+				select count(*) from mail
+				where mail_rev = #{mailRev}
+				order by mail_no desc
+	</select>
+	
+	<select id="sendMailList" parameterType="emailVo" resultType="emailVo">
+		select B.*
+		from
+		(
+			select rownum RNUM, A.*
+			from(
+				select * from mail
+				where mail_rev = #{mailRev}
+				order by mail_no desc
+			)A
+<![CDATA[		where rownum <=  #{firstRecordIndex}+#{recordCountPerPage}]]>
+		)B
+		where B.RNUM > #{firstRecordIndex}
+	</select>
+	
+	<select id="selectDetail" parameterType="int" resultType="emailVo">
+		select * from mail where mail_no = #{mailNo}
+	</select>
+	
+	
+	<select id="countNext" parameterType="int" resultType="int">
+		select count(mail_no) from mail
+		where mail_no > #{mailNo}
+	</select>
+	
+	
+	<select id="countPre" parameterType="int" resultType="int">
+		select count(mail_no) from mail
+<![CDATA[where mail_no < #{mailNo}]]>
+	</select>
+	
+	
+	<select id="selectNext" parameterType="int" resultType="int">
+		select min(mail_no) from mail
+		where mail_no > #{mailNo}
+	</select>
+	
+	
+	<select id="selectPre" parameterType="int" resultType="int">
+		select max(mail_no) from mail
+<![CDATA[where mail_no < #{mailNo}]]>
+	</select>
+	
+	<delete id="deleteMail" parameterType="int">
+		delete from mail
+		where mail_no = #{mailNo}
+	</delete>
 </mapper>
 
 
