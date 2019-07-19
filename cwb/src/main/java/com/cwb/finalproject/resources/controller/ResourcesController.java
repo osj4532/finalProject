@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cwb.finalproject.common.ResImgUploadUtility;
+import com.cwb.finalproject.resScheduler.model.ResSchedulerService;
 import com.cwb.finalproject.resources.model.ResourcesService;
 import com.cwb.finalproject.resources.model.ResourcesVO;
 import com.cwb.finalproject.resources.model.RestypeVO;
@@ -31,6 +32,8 @@ public class ResourcesController {
 	@Autowired
 	private ResourcesService resourcesService;
 	@Autowired private  ResImgUploadUtility resImgUtility;
+	@Autowired private ResSchedulerService resSchedulerService;
+	
 	
 	@RequestMapping("/list.do")
 	public String resources_view(Model model) {
@@ -246,8 +249,12 @@ public class ResourcesController {
 	public String canRes(@RequestParam(defaultValue = "0") int resNo){
 		logger.info("자원 사용중 확인 resNo={}",resNo);
 		
-		
-		
-		return "resNo";
+		int useing = resSchedulerService.selectNowSysDay(resNo);
+		String result="N";
+		if(useing>0) {
+			result= "Y";
+		}
+		logger.info("자원 사용중 확인 result={}",result);
+		return result;
 	}
 }

@@ -10,4 +10,5 @@ public interface ResSchedulerService {
 	int updateResScdWait(int reservNo);
 	String selectExistDay(ResSchedulerVO resSchedulerVo,boolean isday);
 	int findsysday(ResSchedulerVO resSchedulerVo);
+	int selectNowSysDay(int resNo);
 }

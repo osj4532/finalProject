@@ -71,6 +71,11 @@ public class ResSchedulerServiceImp implements ResSchedulerService{
 		cnt+=resSchedulerDao.selectBackSys(resSchedulerVo);
 		return cnt;
 	}
+
+	@Override
+	public int selectNowSysDay(int resNo) {
+		return resSchedulerDao.selectNowSysDay(resNo);
+	}
 	
 
 }

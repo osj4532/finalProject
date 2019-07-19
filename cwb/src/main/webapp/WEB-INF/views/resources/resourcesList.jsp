@@ -192,15 +192,21 @@
                    		 $(function() {
                    			 $.ajax({ 
                    				type : "post",
-    							url : "<c:url value='//resources/canRes.do'/>",
+    							url : "<c:url value='/resources/canRes.do'/>",
     							data : { 
     								"resNo": ${ResList[i][j].resNo} 
-    							},
+    							}, 
 								success : function(data) {
-									alert("신청 완료");
+									if(data=='Y'){ 
+										document.getElementById(${ResList[i][j].resNo}).className = "badge bg-theme04";
+										document.getElementById(${ResList[i][j].resNo}).innerHTML = "사용중";
+									}else if (data=='N') { 
+										document.getElementById(${ResList[i][j].resNo}).className = "badge bg-theme";
+										document.getElementById(${ResList[i][j].resNo}).innerHTML = "미사용";
+									}
 								},
 								error : function(xhr, err) { 
-									alert("ERROR! - readyState: "
+									alert("ERROR! - readyState: " 
 											+ xhr.readyState
 											+ "<br/>status: "
 											+ xhr.status
@@ -210,12 +216,8 @@
                    			 });
                    		 });
                     </script>
-              			<c:if test="${ResList[i][j].reservFlag=='N'}">
-							<span class="badge bg-theme04">사용중</span>
-						</c:if>
-						<c:if test="${ResList[i][j].reservFlag=='Y'}">
-					 		<span class="badge bg-theme">사용가능</span>
-						</c:if>
+							<span id="${ResList[i][j].resNo}" class="badge"></span>
+					 		<!-- <span class="badge bg-theme">사용가능</span> -->
                     <td>  
                       <button class="btn btn-success btn-xs" onclick="resScheduler(${ResList[i][j].resNo})"><i class="far fa-calendar-alt"></i></button>
                       <button class="btn btn-primary btn-xs" onclick="editRes(${ResList[i][j].resNo})">

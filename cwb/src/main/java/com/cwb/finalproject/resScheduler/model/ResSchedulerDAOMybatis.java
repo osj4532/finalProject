@@ -81,6 +81,11 @@ public class ResSchedulerDAOMybatis implements ResSchedulerDAO{
 	public int selectBackAllnotDay(ResSchedulerVO resSchedulerVo) {
 		return sqlSession.selectOne(namespace+"selectBackAllnotDay", resSchedulerVo);
 	}
+
+	@Override
+	public int selectNowSysDay(int resNo) {
+		return sqlSession.selectOne(namespace+"selectNowSysDay", resNo);
+	}
 	
 	
 }
