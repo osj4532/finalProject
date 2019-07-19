@@ -1,21 +1,17 @@
 package com.cwb.finalproject.commute.controller;
 
 import java.util.HashMap;
+
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.apache.poi.hssf.record.pivottable.PageItemRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -44,7 +40,7 @@ public class CommuteController {
 	
 	@RequestMapping("/comPage.do")
 	@ResponseBody
-	public List<Map<String, Object>> comShow(@RequestParam(required = false, defaultValue = "indWork") String menu, @RequestParam(required = false, defaultValue = "1")int currentPage, String countPerPage, HttpSession session, Model model) {
+	public List<Map<String, Object>> comShow(@RequestParam(required = false, defaultValue = "indWork") String menu, @RequestParam(required = false, defaultValue = "1")int currentPage, HttpSession session) {
 		
 		String memId = (String) session.getAttribute("memId");
 		int memNo = (Integer) session.getAttribute("memNo");
@@ -55,13 +51,12 @@ public class CommuteController {
 		
 		PaginationInfo pagingInfo = new PaginationInfo();
 		pagingInfo.setBlockSize(WebUtility.BLOCK_SIZE);
-		pagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		pagingInfo.setRecordCountPerPage(10);
 		pagingInfo.setCurrentPage(currentPage);
 		
 		map.put("firstRecordIndex", pagingInfo.getFirstRecordIndex());
 		map.put("recordCountPerPage", pagingInfo.getRecordCountPerPage());
 		
-		String title = "";
 		List<Map<String, Object>> list = null;
 		int totalRecord = 0;
 		if(menu.equals("allAssiduity")) {	//전체 조회
@@ -70,7 +65,6 @@ public class CommuteController {
 			
 			totalRecord = commuteService.countSelectAll();
 			logger.info("전체조회 결과 갯수 totalRecord={}", totalRecord);
-			title = "전체 조회";
 
 		}else if(menu.equals("indWork")) {	//개인 출퇴근 조회
 			map.put("memNo", memNo);
@@ -79,8 +73,9 @@ public class CommuteController {
 			
 			totalRecord = commuteService.countSelectIndiv(memNo);
 			logger.info("개인출퇴근 조회 결과 갯수 totalRecord={}", totalRecord);
-			title = "개인 출퇴근 조회";
-
+			
+			
+			
 		}else if(menu.equals("depAssiduity")) {	//부서 근태조회
 			String deptName = commuteService.selectByMemNo(memNo);
 			logger.info("번호로 부서이름 조회 결과 deptName={}", deptName);
@@ -91,7 +86,6 @@ public class CommuteController {
 
 			totalRecord = commuteService.countSelectDep(deptName);
 			logger.info("부서이름으로 조회 결과 갯수 totalRecord={}", totalRecord);
-			title = "부서 근태 조회";
 
 		}else if(menu.equals("indHoly")) {
 			map.put("memNo", memNo);
@@ -101,24 +95,20 @@ public class CommuteController {
 			
 			totalRecord = commuteService.countSelectIndivHoly(memNo);
 			logger.info("개인연차 조회 결과 갯수 totalRecord={}", totalRecord);
-			title = "개인 연차 조회";
 		}else if(menu.equals("allHoly")) {
 			list = commuteService.selectAllHoly(map);
 			logger.info("전체 연차 조회 결과 list.size={}", list.size());
 			
 			totalRecord = commuteService.countSelectAllHoly();
 			logger.info("전체연차 조회 결과 갯수 totalRecord={}", totalRecord);
-			title = "전체 연차 조회";
 		}
 		
 		pagingInfo.setTotalRecord(totalRecord);
 		Map<String, Object> page = new HashMap<String, Object>();
 		page.put("page", pagingInfo);
-		page.put("menu", menu);
-		page.put("title", title);
 		
-		list.add(page);
-		
+		list.add(0, page);
+		//[{"page":{"currentPage":1,"recordCountPerPage":5,"blockSize":10,"totalRecord":1,"totalPage":1,"firstPage":1,"lastPage":1,"firstRecordIndex":0,"lastRecordIndex":5}},{"COMOUTDATE":1563250427000,"RNUM":1,"DEPTNAME":"기획팀","COMSTATUS":"N","COMINDATE":1563250427000,"POSNAME":"사원","MEMNO":4,"MEMNAME":"사원2"}]
 		return list;
 	}
 	

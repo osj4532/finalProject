@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.cwb.finalproject.commute.model.CommuteService;
 import com.cwb.finalproject.member.model.MemberService;
 import com.cwb.finalproject.member.model.MemberVO;
 
@@ -25,6 +26,10 @@ public class LoginController {
 	
 	@Autowired
 	private MemberService memberService;
+	
+	/*
+	 * @Autowired private CommuteService commuteService;
+	 */
 	
 	@RequestMapping(value="/login.do", method=RequestMethod.GET)
 	public void login_get() {
@@ -44,13 +49,17 @@ public class LoginController {
 		if(result==MemberService.LOGIN_OK) {
 			//로그인 성공
 			MemberVO memberVo2 = memberService.selectByUserid(memberVo.getMemId());
-			
 			//session에 저장
 			HttpSession session = request.getSession();
 			session.setAttribute("memId", memberVo.getMemId());
 			session.setAttribute("memName", memberVo2.getMemName());
 			session.setAttribute("memNo", memberVo2.getMemNo());
 			session.setAttribute("ranksNo", memberVo2.getRanksNo());
+			
+			/*
+			 * String comindate = commuteService.selectByMemNo(memberVo2.getMemNo());
+			 * session.setAttribute("cominDate", comindate);
+			 */
 			
 			//cookie에 저장
 			Cookie ck = new Cookie("ck_memid", memberVo.getMemId());

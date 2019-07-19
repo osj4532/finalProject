@@ -140,6 +140,11 @@
 		order by mem_name
 	</select>
 	
+	<!-- <select id="selectByMemNo" resultType="String" parameterType="int">
+		select comindate from commuteview
+		where memno = #{memNo}
+	</select> -->
+	
 	<!-- <select id="selectDepAssi" resultType="map">
 		
 	</select> -->
