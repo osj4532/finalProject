@@ -1,6 +1,7 @@
 package com.cwb.finalproject.address.controller;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -131,16 +132,21 @@ public class AddressController {
 		int cnt = emailService.insertEmail(vo);
 		logger.info("DB에 저장 결과 cnt = {}",cnt);
 		
+		String[] members = vo.getMailSenAddr().split(",");
+		
 		String savePath = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
 		
-		try {
-			emailSender.init();
-			emailSender.addMsg(vo.getMailContent());
-			emailSender.addFile(savePath, vo.getMailFileName(), vo.getMailOriginalFileName());
-			emailSender.sendEmail(vo.getMailTitle(), vo.getMailSenAddr(), vo.getMailRevAddr());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		for(String member : members) {
+			logger.info(member);
+			try {
+				emailSender.init();
+				emailSender.addMsg(vo.getMailContent());
+				emailSender.addFile(savePath, vo.getMailFileName(), vo.getMailOriginalFileName());
+				emailSender.sendEmail(vo.getMailTitle(), member,vo.getMailRevAddr());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return "redirect:/address/emailList.do";
 	}
@@ -220,6 +226,57 @@ public class AddressController {
 		}
 		return cnt;
 	}
+
+	@RequestMapping("/selAddr.do")
+	public String selAddr() {
+		logger.info("연락처 선택창 보여주기");
+		return "address/addrSel";
+	}
+	
+	@RequestMapping("/showEmailList.do")
+	@ResponseBody
+	public List<Map<String, Object>> showEmailList(@RequestParam int kind,
+			@RequestParam String keyword,
+			@RequestParam int currentPage){
+		logger.info("이메일 주소록 보여주기 매개변수 = {}",kind);
+		logger.info("keyword = {} currentPage = {}",keyword, currentPage);
+		
+		List<Map<String, Object>> list = null;
+		
+		PaginationInfo pageInfo = new PaginationInfo();
+		pageInfo.setBlockSize(WebUtility.BLOCK_SIZE);
+		pageInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		pageInfo.setCurrentPage(currentPage);
+		
+		//검색 조건
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("keyword",keyword);
+		map.put("firstRecordIndex",pageInfo.getFirstRecordIndex());
+		map.put("recordCountPerPage",WebUtility.RECORD_COUNT_PER_PAGE);
+		
+		int totalRec = 0;
+		
+		if(kind == 1) {
+			//페이징, 검색 추가하기
+			list = memberService.selectOrSearchEmail(map);
+			totalRec = memberService.countEmail(map);
+			
+			pageInfo.setTotalRecord(totalRec);
+			
+			for(Map<String, Object> m : list) {
+				m.put("MEM_JOINDATE",null);
+			}
+		}else if(kind == 2) {
+			list = new ArrayList<Map<String,Object>>();
+		}
+		
+		Map<String, Object> page = new HashMap<String, Object>();
+		page.put("pageInfo",pageInfo);
+		list.add(0,page);
+		
+		return list;
+		
+	}
 	
 	@RequestMapping("/sendMessage.do")
 	public String sendMessage(@RequestParam(required = false) int memNo, Model model) {
@@ -229,9 +286,4 @@ public class AddressController {
 		return "address/sendMessage";
 	}
 	
-	@RequestMapping("/selAddr.do")
-	public String selAddr() {
-		logger.info("연락처 선택창 보여주기");
-		return "address/addrSel";
-	}
 }

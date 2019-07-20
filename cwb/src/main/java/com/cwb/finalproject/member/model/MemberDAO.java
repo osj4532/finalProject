@@ -14,4 +14,7 @@ public interface MemberDAO {
 	public MemberVO selectByUserid(String memId);
 	
 	public List<Map<String, Object>> selectOrSearch(Map<String, Object> map);
+	
+	public List<Map<String, Object>> selectOrSearchEmail(Map<String, Object> map);
+	public int countEmail(Map<String, Object> map);
 }

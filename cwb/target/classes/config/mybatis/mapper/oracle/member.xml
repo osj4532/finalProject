@@ -22,11 +22,35 @@
 	
 	<select id="selectOrSearch" resultType="map" parameterType="map">
 		select * from memberview
-		<if test="keyword != null">
+		<if test="keyword != null and keyword != ''">
 			where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 		</if>
 	</select>
 	
+	<select id="countEmail" resultType="int" parameterType="map">
+		select count(*) from memberview
+		<if test="keyword != null and keyword != ''">
+			where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+		</if>
+		order by pos_no, mem_no
+	</select>
+	
+	<select id="selectOrSearchEmail" resultType="map" parameterType="map">
+		select B.*
+		from
+		(
+			select rownum RNUM, A.*
+			from(
+				select * from memberview
+				<if test="keyword != null and keyword != ''">
+					where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+				</if>
+				order by pos_no, mem_no
+			)A
+<![CDATA[	where rownum <= #{firstRecordIndex}+#{recordCountPerPage}]]>
+		)B
+		where B.RNUM > #{firstRecordIndex}
+	</select>
 </mapper>
 
 

@@ -125,16 +125,24 @@
 	text-align: center;
 }
 
+.btnDiv{
+	text-align: right;
+	margin-right: 10px;
+	margin-top: 10px;
+}
+
 </style>
 </head>
 <body>
-
+<div class="btnDiv">
+<button id="add" class="btn btn-info">받는사람</button>
+</div>
 <form name="mailfrm" action="<c:url value='/address/sendEmailProc.do'/>" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="mailRev" value="${memNo }"/>
 	<input type="hidden" name="mailRevAddr" value="${sender }">
 	<div class="lab-grid-cell lab-grid-cell--mb-2x w-third--d w-half--t w-full--m">
 	    <div class="floating-label-wrap">
-	      <input type="email" class="floating-label-field floating-label-field--s1" name="mailSenAddr" 
+	      <input type="text" class="floating-label-field floating-label-field--s1" name="mailSenAddr" 
 	      	id="mailSenAddr" placeholder="받는사람" value="${receiver }">
 	      <label for="mailSenAddr" class="floating-label">
 	      	받는사람
@@ -191,6 +199,10 @@
 			opener.location.href="<c:url value='/address/emailList.do'/>";
 			window.close();
 			
+		});
+		
+		$('#add').click(function(){
+			window.open("<c:url value='/address/selAddr.do'/>",'',"width=460px,height=460px,left=100px,top=100px,resizable=no,location=yes");
 		});
 	})
 </script>

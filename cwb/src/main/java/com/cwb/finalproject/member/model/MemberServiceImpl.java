@@ -78,4 +78,12 @@ public class MemberServiceImpl implements MemberService{
 	public List<Map<String, Object>> selectOrSearch(Map<String, Object> map){
 		return memberDAO.selectOrSearch(map);
 	}
+	
+	public List<Map<String, Object>> selectOrSearchEmail(Map<String, Object> map){
+		return memberDAO.selectOrSearchEmail(map);
+	}
+	
+	public int countEmail(Map<String, Object> map) {
+		return memberDAO.countEmail(map);
+	}
 }

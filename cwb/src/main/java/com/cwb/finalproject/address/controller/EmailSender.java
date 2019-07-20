@@ -34,8 +34,8 @@ public class EmailSender {
 			String receiver, String sender) throws Exception{
 		MimeMessage msg = mailSender.createMimeMessage();
 		msg.setSubject(subject);
-		msg.setRecipient(RecipientType.TO, new InternetAddress(receiver));
-		msg.setFrom(new InternetAddress(sender));
+		msg.setRecipient(RecipientType.TO, new InternetAddress(receiver)); //보내는
+		msg.setFrom(new InternetAddress(sender));// 받는
 		msg.setContent(multipart);
 		mailSender.send(msg);
 	}

@@ -32,4 +32,12 @@ public class MemberDAOMybatis implements MemberDAO{
 	public List<Map<String, Object>> selectOrSearch(Map<String, Object> map){
 		return sqlSession.selectList(namespace+"selectOrSearch",map);
 	}
+	
+	public List<Map<String, Object>> selectOrSearchEmail(Map<String, Object> map){
+		return sqlSession.selectList(namespace+"selectOrSearchEmail",map);
+	}
+	
+	public int countEmail(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"countEmail",map);
+	}
 }

@@ -9,6 +9,13 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
   <link href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min1.css'/>"  rel="stylesheet">
   <style type="text/css">
+  .wraper1{
+  	margin: 10px 10px;
+  	width: 600px;
+  	min-height: 600px;
+  	position: relative;
+  }
+  
   	.container-1{
   		width:300px;
   		vertical-align: middle;
@@ -55,7 +62,7 @@
 	  color: #4f5b66;
 	}
 	
-	.container-1 input#search:focus, .container-1 input#search:active{
+	.container-1 input#addrSearch:focus, .container-1 input#addrSearch:active{
 	    outline:none;
 	    background: #ffffff;
 	    border: 1px solid gray;
@@ -66,6 +73,7 @@
 		position: relative;
 		height: 60px;
 		vertical-align: middle;
+		width: 600px;
 	}
 	
 	.header{
@@ -107,6 +115,7 @@
   	
   	.addrMenu{
   		overflow: hidden;
+  		width: 560px;
   	}
   	
   	.addrCheck{
@@ -114,60 +123,240 @@
   		width:200px;
   	}
   	
-  	.addrKind{
-  		float: left;
-  		width:200px;
+  	.addrCheck span{
+  		font-size: 2em;
+  		display: inline-block;
+  		position: relative;
+  		top:-5px;
   	}
   	
-  	input[type=checkbox]{
+  	.addrKind{
+  		float: right;
+  		width:200px;
+  		margin-top: 20px;
+  	}
+  	
+  	.addrCheck input[type=checkbox]{
 		width:30px;
 		height: 30px;
+		margin-top: 20px;
+  	}
+  	
+  	 #emailList input[type=checkbox]{
+  	 	width:30px;
+		height: 30px;
+  	 }
+  	
+  	#emailList .table tr{
+  		height: 50px;
+  		font-size: 2em;
+  		text-align: center;
+  	}
+  	
+  	#emailList .table tr:hover{
+		background: rgb(230,230,230);
+  	}
+  	
+  	#addrPage{
+  		text-align: center;
+  	}
+  	
+  	.addrBtn{
+  		position: absolute;
+  		bottom: 10px;
+  		left: 256px;
   	}
   </style>
 </head>
 <body>
 
 
-
-<div class="topnav">
-	<div class="header">
-		<span class="title"><i class="fas fa-user-circle"></i>연락처 선택</span>
+<div class="wraper1">
+	<div class="topnav">
+		<div class="header">
+			<span class="title"><i class="fas fa-user-circle"></i>연락처 선택</span>
+		</div>
+		<div class="box">
+			<div class="container-1">
+				<span class="icon"><i class="fa fa-search"></i></span>
+				<input type="search" id="addrSearch" placeholder="연락처 검색">
+			</div>
+		</div>
+		<!-- <button type="button" class="close" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	    </button> -->
 	</div>
-	<div class="box">
-		<div class="container-1">
-			<span class="icon"><i class="fa fa-search"></i></span>
-			<input type="search" id="addrSearch" placeholder="연락처 검색">
+	
+	<div class="addrMenu">
+		<div class="addrCheck">
+			<input type="checkbox" id="chkAll">
+			<span>전체 선택</span>
+		</div>
+		<div class="addrKind">
+			<select class="form-control">
+				<option value="1">사내 주소록</option>
+				<option value="2">개인 주소록</option>
+			</select>
 		</div>
 	</div>
-	<button type="button" class="close" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-    </button>
-</div>
-
-<div class="addrMenu">
-	<div class="addrCheck">
-		<input type="checkbox" id="chkAll">
-		<span>전체 선택</span>
+	<div id="emailList">
+		<table class="table table-borderless">
+		
+		</table>
 	</div>
-	<div class="addrKind">
-		<select class="form-control">
-			<option>사내 주소록</option>
-			<option>개인 주소록</option>
-		</select>
+	<div id="addrPage">
+		<ul class="pagination">
+			<li class="page-item"><a href="#" class="page-link">1</a></li>
+			<li class="page-item"><a href="#" class="page-link">2</a></li>
+			<li class="page-item"><a href="#" class="page-link">3</a></li>
+		</ul>
+	</div>
+	<div class="addrBtn">
+		<button id="add" class="btn btn-primary">추가하기</button>
 	</div>
 </div>
 
 <script type="text/javascript" src="http://code.jquery.com/jquery-3.4.1.min.js"></script>
 <script type="text/javascript">
+	let selAddr = new Array();
+	
 	$(function(){
-		$('.close').click(function(){
-			//창 닫기
+		showList(1,"",1);
+		
+		$('#chkAll').click(function(){
+			$('#emailList table tr input[type=checkbox]').prop("checked",$(this).is(':checked'));
 		});
 		
+		$('.addrKind select').change(function(){
+			let kind = Number($(this).val());
+			$('#addrSearch').val("");
+			$('#chkAll').prop("checked",false);
+			showList(kind,"",1);
+		});
+		
+		$('#add').click(function(){
+			selAddr = [];
+			let chbox = $('#emailList table tr input[type=checkbox]');
+			$(chbox).each(function(){
+				if($(this).is(':checked')){
+					selAddr.push($(this).val());
+				}
+			});
+			let senAddr = opener.document.getElementById('mailSenAddr').value;
+			if(senAddr == ''){
+				opener.document.getElementById('mailSenAddr').value = selAddr;
+			}else{
+				opener.document.getElementById('mailSenAddr').value = senAddr+","+selAddr;
+			}
+			window.close();
+		});
+		
+		/* $('.close').click(function(){
+			//창 닫기
+		}); */
+		
 		$('#addrSearch').keyup(function(){
-			//ajax로 검색 결과 보여주기
+			let keyword = $(this).val();
+			let kind = Number($('.addrKind select').val());
+			showList(kind, keyword, 1);
 		});
 	});
+	
+	function showList(kind, keyword, currentPage){
+		$.ajax({
+			url:"<c:url value='/address/showEmailList.do'/>",
+			type:"post",
+			dataType:"json",
+			data:{"kind":kind,
+					"keyword":keyword,
+					"currentPage":currentPage},
+			success:function(data){
+				let table = $('#emailList table');
+				let colg = $('<colgroup></colgroup>');
+				let col1 = $('<col width="10%">');
+				let col2 = $('<col width="30%">');
+				let col3 = $('<col width="*">');
+				
+				colg.html(col1);
+				colg.append(col2);
+				colg.append(col3);
+				
+				table.html(colg);
+				
+				if(data.length == 1){
+					let trEl = $('<tr></tr>');
+					let tdEl = $('<td colspan="3">저장된 연락처가 없습니다.</td>');
+					
+					trEl.html(tdEl);
+					table.append(trEl);
+				}else{
+					$(data).each(function(idx, item){
+						if(idx == 0) return true;
+						
+						let trEl = $('<tr></tr>');
+	
+						let mail = item['MEM_EMAIL1'] + "@" + item['MEM_EMAIL2']; 
+						let tdEl1 = $('<td><input type="checkbox" value="'+mail+'"></td>');
+						let tdEl2 = $('<td><i class="fas fa-user"></i>'+item["MEM_NAME"]+'</td>');
+						let tdEl3 = $('<td>'+mail+'</td>');
+						
+						trEl.html(tdEl1);
+						trEl.append(tdEl2);
+						trEl.append(tdEl3);
+						
+						table.append(trEl);
+						
+					});
+					
+					let pageDiv = $('#addrPage');
+					let pageUl = $("<ul class='pagination'></ul>");						
+					
+					let pageMap = data[0]['pageInfo'];
+					pageUl.html('');
+					for(let i = pageMap.firstPage; i <= pageMap.lastPage; i++){
+						let pageLi = $('<li class="page-item"></li>');
+						let pageA = $('<a href="#" class="page-link">'+i+'</a>');
+						pageA.attr("onclick","movePage("+i+")");
+						if(i == pageMap.currentPage){
+							pageLi.addClass('active');
+						}
+						
+						pageLi.html(pageA);
+						pageUl.append(pageLi);
+					}
+					
+					pageDiv.html(pageUl);
+					
+					/* <li class="page-item"><a href="#" class="page-link">1</a></li>
+					<li class="page-item"><a href="#" class="page-link">2</a></li>
+					<li class="page-item"><a href="#" class="page-link">3</a></li> */
+					
+					$('#emailList table tr').click(function(){
+						if($(this).find('input[type=checkbox]').prop("checked")){
+							$(this).find('input[type=checkbox]').prop("checked",false);
+						}else{
+							$(this).find('input[type=checkbox]').prop("checked",true);
+						}
+					});
+					
+					$('#emailList table tr input[type=checkbox]').click(function(){
+						event.stopPropagation();
+					});
+					
+				}
+				
+			},
+			error:function(xhr, status, error){
+				alert(status + ":" + error);
+			}
+		});
+	}
+	
+	function movePage(currentPage){
+		let keyword = $('#addrSearch').val();
+		let kind = Number($('.addrKind select').val());
+		showList(kind, keyword, currentPage);
+	}
 </script>
 
 </body>

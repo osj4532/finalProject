@@ -1,6 +1,7 @@
 package com.cwb.finalproject.address.model;
 
 import java.util.List;
+import java.util.Map;
 
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,4 +44,6 @@ public class EmailDAOMybatis implements EmailDAO{
 	public int deleteMail(int mailNo) {
 		return sqlSession.delete(namespace+"deleteMail",mailNo);
 	}
+	
 }
+
