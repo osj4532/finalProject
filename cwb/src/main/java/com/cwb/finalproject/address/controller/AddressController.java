@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cwb.finalproject.address.model.AddressBookService;
 import com.cwb.finalproject.address.model.EmailService;
 import com.cwb.finalproject.address.model.EmailVO;
 import com.cwb.finalproject.common.FileUploadUtil;
@@ -47,6 +48,8 @@ public class AddressController {
 	private EmailSender emailSender;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private AddressBookService addressBookService;
 	
 	@RequestMapping("/privateAddr.do")
 	public String showPrivAddr() {
@@ -132,7 +135,7 @@ public class AddressController {
 		int cnt = emailService.insertEmail(vo);
 		logger.info("DB에 저장 결과 cnt = {}",cnt);
 		
-		String[] members = vo.getMailSenAddr().split(",");
+		String[] members = vo.getMailSenAddr().split(",| ");
 		
 		String savePath = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
 		
@@ -237,7 +240,7 @@ public class AddressController {
 	@ResponseBody
 	public List<Map<String, Object>> showEmailList(@RequestParam int kind,
 			@RequestParam String keyword,
-			@RequestParam int currentPage){
+			@RequestParam int currentPage, HttpSession session){
 		logger.info("이메일 주소록 보여주기 매개변수 = {}",kind);
 		logger.info("keyword = {} currentPage = {}",keyword, currentPage);
 		
@@ -267,14 +270,46 @@ public class AddressController {
 				m.put("MEM_JOINDATE",null);
 			}
 		}else if(kind == 2) {
-			list = new ArrayList<Map<String,Object>>();
+			int memNo = (Integer)session.getAttribute("memNo");
+			
+			map.put("memNo",memNo);
+			
+			list = addressBookService.selectPrivateAddr(map);
+			totalRec = addressBookService.privateTotalCount(map);
+			logger.info("개인 주소록 = {}",totalRec);
+			pageInfo.setTotalRecord(totalRec);
 		}
 		
 		Map<String, Object> page = new HashMap<String, Object>();
 		page.put("pageInfo",pageInfo);
+		logger.info("list = {}",list);
 		list.add(0,page);
 		
 		return list;
+		
+	}
+	
+	@RequestMapping("/privateAddrList.do")
+	public String showPrivateAddrList(Model model ,HttpSession session) {
+		int memNo = (Integer)session.getAttribute("memNo");
+		logger.info("개인 주소록 보여주기 memNo = {}",memNo);
+		
+		PaginationInfo pageInfo = new PaginationInfo();
+		pageInfo.setBlockSize(WebUtility.BLOCK_SIZE);
+		pageInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		pageInfo.setCurrentPage(1);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("memNo",memNo);
+		map.put("keyword","");
+		map.put("firstRecordIndex",pageInfo.getFirstRecordIndex());
+		map.put("recordCountPerPage",WebUtility.RECORD_COUNT_PER_PAGE);
+		
+		List<Map<String, Object>> list = addressBookService.selectPrivateAddr(map);
+		
+		model.addAttribute("list", list);
+		
+		return "address/privateAddrList";
 		
 	}
 	

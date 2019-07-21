@@ -70,6 +70,33 @@
 		delete from mail
 		where mail_no = #{mailNo}
 	</delete>
+	
+	<select id="privateTotalCount" parameterType="map" resultType="int">
+				 select count(*) from addressbook
+		        where mem_no = #{memNo}
+		        <if test="keyword != null and keyword != ''">
+		        and addrbook_comname || addrbook_name || addrbook_email like '%'|| #{keyword} || '%'
+		        </if>
+	</select>
+	
+	
+	<select id="selectPrivateAddr" parameterType="map" resultType="map">
+		select B.*
+		from
+		(
+		    select rownum rnum, A.*
+		    from
+		    (
+		        select * from addressbook
+		        where mem_no = #{memNo}
+		        <if test="keyword != null and keyword != ''">
+		        and addrbook_comname || addrbook_name || addrbook_email like '%'|| #{keyword} || '%'
+		        </if>
+		    )A
+<![CDATA[		where rownum <=  #{firstRecordIndex}+#{recordCountPerPage}]]>
+		)B
+		where B.rnum > #{firstRecordIndex}
+	</select>
 </mapper>
 
 

@@ -206,9 +206,7 @@
 	</div>
 	<div id="addrPage">
 		<ul class="pagination">
-			<li class="page-item"><a href="#" class="page-link">1</a></li>
-			<li class="page-item"><a href="#" class="page-link">2</a></li>
-			<li class="page-item"><a href="#" class="page-link">3</a></li>
+
 		</ul>
 	</div>
 	<div class="addrBtn">
@@ -271,11 +269,14 @@
 					"keyword":keyword,
 					"currentPage":currentPage},
 			success:function(data){
+				
 				let table = $('#emailList table');
 				let colg = $('<colgroup></colgroup>');
 				let col1 = $('<col width="10%">');
 				let col2 = $('<col width="30%">');
 				let col3 = $('<col width="*">');
+				
+				$('#addrPage').html('');
 				
 				colg.html(col1);
 				colg.append(col2);
@@ -294,18 +295,26 @@
 						if(idx == 0) return true;
 						
 						let trEl = $('<tr></tr>');
-	
-						let mail = item['MEM_EMAIL1'] + "@" + item['MEM_EMAIL2']; 
-						let tdEl1 = $('<td><input type="checkbox" value="'+mail+'"></td>');
-						let tdEl2 = $('<td><i class="fas fa-user"></i>'+item["MEM_NAME"]+'</td>');
-						let tdEl3 = $('<td>'+mail+'</td>');
+						let tdEl1 = $('<td></td>');
+						let tdEl2 = $('<td></td>');
+						let tdEl3 = $('<td></td>');
 						
+						if(kind == 1){
+							let mail = item['MEM_EMAIL1'] + "@" + item['MEM_EMAIL2']; 
+							
+							tdEl1.html('<input type="checkbox" value="'+mail+'">');
+							tdEl2.html('<i class="fas fa-user"></i>'+item['MEM_NAME']);
+							tdEl3.html(mail);
+						}else if(kind == 2){
+							tdEl1.html('<input type="checkbox" value="'+item["ADDRBOOK_EMAIL"]+'">');
+							tdEl2.html('<i class="fas fa-user"></i>'+item["ADDRBOOK_NAME"]);
+							tdEl3.html(item["ADDRBOOK_EMAIL"]);
+						}
 						trEl.html(tdEl1);
 						trEl.append(tdEl2);
 						trEl.append(tdEl3);
 						
 						table.append(trEl);
-						
 					});
 					
 					let pageDiv = $('#addrPage');
