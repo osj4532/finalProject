@@ -18,4 +18,10 @@ public class AddressBookServiceImpl implements AddressBookService{
 	public List<Map<String, Object>> selectPrivateAddr(Map<String, Object> map){
 		return addressBookDAO.selectPrivateAddr(map);
 	}
+	public int addrbookDel(int addrbookNo) {
+		return addressBookDAO.addrbookDel(addrbookNo);
+	}
+	public int addrbookAdd(AddressBookVO vo) {
+		return addressBookDAO.addrbookAdd(vo);
+	}
 }

@@ -20,4 +20,11 @@ public class AddressBookDAOMybatis implements AddressBookDAO{
 	public List<Map<String, Object>> selectPrivateAddr(Map<String, Object> map){
 		return sqlSession.selectList(namespace+"selectPrivateAddr",map);
 	}
+	public int addrbookDel(int addrbookNo) {
+		return sqlSession.delete(namespace+"addrbookDel",addrbookNo);
+	}
+	
+	public int addrbookAdd(AddressBookVO vo) {
+		return sqlSession.insert(namespace+"addrbookAdd",vo);
+	}
 }

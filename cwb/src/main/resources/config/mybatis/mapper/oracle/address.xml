@@ -97,6 +97,19 @@
 		)B
 		where B.rnum > #{firstRecordIndex}
 	</select>
+	
+	<delete id="addrbookDel" parameterType="int">
+		delete from addressbook
+		where addrbook_no = #{addrbookNo}
+	</delete>
+	
+	<insert id="addrbookAdd" parameterType="addressbookVo">
+		<selectKey keyColumn="addrbookNo" resultType="int" order="BEFORE">
+			select addressbook_seq.nextval from dual
+		</selectKey>
+		insert into addressbook
+		values(#{addrbookNo}, #{addrbookName}, #{addrbookComname}, #{addrbookTel}, #{addrbookEmail}, #{memNo}, #{deptNo})
+	</insert>
 </mapper>
 
 

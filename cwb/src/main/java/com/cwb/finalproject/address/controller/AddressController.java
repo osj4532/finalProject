@@ -1,7 +1,7 @@
 package com.cwb.finalproject.address.controller;
 
 import java.io.File;
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +13,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cwb.finalproject.address.model.AddressBookService;
+import com.cwb.finalproject.address.model.AddressBookVO;
 import com.cwb.finalproject.address.model.EmailService;
 import com.cwb.finalproject.address.model.EmailVO;
 import com.cwb.finalproject.common.FileUploadUtil;
@@ -31,7 +31,6 @@ import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.dept.model.DeptService;
 import com.cwb.finalproject.dept.model.DeptVO;
 import com.cwb.finalproject.member.model.MemberService;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Controller
 @RequestMapping("/address")
@@ -311,6 +310,88 @@ public class AddressController {
 		
 		return "address/privateAddrList";
 		
+	}
+	
+	@RequestMapping("/addrbookDel.do")
+	@ResponseBody
+	public int addrbookDel(@RequestParam(value = "sel[]") List<Integer> sel) {
+		int cnt = -1;
+		for(int bookNo : sel) {
+			cnt = addressBookService.addrbookDel(bookNo);
+		}
+		
+		return cnt;
+	}
+	
+	@RequestMapping(value="/addAddr.do",method = RequestMethod.GET)
+	public String addAddr_get() {
+		logger.info("개인 연락처 등록 창 보여주기");
+		return "/address/addAddrForm";
+	}
+	
+	@RequestMapping(value="/addAddr.do",method = RequestMethod.POST)
+	public String addAddr_post(@ModelAttribute AddressBookVO vo, HttpSession session,
+			Model model) {
+		int memNo = (Integer)session.getAttribute("memNo");
+		logger.info("개인 연락처 등록 처리 vo = {}, memNo = {}",vo, memNo);
+		
+		int deptNo = ((BigDecimal)memberService.selectByNo(memNo).get("DEPT_NO")).intValue();
+		logger.info("deptNo = {}",deptNo);
+		
+		vo.setMemNo(memNo);
+		vo.setDeptNo(deptNo);
+		
+		int cnt = addressBookService.addrbookAdd(vo);
+		String msg = "", url = "/address/addAddr.do";
+		if(cnt > 0) {
+			msg = "연락처 등록 성공";
+			url = "/address/privateAddrList.do";
+		}else {
+			msg = "연락처 등록 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
+	@RequestMapping(value="/addEdit.do", method = RequestMethod.GET)
+	public String addEdit_get(@RequestParam int addrbookNo, Model model) {
+		logger.info("개인 연락처 수정 창 보여주기 addrbookNo = {}",addrbookNo);
+		
+		// ================================================================================================
+		// 번호로 연락처 조회 sql, DAO, Service만들기
+		AddressBookVO vo = null;
+		logger.info("번호로 연락처 조회 vo = {}",vo);
+		
+		model.addAttribute("vo", vo);
+		
+		return "address/addEditForm";
+	}
+	
+	@RequestMapping(value="/addEdit.do", method = RequestMethod.POST)
+	public String addEdit_post(@ModelAttribute AddressBookVO vo, Model model) {
+		logger.info("개인 연락처 수정 처리 vo = {}",vo);
+
+		String msg = "", url = "/address/addEdit.do";
+		
+		// ================================================================================================
+		// 수정 처리하는 sql문, DAO, Service 만들기
+		int cnt = 0;
+		
+		
+		if(cnt > 0) {
+			msg = "연락처 수정 성공";
+			url = "/address/privateAddrList.do";
+		}else {
+			msg = "연착처 수정 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
 	}
 	
 	@RequestMapping("/sendMessage.do")
