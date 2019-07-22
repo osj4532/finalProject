@@ -11,6 +11,7 @@ public interface CommuteService {
 	public List<Map<String, Object>> selectDep(Map<String, Object> map);
 	
 	public String selectByMemNo(int memNo);
+	public String selectByMemNo2(int memNo);
 	
 	public List<Map<String, Object>> selectIndivHoly(Map<String, Object> map);
 	
@@ -25,4 +26,13 @@ public interface CommuteService {
 	public int countSelectIndivHoly(int memNo);
 	
 	public int countSelectAllHoly();
+	
+	public String selectMemNo(int memNo);
+	
+	public int insertComin(CommuteVO vo);
+	
+	public int selectComNo(int memNo);
+	
+	public int updateComout(int comNo);
+	public int updateComin(int comNo);
 }

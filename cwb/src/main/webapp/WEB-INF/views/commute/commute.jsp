@@ -114,8 +114,12 @@
 			for(var i=1;i<res.length;i++){
 				var map = res[i];
 				
-				var d = moment(map['COMINDATE']).format('YYYY-MM-DD hh:mm:ss');
-				var d2 = moment(map['COMOUTDATE']).format('YYYY-MM-DD hh:mm:ss');
+				if(map['COMINDATE'] != null){
+					var d = moment(map['COMINDATE']).format('YYYY-MM-DD HH:mm:ss');
+				}
+				if(map['COMOUTDATE'] != null){
+					var d2 = moment(map['COMOUTDATE']).format('YYYY-MM-DD HH:mm:ss');
+				}
 				
 				var trEl = $('<tr></tr>');
 				var tdEl1 = $('<td></td>').html(map['MEMNO']);

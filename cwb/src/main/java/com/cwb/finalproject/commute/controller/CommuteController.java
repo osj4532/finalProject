@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.cwb.finalproject.common.PaginationInfo;
 import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.commute.model.CommuteService;
+import com.cwb.finalproject.commute.model.CommuteVO;
 
 @Controller
 @RequestMapping("/commute")
@@ -40,7 +42,7 @@ public class CommuteController {
 	
 	@RequestMapping("/comPage.do")
 	@ResponseBody
-	public List<Map<String, Object>> comShow(@RequestParam(required = false, defaultValue = "indWork") String menu, @RequestParam(required = false, defaultValue = "1")int currentPage, HttpSession session) {
+	public List<Map<String, Object>> comShow(@RequestParam(defaultValue = "indWork") String menu, @RequestParam(required = false, defaultValue = "1")int currentPage, HttpSession session) {
 		
 		String memId = (String) session.getAttribute("memId");
 		int memNo = (Integer) session.getAttribute("memNo");
@@ -110,6 +112,36 @@ public class CommuteController {
 		list.add(0, page);
 		//[{"page":{"currentPage":1,"recordCountPerPage":5,"blockSize":10,"totalRecord":1,"totalPage":1,"firstPage":1,"lastPage":1,"firstRecordIndex":0,"lastRecordIndex":5}},{"COMOUTDATE":1563250427000,"RNUM":1,"DEPTNAME":"기획팀","COMSTATUS":"N","COMINDATE":1563250427000,"POSNAME":"사원","MEMNO":4,"MEMNAME":"사원2"}]
 		return list;
+	}
+	
+	@RequestMapping("/inout.do")
+	public String inout(@RequestParam String status, HttpSession session, HttpServletRequest request) {
+		logger.info("출근, 퇴근 체크 파라미터 status = {}", status);
+		
+		int memNo = (Integer) session.getAttribute("memNo");
+		String comindate = (String) session.getAttribute("cominDate");
+		
+		int cnt = 0;
+		int comNo = 0;
+		if(status.equals("in")) {
+			String comoutdate = commuteService.selectByMemNo2(memNo);
+			if((comindate == null || comindate.isEmpty()) && (comoutdate == null || comoutdate.isEmpty())) {
+				comNo = commuteService.selectComNo(memNo);
+				cnt = commuteService.updateComin(comNo);
+				logger.info("출근 입력 처리 결과 cnt = {}", cnt);
+			}
+		}else if(status.equals("out")) {
+			if(comindate != null && !comindate.isEmpty()) {
+				comNo = commuteService.selectComNo(memNo);
+				
+				cnt = commuteService.updateComout(comNo);
+				logger.info("퇴근 업데이트 처리 결과 cnt = {}", cnt);
+			}
+		}
+		
+		String referer = request.getHeader("Referer");
+		
+	    return "redirect:"+ referer;
 	}
 	
 }
