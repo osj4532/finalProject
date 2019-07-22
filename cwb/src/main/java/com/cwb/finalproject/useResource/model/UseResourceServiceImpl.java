@@ -11,8 +11,8 @@ public class UseResourceServiceImpl implements UseResourceService{
 	@Autowired UseResourceDAO useResourceDao;
 
 	@Override
-	public List<UseResourceVO> selectMyUseRes(int memNo) {
-		return useResourceDao.selectMyUseRes(memNo);
+	public List<UseResourceVO> selectMyUseRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectMyUseRes(useResourceVo);
 	}
 
 	@Override
@@ -28,6 +28,21 @@ public class UseResourceServiceImpl implements UseResourceService{
 	@Override
 	public List<UseResourceVO> selectMyNotRefuseRes(int memNo) {
 		return useResourceDao.selectMyNotRefuseRes(memNo);
+	}
+
+	@Override
+	public int delUseResSchedule(int reservNo) {
+		return useResourceDao.delUseResSchedule(reservNo);
+	}
+
+	@Override
+	public int updateUseResSchedule(int reservNo) {
+		return useResourceDao.updateUseResSchedule(reservNo);
+	}
+
+	@Override
+	public int selectUseRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectUseRestotalCount(useResourceVo);
 	}
 	
 	

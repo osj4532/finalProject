@@ -1,6 +1,8 @@
 package com.cwb.finalproject.useResource.model;
 
-public class UseResourceVO {
+import com.cwb.finalproject.common.ResSearchVO;
+
+public class UseResourceVO extends ResSearchVO{
 	private String typeName;
 	private int reservNo;
 	private int resNo;
@@ -62,8 +64,8 @@ public class UseResourceVO {
 	public String toString() {
 		return "UseResourceVO [typeName=" + typeName + ", reservNo=" + reservNo + ", resNo=" + resNo + ", memNo="
 				+ memNo + ", resName=" + resName + ", useRegdate=" + useRegdate + ", returnRegdate=" + returnRegdate
-				+ ", apprFlag=" + apprFlag + "]";
+				+ ", apprFlag=" + apprFlag + super.toString() + "]";
 	}
 	
-	
+	 
 }

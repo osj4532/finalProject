@@ -128,6 +128,7 @@ values(#{reservNo},#{memNo},#{resNo},
 		<![CDATA[ where to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS')<=sysdate]]>
 	</select>
 	
+
 	<select id="selectNowSysDay" parameterType="int" resultType="int">
 		select count(*) from resschedule
 		where sysdate between
@@ -136,12 +137,40 @@ values(#{reservNo},#{memNo},#{resNo},
 		and appr_flag= 'Y'
 	</select>
 	
-	<select id="selectMyUseRes" parameterType="int" resultType="useResourceVO"> 
-		select * from ResUseListView
-			where mem_no=#{memNo} and appr_flag='Y'
-			<![CDATA[	and use_regdate <= sysdate ]]>
-		 order by res_no,use_regdate 
+	<!-- 자원 내역 보여주는 매핑구문들  -->
+	<select id="selectMyUseRes" parameterType="useResourceVO" resultType="useResourceVO"> 
+	select *
+		from
+		(
+		    select A.*, rownum as RNUM 
+		    from
+		    (
+		        select * from ResUseListView		
+				<where>
+						<if test="searchKeyword != null and searchKeyword != ''">
+							${searchCondition} like '%' || #{searchKeyword} || '%'
+						</if> 
+						and mem_no=#{memNo} and appr_flag='Y'
+						<![CDATA[	and use_regdate <= sysdate ]]>
+				</where>
+				order by res_no,use_regdate 
+		    ) A
+		)
+		<![CDATA[ where RNUM>#{firstRecordIndex}  
+		and RNUM<=#{firstRecordIndex} + #{recordCountPerPage}]]>
+	
 	</select>
+	<select id="selectUseRestotalCount" parameterType="useResourceVO" resultType="int">
+		select count(*) from ResUseListView		
+		<where>
+				<if test="searchKeyword != null and searchKeyword != ''">
+					${searchCondition} like '%' || #{searchKeyword} || '%'
+				</if>
+				and mem_no=#{memNo} and appr_flag='Y'
+				<![CDATA[	and use_regdate <= sysdate ]]>
+		</where>
+	</select>
+	
 	
 	<select id="selectMyNotUseRes" parameterType="int" resultType="useResourceVO">
 		select * from ResUseListView
@@ -161,6 +190,17 @@ values(#{reservNo},#{memNo},#{resNo},
 			and use_regdate > sysdate
 		order by res_no,use_regdate 
 	</select>
+	
+	<delete id="delUseResSchedule" parameterType="int">
+		delete from Resschedule
+		where reserv_no = #{reservNo}
+	</delete>
+	
+	<update id="updateUseResSchedule" parameterType="int">
+		update Resschedule
+		set appr_flag='W'
+		where reserv_no = #{reservNo}
+	</update>
 </mapper>
 
 

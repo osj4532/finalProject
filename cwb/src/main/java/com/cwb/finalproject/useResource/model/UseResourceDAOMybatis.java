@@ -14,8 +14,8 @@ public class UseResourceDAOMybatis implements UseResourceDAO{
 	@Autowired SqlSessionTemplate sqlSession;
 	
 	@Override
-	public List<UseResourceVO> selectMyUseRes(int memNo) {
-		return sqlSession.selectList(namespace+"selectMyUseRes", memNo);
+	public List<UseResourceVO> selectMyUseRes(UseResourceVO useResourceVo) {
+		return sqlSession.selectList(namespace+"selectMyUseRes", useResourceVo);
 	}
 
 	@Override
@@ -31,6 +31,21 @@ public class UseResourceDAOMybatis implements UseResourceDAO{
 	@Override
 	public List<UseResourceVO> selectMyNotRefuseRes(int memNo) {
 		return sqlSession.selectList(namespace+"selectMyNotRefuseRes", memNo);
+	}
+
+	@Override
+	public int delUseResSchedule(int reservNo) {
+		return sqlSession.delete(namespace+"delUseResSchedule",reservNo);
+	}
+
+	@Override
+	public int updateUseResSchedule(int reservNo) {
+		return sqlSession.update(namespace+"updateUseResSchedule",reservNo);
+	}
+
+	@Override
+	public int selectUseRestotalCount(UseResourceVO useResourceVo) {
+		return sqlSession.selectOne(namespace+"selectUseRestotalCount",useResourceVo);
 	}
 
 	
