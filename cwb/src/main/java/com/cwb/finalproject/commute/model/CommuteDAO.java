@@ -12,6 +12,8 @@ public interface CommuteDAO {
 	
 	public String selectByMemNo(int memNo);
 	
+	public String selectByMemNo2(int memNo);
+	
 	public List<Map<String, Object>> selectIndivHoly(Map<String, Object> map);
 	
 	public List<Map<String, Object>> selectAllHoly(Map<String, Object> map);
@@ -25,4 +27,13 @@ public interface CommuteDAO {
 	public int countSelectIndivHoly(int memNo);
 	
 	public int countSelectAllHoly();
+	
+	public String selectMemNo(int memNo);
+	
+	public int insertComin(CommuteVO vo);
+	
+	public int selectComNo(int memNo);
+	
+	public int updateComout(int comNo);
+	public int updateComin(int comNo);
 }

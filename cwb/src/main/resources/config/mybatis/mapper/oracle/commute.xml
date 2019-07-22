@@ -140,13 +140,86 @@
 		order by mem_name
 	</select>
 	
-	<!-- <select id="selectByMemNo" resultType="String" parameterType="int">
-		select comindate from commuteview
-		where memno = #{memNo}
-	</select> -->
+	<select id="selectMemNo" resultType="String" parameterType="int">
+		select com_indate
+		from
+		(
+		    select A.*, rownum
+		    from
+		    (
+		        select com_indate from commute
+				where mem_no = #{memNo}
+				order by com_indate desc
+			)A
+		)
+		<![CDATA[
+		where rownum<=1
+		]]>
+	</select>
+	
+	<select id="selectMemNo2" resultType="String" parameterType="int">
+		select com_outdate
+		from
+		(
+		    select A.*, rownum
+		    from
+		    (
+		        select com_outdate from commute
+				where mem_no = #{memNo}
+				order by com_outdate desc
+			)A
+		)
+		<![CDATA[
+		where rownum<=1
+		]]>
+	</select>
 	
 	<!-- <select id="selectDepAssi" resultType="map">
 		
 	</select> -->
 
+	<!-- <insert id="insertComin" parameterType="CommuteVo">
+		<selectKey keyProperty="comNo" resultType="int" order="BEFORE">
+			select commute_seq.nextval from dual
+		</selectKey>
+		insert into commute(com_no, mem_no, com_indate, com_status)
+		values(#{comNo}, #{memNo}, sysdate, 'Y')
+	</insert> -->
+	
+	<insert id="insertComin" parameterType="CommuteVo">
+		<selectKey keyProperty="comNo" resultType="int" order="BEFORE">
+			select commute_seq.nextval from dual
+		</selectKey>
+		insert into commute(com_no, mem_no)
+		values(#{comNo}, #{memNo})
+	</insert>
+	
+	<select id="selectComNo" resultType="int" parameterType="int">
+		select com_no
+		from
+		(
+		    select A.*, rownum
+		    from
+		    (
+		        select com_no from commute
+				where mem_no = #{memNo}
+				order by com_no desc
+			)A
+		)
+		<![CDATA[
+		where rownum<=1
+		]]>
+	</select>
+	
+	<update id="updateComin" parameterType="int">
+		update commute
+		set com_indate = sysdate, com_status= 'Y'
+		where com_no = #{comNo}
+	</update>
+	
+	<update id="updateComout" parameterType="int">
+		update commute
+		set com_outdate = sysdate, com_status = 'N'
+		where com_no = #{comNo}
+	</update>
 </mapper>

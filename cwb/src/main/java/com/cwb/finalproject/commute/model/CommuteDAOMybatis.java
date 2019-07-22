@@ -35,6 +35,10 @@ public class CommuteDAOMybatis implements CommuteDAO{
 	public String selectByMemNo(int memNo) {
 		return sqlSession.selectOne(namespace+"selectByMemNo", memNo);
 	}
+	@Override
+	public String selectByMemNo2(int memNo) {
+		return sqlSession.selectOne(namespace+"selectByMemNo", memNo);
+	}
 
 	@Override
 	public List<Map<String, Object>> selectIndivHoly(Map<String, Object> map) {
@@ -69,6 +73,30 @@ public class CommuteDAOMybatis implements CommuteDAO{
 	@Override
 	public int countSelectAllHoly() {
 		return sqlSession.selectOne(namespace+"countSelectAllHoly");
+	}
+
+	@Override
+	public String selectMemNo(int memNo) {
+		return sqlSession.selectOne(namespace+"selectMemNo", memNo);
+	}
+
+	@Override
+	public int insertComin(CommuteVO vo) {
+		return sqlSession.insert(namespace+"insertComin", vo);
+	}
+
+	@Override
+	public int selectComNo(int memNo) {
+		return sqlSession.selectOne(namespace+"selectComNo", memNo);
+	}
+
+	@Override
+	public int updateComout(int comNo) {
+		return sqlSession.update(namespace+"updateComout", comNo);
+	}
+	@Override
+	public int updateComin(int comNo) {
+		return sqlSession.update(namespace+"updateComin", comNo);
 	}
 
 }

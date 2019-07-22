@@ -31,6 +31,10 @@ public class CommuteServiceImpl implements CommuteService{
 	public String selectByMemNo(int memNo) {
 		return commuteDao.selectByMemNo(memNo);
 	}
+	@Override
+	public String selectByMemNo2(int memNo) {
+		return commuteDao.selectByMemNo(memNo);
+	}
 
 	@Override
 	public List<Map<String, Object>> selectIndivHoly(Map<String, Object> map) {
@@ -65,6 +69,30 @@ public class CommuteServiceImpl implements CommuteService{
 	@Override
 	public int countSelectAllHoly() {
 		return commuteDao.countSelectAllHoly();
+	}
+
+	@Override
+	public String selectMemNo(int memNo) {
+		return commuteDao.selectMemNo(memNo);
+	}
+
+	@Override
+	public int insertComin(CommuteVO vo) {
+		return commuteDao.insertComin(vo);
+	}
+
+	@Override
+	public int selectComNo(int memNo) {
+		return commuteDao.selectComNo(memNo);
+	}
+
+	@Override
+	public int updateComout(int comNo) {
+		return commuteDao.updateComout(comNo);
+	}
+	@Override
+	public int updateComin(int comNo) {
+		return commuteDao.updateComin(comNo);
 	}
 
 	
