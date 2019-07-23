@@ -8,4 +8,6 @@ public interface AddressBookDAO {
 	public List<Map<String, Object>> selectPrivateAddr(Map<String, Object> map);
 	public int addrbookDel(int addrbookNo);
 	public int addrbookAdd(AddressBookVO vo);
+	public AddressBookVO selectByNo(int addrbookNo);
+	public int addrbookEdit(AddressBookVO vo);
 }

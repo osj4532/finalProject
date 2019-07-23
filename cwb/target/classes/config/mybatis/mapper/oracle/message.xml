@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="config.mybatis.mapper.oracle.message">
+	<insert id="insertMsg" parameterType="MessageVo">
+		<selectKey keyProperty="msgNo" resultType="int" order="BEFORE">
+			select message_seq.nextval from dual
+		</selectKey>
+		insert into message(msg_no, mem_no, msg_title, msg_content)
+		values(#{msgNo}, #{memNo}, #{msgTitle}, #{msgContent})
+	</insert>
+	
+	<insert id="insertMsgRev" parameterType="MsgRevVo">
+		<selectKey keyProperty="msgrevNo" resultType="int" order="BEFORE">
+			select msgrev_seq.nextval from dual
+		</selectKey>
+		insert into msgrev(msgrev_no, mem_no, msg_no)
+		values(#{msgrevNo}, #{memNo}, #{msgNo})
+	</insert>
+</mapper>
+
+
+
+
+
+
+
+
+

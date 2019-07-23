@@ -202,7 +202,7 @@
 		});
 		
 		$('#add').click(function(){
-			window.open("<c:url value='/address/selAddr.do'/>",'',"width=460px,height=460px,left=100px,top=100px,resizable=no,location=yes");
+			window.open("<c:url value='/address/selAddr.do'/>",'',"width=630px,height=630px,left=100px,top=100px,resizable=no,location=yes");
 		});
 	})
 </script>
