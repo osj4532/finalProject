@@ -129,34 +129,43 @@ $.pageSetting=function(){
 
 
 
-function delResScd(reservNo){
-	if(confirm("자원 신청을 취소 하시겠습니까?")){
-		location.href="<c:url value='/useResource/delResSchedul.do?reservNo='/>"+reservNo;
+function AppResScd(reservNo){
+	if(confirm("신청을 승인 하시겠습니까?")){
+		location.href="<c:url value='/useResource/AppResSchedule.do?reservNo='/>"+reservNo;
 	}
 	
 }
 
-function reResScd(reservNo){
-	if(confirm("재신청 하시겠습니까?")){
-		location.href="<c:url value='/useResource/reResSchedule.do?reservNo='/>"+reservNo;
+function rejectResScd(reservNo){
+	if(confirm("신청을 반려 하시겠습니까?")){
+		location.href="<c:url value='/useResource/rejectResSchedule.do?reservNo='/>"+reservNo;
+	}
+} 
+function WaitResScd(reservNo){
+	if(confirm("재검토 하시겠습니까?")){
+		location.href="<c:url value='/useResource/WaitResSchedule.do?reservNo='/>"+reservNo;
 	}
 }
 
+function AppPageFunc(cur){
+	document.AllAppSearch.AppcurrentPage.value=cur;
+	document.AllAppSearch.submit();
+} 
 
 </script>
 <!--main content start--> 
 <section id="main-content">
 	<section class="wrapper">
 		<h3> 
-			<i class="fa fa-angle-right"></i> 자원 신청 내역
-			<button type="button" id="MyResView" class="btn btn-round btn-info">자원 사용 내역 보기</button> 
+			<i class="fa fa-angle-right"></i> 사원전체 자원 신청 내역
+			<button type="button" id="AllResView" class="btn btn-round btn-info">사원전체 자원 사용 내역 보기</button> 
 		</h3>
         
-          <div class="row mt" id="MyRes">
+          <div class="row mt" id="AllRes">
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i>자원 사용 내역</h4>
+                <h4><i class="fa fa-angle-right"></i>사원전체 자원 사용 내역</h4>
                 <hr>
                 <thead> 
                   <tr>
@@ -165,7 +174,7 @@ function reResScd(reservNo){
                     <th width="50%"><i class="fa fa-bookmark"></i> 사용 기간 </th>
                   </tr>  
                 </thead>
-                <tbody id="useRes"><!-- myUseList -->
+                <tbody id="AllUseRes"><!-- AllUseList -->
 	                	
                 </tbody> 
               </table>
@@ -176,21 +185,21 @@ function reResScd(reservNo){
             </div>
             </div>
 				<div class="span6">
-				<form method="post" name="useSearch" class="form-inline" role="form">
+				<form method="post" name="AlluseSearch" class="form-inline" role="form">
 						<input type="hidden" name='currentPage' value="1">
 						<select name="searchCondition" id="searchCondition" class="form-control">
 								<option value="type_Name"> 자원 </option>
 								<option value="res_Name"> 자원 명 </option>
 						</select>     
 						<div class="form-group"> 
-	                  <label class="sr-only" for="exampleInputEmail2">내용</label>
+	                  <label class="sr-only" for="AllResKeyword">내용</label>
 	                  <input type="text" class="form-control" name="searchKeyword" 
-	                  id="exampleInputEmail2" placeholder="내용 입력">
+	                  id="AllResKeyword" placeholder="내용 입력"> 
 	                </div>  
 	               		 <button type="submit" class="btn btn-theme">검색</button> 
 				</form> 
 					<div class="dataTables_paginate paging_bootstrap pagination">
-						<ul id="useResPaging">
+						<ul id="AllUseResPaging">
 						</ul>
 					</div> 
 				</div> 
@@ -207,42 +216,85 @@ function reResScd(reservNo){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i> 승인 내역</h4>
+                <h4><i class="fa fa-angle-right"></i>전체 승인 내역</h4>
                 <hr>
                 <thead>
                   <tr>
                     <th><i class="fa fa-bullhorn"></i> 자원</th>
                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
                     <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
+                    <th><i class="fa fa-bookmark"></i> 신청 사원 </th>
                     <th></th>
                   </tr>
                 </thead>
                 <tbody>
-                 <c:if test="${empty canList}">
+                 <c:if test="${empty AppList}">
                 	<tr>
                     <td colspan="3">
 							<h4><b>신청하신 자원이 없습니다.</b></h4>
 					</td>
                   </tr> 
 				</c:if> 
-                <c:if test="${!empty canList}">
-                 <c:forEach var="canVo" items="${canList}">
+                <c:if test="${!empty AppList}">
+                 <c:forEach var="AanVo" items="${AppList}">
                   <tr>
-                    <td>${canVo.typeName } 
+                    <td>${AanVo.typeName } 
                     </td> 
-                    <td class="hidden-phone">${canVo.resName }</td>
-                    <td>${canVo.useRegdate } ~ ${canVo.returnRegdate }</td>
+                    <td class="hidden-phone">${AanVo.resName }</td>
+                    <td>${AanVo.useRegdate } ~ ${AanVo.returnRegdate }</td>
+                    <td>${AanVo.memName }</td>
                     <td>
-                      <button class="btn btn-danger btn-xs"
-                      onclick="delResScd(${canVo.reservNo })"><i class="fa fa-check">신청 취소</i></button>
-                    </td>    
+                      <button class="btn btn-primary btn-xs"
+                     onclick="WaitResScd(${AanVo.reservNo })"><i class="fa fa-check"> 승인 취소 </i></button>
+                    </td>     
                   </tr>   
                       </c:forEach> 
                   </c:if> 
                 </tbody>
               </table> 
-            </div>
             <!-- /content-panel -->
+            <div class="row-fluid">
+					<div class="span6">
+						<div class="dataTables_info" id="hidden-table-info_info">Showing
+							1 to 10 of 57 entries</div>
+					<form action="<c:url value='/useResource/AllUseResList.do'/>" 
+						method="post" name="AllAppSearch" class="form-inline" role="form">
+						<input type="hidden" name='AppcurrentPage' value="1">
+					</form> 
+					</div>
+					<div class="span6">
+						<div class="dataTables_paginate paging_bootstrap pagination">
+							<ul>
+							
+							<!-- 이전블럭으로 이동하기 -->
+							<c:if test="${AppPagingInfo.firstPage>1 }">	
+								<li class="prev disabled">
+									<a href="#" onclick="AppPageFunc(${AppPagingInfo.firstPage-1})">← Previous</a>
+								</li>
+							</c:if>
+							<!-- 페이지 번호 추가 -->
+							<!-- [1][2][3][4][5][6][7][8][9][10] -->
+							<c:forEach var="i" begin="${AppPagingInfo.firstPage }" end="${AppPagingInfo.lastPage }">
+								<c:if test="${i==AppPagingInfo.currentPage }">
+									<li class="active">${i }</li>
+								</c:if>
+								<c:if test="${i!=AppPagingInfo.currentPage }">
+									<li><a href="#" onclick="AppPageFunc(${i})">${i}</a></li>
+								</c:if>
+							</c:forEach>
+							<!--  페이지 번호 끝 -->
+							
+							<!-- 다음 블럭으로 이동하기 -->
+							<c:if test="${AppPagingInfo.lastPage<pagingInfo.totalPage }">	
+								<li class="next"><a href="#" onclick="AppPageFunc(${AppPagingInfo.lastPage+1})">Next → </a></li>
+							</c:if>
+							</ul>
+						</div>
+					</div>
+				</div>
+				 
+				<!-- row-fluid -->
+            </div> 
           </div>
           <!-- /col-md-12 -->
         </div>
@@ -250,13 +302,14 @@ function reResScd(reservNo){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i> 검토 내역</h4>
+                <h4><i class="fa fa-angle-right"></i>전체 검토 내역</h4>
                 <hr>
                 <thead>
                   <tr>
                     <th><i class="fa fa-bullhorn"></i> 자원</th>
                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
                     <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
+                    <th><i class="fa fa-bookmark"></i> 신청 사원 </th>
                     <th></th>
                   </tr>
                 </thead>
@@ -275,15 +328,42 @@ function reResScd(reservNo){
 	                    </td>
 	                    <td class="hidden-phone">${waitVo.resName }</td>
 	                    <td>${waitVo.useRegdate } ~ ${waitVo.returnRegdate }</td>
-	                    <td>
+	                    <td>${waitVo.memName }</td>
+	                    <td> 
+	                      <button class="btn btn-success btn-xs"
+	                      onclick="AppResScd(${waitVo.reservNo })"><i class="fa fa-check"> 승인 </i></button>
 	                      <button class="btn btn-danger btn-xs"
-	                      onclick="delResScd(${waitVo.reservNo })"><i class="fa fa-check">신청 취소</i></button>
-	                    </td>  
+	                      onclick="rejectResScd(${waitVo.reservNo })"><i class="fa fa-check"> 반려 </i></button>
+	                    </td>   
 	                  </tr> 
                   </c:forEach>  
-	              </c:if>     
-                </tbody>
-              </table> 
+	              </c:if>
+
+				</tbody>
+              </table>
+               <!-- /content-panel -->
+            <div class="row-fluid">
+					<div class="span6">
+						<div class="dataTables_info" id="hidden-table-info_info">Showing
+							1 to 10 of 57 entries</div>
+					</div>
+					<div class="span6">
+						<div class="dataTables_paginate paging_bootstrap pagination">
+							<ul>
+								<li class="prev disabled"><a href="#">← Previous</a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li class="next"><a href="#">Next → </a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				 
+              
+               
             </div>
             <!-- /content-panel -->
           </div>
@@ -293,13 +373,14 @@ function reResScd(reservNo){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i> 반려 내역</h4>
+                <h4><i class="fa fa-angle-right"></i>전체 반려 내역</h4>
                 <hr>
                 <thead>
                   <tr>
                     <th><i class="fa fa-bullhorn"></i> 자원</th>
                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
                     <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
+                    <th><i class="fa fa-bookmark"></i> 신청 사원 </th>
                     <th></th>
                   </tr>
                 </thead>
@@ -318,15 +399,38 @@ function reResScd(reservNo){
 	                    </td>
 	                    <td class="hidden-phone">${refuseVo.resName }</td> 
 	                    <td>${refuseVo.useRegdate } ~ ${refuseVo.returnRegdate }</td>
+	                     <td>${refuseVo.memName }</td>
 	                    <td>
 	                      <button class="btn btn-primary btn-xs"
-	                      onclick="reResScd(${refuseVo.reservNo })"><i class="fa fa-check">재검토 신청</i></button>
+	                      onclick="WaitResScd(${refuseVo.reservNo })"><i class="fa fa-check"> 재검토 </i></button>
 	                    </td>  
 	                  </tr> 
                   </c:forEach>  
                   </c:if>   
                 </tbody>
               </table> 
+               <!-- /content-panel -->
+            <div class="row-fluid">
+					<div class="span6">
+						<div class="dataTables_info" id="hidden-table-info_info">Showing
+							1 to 10 of 57 entries</div>
+					</div>
+					<div class="span6">
+						<div class="dataTables_paginate paging_bootstrap pagination">
+							<ul>
+								<li class="prev disabled"><a href="#">← Previous</a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li class="next"><a href="#">Next → </a></li>
+							</ul>
+						</div>
+					</div>
+				</div>
+				 
+              
             </div>
             <!-- /content-panel -->
           </div>

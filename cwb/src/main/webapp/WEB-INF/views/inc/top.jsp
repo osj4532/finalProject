@@ -327,6 +327,9 @@
             <ul class="sub">
               <li><a href="<c:url value="/resources/list.do"/>">자원</a></li>
               <li><a href="<c:url value="/useResource/useResList.do"/>">자원 내역</a></li>
+        <c:if test="${sessionScope.ranksNo>=2 }">
+              <li><a href="<c:url value="/useResource/AllUseResList.do"/>">전체 자원 내역</a></li>
+        </c:if>   
             </ul>
           </li>
         </ul>
