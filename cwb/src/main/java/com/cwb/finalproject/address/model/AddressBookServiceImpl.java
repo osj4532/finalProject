@@ -24,4 +24,10 @@ public class AddressBookServiceImpl implements AddressBookService{
 	public int addrbookAdd(AddressBookVO vo) {
 		return addressBookDAO.addrbookAdd(vo);
 	}
+	public AddressBookVO selectByNo(int addrbookNo) {
+		return addressBookDAO.selectByNo(addrbookNo);
+	}
+	public int addrbookEdit(AddressBookVO vo) {
+		return addressBookDAO.addrbookEdit(vo);
+	}
 }

@@ -11,7 +11,14 @@ public class UseResourceVO extends ResSearchVO{
 	private String useRegdate;
 	private String returnRegdate;
 	private String apprFlag;
+	private String memName;
 	
+	public String getMemName() {
+		return memName;
+	}
+	public void setMemName(String memName) {
+		this.memName = memName;
+	}
 	public int getReservNo() {
 		return reservNo;
 	}

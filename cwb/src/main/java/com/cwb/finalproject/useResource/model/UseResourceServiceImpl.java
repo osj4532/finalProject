@@ -44,7 +44,37 @@ public class UseResourceServiceImpl implements UseResourceService{
 	public int selectUseRestotalCount(UseResourceVO useResourceVo) {
 		return useResourceDao.selectUseRestotalCount(useResourceVo);
 	}
-	
+
+	@Override
+	public List<UseResourceVO> selectAllUseRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllUseRes(useResourceVo);
+	}
+
+	@Override
+	public int selectAllUseRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllUseRestotalCount(useResourceVo);
+	}
+
+	@Override
+	public List<UseResourceVO> selectAllNotUseRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotUseRes(useResourceVo);
+	}
+
+	@Override
+	public List<UseResourceVO> selectAllNotWaitRes() {
+		return useResourceDao.selectAllNotWaitRes();
+	}
+
+	@Override
+	public List<UseResourceVO> selectAllNotRefuseRes() {
+		return useResourceDao.selectAllNotRefuseRes();
+	}
+
+	@Override
+	public int selectAllNotUseRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotUseRestotalCount(useResourceVo);
+	}
+	 
 	
 	
 }

@@ -156,7 +156,7 @@
 	
 	function sendEmail(){
 		let email = $('#email').html();
-		open(getContextPath()+'/address/sendEmail.do','','width=900px, height=600px, left=200px, top=100px, location=yes, resizable=no');
+		open(getContextPath()+'/address/sendEmail.do','','width=900px, height=700px, left=200px, top=100px, location=yes, resizable=no');
 	}
 
 	function mailDetail(mailNo){
