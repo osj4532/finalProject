@@ -174,9 +174,28 @@
 		]]>
 	</select>
 	
-	<!-- <select id="selectDepAssi" resultType="map">
-		
-	</select> -->
+	<select id="selectDepAssi" resultType="map">
+		select *
+		from
+		(
+		    select A.*, rownum
+		    from
+		    (
+		        select count(*) as count, deptname from commuteview
+				where comindate between to_char(sysdate, 'yyyy-MM-dd') and sysdate+1
+				group by deptname
+			)A
+		)
+		<![CDATA[
+		where rownum<=1
+		]]>
+	</select>
+	
+	<select id="countDepAssi" resultType="int">
+		select count(*) from commuteview
+		where comindate between to_char(sysdate, 'yyyy-MM-dd') and sysdate+1
+		group by deptname
+	</select>
 
 	<!-- <insert id="insertComin" parameterType="CommuteVo">
 		<selectKey keyProperty="comNo" resultType="int" order="BEFORE">

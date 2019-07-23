@@ -1,5 +1,8 @@
 package com.cwb.finalproject.login.controller;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,18 +60,33 @@ public class LoginController {
 			session.setAttribute("memNo", memberVo2.getMemNo());
 			session.setAttribute("ranksNo", memberVo2.getRanksNo());
 			
+			logger.info("세션 memNo = {}", memberVo2.getMemNo());
 			
 			CommuteVO vo = new CommuteVO();
 			vo.setMemNo(memberVo2.getMemNo());
 			
+			logger.info("vo = {}", vo.getMemNo());
+			
+			String comoutdate = commuteService.selectMemNo2(memberVo2.getMemNo());
+			session.setAttribute("comoutDate", comoutdate);
+			logger.info("comoutdate = {}", comoutdate);
+			
+			
+			int state = CommuteService.BEFORE_WORK;
+			session.setAttribute("state", state);
+			
 			String comindate = commuteService.selectMemNo(memberVo2.getMemNo());
 			session.setAttribute("cominDate", comindate);
+			logger.info("세션 생성 직후 comindate = {}", comindate);
 			
-			if(comindate != null && !comindate.isEmpty()) {
-				int cnt = commuteService.insertComin(vo);
-				logger.info("근태 입력 결과 cnt = {}", cnt);
-			}
-			
+		 	if(state == CommuteService.BEFORE_WORK && (comoutdate != null && !comoutdate.isEmpty())) {
+		 		int cnt = commuteService.insertComin(vo);
+		 		logger.info("근태 입력 결과 cnt = {}", cnt);
+		 	}
+		 	if((comindate != null && !comindate.isEmpty()) && (comoutdate == null || comoutdate.isEmpty())) {
+		 		state = CommuteService.WORK;
+		 		session.setAttribute("state", state);
+		 	}
 			
 			//cookie에 저장
 			Cookie ck = new Cookie("ck_memid", memberVo.getMemId());

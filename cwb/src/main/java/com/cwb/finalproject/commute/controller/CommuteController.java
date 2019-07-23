@@ -103,6 +103,12 @@ public class CommuteController {
 			
 			totalRecord = commuteService.countSelectAllHoly();
 			logger.info("전체연차 조회 결과 갯수 totalRecord={}", totalRecord);
+		}else if(menu.equals("depAssi")) {
+			list = commuteService.selectDepAssi();
+			logger.info("부서별 근태 조회 결과 list.size={}", list.size());
+			
+			totalRecord = 1;
+			logger.info("부서별 근태 조회 결과 갯수 totalRecord={}", totalRecord);
 		}
 		
 		pagingInfo.setTotalRecord(totalRecord);
@@ -120,22 +126,31 @@ public class CommuteController {
 		
 		int memNo = (Integer) session.getAttribute("memNo");
 		String comindate = (String) session.getAttribute("cominDate");
+		int state = (Integer) session.getAttribute("state");
 		
+		CommuteVO vo = new CommuteVO();
+		vo.setMemNo(memNo);
 		int cnt = 0;
 		int comNo = 0;
+		logger.info("comindate = {}", comindate);
 		if(status.equals("in")) {
-			String comoutdate = commuteService.selectByMemNo2(memNo);
-			if((comindate == null || comindate.isEmpty()) && (comoutdate == null || comoutdate.isEmpty())) {
+
+			if(state == 3) {
 				comNo = commuteService.selectComNo(memNo);
 				cnt = commuteService.updateComin(comNo);
 				logger.info("출근 입력 처리 결과 cnt = {}", cnt);
+				state = CommuteService.WORK;
+				session.setAttribute("state", state);
 			}
+			
 		}else if(status.equals("out")) {
-			if(comindate != null && !comindate.isEmpty()) {
+			if(state == 1) {
 				comNo = commuteService.selectComNo(memNo);
 				
 				cnt = commuteService.updateComout(comNo);
 				logger.info("퇴근 업데이트 처리 결과 cnt = {}", cnt);
+				state = CommuteService.LEAVE;
+				session.setAttribute("state", state);
 			}
 		}
 		

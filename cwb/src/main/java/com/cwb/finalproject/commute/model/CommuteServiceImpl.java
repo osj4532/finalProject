@@ -32,8 +32,8 @@ public class CommuteServiceImpl implements CommuteService{
 		return commuteDao.selectByMemNo(memNo);
 	}
 	@Override
-	public String selectByMemNo2(int memNo) {
-		return commuteDao.selectByMemNo(memNo);
+	public String selectMemNo2(int memNo) {
+		return commuteDao.selectMemNo2(memNo);
 	}
 
 	@Override
@@ -93,6 +93,16 @@ public class CommuteServiceImpl implements CommuteService{
 	@Override
 	public int updateComin(int comNo) {
 		return commuteDao.updateComin(comNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectDepAssi() {
+		return commuteDao.selectDepAssi();
+	}
+
+	@Override
+	public List<Integer> countDepAssi() {
+		return commuteDao.countDepAssi();
 	}
 
 	

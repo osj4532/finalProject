@@ -246,21 +246,18 @@
           <li><a class="logout" href="<c:url value='/logout/logout.do'/>">Logout</a></li>
         </ul>
       </div>
-      <c:if test="${empty sessionScope.cominDate}">
 	      <div class="top-menu">
 	      	<ul class="nav pull-right top-menu">
-	          <li><a class="attendance" href="<c:url value='/commute/inout.do?status=in'/>">출근</a></li>
+	          <li>
+		          <c:if test="${sessionScope.state == 3}">
+		          	<a class="attendance" href="<c:url value='/commute/inout.do?status=in'/>">출근</a>
+		          </c:if>
+				  <c:if test="${sessionScope.state == 1 or sessionScope.state == 2 }">					          
+			      	<a class="leaveWork" href="<c:url value='/commute/inout.do?status=out'/>">퇴근</a>
+		          </c:if>
+	          </li>
 	        </ul>
 	      </div>
-      </c:if>
-      <c:if test="${!empty sessionScope.cominDate}">
-	      <div class="top-menu">
-	      	<ul class="nav pull-right top-menu">
-	          <li><a class="leaveWork" href="<c:url value='/commute/inout.do?status=out'/>">퇴근</a></li>
-	        </ul>
-	      </div>
-      </c:if>
-      
     </header>
     <!--header end-->
     <!-- **********************************************************************************************************************************************************

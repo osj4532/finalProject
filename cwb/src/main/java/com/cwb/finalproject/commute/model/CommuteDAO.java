@@ -12,7 +12,7 @@ public interface CommuteDAO {
 	
 	public String selectByMemNo(int memNo);
 	
-	public String selectByMemNo2(int memNo);
+	public String selectMemNo2(int memNo);
 	
 	public List<Map<String, Object>> selectIndivHoly(Map<String, Object> map);
 	
@@ -35,5 +35,10 @@ public interface CommuteDAO {
 	public int selectComNo(int memNo);
 	
 	public int updateComout(int comNo);
+	
 	public int updateComin(int comNo);
+	
+	public List<Map<String, Object>> selectDepAssi();
+	
+	public List<Integer> countDepAssi();
 }
