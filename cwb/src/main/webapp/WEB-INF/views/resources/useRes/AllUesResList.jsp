@@ -252,20 +252,15 @@ function AppPageFunc(cur){
                   </c:if> 
                 </tbody>
               </table> 
-            <!-- /content-panel -->
-            <div class="row-fluid">
+	            <!-- /content-panel -->
+	            <div class="row-fluid">
 					<div class="span6">
 						<div class="dataTables_info" id="hidden-table-info_info">Showing
 							1 to 10 of 57 entries</div>
-					<form action="<c:url value='/useResource/AllUseResList.do'/>" 
-						method="post" name="AllAppSearch" class="form-inline" role="form">
-						<input type="hidden" name='AppcurrentPage' value="1">
-					</form> 
 					</div>
 					<div class="span6">
 						<div class="dataTables_paginate paging_bootstrap pagination">
 							<ul>
-							
 							<!-- 이전블럭으로 이동하기 -->
 							<c:if test="${AppPagingInfo.firstPage>1 }">	
 								<li class="prev disabled">
@@ -276,8 +271,8 @@ function AppPageFunc(cur){
 							<!-- [1][2][3][4][5][6][7][8][9][10] -->
 							<c:forEach var="i" begin="${AppPagingInfo.firstPage }" end="${AppPagingInfo.lastPage }">
 								<c:if test="${i==AppPagingInfo.currentPage }">
-									<li class="active">${i }</li>
-								</c:if>
+									<li class="active"><a href='#'>${i}</a></li>
+								</c:if> 
 								<c:if test="${i!=AppPagingInfo.currentPage }">
 									<li><a href="#" onclick="AppPageFunc(${i})">${i}</a></li>
 								</c:if>
@@ -291,8 +286,13 @@ function AppPageFunc(cur){
 							</ul>
 						</div>
 					</div>
+					 
+					<!-- row-fluid -->
 				</div>
-				 
+				 <form action="<c:url value='/useResource/AllUseResList.do'/>" 
+						method="post" name="AllAppSearch" class="form-inline" role="form">
+						<input type="hidden" name='AppcurrentPage' value="1">
+					</form> 
 				<!-- row-fluid -->
             </div> 
           </div>
