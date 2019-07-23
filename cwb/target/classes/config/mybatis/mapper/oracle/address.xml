@@ -92,6 +92,7 @@
 		        <if test="keyword != null and keyword != ''">
 		        and addrbook_comname || addrbook_name || addrbook_email like '%'|| #{keyword} || '%'
 		        </if>
+		        order by addrbook_name
 		    )A
 <![CDATA[		where rownum <=  #{firstRecordIndex}+#{recordCountPerPage}]]>
 		)B
@@ -104,12 +105,25 @@
 	</delete>
 	
 	<insert id="addrbookAdd" parameterType="addressbookVo">
-		<selectKey keyColumn="addrbookNo" resultType="int" order="BEFORE">
+		<selectKey keyProperty="addrbookNo" resultType="int" order="BEFORE">
 			select addressbook_seq.nextval from dual
 		</selectKey>
 		insert into addressbook
 		values(#{addrbookNo}, #{addrbookName}, #{addrbookComname}, #{addrbookTel}, #{addrbookEmail}, #{memNo}, #{deptNo})
 	</insert>
+	
+	<update id="addrbookEdit" parameterType="addressbookVo">
+		update addressbook
+		set addrbook_name = #{addrbookName},
+		addrbook_comname = #{addrbookComname},
+		addrbook_tel = #{addrbookTel},
+		addrbook_email = #{addrbookEmail}
+		where addrbook_no = #{addrbookNo}
+	</update>
+	
+	<select id="selectByNo" parameterType="int" resultType="addressBookVo">
+		select * from addressbook where addrbook_no = #{addressbookNo}
+	</select>
 </mapper>
 
 

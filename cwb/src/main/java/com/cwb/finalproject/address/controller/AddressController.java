@@ -31,6 +31,8 @@ import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.dept.model.DeptService;
 import com.cwb.finalproject.dept.model.DeptVO;
 import com.cwb.finalproject.member.model.MemberService;
+import com.cwb.finalproject.message.model.MessageService;
+import com.cwb.finalproject.message.model.MessageVO;
 
 @Controller
 @RequestMapping("/address")
@@ -49,6 +51,8 @@ public class AddressController {
 	private EmailService emailService;
 	@Autowired
 	private AddressBookService addressBookService;
+	@Autowired
+	private MessageService messageService;
 	
 	@RequestMapping("/privateAddr.do")
 	public String showPrivAddr() {
@@ -360,26 +364,21 @@ public class AddressController {
 	public String addEdit_get(@RequestParam int addrbookNo, Model model) {
 		logger.info("개인 연락처 수정 창 보여주기 addrbookNo = {}",addrbookNo);
 		
-		// ================================================================================================
-		// 번호로 연락처 조회 sql, DAO, Service만들기
-		AddressBookVO vo = null;
+		AddressBookVO vo = addressBookService.selectByNo(addrbookNo);
 		logger.info("번호로 연락처 조회 vo = {}",vo);
 		
 		model.addAttribute("vo", vo);
 		
-		return "address/addEditForm";
+		return "address/editAddrForm";
 	}
 	
 	@RequestMapping(value="/addEdit.do", method = RequestMethod.POST)
 	public String addEdit_post(@ModelAttribute AddressBookVO vo, Model model) {
 		logger.info("개인 연락처 수정 처리 vo = {}",vo);
 
-		String msg = "", url = "/address/addEdit.do";
+		String msg = "", url = "/address/addEdit.do?addrbookNo="+vo.getAddrbookNo();
 		
-		// ================================================================================================
-		// 수정 처리하는 sql문, DAO, Service 만들기
-		int cnt = 0;
-		
+		int cnt = addressBookService.addrbookEdit(vo);
 		
 		if(cnt > 0) {
 			msg = "연락처 수정 성공";
@@ -398,8 +397,58 @@ public class AddressController {
 	public String sendMessage(@RequestParam(required = false) int memNo, Model model) {
 		logger.info("쪽지 보내기 화면 보여주기 매개변수 = {}", memNo);
 		
-		model.addAttribute("memNo", memNo);
+		String userId = (String)memberService.selectByNo(memNo).get("MEM_ID");
+		
+		model.addAttribute("userId", userId);
 		return "address/sendMessage";
 	}
 	
+	@RequestMapping("/selCoworker.do")
+	public String selCoworker() {
+		logger.info("쪽지 주소록 보여주기");
+		
+		return "address/selCoworker";
+	}
+	
+	@RequestMapping("/sendMsgProc.do")
+	public String sendMsgProc(@ModelAttribute MessageVO msgVo, @RequestParam String msgrevId,
+			HttpSession session, Model model) {
+		int memNo = (Integer)session.getAttribute("memNo");
+		msgVo.setMemNo(memNo);
+		logger.info("쪽지 보내기 처리 vo = {}", msgVo);
+		logger.info("쪽지 보낼 아이디 msgrevId = {}", msgrevId);
+		
+		String[] ids = msgrevId.split(",| ");
+		
+		String msg = "", url = "/address/sendMessage.do";
+		
+		int[] memNos = new int[ids.length];
+		for(int i = 0; i < ids.length; i++) {
+			memNos[i] = memberService.selectByUserid(ids[i]).getMemNo();
+			logger.info("번호 = {}",memNos[i]);
+			if(memNos[i] == 0) {
+				msg = ids[i]+"는 존재하지 않는 아이디 입니다.";
+				model.addAttribute("msg", msg);
+				model.addAttribute("url", url);
+				return "common/message";
+			}
+		}
+		
+		int cnt = messageService.insertMsg(msgVo, memNos);
+		logger.info("결과 cnt = {}",cnt);
+		
+		if(cnt > 0) {
+			msg = "쪽지 보내기 성공";
+			url = "/address/msgList.do";
+		}else {
+			msg = "쪽지 보내기 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
 }
+

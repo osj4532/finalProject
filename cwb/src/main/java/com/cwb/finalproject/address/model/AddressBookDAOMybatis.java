@@ -27,4 +27,12 @@ public class AddressBookDAOMybatis implements AddressBookDAO{
 	public int addrbookAdd(AddressBookVO vo) {
 		return sqlSession.insert(namespace+"addrbookAdd",vo);
 	}
+	
+	public AddressBookVO selectByNo(int addrbookNo) {
+		return sqlSession.selectOne(namespace+"selectByNo",addrbookNo);
+	}
+	
+	public int addrbookEdit(AddressBookVO vo) {
+		return sqlSession.update(namespace+"addrbookEdit",vo);
+	}
 }
