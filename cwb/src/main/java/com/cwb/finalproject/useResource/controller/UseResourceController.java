@@ -39,7 +39,7 @@ public class UseResourceController {
 		
 		
 		PaginationInfo pagingInfo=new PaginationInfo();
-		pagingInfo.setBlockSize(5);
+		pagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
 		pagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
 		pagingInfo.setCurrentPage(useResourceVo.getCurrentPage());
 		
@@ -111,7 +111,7 @@ public class UseResourceController {
 				vo.setUseRegdate(vo.getUseRegdate().substring(0, 10));
 				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
 			}
-		}
+		}  
 		
 		List<UseResourceVO> refuseList = useResourceService.selectMyNotRefuseRes(memNo);
 		for (UseResourceVO vo : refuseList) {
@@ -132,14 +132,17 @@ public class UseResourceController {
 	}
 	@RequestMapping("/AllUseResList.do")
 	public String AlluseResList(Model model,
-			@RequestParam(defaultValue = "1") int AppcurrentPage) {
+			@RequestParam(defaultValue = "1") int AppcurrentPage
+			,@RequestParam(defaultValue = "1") int WaitcurrentPage
+			,@RequestParam(defaultValue = "1") int ReJectcurrentPage
+			) {
 		
 		
 		UseResourceVO AppUesResVo = new UseResourceVO();
 		PaginationInfo AppPagingInfo=new PaginationInfo();
 		AppUesResVo.setCurrentPage(AppcurrentPage);
 		 
-		AppPagingInfo.setBlockSize(WebUtility.BLOCK_SIZE);
+		AppPagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
 		AppPagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
 		AppPagingInfo.setCurrentPage(AppUesResVo.getCurrentPage());
 		
@@ -156,12 +159,25 @@ public class UseResourceController {
 			}
 		} 
 		logger.info("전체  자원 사용 내역 보여주기 AppList={}",AppList);
-		int totalRecord=0;
-		totalRecord=useResourceService.selectAllNotUseRestotalCount(AppUesResVo);
+		int ApptotalRecord=0;
+		ApptotalRecord=useResourceService.selectAllNotUseRestotalCount(AppUesResVo);
 		
-		AppPagingInfo.setTotalRecord(totalRecord);
+		AppPagingInfo.setTotalRecord(ApptotalRecord);
 		
-		List<UseResourceVO> waitList = useResourceService.selectAllNotWaitRes();
+		
+		UseResourceVO WaitResVo = new UseResourceVO();
+		PaginationInfo WaitPagingInfo=new PaginationInfo();
+		WaitResVo.setCurrentPage(WaitcurrentPage);
+		 
+		WaitPagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
+		WaitPagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		WaitPagingInfo.setCurrentPage(WaitResVo.getCurrentPage());
+		
+		WaitResVo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		WaitResVo.setFirstRecordIndex(WaitPagingInfo.getFirstRecordIndex());
+		 
+		logger.info("전체 자원 검토 내역 보여주기 WaitResVo={}",WaitResVo);
+		List<UseResourceVO> waitList = useResourceService.selectAllNotWaitRes(WaitResVo);
 		for (UseResourceVO vo : waitList) {
 			if(vo.getUseRegdate().substring(11).equals("00:00:00")
 					&& vo.getReturnRegdate().substring(11).equals("00:00:00")) {
@@ -169,8 +185,26 @@ public class UseResourceController {
 				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
 			}
 		}
+		logger.info("전체  자원 검토 내역 보여주기 waitList={}",waitList);
+		int WaittotalRecord=0;
+		WaittotalRecord=useResourceService.selectAllNotWaitRestotalCount(WaitResVo);
 		
-		List<UseResourceVO> refuseList = useResourceService.selectAllNotRefuseRes();
+		WaitPagingInfo.setTotalRecord(WaittotalRecord);
+		
+		
+		UseResourceVO ReFuesResVo = new UseResourceVO();
+		PaginationInfo ReFusePagingInfo=new PaginationInfo();
+		ReFuesResVo.setCurrentPage(ReJectcurrentPage);
+		 
+		ReFusePagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
+		ReFusePagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		ReFusePagingInfo.setCurrentPage(ReFuesResVo.getCurrentPage());
+		
+		ReFuesResVo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		ReFuesResVo.setFirstRecordIndex(ReFusePagingInfo.getFirstRecordIndex());
+		
+		logger.info("전체 자원 반려 내역 보여주기 ReFuesResVo={}",ReFuesResVo);
+		List<UseResourceVO> refuseList = useResourceService.selectAllNotRefuseRes(ReFuesResVo);
 		for (UseResourceVO vo : refuseList) {
 			if(vo.getUseRegdate().substring(11).equals("00:00:00")
 					&& vo.getReturnRegdate().substring(11).equals("00:00:00")) {
@@ -178,10 +212,21 @@ public class UseResourceController {
 				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
 			}
 		}
+		
+		logger.info("전체  자원 반려 내역 보여주기 refuseList={}",refuseList);
+		int ReFuestotalRecord=0;
+		ReFuestotalRecord=useResourceService.selectAllNotRefuesRestotalCount(ReFuesResVo);
+		
+		ReFusePagingInfo.setTotalRecord(ReFuestotalRecord);
+		
+		
+		
 		model.addAttribute("waitList", waitList);
 		model.addAttribute("refuseList", refuseList);
 		model.addAttribute("AppList", AppList);
 		model.addAttribute("AppPagingInfo", AppPagingInfo);
+		model.addAttribute("WaitPagingInfo", WaitPagingInfo);
+		model.addAttribute("ReFusePagingInfo", ReFusePagingInfo);
 		
 		return "resources/useRes/AllUesResList";
 	}

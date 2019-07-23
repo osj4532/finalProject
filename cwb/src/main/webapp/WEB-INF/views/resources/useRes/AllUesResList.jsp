@@ -151,6 +151,14 @@ function AppPageFunc(cur){
 	document.AllAppSearch.AppcurrentPage.value=cur;
 	document.AllAppSearch.submit();
 } 
+function WaitPageFunc(cur){
+	document.AllAppSearch.WaitcurrentPage.value=cur;
+	document.AllAppSearch.submit();
+} 
+function ReJectPageFunc(cur){
+	document.AllAppSearch.ReJectcurrentPage.value=cur;
+	document.AllAppSearch.submit();
+} 
 
 </script>
 <!--main content start--> 
@@ -229,8 +237,8 @@ function AppPageFunc(cur){
                 </thead>
                 <tbody>
                  <c:if test="${empty AppList}">
-                	<tr>
-                    <td colspan="3">
+                	<tr> 
+                    <td colspan="5">
 							<h4><b>신청하신 자원이 없습니다.</b></h4>
 					</td>
                   </tr> 
@@ -280,7 +288,7 @@ function AppPageFunc(cur){
 							<!--  페이지 번호 끝 -->
 							
 							<!-- 다음 블럭으로 이동하기 -->
-							<c:if test="${AppPagingInfo.lastPage<pagingInfo.totalPage }">	
+							<c:if test="${AppPagingInfo.lastPage<AppPagingInfo.totalPage }">	
 								<li class="next"><a href="#" onclick="AppPageFunc(${AppPagingInfo.lastPage+1})">Next → </a></li>
 							</c:if>
 							</ul>
@@ -292,6 +300,8 @@ function AppPageFunc(cur){
 				 <form action="<c:url value='/useResource/AllUseResList.do'/>" 
 						method="post" name="AllAppSearch" class="form-inline" role="form">
 						<input type="hidden" name='AppcurrentPage' value="1">
+						<input type="hidden" name='WaitcurrentPage' value="1">
+						<input type="hidden" name='ReJectcurrentPage' value="1">
 					</form> 
 				<!-- row-fluid -->
             </div> 
@@ -316,7 +326,7 @@ function AppPageFunc(cur){
                 <tbody>
                  <c:if test="${empty waitList}">
                 	<tr>
-	                    <td colspan="3">
+	                    <td colspan="5">
 								<h4><b>신청하신 자원이 없습니다.</b></h4>
 						</td>
                  	 </tr> 
@@ -344,19 +354,38 @@ function AppPageFunc(cur){
                <!-- /content-panel -->
             <div class="row-fluid">
 					<div class="span6">
+					
 						<div class="dataTables_info" id="hidden-table-info_info">Showing
 							1 to 10 of 57 entries</div>
 					</div>
+					
 					<div class="span6">
 						<div class="dataTables_paginate paging_bootstrap pagination">
 							<ul>
-								<li class="prev disabled"><a href="#">← Previous</a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li class="next"><a href="#">Next → </a></li>
+							
+							<!-- 이전블럭으로 이동하기 -->
+							<c:if test="${WaitPagingInfo.firstPage>1 }">	
+								<li class="prev disabled">
+									<a href="#" onclick="WaitPageFunc(${WaitPagingInfo.firstPage-1})">← Previous</a>
+								</li>
+							</c:if>
+							<!-- 페이지 번호 추가 -->
+							<!-- [1][2][3][4][5][6][7][8][9][10] -->
+							<c:forEach var="i" begin="${WaitPagingInfo.firstPage }" end="${WaitPagingInfo.lastPage }">
+								<c:if test="${i==WaitPagingInfo.currentPage }">
+									<li class="active"><a href='#'>${i}</a></li>
+								</c:if> 
+								<c:if test="${i!=WaitPagingInfo.currentPage }">
+									<li><a href="#" onclick="WaitPageFunc(${i})">${i}</a></li>
+								</c:if>
+							</c:forEach>
+							<!--  페이지 번호 끝 -->
+							 
+							<!-- 다음 블럭으로 이동하기 -->
+							<c:if test="${WaitPagingInfo.lastPage<WaitPagingInfo.totalPage }">	
+								<li class="next"><a href="#" onclick="WaitPageFunc(${WaitPagingInfo.lastPage+1})">Next → </a></li>
+							</c:if>
+								
 							</ul>
 						</div>
 					</div>
@@ -387,10 +416,10 @@ function AppPageFunc(cur){
                 <tbody>
                     <c:if test="${empty refuseList}">
                 	<tr>
-	                    <td colspan="3">
+	                    <td colspan="5">
 								<h4><b>신청하신 자원이 없습니다.</b></h4>
 						</td>
-                 	 </tr> 
+                 	 </tr>  
                  </c:if>
                  <c:if test="${!empty refuseList}">
                  <c:forEach var="refuseVo" items="${refuseList }">
@@ -418,13 +447,30 @@ function AppPageFunc(cur){
 					<div class="span6">
 						<div class="dataTables_paginate paging_bootstrap pagination">
 							<ul>
-								<li class="prev disabled"><a href="#">← Previous</a></li>
-								<li class="active"><a href="#">1</a></li>
-								<li><a href="#">2</a></li>
-								<li><a href="#">3</a></li>
-								<li><a href="#">4</a></li>
-								<li><a href="#">5</a></li>
-								<li class="next"><a href="#">Next → </a></li>
+							
+							<!-- 이전블럭으로 이동하기 -->
+							<c:if test="${ReFusePagingInfo.firstPage>1 }">	
+								<li class="prev disabled">
+									<a href="#" onclick="ReJectPageFunc(${ReFusePagingInfo.firstPage-1})">← Previous</a>
+								</li>
+							</c:if>
+							<!-- 페이지 번호 추가 -->
+							<!-- [1][2][3][4][5][6][7][8][9][10] -->
+							<c:forEach var="i" begin="${ReFusePagingInfo.firstPage }" end="${ReFusePagingInfo.lastPage }">
+								<c:if test="${i==ReFusePagingInfo.currentPage }">
+									<li class="active"><a href='#'>${i}</a></li>
+								</c:if> 
+								<c:if test="${i!=ReFusePagingInfo.currentPage }">
+									<li><a href="#" onclick="ReJectPageFunc(${i})">${i}</a></li>
+								</c:if>
+							</c:forEach>
+							<!--  페이지 번호 끝 -->
+							
+							<!-- 다음 블럭으로 이동하기 -->
+							<c:if test="${ReFusePagingInfo.lastPage<ReFusePagingInfo.totalPage }">	
+								<li class="next"><a href="#" onclick="ReJectPageFunc(${ReFusePagingInfo.lastPage+1})">Next → </a></li>
+							</c:if>
+							
 							</ul>
 						</div>
 					</div>

@@ -13,12 +13,14 @@ public interface UseResourceService {
 	int delUseResSchedule(int reservNo);
 	int updateUseResSchedule(int reservNo);
 	//전체 자원내역 
-	List<UseResourceVO> selectAllUseRes(UseResourceVO useResourceVo);
-	int selectAllUseRestotalCount(UseResourceVO useResourceVo);
-	List<UseResourceVO> selectAllNotUseRes(UseResourceVO useResourceVo);
-	int selectAllNotUseRestotalCount(UseResourceVO useResourceVo);
-	List<UseResourceVO> selectAllNotWaitRes();
-	List<UseResourceVO> selectAllNotRefuseRes();
+		List<UseResourceVO> selectAllUseRes(UseResourceVO useResourceVo);
+		int selectAllUseRestotalCount(UseResourceVO useResourceVo);
+		List<UseResourceVO> selectAllNotUseRes(UseResourceVO useResourceVo);
+		int selectAllNotUseRestotalCount(UseResourceVO useResourceVo);
+		List<UseResourceVO> selectAllNotWaitRes(UseResourceVO useResourceVo);
+		int selectAllNotWaitRestotalCount(UseResourceVO useResourceVo);
+		List<UseResourceVO> selectAllNotRefuseRes(UseResourceVO useResourceVo);
+		int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo);
 }
 
 

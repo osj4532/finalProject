@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 public class WebUtility {
 	public static final int BLOCK_SIZE=10;	//페이징 개수
 	public static int RECORD_COUNT_PER_PAGE=5;	//페이지당 데이터 개수
+	public static final int RES_BLOCK_SIZE=5; //자원 페이징 개수
 	
 	public String createRandomString() {
 		StringBuffer tmp = new StringBuffer();

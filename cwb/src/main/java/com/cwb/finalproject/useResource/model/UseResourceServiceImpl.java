@@ -61,18 +61,28 @@ public class UseResourceServiceImpl implements UseResourceService{
 	}
 
 	@Override
-	public List<UseResourceVO> selectAllNotWaitRes() {
-		return useResourceDao.selectAllNotWaitRes();
+	public List<UseResourceVO> selectAllNotWaitRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotWaitRes(useResourceVo);
 	}
 
 	@Override
-	public List<UseResourceVO> selectAllNotRefuseRes() {
-		return useResourceDao.selectAllNotRefuseRes();
+	public List<UseResourceVO> selectAllNotRefuseRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotRefuseRes(useResourceVo);
 	}
 
 	@Override
 	public int selectAllNotUseRestotalCount(UseResourceVO useResourceVo) {
 		return useResourceDao.selectAllNotUseRestotalCount(useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotWaitRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotWaitRestotalCount(useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotRefuesRestotalCount(useResourceVo);
 	}
 	 
 	

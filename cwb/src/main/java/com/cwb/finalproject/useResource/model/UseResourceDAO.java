@@ -17,7 +17,9 @@ public interface UseResourceDAO {
 	int selectAllUseRestotalCount(UseResourceVO useResourceVo);
 	List<UseResourceVO> selectAllNotUseRes(UseResourceVO useResourceVo);
 	int selectAllNotUseRestotalCount(UseResourceVO useResourceVo);
-	List<UseResourceVO> selectAllNotWaitRes();
-	List<UseResourceVO> selectAllNotRefuseRes();
+	List<UseResourceVO> selectAllNotWaitRes(UseResourceVO useResourceVo);
+	int selectAllNotWaitRestotalCount(UseResourceVO useResourceVo);
+	List<UseResourceVO> selectAllNotRefuseRes(UseResourceVO useResourceVo);
+	int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo);
 	
 }

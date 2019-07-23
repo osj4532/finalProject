@@ -64,18 +64,28 @@ public class UseResourceDAOMybatis implements UseResourceDAO{
 	}
  
 	@Override
-	public List<UseResourceVO> selectAllNotWaitRes() {
-		return sqlSession.selectList(namespace+"selectAllNotWaitRes");
+	public List<UseResourceVO> selectAllNotWaitRes(UseResourceVO useResourceVo) {
+		return sqlSession.selectList(namespace+"selectAllNotWaitRes",useResourceVo);
 	}
 
 	@Override
-	public List<UseResourceVO> selectAllNotRefuseRes() {
-		return sqlSession.selectList(namespace+"selectAllNotRefuseRes");
+	public List<UseResourceVO> selectAllNotRefuseRes(UseResourceVO useResourceVo) {
+		return sqlSession.selectList(namespace+"selectAllNotRefuseRes",useResourceVo);
 	}
 
 	@Override
 	public int selectAllNotUseRestotalCount(UseResourceVO useResourceVo) {
 		return sqlSession.selectOne(namespace+"selectAllNotUseRestotalCount", useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotWaitRestotalCount(UseResourceVO useResourceVo) {
+		return sqlSession.selectOne(namespace+"selectAllNotWaitRestotalCount", useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo) {
+		return sqlSession.selectOne(namespace+"selectAllNotRefuesRestotalCount", useResourceVo);
 	}
 
 	

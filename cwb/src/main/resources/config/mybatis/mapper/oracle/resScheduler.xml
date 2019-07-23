@@ -268,17 +268,69 @@ values(#{reservNo},#{memNo},#{resNo},
 		</where>
 	</select>
 	
-	<select id="selectAllNotWaitRes" resultType="useResourceVO">
-		select * from ResUseListView
-			where  appr_flag='W'
-			and use_regdate > sysdate
-		order by res_no,use_regdate 
+	<select id="selectAllNotWaitRes"  parameterType="useResourceVO" resultType="useResourceVO">
+		select *
+		from
+		(
+		    select A.*, rownum as RNUM 
+		    from
+		    (
+		        select * from ResUseListView		
+				<where>
+						<if test="searchKeyword != null and searchKeyword != ''">
+							${searchCondition} like '%' || #{searchKeyword} || '%'
+						</if> 
+						and appr_flag='W'
+				<![CDATA[ and use_regdate > sysdate]]>
+				</where>
+				order by res_no,use_regdate 
+		    ) A
+		)
+		<![CDATA[ where RNUM>#{firstRecordIndex}  
+		and RNUM<=#{firstRecordIndex} + #{recordCountPerPage}]]>
 	</select>
-	<select id="selectAllNotRefuseRes" resultType="useResourceVO">
-		select * from ResUseListView
-			where appr_flag='N'
+	<select id="selectAllNotWaitRestotalCount" parameterType="useResourceVO" resultType="int">
+		select count(*) from ResUseListView		
+		<where>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				${searchCondition} like '%' || #{searchKeyword} || '%'
+			</if> 
+			and appr_flag='W'
 			and use_regdate > sysdate
-		order by res_no,use_regdate 
+		</where>
+	</select>
+	
+	
+	<select id="selectAllNotRefuseRes"  parameterType="useResourceVO" resultType="useResourceVO">
+		select *
+		from
+		(
+		    select A.*, rownum as RNUM 
+		    from
+		    (
+		        select * from ResUseListView		
+				<where>
+						<if test="searchKeyword != null and searchKeyword != ''">
+							${searchCondition} like '%' || #{searchKeyword} || '%'
+						</if> 
+						and appr_flag='N'
+				<![CDATA[ and use_regdate > sysdate]]>
+				</where>
+				order by res_no,use_regdate 
+		    ) A
+		)
+		<![CDATA[ where RNUM>#{firstRecordIndex}  
+		and RNUM<=#{firstRecordIndex} + #{recordCountPerPage}]]>
+	</select>
+	<select id="selectAllNotRefuesRestotalCount" parameterType="useResourceVO" resultType="int">
+		select count(*) from ResUseListView		
+		<where>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				${searchCondition} like '%' || #{searchKeyword} || '%'
+			</if> 
+			and appr_flag='N'
+			and use_regdate > sysdate
+		</where>
 	</select>
 	
 </mapper>
