@@ -245,13 +245,17 @@ element.style {
 							var events = [];
 							$.each(data, function(index,
 									item) { 
+								var color= "#50e6ffa3";
+								if(this.isday){   
+									color= "#d0d882";
+								}  
 								events.push({
 									id:this.tscdNo, 
 									title : this.tscdContent,
 									start : this.tscdStartdate,
-									end : this.tscdEnddate
-								}); 
-								console.log($(this))
+									end : this.tscdEnddate,
+									backgroundColor: color  
+								});  
 							});  
 							callback(events);
 						},
@@ -276,13 +280,13 @@ element.style {
 <section id="main-content">
 	<section class="wrapper">
 		<h1 class="mg_text">
-			<i class="fa fa-angle-right mt text-important"></i> 부서 스케줄 
+			<i class="far fa-calendar-alt mt"></i>  부서 스케줄 
 		</h1>
-		<!-- page start-->
+		<!-- page start--> 
 		<div class="row"> 
 			<div class="col-lg-12">   
 			<c:if test="${ranksNo>=2}">  
-				<span id="switchinfo" > Click    </span>      
+				<span id="switchinfo" ><i class="fas fa-hand-point-right"></i>  Click    </span>      
                   <div class="switch switch-square" data-on-label="수정" data-off-label="삭제">
                     <input type="checkbox" id="EditChk"/>
                   </div>

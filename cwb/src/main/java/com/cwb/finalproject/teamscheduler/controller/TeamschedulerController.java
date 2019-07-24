@@ -47,13 +47,12 @@ public class TeamschedulerController {
 		teamSchedulerVo.setMemNo(memNo);
 		MemberVO memberVo= memberService.selectByUserid(memId);
 		teamSchedulerVo.setDeptNo(memberVo.getDeptNo());
-		boolean isday = false;
 		if (teamSchedulerVo.getTscdStartdate().length() == 10 && teamSchedulerVo.getTscdEnddate().length() == 10) {
-			isday = true;
+			teamSchedulerVo.setIsday(true);
 		}
-		logger.info("종일 결과 is={}", isday);
+		logger.info("종일 결과 is={}", teamSchedulerVo.isIsday());
 
-		int cnt = teamSchedulerService.insertTeamScd(teamSchedulerVo, isday);
+		int cnt = teamSchedulerService.insertTeamScd(teamSchedulerVo, teamSchedulerVo.isIsday());
 		logger.info("ajax 이용 팀스케줄 완료 결과 int={}", cnt);
 
 	}
@@ -71,8 +70,9 @@ public class TeamschedulerController {
 			if(vo.getTscdStartdate().substring(11).equals("00:00:00")) {
 				vo.setTscdStartdate(vo.getTscdStartdate().substring(0, 10));
 				vo.setTscdEnddate(vo.getTscdEnddate().substring(0, 10));
+				vo.setIsday(true);
 			}
-		}
+		} 
 		return list; 
 	}
 	@RequestMapping("/TeamScdDel.do")

@@ -279,11 +279,11 @@ element.style {
 
 <c:set var='mypage' value="useJs" />
 
-<section id="main-content">
+<section id="main-content"> 
 	<section class="wrapper">
 		<h1 class="mg_text">
-			<i class="fa fa-angle-right mt text-important"></i>${resVo.resName} 자원 신청 스케줄
-		</h1>
+			<i class="far fa-calendar-alt mt "></i>  ${resVo.resName} 자원 신청 스케줄
+		</h1> 
 		<!-- page start-->  
 		<div class="row"> 
 			<div class="col-lg-12">    

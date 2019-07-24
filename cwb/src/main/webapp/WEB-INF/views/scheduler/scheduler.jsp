@@ -279,13 +279,13 @@ element.style {
 
 <section id="main-content">
 	<section class="wrapper">
-		<h1 class="mg_text">
-			<i class="fa fa-angle-right mt text-important"></i>개인 스케줄 
-		</h1>
-		<!-- page start-->
+		<h1 class="mg_text"> 
+			<i class="far fa-calendar-alt mt "></i> 개인 스케줄   
+		</h1> 
+		<!-- page start--> 
 		<div class="row"> 
 			<div class="col-lg-12">    
-				<span id="switchinfo"> Click    </span>      
+				<span id="switchinfo"><i class="fas fa-hand-point-right"></i>  Click    </span>      
                   <div class="switch switch-square" data-on-label="수정" data-off-label="삭제">
                     <input type="checkbox" id="EditChk"/>
                   </div>

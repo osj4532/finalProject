@@ -11,19 +11,38 @@ var searchCondition='';
 var searchName='';
 
 $(function(){
-	$("#MyRes").hide();
-	$("#notfindRes").hide();
+	$("#AllRes").hide();
 	$.useRes(1);
-	$("#MyResView").click(function(){
-		$("#MyRes").toggle(500);   
-	});
-	$('form[name=useSearch]').submit(function() {
+	$("#AllResView").click(function(){
+		$("#AllRes").toggle(500);   
+	}); 
+	$('form[name=AlluseSearch]').submit(function() {
 		event.preventDefault();
 		$.useRes(1); //default로 1페이지 조회
 	}); 
 	$('input[name=searchKeyword]').keyup(function() {
 		$.useRes(1);  
 	}); 
+	
+	 
+	$('form[name=AppSearch]').submit(function(){ 
+		event.preventDefault();
+	/* 	$('input[name=AppsearchCondition]').val($('#AppsearchCondition option:selected').val());
+		$('input[name=AppsearchKeyword]').val($('#AppsearchKeyword').val());
+		document.AllAppSearch.submit();   */
+		$.AppPageFunc(1);
+	});
+	 
+	$('form[name=WaitSearch]').submit(function(){ 
+		event.preventDefault();
+		$.WaitPageFunc(1) 
+	});
+	
+	$('form[name=ReJectSearch]').submit(function(){ 
+		event.preventDefault();
+		$.ReJectPageFunc(1);
+	});
+	
 });  
  
 
@@ -34,8 +53,8 @@ $.useRes=function(curPage){
 		searchName= $("#searchCondition option:selected").text();  
 		searchKeyword= $("input[name=searchKeyword]").val();
 	$.ajax({ 
-		url:"<c:url value='/useResource/usefindResList.do'/>",
-		type:"post", 
+		url:"<c:url value='/useResource/AllUsefindResList.do'/>",
+		type:"post",  
 		data:{ 
 			"currentPage":curPage,		
 			"searchCondition":searchCondition,
@@ -52,15 +71,15 @@ $.useRes=function(curPage){
 
 
 function makeList(res){ 
-	$('#useRes').html(""); 
+	$('#AllUseRes').html(""); 
 	$('#hidden-table-info_info').html(""); 
-	$('#useResPaging').html(""); 
+	$('#AllUseResPaging').html(""); 
 	var totalCount = 0;
 	if(res==''){
 		if(searchKeyword!=''){
-			$('#useRes').append("<td colspan='3'><h4><b>검색하신 자원이 없습니다.</b></h4></td>");
+			$('#AllUseRes').append("<td colspan='4'><h4><b>검색하신 자원이 없습니다.</b></h4></td>");
 		}else {
-			$('#useRes').append("<td colspan='3'><h4><b>신청하신 자원이 없습니다.</b></h4></td>");
+			$('#AllUseRes').append("<td colspan='4'><h4><b>신청하신 자원이 없습니다.</b></h4></td>");
 		}
 	}else{
 		$.each(res, function(index,item) {
@@ -68,16 +87,19 @@ function makeList(res){
 				var typeName=this.typeName;
 				var resName=this.resName;
 				var regdate=this.useRegdate+" ~ "+this.returnRegdate;
+				var memName=this.memName;
 				
 				var tdEl1=$("<td></td>").html(typeName);
 				var tdEl2=$("<td class='hidden-phone' ></td>").html(resName);
 				var tdEl3=$("<td></td>").html(regdate);
+				var tdEl4=$("<td></td>").html(memName);
 				
 				trEl.append(tdEl1);
 				trEl.append(tdEl2);
 				trEl.append(tdEl3);
+				trEl.append(tdEl4); 
 		
-			$('#useRes').append(trEl);
+			$('#AllUseRes').append(trEl);
 			totalCount = this.totalCount;
 		}); 
 	}
@@ -104,25 +126,25 @@ $.pageSetting=function(){
 	if(firstPage>1){     
 	 var anchor=$("<li class='prev'><a href='#'>← Previous</a></li>")
 	 .attr("onclick","$.useRes("+(Number(firstPage)-1)+")")
-		$('#useResPaging').append(anchor);    
+		$('#AllUseResPaging').append(anchor);    
 	}   
 	/*페이지 번호 추가   
 	[1][2][3][4][5][6][7][8][9][10] */
 	for(var i=firstPage;i<=lastPage;i++){
 		if(i==currentPage){  
 			var spanEl=$("<li class='active'><a href='#'>"+i+"</a></li>");
-			$('#useResPaging').append(spanEl) ;
+			$('#AllUseResPaging').append(spanEl) ;
 		}else {
 			var anchor =$("<li><a href='#'>"+i+"</a></li>")
 			.attr("onclick","$.useRes("+i+")");
-			$('#useResPaging').append(anchor);
+			$('#AllUseResPaging').append(anchor);
 		} 
 	}//for 
 	//다음 블럭으로 이동하기
 	if(lastPage<totalPage-1){
 		 var anchor=$("<li class='next'><a href='#'>Next → </a></li>")
 .attr("onclick","$.useRes("+(Number(lastPage)+1)+")");
-		 $('#useResPaging').append(anchor);
+		 $('#AllUseResPaging').append(anchor);
 	}	 
 }
 
@@ -146,26 +168,36 @@ function WaitResScd(reservNo){
 		location.href="<c:url value='/useResource/WaitResSchedule.do?reservNo='/>"+reservNo;
 	}
 }
-
-function AppPageFunc(cur){
+$.AppPageFunc=function(cur){ 
 	document.AllAppSearch.AppcurrentPage.value=cur;
-	document.AllAppSearch.submit();
-} 
-function WaitPageFunc(cur){
+	$('input[name=AppsearchCondition]').val($('#AppsearchCondition option:selected').val());
+	$('input[name=AppsearchKeyword]').val($('#AppsearchKeyword').val()); 
+	document.AllAppSearch.submit(); 
+}
+
+
+$.WaitPageFunc=function(cur){ 
 	document.AllAppSearch.WaitcurrentPage.value=cur;
-	document.AllAppSearch.submit();
-} 
-function ReJectPageFunc(cur){
+	$('input[name=WaitsearchCondition]').val($('#WaitsearchCondition option:selected').val());
+	$('input[name=WaitsearchKeyword]').val($('#WaitsearchKeyword').val());
+	document.AllAppSearch.submit(); 
+}
+  
+$.ReJectPageFunc=function(cur){ 
 	document.AllAppSearch.ReJectcurrentPage.value=cur;
+	$('input[name=ReJectsearchCondition]').val($('#ReJectsearchCondition option:selected').val());
+	$('input[name=ReJectsearchKeyword]').val($('#ReJectsearchKeyword').val());
 	document.AllAppSearch.submit();
 } 
+
+
 
 </script>
 <!--main content start--> 
 <section id="main-content">
 	<section class="wrapper">
 		<h3> 
-			<i class="fa fa-angle-right"></i> 사원전체 자원 신청 내역
+			<i class="fas fa-sitemap"></i> 사원전체 자원 신청 내역
 			<button type="button" id="AllResView" class="btn btn-round btn-info">사원전체 자원 사용 내역 보기</button> 
 		</h3>
         
@@ -173,20 +205,21 @@ function ReJectPageFunc(cur){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i>사원전체 자원 사용 내역</h4>
+                <h4><i class="fas fa-clipboard-check"></i> 사원전체 자원 사용 내역</h4>
                 <hr>
                 <thead> 
                   <tr>
-                    <th width="20%"><i class="fa fa-bullhorn"></i> 자원 </th>
-                    <th width="30%" class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명 </th>
-                    <th width="50%"><i class="fa fa-bookmark"></i> 사용 기간 </th>
+                    <th width="20%"><i class="fas fa-archive"></i>  자원 </th>
+                    <th width="20%" class="hidden-phone"><i class="fas fa-info-circle"></i> 자원명 </th>
+                    <th width="30%"><i class="fas fa-history"></i>  사용 기간 </th>
+                    <th width="30%"><i class="fas fa-user-clock"></i> 사용 사원 </th>
                   </tr>  
                 </thead>
                 <tbody id="AllUseRes"><!-- AllUseList -->
 	                	
                 </tbody> 
               </table>
-            </div>
+   
             <!-- /content-panel -->
             <div class='span6'>
             <div class='dataTables_info'id='hidden-table-info_info'>
@@ -197,7 +230,8 @@ function ReJectPageFunc(cur){
 						<input type="hidden" name='currentPage' value="1">
 						<select name="searchCondition" id="searchCondition" class="form-control">
 								<option value="type_Name"> 자원 </option>
-								<option value="res_Name"> 자원 명 </option>
+								<option value="res_Name"> 자원명 </option>
+								<option value="mem_Name"> 사원명 </option>
 						</select>     
 						<div class="form-group"> 
 	                  <label class="sr-only" for="AllResKeyword">내용</label>
@@ -211,7 +245,8 @@ function ReJectPageFunc(cur){
 						</ul>
 					</div> 
 				</div> 
-			
+       		
+       		  </div>
           </div>
           <!-- /col-md-12 -->
 				  
@@ -224,14 +259,14 @@ function ReJectPageFunc(cur){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i>전체 승인 내역</h4>
+                <h4><i class="fas fa-calendar-check"></i>전체 승인 내역</h4>
                 <hr>
                 <thead>
                   <tr>
-                    <th><i class="fa fa-bullhorn"></i> 자원</th>
-                    <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
-                    <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
-                    <th><i class="fa fa-bookmark"></i> 신청 사원 </th>
+                    <th><i class="fas fa-archive"></i> 자원</th>
+                    <th class="hidden-phone"><i class="fas fa-info-circle"></i> 자원명</th>
+                    <th><i class="fas fa-user-clock"></i>  신청 기간 </th>
+                    <th><i class="fas fa-user-tag"></i> 신청 사원 </th>
                     <th></th>
                   </tr>
                 </thead>
@@ -253,7 +288,7 @@ function ReJectPageFunc(cur){
                     <td>${AanVo.memName }</td>
                     <td>
                       <button class="btn btn-primary btn-xs"
-                     onclick="WaitResScd(${AanVo.reservNo })"><i class="fa fa-check"> 승인 취소 </i></button>
+                     onclick="WaitResScd(${AanVo.reservNo })"><i class="fas fa-undo"> 승인 취소 </i></button>
                     </td>     
                   </tr>   
                       </c:forEach> 
@@ -263,16 +298,44 @@ function ReJectPageFunc(cur){
 	            <!-- /content-panel -->
 	            <div class="row-fluid">
 					<div class="span6">
-						<div class="dataTables_info" id="hidden-table-info_info">Showing
-							1 to 10 of 57 entries</div>
+						<div class="dataTables_info" id="hidden-table-info_info">
+						전체 승인 내역 - ${AppPagingInfo.totalRecord} 건</div>
 					</div>
 					<div class="span6">
+					  
+					 
+						<form method="post" name="AppSearch" class="form-inline" role="form">
+								<select  id="AppsearchCondition" class="form-control">
+										<option value="type_Name" 
+										<c:if test="${param.AppsearchCondition eq 'type_Name'}">
+										selected='selected'
+										</c:if> 
+										> 자원 </option> 
+										<option value="res_Name" 
+										<c:if test="${param.AppsearchCondition eq 'res_Name'}">
+										selected='selected'
+										</c:if> 
+										> 자원명 </option>
+										<option value="mem_Name" 
+										<c:if test="${param.AppsearchCondition eq 'mem_Name'}">
+										selected='selected' 
+										</c:if> 
+										> 사원명 </option>
+								</select>     
+								<div class="form-group">  
+			                  <input type="text" class="form-control" id="AppsearchKeyword" 
+			                  placeholder="내용 입력" value="${param.AppsearchKeyword}">
+			                </div>    
+			               		 <button type="submit" class="btn btn-theme">검색</button> 
+						</form> 
+				
+				
 						<div class="dataTables_paginate paging_bootstrap pagination">
 							<ul>
 							<!-- 이전블럭으로 이동하기 -->
 							<c:if test="${AppPagingInfo.firstPage>1 }">	
 								<li class="prev disabled">
-									<a href="#" onclick="AppPageFunc(${AppPagingInfo.firstPage-1})">← Previous</a>
+									<a href="#" onclick="$.AppPageFunc(${AppPagingInfo.firstPage-1})">← Previous</a>
 								</li>
 							</c:if>
 							<!-- 페이지 번호 추가 -->
@@ -282,26 +345,39 @@ function ReJectPageFunc(cur){
 									<li class="active"><a href='#'>${i}</a></li>
 								</c:if> 
 								<c:if test="${i!=AppPagingInfo.currentPage }">
-									<li><a href="#" onclick="AppPageFunc(${i})">${i}</a></li>
+									<li><a href="#" onclick="$.AppPageFunc(${i})">${i}</a></li>
 								</c:if>
 							</c:forEach>
 							<!--  페이지 번호 끝 -->
 							
 							<!-- 다음 블럭으로 이동하기 -->
 							<c:if test="${AppPagingInfo.lastPage<AppPagingInfo.totalPage }">	
-								<li class="next"><a href="#" onclick="AppPageFunc(${AppPagingInfo.lastPage+1})">Next → </a></li>
+								<li class="next"><a href="#" onclick="$.AppPageFunc(${AppPagingInfo.lastPage+1})">Next → </a></li>
 							</c:if>
-							</ul>
+							</ul> 
 						</div>
 					</div>
 					 
 					<!-- row-fluid -->
-				</div>
+				</div> 
 				 <form action="<c:url value='/useResource/AllUseResList.do'/>" 
 						method="post" name="AllAppSearch" class="form-inline" role="form">
+						<!-- 승인 페이지 처리 -->
 						<input type="hidden" name='AppcurrentPage' value="1">
-						<input type="hidden" name='WaitcurrentPage' value="1">
+						<!-- 승인 검색 처리 -->
+						<input type="hidden" name='AppsearchCondition' > 
+						<input type="hidden" name='AppsearchKeyword' >
+						<!-- 검토 페이지 처리 -->  
+						<input type="hidden" name='WaitcurrentPage' value="1"> 
+						<!-- 검토 검색 처리 --> 
+						<input type="hidden" name='WaitsearchCondition' >
+						<input type="hidden" name='WaitsearchKeyword'>  
+						<!-- 반려 페이지 처리 -->
 						<input type="hidden" name='ReJectcurrentPage' value="1">
+						<!-- 반려 검색 처리 -->
+						<input type="hidden" name='ReJectsearchCondition'>
+						<input type="hidden" name='ReJectsearchKeyword'>
+						
 					</form> 
 				<!-- row-fluid -->
             </div> 
@@ -312,14 +388,14 @@ function ReJectPageFunc(cur){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i>전체 검토 내역</h4>
+                <h4><i class="fas fa-hourglass-half"></i> 전체 검토 내역</h4>
                 <hr>
                 <thead>
                   <tr>
-                    <th><i class="fa fa-bullhorn"></i> 자원</th>
-                    <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
-                    <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
-                    <th><i class="fa fa-bookmark"></i> 신청 사원 </th>
+                    <th><i class="fas fa-archive"></i> 자원</th>
+                    <th class="hidden-phone"><i class="fas fa-info-circle"></i> 자원명</th>
+                    <th><i class="fas fa-user-clock"></i>  신청 기간 </th>
+                    <th><i class="fas fa-user-tag"></i> 신청 사원 </th>
                     <th></th>
                   </tr>
                 </thead>
@@ -343,9 +419,9 @@ function ReJectPageFunc(cur){
 	                      <button class="btn btn-success btn-xs"
 	                      onclick="AppResScd(${waitVo.reservNo })"><i class="fa fa-check"> 승인 </i></button>
 	                      <button class="btn btn-danger btn-xs"
-	                      onclick="rejectResScd(${waitVo.reservNo })"><i class="fa fa-check"> 반려 </i></button>
+	                      onclick="rejectResScd(${waitVo.reservNo })"><i class="fas fa-times"> 반려 </i></button>
 	                    </td>   
-	                  </tr> 
+	                  </tr>  
                   </c:forEach>  
 	              </c:if>
 
@@ -354,19 +430,49 @@ function ReJectPageFunc(cur){
                <!-- /content-panel -->
             <div class="row-fluid">
 					<div class="span6">
-					
-						<div class="dataTables_info" id="hidden-table-info_info">Showing
-							1 to 10 of 57 entries</div>
+						<div class="dataTables_info" id="hidden-table-info_info">
+						전체 검토 내역 - ${WaitPagingInfo.totalRecord} 건</div>
 					</div>
 					
 					<div class="span6">
+					
+					<form method="post" name="WaitSearch" class="form-inline" role="form">
+								<select  id="WaitsearchCondition" class="form-control">
+										<option value="type_Name" 
+										<c:if test="${param.WaitsearchCondition eq 'type_Name'}">
+										selected='selected'
+										</c:if> 
+										> 자원 </option> 
+										<option value="res_Name" 
+										
+										<c:if test="${param.WaitsearchCondition eq 'res_Name'}">
+										selected='selected'
+										</c:if> 
+										 
+										> 자원명 </option>
+										<option value="mem_Name" 
+										  
+										<c:if test="${param.WaitsearchCondition eq 'mem_Name'}">
+										selected='selected' 
+								 		</c:if> 
+										
+										> 사원명 </option>
+								</select>     
+								<div class="form-group">  
+			                  <input type="text" class="form-control" id="WaitsearchKeyword" 
+			                  placeholder="내용 입력" value="${param.WaitsearchKeyword}">
+			                </div>    
+			               		 <button type="submit" class="btn btn-theme">검색</button> 
+						</form> 
+					
+					
 						<div class="dataTables_paginate paging_bootstrap pagination">
 							<ul>
 							
 							<!-- 이전블럭으로 이동하기 -->
 							<c:if test="${WaitPagingInfo.firstPage>1 }">	
 								<li class="prev disabled">
-									<a href="#" onclick="WaitPageFunc(${WaitPagingInfo.firstPage-1})">← Previous</a>
+									<a href="#" onclick="$.WaitPageFunc(${WaitPagingInfo.firstPage-1})">← Previous</a>
 								</li>
 							</c:if>
 							<!-- 페이지 번호 추가 -->
@@ -376,22 +482,20 @@ function ReJectPageFunc(cur){
 									<li class="active"><a href='#'>${i}</a></li>
 								</c:if> 
 								<c:if test="${i!=WaitPagingInfo.currentPage }">
-									<li><a href="#" onclick="WaitPageFunc(${i})">${i}</a></li>
+									<li><a href="#" onclick="$.WaitPageFunc(${i})">${i}</a></li>
 								</c:if>
 							</c:forEach>
 							<!--  페이지 번호 끝 -->
 							 
 							<!-- 다음 블럭으로 이동하기 -->
 							<c:if test="${WaitPagingInfo.lastPage<WaitPagingInfo.totalPage }">	
-								<li class="next"><a href="#" onclick="WaitPageFunc(${WaitPagingInfo.lastPage+1})">Next → </a></li>
+								<li class="next"><a href="#" onclick="$.WaitPageFunc(${WaitPagingInfo.lastPage+1})">Next → </a></li>
 							</c:if>
 								
 							</ul>
 						</div>
 					</div>
 				</div>
-				 
-              
                
             </div>
             <!-- /content-panel -->
@@ -402,14 +506,14 @@ function ReJectPageFunc(cur){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i>전체 반려 내역</h4>
+                <h4><i class="fas fa-calendar-times"></i> 전체 반려 내역</h4>
                 <hr>
                 <thead>
                   <tr>
-                    <th><i class="fa fa-bullhorn"></i> 자원</th>
-                    <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
-                    <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
-                    <th><i class="fa fa-bookmark"></i> 신청 사원 </th>
+                    <th><i class="fas fa-archive"></i> 자원</th>
+                    <th class="hidden-phone"><i class="fas fa-info-circle"></i> 자원명</th>
+                    <th><i class="fas fa-user-clock"></i>  신청 기간 </th>
+                    <th><i class="fas fa-user-tag"></i> 신청 사원 </th>
                     <th></th>
                   </tr>
                 </thead>
@@ -431,7 +535,7 @@ function ReJectPageFunc(cur){
 	                     <td>${refuseVo.memName }</td>
 	                    <td>
 	                      <button class="btn btn-primary btn-xs"
-	                      onclick="WaitResScd(${refuseVo.reservNo })"><i class="fa fa-check"> 재검토 </i></button>
+	                      onclick="WaitResScd(${refuseVo.reservNo })"><i class="fas fa-undo">  재검토 </i></button>
 	                    </td>  
 	                  </tr> 
                   </c:forEach>  
@@ -441,17 +545,43 @@ function ReJectPageFunc(cur){
                <!-- /content-panel -->
             <div class="row-fluid">
 					<div class="span6">
-						<div class="dataTables_info" id="hidden-table-info_info">Showing
-							1 to 10 of 57 entries</div>
+						<div class="dataTables_info" id="hidden-table-info_info">
+						전체 반려 내역 - ${ReFusePagingInfo.totalRecord} 건</div>
 					</div>
 					<div class="span6">
+					
+					<form method="post" name="ReJectSearch" class="form-inline" role="form">
+								<select  id="ReJectsearchCondition" class="form-control">
+										<option value="type_Name" 
+										<c:if test="${param.ReJectsearchCondition eq 'type_Name'}">
+										selected='selected'
+										</c:if> 
+										> 자원 </option> 
+										<option value="res_Name" 
+										<c:if test="${param.ReJectsearchCondition eq 'res_Name'}">
+										selected='selected'
+										</c:if> 
+										> 자원명 </option>
+										<option value="mem_Name" 
+										<c:if test="${param.ReJectsearchCondition eq 'mem_Name'}">
+										selected='selected' 
+										</c:if>  
+										> 사원명 </option>
+								</select>      
+								<div class="form-group">  
+			                  <input type="text" class="form-control" id="ReJectsearchKeyword" 
+			                  placeholder="내용 입력" value="${param.ReJectsearchKeyword}">
+			                </div>   
+			               		 <button type="submit" class="btn btn-theme">검색</button> 
+						</form> 
+					
 						<div class="dataTables_paginate paging_bootstrap pagination">
 							<ul>
 							
 							<!-- 이전블럭으로 이동하기 -->
 							<c:if test="${ReFusePagingInfo.firstPage>1 }">	
 								<li class="prev disabled">
-									<a href="#" onclick="ReJectPageFunc(${ReFusePagingInfo.firstPage-1})">← Previous</a>
+									<a href="#" onclick="$.ReJectPageFunc(${ReFusePagingInfo.firstPage-1})">← Previous</a>
 								</li>
 							</c:if>
 							<!-- 페이지 번호 추가 -->
@@ -461,14 +591,14 @@ function ReJectPageFunc(cur){
 									<li class="active"><a href='#'>${i}</a></li>
 								</c:if> 
 								<c:if test="${i!=ReFusePagingInfo.currentPage }">
-									<li><a href="#" onclick="ReJectPageFunc(${i})">${i}</a></li>
+									<li><a href="#" onclick="$.ReJectPageFunc(${i})">${i}</a></li>
 								</c:if>
 							</c:forEach>
 							<!--  페이지 번호 끝 -->
 							
 							<!-- 다음 블럭으로 이동하기 -->
 							<c:if test="${ReFusePagingInfo.lastPage<ReFusePagingInfo.totalPage }">	
-								<li class="next"><a href="#" onclick="ReJectPageFunc(${ReFusePagingInfo.lastPage+1})">Next → </a></li>
+								<li class="next"><a href="#" onclick="$.ReJectPageFunc(${ReFusePagingInfo.lastPage+1})">Next → </a></li>
 							</c:if>
 							
 							</ul>
@@ -489,13 +619,6 @@ function ReJectPageFunc(cur){
 	<!-- /wrapper -->
 </section>
 
-
-
-<!--
- <div class="task-checkbox">
-         <input type="checkbox" class="list-child" value="" />
-                  <a href="basic_table.html#">Dashio </a>
- </div> -->
 
 
 <%@include file="../../inc/bottom.jsp"%>

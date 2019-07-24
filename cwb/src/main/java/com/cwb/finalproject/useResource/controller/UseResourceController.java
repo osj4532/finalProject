@@ -60,8 +60,38 @@ public class UseResourceController {
 		}
 		
 		logger.info("ajax 이용 내역 myUseList={}",myUseList);
-		pagingInfo.setTotalRecord(totalRecord);
 		return myUseList;
+	}
+	@RequestMapping("/AllUsefindResList.do")
+	@ResponseBody
+	public List<UseResourceVO> AllusefindResList(@ModelAttribute UseResourceVO useResourceVo,
+			HttpSession Session){
+		logger.info("전체 사용 ajax 이용 페이지처리 useResourceVo={}", useResourceVo);
+		
+		
+		PaginationInfo pagingInfo=new PaginationInfo();
+		pagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
+		pagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		pagingInfo.setCurrentPage(useResourceVo.getCurrentPage());
+		
+		useResourceVo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		useResourceVo.setFirstRecordIndex(pagingInfo.getFirstRecordIndex());
+		
+		logger.info("ajax 전체 사용  내역 useResourceVo={}",useResourceVo); 
+		List<UseResourceVO> AllUseList = useResourceService.selectAllUseRes(useResourceVo);
+		int totalRecord=0;
+		totalRecord=useResourceService.selectAllUseRestotalCount(useResourceVo);
+		for (UseResourceVO vo : AllUseList) {
+			if(vo.getUseRegdate().substring(11).equals("00:00:00")
+					&& vo.getReturnRegdate().substring(11).equals("00:00:00")) {
+				vo.setUseRegdate(vo.getUseRegdate().substring(0, 10));
+				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
+			}
+			vo.setTotalCount(totalRecord);
+		}
+		
+		logger.info("ajax 이용 내역 myUseList={}",AllUseList);
+		return AllUseList;
 	}
 	
 	@RequestMapping("/useResList.do")
@@ -135,13 +165,22 @@ public class UseResourceController {
 			@RequestParam(defaultValue = "1") int AppcurrentPage
 			,@RequestParam(defaultValue = "1") int WaitcurrentPage
 			,@RequestParam(defaultValue = "1") int ReJectcurrentPage
-			) {
+			,@RequestParam(required = false) String AppsearchCondition
+			,@RequestParam(required = false) String AppsearchKeyword
+			,@RequestParam(required = false) String WaitsearchCondition
+			,@RequestParam(required = false) String WaitsearchKeyword
+			,@RequestParam(required = false) String ReJectsearchCondition
+			,@RequestParam(required = false) String ReJectsearchKeyword
+			) { 
 		
 		
 		UseResourceVO AppUesResVo = new UseResourceVO();
 		PaginationInfo AppPagingInfo=new PaginationInfo();
 		AppUesResVo.setCurrentPage(AppcurrentPage);
-		 
+		
+		AppUesResVo.setSearchCondition(AppsearchCondition);
+		AppUesResVo.setSearchKeyword(AppsearchKeyword);
+		
 		AppPagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
 		AppPagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
 		AppPagingInfo.setCurrentPage(AppUesResVo.getCurrentPage());
@@ -169,6 +208,9 @@ public class UseResourceController {
 		PaginationInfo WaitPagingInfo=new PaginationInfo();
 		WaitResVo.setCurrentPage(WaitcurrentPage);
 		 
+		WaitResVo.setSearchCondition(WaitsearchCondition);
+		WaitResVo.setSearchKeyword(WaitsearchKeyword);
+		
 		WaitPagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
 		WaitPagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
 		WaitPagingInfo.setCurrentPage(WaitResVo.getCurrentPage());
@@ -195,7 +237,10 @@ public class UseResourceController {
 		UseResourceVO ReFuesResVo = new UseResourceVO();
 		PaginationInfo ReFusePagingInfo=new PaginationInfo();
 		ReFuesResVo.setCurrentPage(ReJectcurrentPage);
-		 
+		
+		ReFuesResVo.setSearchCondition(ReJectsearchCondition);
+		ReFuesResVo.setSearchKeyword(ReJectsearchKeyword);		
+		  
 		ReFusePagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
 		ReFusePagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
 		ReFusePagingInfo.setCurrentPage(ReFuesResVo.getCurrentPage());
