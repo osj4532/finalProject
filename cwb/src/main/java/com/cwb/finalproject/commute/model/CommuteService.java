@@ -5,8 +5,8 @@ import java.util.Map;
 
 public interface CommuteService {
 	//출, 퇴근 체크를 위한 상수
-	public static final int WORK = 1;	//출근
-	public static final int LEAVE = 2;	//퇴근
+	public static final int WORK = 1;			//출근
+	public static final int LEAVE = 2;			//퇴근
 	public static final int BEFORE_WORK = 3;	//출근전
 	
 	
@@ -47,5 +47,5 @@ public interface CommuteService {
 	
 	public List<Map<String, Object>> selectDepAssi();
 	
-	public List<Integer> countDepAssi();
+	public int countDepAssi();
 }
