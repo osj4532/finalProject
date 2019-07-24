@@ -48,6 +48,46 @@ public class UseResourceDAOMybatis implements UseResourceDAO{
 		return sqlSession.selectOne(namespace+"selectUseRestotalCount",useResourceVo);
 	}
 
+	@Override
+	public List<UseResourceVO> selectAllUseRes(UseResourceVO useResourceVo) {
+		return sqlSession.selectList(namespace+"selectAllUseRes", useResourceVo);
+	}
+
+	@Override
+	public int selectAllUseRestotalCount(UseResourceVO useResourceVo) {
+		return sqlSession.selectOne(namespace+"selectAllUseRestotalCount",useResourceVo);
+	}
+
+	@Override
+	public List<UseResourceVO> selectAllNotUseRes(UseResourceVO useResourceVo) {
+		return sqlSession.selectList(namespace+"selectAllNotUseRes",useResourceVo);
+	}
+ 
+	@Override
+	public List<UseResourceVO> selectAllNotWaitRes(UseResourceVO useResourceVo) {
+		return sqlSession.selectList(namespace+"selectAllNotWaitRes",useResourceVo);
+	}
+
+	@Override
+	public List<UseResourceVO> selectAllNotRefuseRes(UseResourceVO useResourceVo) {
+		return sqlSession.selectList(namespace+"selectAllNotRefuseRes",useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotUseRestotalCount(UseResourceVO useResourceVo) {
+		return sqlSession.selectOne(namespace+"selectAllNotUseRestotalCount", useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotWaitRestotalCount(UseResourceVO useResourceVo) {
+		return sqlSession.selectOne(namespace+"selectAllNotWaitRestotalCount", useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo) {
+		return sqlSession.selectOne(namespace+"selectAllNotRefuesRestotalCount", useResourceVo);
+	}
+
 	
 	
 }

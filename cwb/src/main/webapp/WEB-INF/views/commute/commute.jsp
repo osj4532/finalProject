@@ -120,6 +120,14 @@
 				if(map['COMOUTDATE'] != null){
 					var d2 = moment(map['COMOUTDATE']).format('YYYY-MM-DD HH:mm:ss');
 				}
+				var status = null;
+				if(map['COMSTATUS'] == 'Y'){
+					status = "근무중";
+				}else if(map['COMSTATUS'] == 'N'){
+					status = "퇴근";
+				}else{
+					status = "출근전";
+				}
 				
 				var trEl = $('<tr></tr>');
 				var tdEl1 = $('<td></td>').html(map['MEMNO']);
@@ -128,7 +136,7 @@
 				var tdEl4 = $('<td></td>').html(map['POSNAME']);
 				var tdEl5 = $('<td></td>').html(d);
 				var tdEl6 = $('<td></td>').html(d2);
-				var tdEl7 = $('<td></td>').html(map['COMSTATUS']);
+				var tdEl7 = $('<td></td>').html(status);
 				
 				trEl.append(tdEl1);
 				trEl.append(tdEl2);
@@ -240,8 +248,8 @@
 				var map = res[i];
 				
 				var trEl = $('<tr></tr>');
-				var tdEl1 = $('<td></td>').html(map['']);
-				var tdEl2 = $('<td></td>').html(map['']);
+				var tdEl1 = $('<td></td>').html(map['COUNT']);
+				var tdEl2 = $('<td></td>').html(map['DEPTNAME']);
 
 				trEl.append(tdEl1);
 				trEl.append(tdEl2);

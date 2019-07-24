@@ -4,6 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 public interface CommuteService {
+	//출, 퇴근 체크를 위한 상수
+	public static final int WORK = 1;	//출근
+	public static final int LEAVE = 2;	//퇴근
+	public static final int BEFORE_WORK = 3;	//출근전
+	
+	
+	
+	
 	public List<Map<String, Object>> selectAll(Map<String, Object> map);
 	
 	public List<Map<String, Object>> selectIndiv(Map<String, Object> map);
@@ -11,7 +19,7 @@ public interface CommuteService {
 	public List<Map<String, Object>> selectDep(Map<String, Object> map);
 	
 	public String selectByMemNo(int memNo);
-	public String selectByMemNo2(int memNo);
+	public String selectMemNo2(int memNo);
 	
 	public List<Map<String, Object>> selectIndivHoly(Map<String, Object> map);
 	
@@ -34,5 +42,10 @@ public interface CommuteService {
 	public int selectComNo(int memNo);
 	
 	public int updateComout(int comNo);
+	
 	public int updateComin(int comNo);
+	
+	public List<Map<String, Object>> selectDepAssi();
+	
+	public List<Integer> countDepAssi();
 }

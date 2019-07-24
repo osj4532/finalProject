@@ -44,7 +44,47 @@ public class UseResourceServiceImpl implements UseResourceService{
 	public int selectUseRestotalCount(UseResourceVO useResourceVo) {
 		return useResourceDao.selectUseRestotalCount(useResourceVo);
 	}
-	
+
+	@Override
+	public List<UseResourceVO> selectAllUseRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllUseRes(useResourceVo);
+	}
+
+	@Override
+	public int selectAllUseRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllUseRestotalCount(useResourceVo);
+	}
+
+	@Override
+	public List<UseResourceVO> selectAllNotUseRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotUseRes(useResourceVo);
+	}
+
+	@Override
+	public List<UseResourceVO> selectAllNotWaitRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotWaitRes(useResourceVo);
+	}
+
+	@Override
+	public List<UseResourceVO> selectAllNotRefuseRes(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotRefuseRes(useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotUseRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotUseRestotalCount(useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotWaitRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotWaitRestotalCount(useResourceVo);
+	}
+
+	@Override
+	public int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo) {
+		return useResourceDao.selectAllNotRefuesRestotalCount(useResourceVo);
+	}
+	 
 	
 	
 }

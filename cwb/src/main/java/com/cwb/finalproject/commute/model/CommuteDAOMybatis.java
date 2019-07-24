@@ -36,8 +36,8 @@ public class CommuteDAOMybatis implements CommuteDAO{
 		return sqlSession.selectOne(namespace+"selectByMemNo", memNo);
 	}
 	@Override
-	public String selectByMemNo2(int memNo) {
-		return sqlSession.selectOne(namespace+"selectByMemNo", memNo);
+	public String selectMemNo2(int memNo) {
+		return sqlSession.selectOne(namespace+"selectMemNo2", memNo);
 	}
 
 	@Override
@@ -97,6 +97,16 @@ public class CommuteDAOMybatis implements CommuteDAO{
 	@Override
 	public int updateComin(int comNo) {
 		return sqlSession.update(namespace+"updateComin", comNo);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectDepAssi() {
+		return sqlSession.selectList(namespace+"selectDepAssi");
+	}
+
+	@Override
+	public List<Integer> countDepAssi() {
+		return sqlSession.selectList(namespace+"countDepAssi");
 	}
 
 }

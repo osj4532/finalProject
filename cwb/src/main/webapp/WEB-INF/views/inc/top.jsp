@@ -246,21 +246,18 @@
           <li><a class="logout" href="<c:url value='/logout/logout.do'/>">Logout</a></li>
         </ul>
       </div>
-      <c:if test="${empty sessionScope.cominDate}">
 	      <div class="top-menu">
 	      	<ul class="nav pull-right top-menu">
-	          <li><a class="attendance" href="<c:url value='/commute/inout.do?status=in'/>">출근</a></li>
+	          <li>
+		          <c:if test="${sessionScope.state == 3}">
+		          	<a class="attendance" href="<c:url value='/commute/inout.do?status=in'/>">출근</a>
+		          </c:if>
+				  <c:if test="${sessionScope.state == 1 or sessionScope.state == 2 }">					          
+			      	<a class="leaveWork" href="<c:url value='/commute/inout.do?status=out'/>">퇴근</a>
+		          </c:if>
+	          </li>
 	        </ul>
 	      </div>
-      </c:if>
-      <c:if test="${!empty sessionScope.cominDate}">
-	      <div class="top-menu">
-	      	<ul class="nav pull-right top-menu">
-	          <li><a class="leaveWork" href="<c:url value='/commute/inout.do?status=out'/>">퇴근</a></li>
-	        </ul>
-	      </div>
-      </c:if>
-      
     </header>
     <!--header end-->
     <!-- **********************************************************************************************************************************************************
@@ -327,6 +324,9 @@
             <ul class="sub">
               <li><a href="<c:url value="/resources/list.do"/>">자원</a></li>
               <li><a href="<c:url value="/useResource/useResList.do"/>">자원 내역</a></li>
+        <c:if test="${sessionScope.ranksNo>=2 }">
+              <li><a href="<c:url value="/useResource/AllUseResList.do"/>">전체 자원 내역</a></li>
+        </c:if>   
             </ul>
           </li>
         </ul>

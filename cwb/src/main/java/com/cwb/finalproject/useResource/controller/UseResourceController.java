@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cwb.finalproject.common.PaginationInfo;
 import com.cwb.finalproject.common.WebUtility;
+import com.cwb.finalproject.resScheduler.model.ResSchedulerService;
 import com.cwb.finalproject.useResource.model.UseResourceService;
 import com.cwb.finalproject.useResource.model.UseResourceVO;
 
@@ -25,6 +26,8 @@ public class UseResourceController {
 	private Logger logger = LoggerFactory.getLogger(UseResourceController.class);
 	
 	@Autowired UseResourceService useResourceService;
+	@Autowired ResSchedulerService resSchedulerService;
+	
 	
 	@RequestMapping("/usefindResList.do")
 	@ResponseBody
@@ -36,7 +39,7 @@ public class UseResourceController {
 		
 		
 		PaginationInfo pagingInfo=new PaginationInfo();
-		pagingInfo.setBlockSize(5);
+		pagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
 		pagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
 		pagingInfo.setCurrentPage(useResourceVo.getCurrentPage());
 		
@@ -62,10 +65,12 @@ public class UseResourceController {
 	}
 	
 	@RequestMapping("/useResList.do")
-	public String useResList(@ModelAttribute UseResourceVO useResourceVo,HttpSession Session,Model model) {
+	public String useResList(HttpSession Session,Model model) {
 		int memNo=(Integer)Session.getAttribute("memNo");
 		logger.info("유저 자원 사용 내역 보여주기 memNO={}", memNo);
-		useResourceVo.setMemNo(memNo);
+		/*
+		  useResourceVo.setMemNo(memNo);
+		 
 		
 		PaginationInfo pagingInfo=new PaginationInfo();
 		pagingInfo.setBlockSize(WebUtility.BLOCK_SIZE);
@@ -88,7 +93,7 @@ public class UseResourceController {
 		int totalRecord=0;
 		totalRecord=useResourceService.selectUseRestotalCount(useResourceVo);
 		
-		pagingInfo.setTotalRecord(totalRecord);
+		pagingInfo.setTotalRecord(totalRecord);*/
 		
 		List<UseResourceVO> canList = useResourceService.selectMyNotUseRes(memNo);
 		for (UseResourceVO vo : canList) {
@@ -106,7 +111,7 @@ public class UseResourceController {
 				vo.setUseRegdate(vo.getUseRegdate().substring(0, 10));
 				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
 			}
-		}
+		}  
 		
 		List<UseResourceVO> refuseList = useResourceService.selectMyNotRefuseRes(memNo);
 		for (UseResourceVO vo : refuseList) {
@@ -120,11 +125,112 @@ public class UseResourceController {
 		model.addAttribute("waitList", waitList);
 		model.addAttribute("refuseList", refuseList);
 		model.addAttribute("canList", canList);
-		model.addAttribute("myUseList", myUseList);
-		model.addAttribute("pagingInfo", pagingInfo);
+		//model.addAttribute("myUseList", myUseList); 
+		//model.addAttribute("pagingInfo", pagingInfo);
 		
 		return "resources/useRes/uesResList";
 	}
+	@RequestMapping("/AllUseResList.do")
+	public String AlluseResList(Model model,
+			@RequestParam(defaultValue = "1") int AppcurrentPage
+			,@RequestParam(defaultValue = "1") int WaitcurrentPage
+			,@RequestParam(defaultValue = "1") int ReJectcurrentPage
+			) {
+		
+		
+		UseResourceVO AppUesResVo = new UseResourceVO();
+		PaginationInfo AppPagingInfo=new PaginationInfo();
+		AppUesResVo.setCurrentPage(AppcurrentPage);
+		 
+		AppPagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
+		AppPagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		AppPagingInfo.setCurrentPage(AppUesResVo.getCurrentPage());
+		
+		AppUesResVo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		AppUesResVo.setFirstRecordIndex(AppPagingInfo.getFirstRecordIndex());
+		 
+		logger.info("전체  자원 사용 내역 보여주기 AppUesResVo={}",AppUesResVo);
+		List<UseResourceVO> AppList = useResourceService.selectAllNotUseRes(AppUesResVo);
+		for (UseResourceVO vo : AppList) {
+			if(vo.getUseRegdate().substring(11).equals("00:00:00")
+					&& vo.getReturnRegdate().substring(11).equals("00:00:00")) {
+				vo.setUseRegdate(vo.getUseRegdate().substring(0, 10));
+				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
+			}
+		} 
+		logger.info("전체  자원 사용 내역 보여주기 AppList={}",AppList);
+		int ApptotalRecord=0;
+		ApptotalRecord=useResourceService.selectAllNotUseRestotalCount(AppUesResVo);
+		
+		AppPagingInfo.setTotalRecord(ApptotalRecord);
+		
+		
+		UseResourceVO WaitResVo = new UseResourceVO();
+		PaginationInfo WaitPagingInfo=new PaginationInfo();
+		WaitResVo.setCurrentPage(WaitcurrentPage);
+		 
+		WaitPagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
+		WaitPagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		WaitPagingInfo.setCurrentPage(WaitResVo.getCurrentPage());
+		
+		WaitResVo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		WaitResVo.setFirstRecordIndex(WaitPagingInfo.getFirstRecordIndex());
+		 
+		logger.info("전체 자원 검토 내역 보여주기 WaitResVo={}",WaitResVo);
+		List<UseResourceVO> waitList = useResourceService.selectAllNotWaitRes(WaitResVo);
+		for (UseResourceVO vo : waitList) {
+			if(vo.getUseRegdate().substring(11).equals("00:00:00")
+					&& vo.getReturnRegdate().substring(11).equals("00:00:00")) {
+				vo.setUseRegdate(vo.getUseRegdate().substring(0, 10));
+				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
+			}
+		}
+		logger.info("전체  자원 검토 내역 보여주기 waitList={}",waitList);
+		int WaittotalRecord=0;
+		WaittotalRecord=useResourceService.selectAllNotWaitRestotalCount(WaitResVo);
+		
+		WaitPagingInfo.setTotalRecord(WaittotalRecord);
+		
+		
+		UseResourceVO ReFuesResVo = new UseResourceVO();
+		PaginationInfo ReFusePagingInfo=new PaginationInfo();
+		ReFuesResVo.setCurrentPage(ReJectcurrentPage);
+		 
+		ReFusePagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
+		ReFusePagingInfo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		ReFusePagingInfo.setCurrentPage(ReFuesResVo.getCurrentPage());
+		
+		ReFuesResVo.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		ReFuesResVo.setFirstRecordIndex(ReFusePagingInfo.getFirstRecordIndex());
+		
+		logger.info("전체 자원 반려 내역 보여주기 ReFuesResVo={}",ReFuesResVo);
+		List<UseResourceVO> refuseList = useResourceService.selectAllNotRefuseRes(ReFuesResVo);
+		for (UseResourceVO vo : refuseList) {
+			if(vo.getUseRegdate().substring(11).equals("00:00:00")
+					&& vo.getReturnRegdate().substring(11).equals("00:00:00")) {
+				vo.setUseRegdate(vo.getUseRegdate().substring(0, 10));
+				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
+			}
+		}
+		
+		logger.info("전체  자원 반려 내역 보여주기 refuseList={}",refuseList);
+		int ReFuestotalRecord=0;
+		ReFuestotalRecord=useResourceService.selectAllNotRefuesRestotalCount(ReFuesResVo);
+		
+		ReFusePagingInfo.setTotalRecord(ReFuestotalRecord);
+		
+		
+		
+		model.addAttribute("waitList", waitList);
+		model.addAttribute("refuseList", refuseList);
+		model.addAttribute("AppList", AppList);
+		model.addAttribute("AppPagingInfo", AppPagingInfo);
+		model.addAttribute("WaitPagingInfo", WaitPagingInfo);
+		model.addAttribute("ReFusePagingInfo", ReFusePagingInfo);
+		
+		return "resources/useRes/AllUesResList";
+	}
+	
 	
 	@RequestMapping("/delResSchedul.do")
 	public String delResSechedul(@RequestParam int reservNo,
@@ -160,6 +266,60 @@ public class UseResourceController {
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
 		 
+		return "common/message";
+	}
+	@RequestMapping("/WaitResSchedule.do")
+	public String WaitResSchedul(@RequestParam int reservNo,
+			Model model){
+		logger.info("자원 재신청 reservNo={}",reservNo);
+		 
+		int cnt = useResourceService.updateUseResSchedule(reservNo);
+		
+		String msg="",url="/useResource/AllUseResList.do";
+		if(cnt>0) {
+			msg="신청 재신청 완료"; 
+		}else {
+			msg="신청 재신청 실패";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	@RequestMapping("/rejectResSchedule.do")
+	public String rejectResSchedule(@RequestParam int reservNo,
+			Model model){
+		logger.info("자원 반려 reservNo={}",reservNo);
+		
+		int cnt = resSchedulerService.updateResScdRefuse(reservNo);
+		
+		String msg="",url="/useResource/AllUseResList.do";
+		if(cnt>0) {
+			msg="신청 반려 완료";
+		}else {
+			msg="신청 반려 실패";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	@RequestMapping("/AppResSchedule.do")
+	public String AppResSchedule(@RequestParam int reservNo,
+			Model model){
+		logger.info("자원 승인 reservNo={}",reservNo);
+		
+		int cnt = resSchedulerService.updateResScdApprove(reservNo);
+		
+		String msg="",url="/useResource/AllUseResList.do";
+		if(cnt>0) {
+			msg="신청 승인 완료";
+		}else {
+			msg="신청 승인 실패";
+		}
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
 		return "common/message";
 	}
 	

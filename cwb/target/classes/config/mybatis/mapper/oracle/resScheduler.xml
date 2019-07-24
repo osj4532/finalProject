@@ -201,6 +201,138 @@ values(#{reservNo},#{memNo},#{resNo},
 		set appr_flag='W'
 		where reserv_no = #{reservNo}
 	</update>
+	
+	<!-- 전체 자원 내역 보여주는 매핑구문들  -->
+	<select id="selectAllUseRes" parameterType="useResourceVO" resultType="useResourceVO"> 
+	select *
+		from
+		(
+		    select A.*, rownum as RNUM 
+		    from
+		    (
+		        select * from ResUseListView		
+				<where>
+						<if test="searchKeyword != null and searchKeyword != ''">
+							${searchCondition} like '%' || #{searchKeyword} || '%'
+						</if> 
+						and appr_flag='Y'
+						<![CDATA[	and use_regdate <= sysdate ]]>
+				</where>
+				order by res_no,use_regdate 
+		    ) A
+		)
+		<![CDATA[ where RNUM>#{firstRecordIndex}  
+		and RNUM<=#{firstRecordIndex} + #{recordCountPerPage}]]>
+	</select>
+	<select id="selectAllUseRestotalCount" parameterType="useResourceVO" resultType="int">
+		select count(*) from ResUseListView		
+		<where>
+				<if test="searchKeyword != null and searchKeyword != ''">
+					${searchCondition} like '%' || #{searchKeyword} || '%'
+				</if>
+				 and appr_flag='Y'
+				<![CDATA[	and use_regdate <= sysdate ]]>
+		</where>
+	</select>
+	
+	<select id="selectAllNotUseRes"  parameterType="useResourceVO" resultType="useResourceVO">
+		select *
+		from
+		(
+		    select A.*, rownum as RNUM 
+		    from
+		    (
+		        select * from ResUseListView		
+				<where>
+						<if test="searchKeyword != null and searchKeyword != ''">
+							${searchCondition} like '%' || #{searchKeyword} || '%'
+						</if> 
+						and appr_flag='Y'
+				<![CDATA[ and use_regdate > sysdate]]>
+				</where>
+				order by res_no,use_regdate 
+		    ) A
+		)
+		<![CDATA[ where RNUM>#{firstRecordIndex}  
+		and RNUM<=#{firstRecordIndex} + #{recordCountPerPage}]]>
+	</select>
+	
+	<select id="selectAllNotUseRestotalCount" parameterType="useResourceVO" resultType="int">
+		select count(*) from ResUseListView		
+		<where>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				${searchCondition} like '%' || #{searchKeyword} || '%'
+			</if> 
+			and appr_flag='Y'
+			and use_regdate > sysdate
+		</where>
+	</select>
+	
+	<select id="selectAllNotWaitRes"  parameterType="useResourceVO" resultType="useResourceVO">
+		select *
+		from
+		(
+		    select A.*, rownum as RNUM 
+		    from
+		    (
+		        select * from ResUseListView		
+				<where>
+						<if test="searchKeyword != null and searchKeyword != ''">
+							${searchCondition} like '%' || #{searchKeyword} || '%'
+						</if> 
+						and appr_flag='W'
+				<![CDATA[ and use_regdate > sysdate]]>
+				</where>
+				order by res_no,use_regdate 
+		    ) A
+		)
+		<![CDATA[ where RNUM>#{firstRecordIndex}  
+		and RNUM<=#{firstRecordIndex} + #{recordCountPerPage}]]>
+	</select>
+	<select id="selectAllNotWaitRestotalCount" parameterType="useResourceVO" resultType="int">
+		select count(*) from ResUseListView		
+		<where>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				${searchCondition} like '%' || #{searchKeyword} || '%'
+			</if> 
+			and appr_flag='W'
+			and use_regdate > sysdate
+		</where>
+	</select>
+	
+	
+	<select id="selectAllNotRefuseRes"  parameterType="useResourceVO" resultType="useResourceVO">
+		select *
+		from
+		(
+		    select A.*, rownum as RNUM 
+		    from
+		    (
+		        select * from ResUseListView		
+				<where>
+						<if test="searchKeyword != null and searchKeyword != ''">
+							${searchCondition} like '%' || #{searchKeyword} || '%'
+						</if> 
+						and appr_flag='N'
+				<![CDATA[ and use_regdate > sysdate]]>
+				</where>
+				order by res_no,use_regdate 
+		    ) A
+		)
+		<![CDATA[ where RNUM>#{firstRecordIndex}  
+		and RNUM<=#{firstRecordIndex} + #{recordCountPerPage}]]>
+	</select>
+	<select id="selectAllNotRefuesRestotalCount" parameterType="useResourceVO" resultType="int">
+		select count(*) from ResUseListView		
+		<where>
+			<if test="searchKeyword != null and searchKeyword != ''">
+				${searchCondition} like '%' || #{searchKeyword} || '%'
+			</if> 
+			and appr_flag='N'
+			and use_regdate > sysdate
+		</where>
+	</select>
+	
 </mapper>
 
 
