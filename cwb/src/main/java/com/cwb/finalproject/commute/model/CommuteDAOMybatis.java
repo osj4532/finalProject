@@ -105,8 +105,8 @@ public class CommuteDAOMybatis implements CommuteDAO{
 	}
 
 	@Override
-	public List<Integer> countDepAssi() {
-		return sqlSession.selectList(namespace+"countDepAssi");
+	public int countDepAssi() {
+		return sqlSession.selectOne(namespace+"countDepAssi");
 	}
 
 }

@@ -47,6 +47,7 @@ public class CommuteController {
 		String memId = (String) session.getAttribute("memId");
 		int memNo = (Integer) session.getAttribute("memNo");
 		
+		
 		logger.info("유저 아이디 파라미터 memId={}, menu={}", memId, menu);
 		
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -85,7 +86,7 @@ public class CommuteController {
 			map.put("deptName", deptName);
 			list = commuteService.selectDep(map);
 			logger.info("부서이름으로 조회 결과 list.size={}", list.size());
-
+			
 			totalRecord = commuteService.countSelectDep(deptName);
 			logger.info("부서이름으로 조회 결과 갯수 totalRecord={}", totalRecord);
 
@@ -107,7 +108,7 @@ public class CommuteController {
 			list = commuteService.selectDepAssi();
 			logger.info("부서별 근태 조회 결과 list.size={}", list.size());
 			
-			totalRecord = 1;
+			totalRecord = commuteService.countDepAssi();
 			logger.info("부서별 근태 조회 결과 갯수 totalRecord={}", totalRecord);
 		}
 		
@@ -144,7 +145,8 @@ public class CommuteController {
 			}
 			
 		}else if(status.equals("out")) {
-			if(state == 1) {
+			logger.info("state체크 = {}", state);
+			if(state == 1 || state == 2) {
 				comNo = commuteService.selectComNo(memNo);
 				
 				cnt = commuteService.updateComout(comNo);
