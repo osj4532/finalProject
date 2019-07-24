@@ -278,9 +278,9 @@
               <span>주소록</span>
               </a>
             <ul class="sub">
-              <li><a href="<c:url value="/address/privateAddrList.do"/>">개인주소록</a></li>
-              <li><a href="<c:url value="/address/emailList.do"/>">보낸 메일함</a></li>
-              <li><a href="#">쪽지 함</a></li>
+              <li><a href="<c:url value="/address/privateAddrList.do"/>"><i class="fas fa-address-card"></i>개인주소록</a></li>
+              <li><a href="<c:url value="/address/emailList.do"/>"><i class="far fa-paper-plane"></i>보낸 메일함</a></li>
+              <li><a href="<c:url value="/message/msgList.do"/>"><i class="fas fa-comments"></i>쪽지 함</a></li>
             </ul>
           </li>
           
@@ -290,10 +290,10 @@
               <span>전자결재</span>
               </a>
             <ul class="sub">
-              <li><a href="<c:url value="/sign/signReg.do"/>">결재사인관리</a></li>
-              <li><a href="<c:url value="/document/docSet.do"/>">문서관리</a></li>
-              <li><a href="<c:url value="/document/docSel.do"/>">문서작성</a></li>
-              <li><a href="<c:url value="/document/docList.do"/>">문서함</a></li>
+              <li><a href="<c:url value="/sign/signReg.do"/>"><i class="fas fa-file-signature"></i>결재사인관리</a></li>
+              <li><a href="<c:url value="/document/docSet.do"/>"><i class="fas fa-copy"></i>문서관리</a></li>
+              <li><a href="<c:url value="/document/docSel.do"/>"><i class="fas fa-edit"></i>문서작성</a></li>
+              <li><a href="<c:url value="/document/docList.do"/>"><i class="fas fa-archive"></i>문서함</a></li>
             </ul>
           </li>
           <li class="sub-menu">
