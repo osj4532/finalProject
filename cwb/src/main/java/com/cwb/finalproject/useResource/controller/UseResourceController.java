@@ -162,7 +162,8 @@ public class UseResourceController {
 	}
 	@RequestMapping("/AllUseResList.do")
 	public String AlluseResList(Model model,
-			@RequestParam(defaultValue = "1") int AppcurrentPage
+			@RequestParam(defaultValue = "1") int scrollTop 
+			,@RequestParam(defaultValue = "1") int AppcurrentPage
 			,@RequestParam(defaultValue = "1") int WaitcurrentPage
 			,@RequestParam(defaultValue = "1") int ReJectcurrentPage
 			,@RequestParam(required = false) String AppsearchCondition

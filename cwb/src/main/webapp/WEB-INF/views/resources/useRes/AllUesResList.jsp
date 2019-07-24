@@ -12,6 +12,10 @@ var searchName='';
 
 $(function(){
 	$("#AllRes").hide();
+	<c:if test="${!empty param.scrollTop}"> 
+		$(window).scrollTop(${param.scrollTop});
+	</c:if>
+	 
 	$.useRes(1);
 	$("#AllResView").click(function(){
 		$("#AllRes").toggle(500);   
@@ -118,9 +122,9 @@ function makeList(res){
 $.pageSetting=function(){ 
 	
 	if(searchKeyword!=''){ 
-		$("#hidden-table-info_info").append(searchName+" 검색 : "+searchKeyword+"<br>"); 
+		$("#hidden-table-info_info").append(" "+searchName+" 검색 : "+searchKeyword+"<br>"); 
 	}   
-	$("#hidden-table-info_info").append("전체 사용내역 - "+
+	$("#hidden-table-info_info").append(" 전체 사용내역 - "+
 			totalRecord+"건 ");  
 	
 	if(firstPage>1){     
@@ -172,6 +176,10 @@ $.AppPageFunc=function(cur){
 	document.AllAppSearch.AppcurrentPage.value=cur;
 	$('input[name=AppsearchCondition]').val($('#AppsearchCondition option:selected').val());
 	$('input[name=AppsearchKeyword]').val($('#AppsearchKeyword').val()); 
+	
+	var scroll=$(window).scrollTop(); 
+	$('input[name=scrollTop]').val(scroll);
+	
 	document.AllAppSearch.submit(); 
 }
 
@@ -180,6 +188,10 @@ $.WaitPageFunc=function(cur){
 	document.AllAppSearch.WaitcurrentPage.value=cur;
 	$('input[name=WaitsearchCondition]').val($('#WaitsearchCondition option:selected').val());
 	$('input[name=WaitsearchKeyword]').val($('#WaitsearchKeyword').val());
+	
+	var scroll=$(window).scrollTop(); 
+	$('input[name=scrollTop]').val(scroll);
+	
 	document.AllAppSearch.submit(); 
 }
   
@@ -187,6 +199,10 @@ $.ReJectPageFunc=function(cur){
 	document.AllAppSearch.ReJectcurrentPage.value=cur;
 	$('input[name=ReJectsearchCondition]').val($('#ReJectsearchCondition option:selected').val());
 	$('input[name=ReJectsearchKeyword]').val($('#ReJectsearchKeyword').val());
+		
+	var scroll=$(window).scrollTop(); 
+	$('input[name=scrollTop]').val(scroll);
+	 
 	document.AllAppSearch.submit();
 } 
 
@@ -225,14 +241,14 @@ $.ReJectPageFunc=function(cur){
             <div class='dataTables_info'id='hidden-table-info_info'>
             </div>
             </div>
-				<div class="span6">
+				<div class="span6">  
 				<form method="post" name="AlluseSearch" class="form-inline" role="form">
-						<input type="hidden" name='currentPage' value="1">
-						<select name="searchCondition" id="searchCondition" class="form-control">
+						<input type="hidden" name='currentPage' value="1"> 
+						<select name="searchCondition" id="searchCondition" class="form-control ">
 								<option value="type_Name"> 자원 </option>
 								<option value="res_Name"> 자원명 </option>
 								<option value="mem_Name"> 사원명 </option>
-						</select>     
+						</select>      
 						<div class="form-group"> 
 	                  <label class="sr-only" for="AllResKeyword">내용</label>
 	                  <input type="text" class="form-control" name="searchKeyword" 
@@ -377,6 +393,8 @@ $.ReJectPageFunc=function(cur){
 						<!-- 반려 검색 처리 -->
 						<input type="hidden" name='ReJectsearchCondition'>
 						<input type="hidden" name='ReJectsearchKeyword'>
+
+						<input type="hidden" name='scrollTop'>
 						
 					</form> 
 				<!-- row-fluid -->
