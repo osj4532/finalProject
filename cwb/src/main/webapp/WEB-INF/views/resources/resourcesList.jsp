@@ -68,14 +68,21 @@
 <section id="main-content">
 	<section class="wrapper">
 		<h3>
-			<i class="fa fa-angle-right"></i> 자원 관리 
+			<c:if test="${sessionScope.ranksNo>=2 }">
+				<i class="fas fa-boxes mt"></i>자원 관리
+			</c:if> 
+			<c:if test="${sessionScope.ranksNo<2 }">			
+				<i class="fas fa-inbox mt"></i>  자원 신청 
+			 </c:if>
+			<c:if test="${sessionScope.ranksNo>=2 }">
 			<button type="button" id="findPlus" class="btn btn-round btn-info">자원 리스트추가</button>
+			</c:if> 
 		</h3>
 					<!-- 자원 추가버튼 hide -->
 		
 		 <div class="row mt" id="resplus">
           <div class="col-lg-12">
-            <h4><i class="fa fa-angle-right"></i>자원</h4>
+            <h4><i class="fas fa-th-list"></i> 자원 리스트</h4>
             <div class="form-panel">
             
 					<!-- 자원 리스트 -->
@@ -84,12 +91,11 @@
                   <tbody>
                     <c:forEach  var="RTlist" items="${ResTypelist }">
                     <tr>
-                      <td>
-                        <span class="check"><input type="checkbox" class="checked"></span>
+                      <td> 
                         <b>${RTlist.typeName }</b></span>
                         <button class="close" aria-hidden="true" type="button" onclick="delRes(${RTlist.typeNo})">×</button>
                       </td>
-                    </tr>
+                    </tr> 
                       </c:forEach>
                   </tbody>
                 </table>
@@ -150,23 +156,24 @@
           <div class="col-md-12">
             <div class="content-panel" style="border-radius: 15px;"> 
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-tasks"></i> ${ResTypelist[i].typeName } 
-                
+                <h4><i class="fas fa-box"> </i>  ${ResTypelist[i].typeName } 
+                <c:if test="${sessionScope.ranksNo>=2 }">
                  <button type="button" class="btn btn-round btn-success"
                   onclick="writeRes(${ResTypelist[i].typeNo})">
                   ${ResTypelist[i].typeName } 자원 추가</button>
+                 </c:if> 
                 </h4>
                 <hr> 
                 <thead>
-                  <tr>
-                    <th><i class="fa fa-bullhorn"></i> 자원명</th>
+                  <tr>  
+                    <th width="10%"><i class="fas fa-archive"></i> 자원명</th>
                     <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원 정보</th>
-                    <th><i class="fa fa-bookmark"></i> 자원 위치</th>
-                    <th><i class=" fa fa-edit"></i> 상태 </th>
-                    <th></th>
+                    <th width="20%" ><i class="fas fa-location-arrow"></i> 자원 위치</th>
+                    <th width="10%"><i class="fas fa-globe"></i> 상태 </th>
+                    <th width="30%"></th>   
                   </tr>
                 </thead>
-                <tbody>
+                <tbody> 
                   <c:if test="${!empty ResList[i] }">
                 	<c:forEach var="j" begin="0" end="${fn:length(ResList[i])-1 }" >  
                 	<!--자원 반복 -->
@@ -218,12 +225,18 @@
                     </script>
 							<span id="${ResList[i][j].resNo}" class="badge"></span>
 					 		<!-- <span class="badge bg-theme">사용가능</span> -->
-                    <td>  
-                      <button class="btn btn-success btn-xs" onclick="resScheduler(${ResList[i][j].resNo})"><i class="far fa-calendar-alt"></i></button>
+                    <td  align="center">   
+                      <button class="btn btn-success btn-xs" onclick="resScheduler(${ResList[i][j].resNo})">
+                      <i class="far fa-calendar-alt"></i> 자원 신청</button>
+                      
+                      <c:if test="${sessionScope.ranksNo>=2 }">
                       <button class="btn btn-primary btn-xs" onclick="editRes(${ResList[i][j].resNo})">
-                      <i class="fas fa-edit"></i></button>
+                      <i class="fas fa-edit"></i> 자원 수정</button>
+                      
                       <button class="btn btn-danger btn-xs" onclick="deleteRes(${ResList[i][j].resNo})">
-                      <i class="fas fa-trash-alt"></i></button>
+                      <i class="fas fa-trash-alt"></i> 자원 삭제</button>
+                      </c:if>
+                      
                     </td> 
                   </tr> 
                   <!--자원 반복 -->

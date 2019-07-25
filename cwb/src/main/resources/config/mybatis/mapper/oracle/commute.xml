@@ -182,7 +182,7 @@
 		    from
 		    (
 		        select count(*) as count, deptname from commuteview
-				where comindate between to_char(sysdate, 'yyyy-MM-dd') and sysdate+1
+				where comindate between to_char(sysdate, 'yyyy-mm-dd') and sysdate+1
 				group by deptname
 			)A
 		)
@@ -192,9 +192,8 @@
 	</select>
 	
 	<select id="countDepAssi" resultType="int">
-		select count(*) from commuteview
-		where comindate between to_char(sysdate, 'yyyy-MM-dd') and sysdate+1
-		group by deptname
+		select count(*)
+		from department
 	</select>
 
 	<!-- <insert id="insertComin" parameterType="CommuteVo">

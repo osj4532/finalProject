@@ -10,4 +10,5 @@ public interface SchedulerDAO {
 	int updateUserDayScd(SchedulerVO schedulerVo);
 	int updateUserScd(SchedulerVO schedulerVo);
 	int updateUserScdContent(SchedulerVO schedulerVo);
+	SchedulerVO selectByNo(int scdNo);
 }

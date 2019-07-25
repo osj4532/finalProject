@@ -63,7 +63,6 @@
 		thead.html("");
 		tbody.html("");
 		
-		
 		//전체근태, 개인 출퇴근조회, 부서근태조회
 		if($('input[name=menu]').val() == 'allAssiduity' || $('input[name=menu]').val() == 'indWork' || $('input[name=menu]').val() == 'depAssiduity'){
 			var colstyleEl1 = $('<col style="width:10%;"/>');
@@ -248,8 +247,8 @@
 				var map = res[i];
 				
 				var trEl = $('<tr></tr>');
-				var tdEl1 = $('<td></td>').html(map['COUNT']);
-				var tdEl2 = $('<td></td>').html(map['DEPTNAME']);
+				var tdEl1 = $('<td></td>').html(map['DEPTNAME']);
+				var tdEl2 = $('<td></td>').html(map['COUNT']);
 
 				trEl.append(tdEl1);
 				trEl.append(tdEl2);
@@ -261,6 +260,7 @@
 		//부서별 근태조회 끝
 		
 		setTitle();
+		
 		var pagingInfo = res[0]['page'];
 			
 		pageSetting(pagingInfo);
@@ -331,27 +331,28 @@
 		background-color: white;
 	}
 	#page{
-		text-align: center;	
+		text-align: center;
+		margin-bottom: 70px;
 	}
 </style>
 
 <div id="Main" class="container">
-	<h1>근태조회</h1>
+	<h1>근 태 조 회</h1>
 	<div class="row">
 	<div id="Menu" class="col-md-2">
 		<ul id="ulMenu" class="list-inline">
 			<c:if test="${sessionScope.ranksNo >= 1 }">
 			
-			<a href="#" onclick="select('indWork')"><li class="list-group-item d-flex justify-content-between align-items-center">개인출퇴근조회<span class="badge badge-primary badge-pill">14</span></li></a>
+			<a href="#" onclick="select('indWork')"><li class="list-group-item d-flex justify-content-between align-items-center">개인출퇴근조회</li></a>
 			<a href="#" onclick="select('indHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">개인연차조회</li></a>
 			</c:if>
 			<c:if test="${sessionScope.ranksNo >= 2 }">
-			<a href="#" onclick="select('depAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">부서근태조회</li></a>
+			<a href="#" onclick="select('depAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">부서근태조회<span class="badge badge-primary badge-pill">${sessionScope.countDep }</span></li></a>
 			</c:if>
 			<c:if test="${sessionScope.ranksNo >= 3 }">
 			<a href="#" onclick="select('depAssi')"><li class="list-group-item d-flex justify-content-between align-items-center">부서별근태조회</li></a>
-			<a href="#" onclick="select('allAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">전체근태조회</li></a>
-			<a href="#" onclick="select('allHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">전체연차조회</li></a>
+			<a href="#" onclick="select('allAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">전체근태조회<span class="badge badge-primary badge-pill">${sessionScope.countAll }</span></li></a>
+			<a href="#" onclick="select('allHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">전체연차조회<span class="badge badge-primary badge-pill">${sessionScope.allHoly }</span></li></a>
 			</c:if>
 		</ul>
 	</div>
@@ -362,7 +363,7 @@
 	<!-- 메뉴 선택과 페이징처리를 위한 form -->
 	<form name="frmPage" method="post" action="<c:url value='/commute/commute.do'/>">
 		<input type="hidden" name="currentPage" value="1">	
-		<input type="hidden" name="menu">
+		<input type="hidden" name="menu" value="indWork">
 	</form>
 	<!-- 메뉴 선택을 위한 form 끝 -->
 		<form name="frmCommute" action="<c:url value='/commute/commute.do'/>" method="post">

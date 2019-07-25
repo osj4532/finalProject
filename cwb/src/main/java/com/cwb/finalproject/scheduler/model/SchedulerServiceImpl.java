@@ -47,6 +47,10 @@ public class SchedulerServiceImpl implements SchedulerService{
 	public int updateUserScdContent(SchedulerVO schedulerVo) {
 		return schedulerDao.updateUserScdContent(schedulerVo);
 	}
+	@Override
+	public SchedulerVO selectByNo(int scdNo) {
+		return schedulerDao.selectByNo(scdNo);
+	}
 
 	
 	

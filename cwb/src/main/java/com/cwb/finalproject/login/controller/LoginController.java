@@ -1,8 +1,5 @@
 package com.cwb.finalproject.login.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,6 +56,16 @@ public class LoginController {
 			session.setAttribute("memName", memberVo2.getMemName());
 			session.setAttribute("memNo", memberVo2.getMemNo());
 			session.setAttribute("ranksNo", memberVo2.getRanksNo());
+			
+			int allHoly = commuteService.countSelectAllHoly();
+			session.setAttribute("allHoly", allHoly);
+			
+			int countAll = commuteService.countSelectAll();
+			session.setAttribute("countAll", countAll);
+			
+			String deptName = commuteService.selectByMemNo(memberVo2.getMemNo());
+			int countDep = commuteService.countSelectDep(deptName);
+			session.setAttribute("countDep", countDep);
 			
 			logger.info("세션 memNo = {}", memberVo2.getMemNo());
 			

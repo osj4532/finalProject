@@ -101,7 +101,7 @@ public class CommuteServiceImpl implements CommuteService{
 	}
 
 	@Override
-	public List<Integer> countDepAssi() {
+	public int countDepAssi() {
 		return commuteDao.countDepAssi();
 	}
 
