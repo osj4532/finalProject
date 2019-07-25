@@ -58,6 +58,7 @@ element.style {
 </style>
 <script type="text/javascript">
 	$(function() {
+		var scd_id ="";
 		$('#calendar').fullCalendar({
 				themeSystem : 'bootstrap3',
 				header : {
@@ -112,6 +113,41 @@ element.style {
 					 
 					
 				}, 
+				eventMouseover:function( event, jsEvent, view ) { 
+					/* $.ajax({
+						type :"post",
+						url: "<c:url value='/scheduler/userScdFindByNo.do'/>",
+						data:{
+							"scdNo":event.id
+						},
+						id:this.scdNo, 
+									title : this.scdContent,
+									start : this.scdStart,
+									end
+						
+						 
+					}); */
+					var etime =event.start.format();
+					var mytime = "";
+					if(etime.length==10){ 
+						estart=event.start.format();
+						eend=event.end.format(); 
+						mytime=estart+' ~ '+eend;
+					}else{
+						mytime="<br>";
+						estart=event.start.format('YYYY/MM/DD HH:mm:ss');
+						eend=event.end.format('YYYY/MM/DD HH:mm:ss');
+						mytime+=estart+"~"+eend.substring(0, 10);  
+					}   
+					scd_id = $.gritter.add({
+				            title: '일정 : '+event.title 
+				            +' <br> 시간 : '+mytime,
+				            text: '일정내용을 설명합니다.'
+				        });    
+				}, 
+				eventMouseout:function( event, jsEvent, view ) { 
+					$.gritter.remove(scd_id);  
+				},       
 				eventClick: function(event, element){ 
 					if($("#EditChk").is(":checked")){
 						var title = prompt('['+event.title+']을 수정합니다.');

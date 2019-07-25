@@ -290,10 +290,17 @@ $.ReJectPageFunc=function(cur){
                  <c:if test="${empty AppList}">
                 	<tr> 
                     <td colspan="5">
-							<h4><b>신청하신 자원이 없습니다.</b></h4>
+							<h4><b>
+						 	<c:if test="${empty param.AppsearchKeyword}">
+							신청
+		                  	</c:if> 
+						 	<c:if test="${!empty param.AppsearchKeyword}">
+							검색
+		                  	</c:if>
+							하신 자원이 없습니다.</b></h4>
 					</td>
-                  </tr> 
-				</c:if> 
+                  </tr>  
+				</c:if>  
                 <c:if test="${!empty AppList}">
                  <c:forEach var="AanVo" items="${AppList}">
                   <tr>
@@ -421,7 +428,14 @@ $.ReJectPageFunc=function(cur){
                  <c:if test="${empty waitList}">
                 	<tr>
 	                    <td colspan="5">
-								<h4><b>신청하신 자원이 없습니다.</b></h4>
+								<h4><b>
+							 	<c:if test="${empty param.WaitsearchKeyword}">
+								신청 
+			                  	</c:if> 
+							 	<c:if test="${!empty param.WaitsearchKeyword}">
+								검색
+			                  	</c:if>
+								신청하신 자원이 없습니다.</b></h4>
 						</td>
                  	 </tr> 
                  </c:if>
@@ -539,9 +553,16 @@ $.ReJectPageFunc=function(cur){
                     <c:if test="${empty refuseList}">
                 	<tr>
 	                    <td colspan="5">
-								<h4><b>신청하신 자원이 없습니다.</b></h4>
+								<h4><b>
+								<c:if test="${empty param.ReJectsearchKeyword}">
+								신청 
+			                  	</c:if>  
+							 	<c:if test="${!empty param.ReJectsearchKeyword}">
+								검색
+			                  	</c:if>
+								하신 자원이 없습니다.</b></h4>
 						</td>
-                 	 </tr>  
+                 	 </tr>   
                  </c:if>
                  <c:if test="${!empty refuseList}">
                  <c:forEach var="refuseVo" items="${refuseList }">

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cwb.finalproject.scheduler.model.SchedulerService;
@@ -64,6 +65,16 @@ public class SchedulerController {
 		}
 
 		return list; 
+	}
+	
+	@RequestMapping("/userScdFindByNo.do")
+	@ResponseBody
+	public SchedulerVO userScdFindByNo(@RequestParam(defaultValue = "1") int scdNo) {
+		logger.info("번호 이용 스케줄  가지고오기 scdNo={}",scdNo);
+		SchedulerVO schedulerVo = schedulerService.selectByNo(scdNo);
+		logger.info("번호 이용 스케줄 결과 list.schedulerVo={}", schedulerVo);
+		
+		return schedulerVo;
 	}
 	
 	@RequestMapping("/userScdDel.do")
