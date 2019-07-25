@@ -39,11 +39,15 @@
 		$('form[name=resourcesWrite]').submit(function(){
 			$('input[type=text]').each(function(){
 				if($(this).val()==''){
-					$('.chkInfo').show();
-					$(this).focus();
-					event.preventDefault();
-				}
-			});
+					if($(this).attr("name")=='resPrice'){
+						$(this).val(0);  
+					}else{   
+						$('.chkInfo').show();  
+						$(this).focus();
+						event.preventDefault();
+					}
+				} 
+			}); 
 			if($('#hidetext').val()!='외부 위치지정'){
 				$("#mapLatlng").val("!"+$('#hidetext').val());			
 			}

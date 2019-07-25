@@ -148,7 +148,7 @@ public class AddressController {
 				emailSender.init();
 				emailSender.addMsg(vo.getMailContent());
 				emailSender.addFile(savePath, vo.getMailFileName(), vo.getMailOriginalFileName());
-				emailSender.sendEmail(vo.getMailTitle(), member,vo.getMailRevAddr());
+				emailSender.sendEmail(vo.getMailTitle(), member, vo.getMailRevAddr());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -394,12 +394,14 @@ public class AddressController {
 	}
 	
 	@RequestMapping("/sendMessage.do")
-	public String sendMessage(@RequestParam(required = false) int memNo, Model model) {
+	public String sendMessage(@RequestParam(required = false, defaultValue = "0") int memNo, Model model) {
 		logger.info("쪽지 보내기 화면 보여주기 매개변수 = {}", memNo);
 		
-		String userId = (String)memberService.selectByNo(memNo).get("MEM_ID");
+		if(memNo != 0) {
+			String userId = (String)memberService.selectByNo(memNo).get("MEM_ID");
+			model.addAttribute("userId", userId);
+		}
 		
-		model.addAttribute("userId", userId);
 		return "address/sendMessage";
 	}
 	

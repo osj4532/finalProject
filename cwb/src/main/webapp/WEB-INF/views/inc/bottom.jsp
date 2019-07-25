@@ -41,8 +41,8 @@
   <script src="<c:url value='/resources/lib/zabuto_calendar.js'/>"></script>
   
   <script src="<c:url value='/resources/js/companyAddress.js'/>"></script>
-  
-  <script type="text/javascript">
+   
+ <!--  <script type="text/javascript">
     $(document).ready(function() {
       var unique_id = $.gritter.add({
         // (string | mandatory) the heading of the notification
@@ -61,7 +61,7 @@
 
       return false;
     });
-  </script>
+  </script> -->
 </body>
 
 </html>

@@ -12,7 +12,6 @@ var searchName='';
 
 $(function(){
 	$("#MyRes").hide();
-	$("#notfindRes").hide();
 	$.useRes(1);
 	$("#MyResView").click(function(){
 		$("#MyRes").toggle(500);   
@@ -99,9 +98,9 @@ $.pageSetting=function(){
 		$("#hidden-table-info_info").append(searchName+" 검색 : "+searchKeyword+"<br>"); 
 	}   
 	$("#hidden-table-info_info").append("전체 사용내역 - "+
-			totalRecord+"건 ");  
-	
-	if(firstPage>1){     
+			totalRecord+"건");  
+	 
+	if(firstPage>1){      
 	 var anchor=$("<li class='prev'><a href='#'>← Previous</a></li>")
 	 .attr("onclick","$.useRes("+(Number(firstPage)-1)+")")
 		$('#useResPaging').append(anchor);    
@@ -147,8 +146,8 @@ function reResScd(reservNo){
 <!--main content start--> 
 <section id="main-content">
 	<section class="wrapper">
-		<h3> 
-			<i class="fa fa-angle-right"></i> 자원 신청 내역
+		<h3>  
+			<i class="fas fa-box-open mt"></i> 자원 신청 내역
 			<button type="button" id="MyResView" class="btn btn-round btn-info">자원 사용 내역 보기</button> 
 		</h3>
         
@@ -156,20 +155,20 @@ function reResScd(reservNo){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i>자원 사용 내역</h4>
-                <hr>
+                <h4><i class="fas fa-clipboard-check"></i> 자원 사용 내역</h4>
+                <hr> 
                 <thead> 
                   <tr>
-                    <th width="20%"><i class="fa fa-bullhorn"></i> 자원 </th>
-                    <th width="30%" class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명 </th>
-                    <th width="50%"><i class="fa fa-bookmark"></i> 사용 기간 </th>
-                  </tr>  
+                    <th width="20%"><i class="fas fa-archive"></i> 자원 </th>
+                    <th width="30%" class="hidden-phone"><i class="fas fa-info-circle"></i> 자원명 </th>
+                    <th width="50%"><i class="fas fa-history"></i>  사용 기간 </th>
+                  </tr>   
                 </thead>
                 <tbody id="useRes"><!-- myUseList -->
 	                	
                 </tbody> 
               </table>
-            </div>
+           
             <!-- /content-panel -->
             <div class='span6'>
             <div class='dataTables_info'id='hidden-table-info_info'>
@@ -194,10 +193,10 @@ function reResScd(reservNo){
 						</ul>
 					</div> 
 				</div> 
-			
+			 </div>
           </div>
           <!-- /col-md-12 -->
-				  
+				   
         <!-- /row -->
         </div>
         <!-- /row -->
@@ -207,13 +206,13 @@ function reResScd(reservNo){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i> 승인 내역</h4>
-                <hr>
+                <h4><i class="fas fa-calendar-check"></i> 승인 내역</h4>
+                <hr> 
                 <thead>
                   <tr>
-                    <th><i class="fa fa-bullhorn"></i> 자원</th>
-                    <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
-                    <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
+                    <th><i class="fas fa-archive"></i> 자원</th>
+                    <th class="hidden-phone"><i class="fas fa-info-circle"></i> 자원명</th>
+                    <th><i class="fas fa-clock"></i> 신청 기간 </th>
                     <th></th>
                   </tr>
                 </thead>
@@ -234,7 +233,7 @@ function reResScd(reservNo){
                     <td>${canVo.useRegdate } ~ ${canVo.returnRegdate }</td>
                     <td>
                       <button class="btn btn-danger btn-xs"
-                      onclick="delResScd(${canVo.reservNo })"><i class="fa fa-check">신청 취소</i></button>
+                      onclick="delResScd(${canVo.reservNo })"><i class="fas fa-times"> 신청 취소</i></button>
                     </td>    
                   </tr>   
                       </c:forEach> 
@@ -250,13 +249,13 @@ function reResScd(reservNo){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i> 검토 내역</h4>
+                <h4><i class="fas fa-hourglass-half"></i> 검토 내역</h4>
                 <hr>
-                <thead>
+                <thead> 
                   <tr>
-                    <th><i class="fa fa-bullhorn"></i> 자원</th>
-                    <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
-                    <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
+                    <th><i class="fas fa-archive"></i> 자원</th>
+                    <th class="hidden-phone"><i class="fas fa-info-circle"></i> 자원명</th>
+                    <th><i class="fas fa-clock"></i> 신청 기간 </th>
                     <th></th>
                   </tr>
                 </thead>
@@ -276,9 +275,9 @@ function reResScd(reservNo){
 	                    <td class="hidden-phone">${waitVo.resName }</td>
 	                    <td>${waitVo.useRegdate } ~ ${waitVo.returnRegdate }</td>
 	                    <td>
-	                      <button class="btn btn-danger btn-xs"
-	                      onclick="delResScd(${waitVo.reservNo })"><i class="fa fa-check">신청 취소</i></button>
-	                    </td>  
+	                      <button class="btn btn-danger btn-xs" 
+	                      onclick="delResScd(${waitVo.reservNo })"><i class="fas fa-times"> 신청 취소</i></button>
+	                    </td>   
 	                  </tr> 
                   </c:forEach>  
 	              </c:if>     
@@ -293,16 +292,16 @@ function reResScd(reservNo){
           <div class="col-md-12">
             <div class="content-panel">
               <table class="table table-striped table-advance table-hover">
-                <h4><i class="fa fa-angle-right"></i> 반려 내역</h4>
+                <h4><i class="fas fa-calendar-times"></i>  반려 내역</h4>
                 <hr>
                 <thead>
                   <tr>
-                    <th><i class="fa fa-bullhorn"></i> 자원</th>
-                    <th class="hidden-phone"><i class="fa fa-question-circle"></i> 자원명</th>
-                    <th><i class="fa fa-bookmark"></i> 신청 기간 </th>
+                    <th><i class="fas fa-archive"></i>  자원</th>
+                    <th class="hidden-phone"><i class="fas fa-info-circle"></i> 자원명</th>
+                    <th><i class="fas fa-clock"></i> 신청 기간 </th>
                     <th></th>
                   </tr>
-                </thead>
+                </thead> 
                 <tbody>
                     <c:if test="${empty refuseList}">
                 	<tr>
@@ -318,15 +317,15 @@ function reResScd(reservNo){
 	                    </td>
 	                    <td class="hidden-phone">${refuseVo.resName }</td> 
 	                    <td>${refuseVo.useRegdate } ~ ${refuseVo.returnRegdate }</td>
-	                    <td>
+	                    <td> 
 	                      <button class="btn btn-primary btn-xs"
-	                      onclick="reResScd(${refuseVo.reservNo })"><i class="fa fa-check">재검토 신청</i></button>
+	                      onclick="reResScd(${refuseVo.reservNo })"><i class="fas fa-undo"> 재검토 신청</i></button>
 	                    </td>  
 	                  </tr> 
                   </c:forEach>  
                   </c:if>   
                 </tbody>
-              </table> 
+              </table>  
             </div>
             <!-- /content-panel -->
           </div>

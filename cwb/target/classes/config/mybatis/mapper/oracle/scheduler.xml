@@ -27,6 +27,10 @@ to_date(#{scdStart},'YYYY/MM/DD HH24:MI:SS'),to_date(#{scdEnd},'YYYY/MM/DD HH24:
 			select * from schedule
 			where mem_No=#{memNo}
 	</select>
+	<select id="selectByNo" parameterType="int" resultType="schedulerVo">
+			select * from schedule
+			where scd_No=#{scdNo}
+	</select> 
 	
 	<delete id="deleteByscdNo" parameterType="int">
 		delete from schedule

@@ -52,4 +52,13 @@ public class MessageServiceImpl implements MessageService{
 	public int countSenMsg(Map<String, Object> map) {
 		return messageDAO.countSenMsg(map);
 	}
+	public int readCheck(int msgrevNo) {
+		return messageDAO.readCheck(msgrevNo);
+	}
+	public Map<String, Object> selectByNo(Map<String, Object> map){
+		return messageDAO.selectByNo(map);
+	}
+	public Map<String, Object> selectByNoSen(Map<String, Object> map){
+		return messageDAO.selectByNoSen(map);
+	}
 }

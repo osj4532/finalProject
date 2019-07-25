@@ -8,5 +8,6 @@ public interface SchedulerService {
 	int deleteByscdNo(int scdNo);
 	int updateUserScd(SchedulerVO schedulerVo,boolean isday);
 	int updateUserScdContent(SchedulerVO schedulerVo);
+	SchedulerVO selectByNo(int scdNo);
 }
  

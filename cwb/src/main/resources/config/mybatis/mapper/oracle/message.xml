@@ -68,7 +68,7 @@
 				join msgrev MR
 				on M.msg_no = MR.MSG_NO
 				join member MB
-				on M.MEM_NO = MB.MEM_NO
+				on MR.MEM_NO = MB.MEM_NO
 				and M.MEM_NO = #{memNo}
 				and msg_del = 'N'
 				<if test="keyword != null and keyword !=''">
@@ -93,6 +93,34 @@
 				and msg_title || msg_content like '%' || #{keyword} || '%'
 				</if>
 				order by M.msg_no desc
+	</select>
+	
+	<update id="readCheck" parameterType="int">
+		update msgrev
+		set msgRev_date = sysdate
+		where msgrev_no = #{msgrevNo}
+	</update>
+	
+	<select id="selectByNo" parameterType="map" resultType="map">
+		select MB.MEM_ID, MB.MEM_NAME, M.*,MR.MSGREV_NO, MR.MEM_NO rev_Mem, MR.MSGREV_DEL, MR.MSGREV_DATE from message M
+				join msgrev MR
+				on M.msg_no = MR.MSG_NO
+				join member MB
+				on M.MEM_NO = MB.MEM_NO
+				and M.msg_no = #{msgNo}
+				and MR.msgrev_no = #{msgrevNo}
+				and msg_del = 'N'
+	</select>
+	
+	<select id="selectByNoSen" parameterType="map" resultType="map">
+		select MB.MEM_ID, MB.MEM_NAME, M.*,MR.MSGREV_NO, MR.MEM_NO rev_Mem, MR.MSGREV_DEL, MR.MSGREV_DATE from message M
+				join msgrev MR
+				on M.msg_no = MR.MSG_NO
+				join member MB
+				on MR.mem_no = MB.MEM_NO
+				and M.msg_no = #{msgNo}
+				and MR.msgrev_no = #{msgrevNo}
+				and msg_del = 'N'
 	</select>
 </mapper>
 

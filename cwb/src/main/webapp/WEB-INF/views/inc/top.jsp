@@ -338,9 +338,16 @@
               <i class="fas fa-box"></i> 
               <span>자원 관리</span>
               </a>
-            <ul class="sub">
-              <li><a href="<c:url value="/resources/list.do"/>">자원</a></li>
-              <li><a href="<c:url value="/useResource/useResList.do"/>">자원 내역</a></li>
+            <ul class="sub"> 
+            
+            <c:if test="${sessionScope.ranksNo>=2 }">
+              <li><a href="<c:url value="/resources/list.do"/>">자원 관리</a></li>
+            </c:if>  
+            <c:if test="${sessionScope.ranksNo<2 }">
+              <li><a href="<c:url value="/resources/list.do"/>">자원 신청</a></li>
+            </c:if>
+              
+              <li><a href="<c:url value="/useResource/useResList.do"/>">나의 자원 내역</a></li>
         <c:if test="${sessionScope.ranksNo>=2 }">
               <li><a href="<c:url value="/useResource/AllUseResList.do"/>">전체 자원 내역</a></li>
         </c:if>   

@@ -10,4 +10,7 @@ public interface MessageService {
 	public int countRevMsg(Map<String, Object> map);
 	public List<Map<String, Object>> selectSenMsg(Map<String, Object> map);
 	public int countSenMsg(Map<String, Object> map);
+	public int readCheck(int msgrevNo);
+	public Map<String, Object> selectByNo(Map<String, Object> map);
+	public Map<String, Object> selectByNoSen(Map<String, Object> map);
 }

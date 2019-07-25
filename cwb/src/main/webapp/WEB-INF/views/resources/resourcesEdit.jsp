@@ -36,9 +36,13 @@
 		$('form[name=resourcesEdit]').submit(function(){
 			$('input[type=text]').each(function(){
 				if($(this).val()==''){
-					$('.chkInfo').show();
-					$(this).focus();
-					event.preventDefault();
+					if($(this).attr("name")=='resPrice'){
+						$(this).val(0);  
+					}else{   
+						$('.chkInfo').show();
+						$(this).focus();
+						event.preventDefault();
+					} 
 				}
 			});
 			if($('#hidetext').val()!='외부 위치지정' || $('#hidetext').val()==''){
@@ -124,7 +128,7 @@
                     <input type="text" class="form-control" 
                     name="resInformation" value="${resVo.resInformation }">
                   </div>
-                </div>
+                </div> 
 
              <div class="form-group last">
                   <label class="control-label col-md-3">자원 이미지등록</label>

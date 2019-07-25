@@ -58,6 +58,7 @@ element.style {
 </style>
 <script type="text/javascript">
 	$(function() {
+		var scd_id ="";
 		$('#calendar').fullCalendar({
 				themeSystem : 'bootstrap3',
 				header : {
@@ -112,6 +113,41 @@ element.style {
 					 
 					
 				}, 
+				eventMouseover:function( event, jsEvent, view ) { 
+					/* $.ajax({
+						type :"post",
+						url: "<c:url value='/scheduler/userScdFindByNo.do'/>",
+						data:{
+							"scdNo":event.id
+						},
+						id:this.scdNo, 
+									title : this.scdContent,
+									start : this.scdStart,
+									end
+						
+						 
+					}); */
+					var etime =event.start.format();
+					var mytime = "";
+					if(etime.length==10){ 
+						estart=event.start.format();
+						eend=event.end.format(); 
+						mytime=estart+' ~ '+eend;
+					}else{
+						mytime="<br>";
+						estart=event.start.format('YYYY/MM/DD HH:mm:ss');
+						eend=event.end.format('YYYY/MM/DD HH:mm:ss');
+						mytime+=estart+"~"+eend.substring(0, 10);  
+					}   
+					scd_id = $.gritter.add({
+				            title: '일정 : '+event.title 
+				            +' <br> 시간 : '+mytime,
+				            text: '일정내용을 설명합니다.'
+				        });    
+				}, 
+				eventMouseout:function( event, jsEvent, view ) { 
+					$.gritter.remove(scd_id);  
+				},       
 				eventClick: function(event, element){ 
 					if($("#EditChk").is(":checked")){
 						var title = prompt('['+event.title+']을 수정합니다.');
@@ -279,13 +315,13 @@ element.style {
 
 <section id="main-content">
 	<section class="wrapper">
-		<h1 class="mg_text">
-			<i class="fa fa-angle-right mt text-important"></i>개인 스케줄 
-		</h1>
-		<!-- page start-->
+		<h1 class="mg_text"> 
+			<i class="far fa-calendar-alt mt "></i> 개인 스케줄   
+		</h1> 
+		<!-- page start--> 
 		<div class="row"> 
 			<div class="col-lg-12">    
-				<span id="switchinfo"> Click    </span>      
+				<span id="switchinfo"><i class="fas fa-hand-point-right"></i>  Click    </span>      
                   <div class="switch switch-square" data-on-label="수정" data-off-label="삭제">
                     <input type="checkbox" id="EditChk"/>
                   </div>

@@ -22,11 +22,11 @@
 	$.gritter.options = {
 		position: 'bottom-right',
 		class_name: '', // could be set to 'gritter-light' to use white notifications
-		fade_in_speed: 1000, // how fast notifications fade in
-		fade_out_speed: 1000, // how fast the notices fade out
+		fade_in_speed: 0, // how fast notifications fade in
+		fade_out_speed: 0, // how fast the notices fade out
 		time: 6000 // hang on the screen for...
-	}
-	
+	}   
+	 
 	/**
 	* Add a gritter notification to the screen
 	* @see Gritter#add();
@@ -44,7 +44,7 @@
 				
 		}
 		
-	}
+	} 
 	
 	/**
 	* Remove a gritter notification from the screen
@@ -150,7 +150,7 @@
 			// If it's false, don't show another gritter message
 			if(this['_before_open_' + number]() === false){
 				return false;
-			}
+			} 
 
 			$('#gritter-notice-wrapper').addClass(position).append(tmp);
 			
@@ -218,15 +218,15 @@
 		*/
 		_fade: function(e, unique_id, params, unbind_events){
 
-			var params = params || {},
+			var params = params || {}, 
 				fade = (typeof(params.fade) != 'undefined') ? params.fade : true,
 				fade_out_speed = params.speed || this.fade_out_speed,
-				manual_close = unbind_events;
-
+				manual_close = unbind_events; 
+ 
 			this['_before_close_' + unique_id](e, manual_close);
 			
 			// If this is true, then we are coming from clicking the (X)
-			if(unbind_events){
+			if(unbind_events){ 
 				e.unbind('mouseenter mouseleave');
 			}
 			
@@ -236,10 +236,10 @@
 				e.animate({
 					opacity: 0
 				}, fade_out_speed, function(){
-					e.animate({ height: 0 }, 300, function(){
+					e.animate({ height: 0 }, 1, function(){
 						Gritter._countRemoveWrapper(unique_id, e, manual_close);
-					})
-				})
+					}) 
+				})   
 				
 			}
 			else {

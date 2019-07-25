@@ -9,6 +9,14 @@ public class TeamSchedulerVO {
 	private String tscdEnddate;
 	private String tscdContent;
 	
+	private boolean isday;
+	
+	public boolean isIsday() {
+		return isday;
+	}
+	public void setIsday(boolean isday) {
+		this.isday = isday;
+	}
 	public int getTscdNo() {
 		return tscdNo;
 	}
