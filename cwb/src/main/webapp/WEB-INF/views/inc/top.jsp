@@ -32,6 +32,12 @@
   <link href="<c:url value='/resources/css/style.css'/>" rel="stylesheet">
   <link href="<c:url value='/resources/css/style-responsive.css'/>"  rel="stylesheet">
   <script src="<c:url value='/resources/lib/chart-master/Chart.js'/>" ></script>
+  
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <link rel="stylesheet" href="/resources/demos/style.css">
+  
    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 <style type="text/css">
 	#sidebar{
@@ -302,8 +308,19 @@
               <span>근태</span>
               </a>
             <ul class="sub">
-              <li><a href="<c:url value="/commute/commute.do"/>">근태조회</a></li>
-              <li><a href="<c:url value="/commute/commute.do"/>">근태관리</a></li>
+              <li><a href="<c:url value="/commute/commute.do"/>"><i class="fas fa-history"></i>근태조회</a></li>
+            </ul>
+          </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fas fa-save"></i>
+              <span>웹하드</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/webhard/webhard.do"/>"><i class="fas fa-download"></i>웹하드</a></li>
+              <c:if test="${sessionScope.ranksNo == 3}">
+              <li><a href="<c:url value="/webhard/webhard.do"/>"><i class="fas fa-cog"></i>웹하드관리</a></li>
+              </c:if>
             </ul>
           </li>
            <li class="sub-menu">

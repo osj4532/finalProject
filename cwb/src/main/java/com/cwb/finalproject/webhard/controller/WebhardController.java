@@ -15,6 +15,15 @@ public class WebhardController {
 	public String webhard() {
 		logger.info("webhard화면");
 		
+		
 		return "webhard/webhard";
 	}
+	
+	@RequestMapping("/webhardSetting.do")
+	public String webhardSetting() {
+		logger.info("webhardSetting 화면");
+		
+		return "webhard/webhardSetting"; 
+	}
+	
 }

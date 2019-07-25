@@ -43,6 +43,8 @@
 			title.html("개인 연차 조회");
 		}else if(menu == 'allHoly'){
 			title.html("전체 연차 조회");
+		}else if(menu == 'depAssi'){
+			title.html("부서별 근태 조회");
 		}
 		$('#title').html(title);
 	}
@@ -319,6 +321,7 @@
 		background-color: white;
 	}
 	#content{
+		position: relative;
 		min-height: 890px;
 		background-color: white;
 		min-width: 900px;
@@ -331,8 +334,9 @@
 		background-color: white;
 	}
 	#page{
-		text-align: center;
-		margin-bottom: 70px;
+		position:absolute;
+		top: 500px;
+		margin-left: 333px;
 	}
 </style>
 
