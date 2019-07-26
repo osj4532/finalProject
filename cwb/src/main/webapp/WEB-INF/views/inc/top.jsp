@@ -353,6 +353,20 @@
         </c:if>   
             </ul>
           </li>
+          <li class="sub-menu">
+            <a href="javascript:;">
+             	<i class="fas fa-clipboard-list"></i>
+              <span>게시판</span>
+              </a>
+            <ul class="sub">
+            <c:if test="${sessionScope.ranksNo>=2 }">
+              <li><a href="<c:url value="/Board/BoardAllList.do"/>">게시판 관리</a></li>
+            </c:if> 
+            </ul>
+          </li>
+           
+          
+          
         </ul>
 	        <c:import url="/address/companyAddr.do"></c:import>
         <!-- sidebar menu end-->
