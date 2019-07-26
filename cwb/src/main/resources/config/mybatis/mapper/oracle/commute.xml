@@ -148,7 +148,7 @@
 		    from
 		    (
 		        select com_indate from commute
-				where mem_no = #{memNo}
+				where mem_no = #{memNo} and com_indate between to_char(sysdate, 'yyyy-mm-dd') and to_char(sysdate+1, 'yyyy-mm-dd')
 				order by com_indate desc
 			)A
 		)
@@ -182,7 +182,7 @@
 		    from
 		    (
 		        select count(*) as count, deptname from commuteview
-				where comindate between to_char(sysdate, 'yyyy-mm-dd') and sysdate+1
+				where comindate between to_char(sysdate, 'yyyy-mm-dd') and to_char(sysdate+1, 'yyyy-mm-dd')
 				group by deptname
 			)A
 		)
@@ -240,4 +240,8 @@
 		set com_outdate = sysdate, com_status = 'N'
 		where com_no = #{comNo}
 	</update>
+	
+	<select id="selectNull" resultType="int" parameterType="int">
+		select count(*) from commute where com_indate is null and mem_no = #{memNo}
+	</select>
 </mapper>

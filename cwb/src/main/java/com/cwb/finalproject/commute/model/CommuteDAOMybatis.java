@@ -109,4 +109,9 @@ public class CommuteDAOMybatis implements CommuteDAO{
 		return sqlSession.selectOne(namespace+"countDepAssi");
 	}
 
+	@Override
+	public int selectNull(int memNo) {
+		return sqlSession.selectOne(namespace+"selectNull", memNo);
+	}
+
 }

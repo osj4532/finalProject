@@ -105,6 +105,11 @@ public class CommuteServiceImpl implements CommuteService{
 		return commuteDao.countDepAssi();
 	}
 
+	@Override
+	public int selectNull(int memNo) {
+		return commuteDao.selectNull(memNo);
+	}
+
 	
 	
 }
