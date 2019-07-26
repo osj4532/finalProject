@@ -86,11 +86,24 @@ public class LoginController {
 			session.setAttribute("cominDate", comindate);
 			logger.info("세션 생성 직후 comindate = {}", comindate);
 			
+			
+			/*
 		 	if(state == CommuteService.BEFORE_WORK && (comoutdate != null && !comoutdate.isEmpty())) {
-		 		int cnt = commuteService.insertComin(vo);
-		 		logger.info("근태 입력 결과 cnt = {}", cnt);
+		 		if(comindate == null || comindate.isEmpty() || (comindate != null && !comindate.isEmpty())&&(comoutdate != null && !comoutdate.isEmpty())) {
+		 			int cnt = commuteService.insertComin(vo);
+		 			logger.info("근태 입력 결과 cnt = {}", cnt);
+		 		}
 		 	}
-		 	if((comindate != null && !comindate.isEmpty()) && (comoutdate == null || comoutdate.isEmpty())) {
+		 	*/
+			
+			int count = commuteService.selectNull(memberVo2.getMemNo());
+		 	if((comindate == null || comindate.isEmpty()) && (comoutdate == null || comoutdate.isEmpty())) {
+		 		if(count <= 0) {
+			 		int cnt = commuteService.insertComin(vo);
+			 		logger.info("근태 입력 결과 cnt = {}", cnt);
+		 		}
+		 	}
+		 	if((comindate != null && !comindate.isEmpty())) {
 		 		state = CommuteService.WORK;
 		 		session.setAttribute("state", state);
 		 	}

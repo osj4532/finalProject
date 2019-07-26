@@ -272,11 +272,16 @@
 	function pageSetting(pagingInfo){
 		var page = $('#page').html('');
 		if(pagingInfo.firstPage!=1){
+			var anchor1=$('<a href="#"></a>')
+			.html("<i class='fas fa-backward'> </i>")
+			.attr("onclick", "page("+(1)+")");
+			$("#page").append(anchor1);
+			
 			var anchor=$('<a href="#"></a>')
 			.html("<img src='<c:url value='/resources/img/first.JPG'/>' alt='이전블럭으로 이동'>")
 			.attr("onclick", "page("+(pagingInfo.firstPage-1)+")");
 			
-			$("#page").html(anchor);
+			$("#page").append(anchor);
 		}
 		
 		for(var i=pagingInfo.firstPage;i<=pagingInfo.lastPage;i++){
@@ -285,7 +290,7 @@
 				.html(i);
 				$('#page').append(spanEl);
 			}else{
-				var anchor = $("<a href='#'></a>").html("["+i+"]")
+				var anchor = $("<button type='button' class='btn btn-outline-light'>"+i+"</button>")
 				.attr("onclick", "page("+i+")");
 				$('#page').append(anchor);
 			}
@@ -296,6 +301,11 @@
 			.html("<img src='<c:url value='/resources/img/last.JPG'/>' alt='다음블럭으로 이동'>")
 			.attr("onclick", "page("+(pagingInfo.lastPage+1)+")");
 			$('#page').append(anchor);
+			
+			var anchor2=$('<a href="#"></a>')
+			.html("<i class='fas fa-forward'> </i>")
+			.attr("onclick", "page("+(pagingInfo.totalPage)+")");
+			$('#page').append(anchor2);
 		}
 	}
 	
@@ -315,6 +325,7 @@
 		padding: 10px;
 		margin-top: 50px;
 		min-width: 185px;
+		color: orange;
 	}
 	#Menu{
 		min-height: 890px;
@@ -337,6 +348,9 @@
 		position:absolute;
 		top: 500px;
 		margin-left: 333px;
+	}
+	#tblCommute{
+		color: blue;
 	}
 </style>
 

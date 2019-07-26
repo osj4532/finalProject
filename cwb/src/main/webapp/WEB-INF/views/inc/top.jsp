@@ -319,7 +319,7 @@
             <ul class="sub">
               <li><a href="<c:url value="/webhard/webhard.do"/>"><i class="fas fa-download"></i>웹하드</a></li>
               <c:if test="${sessionScope.ranksNo == 3}">
-              <li><a href="<c:url value="/webhard/webhard.do"/>"><i class="fas fa-cog"></i>웹하드관리</a></li>
+              <li><a href="<c:url value="/webhard/webhardSetting.do"/>"><i class="fas fa-cog"></i>웹하드관리</a></li>
               </c:if>
             </ul>
           </li>

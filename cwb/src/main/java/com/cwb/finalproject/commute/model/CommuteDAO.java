@@ -41,4 +41,6 @@ public interface CommuteDAO {
 	public List<Map<String, Object>> selectDepAssi();
 	
 	public int countDepAssi();
+	
+	public int selectNull(int memNo);
 }

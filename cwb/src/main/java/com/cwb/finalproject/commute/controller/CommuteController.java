@@ -136,7 +136,7 @@ public class CommuteController {
 		logger.info("comindate = {}", comindate);
 		if(status.equals("in")) {
 
-			if(state == 3) {
+			if(state == 3 && (comindate == null || comindate.isEmpty())) {
 				comNo = commuteService.selectComNo(memNo);
 				cnt = commuteService.updateComin(comNo);
 				logger.info("출근 입력 처리 결과 cnt = {}", cnt);
