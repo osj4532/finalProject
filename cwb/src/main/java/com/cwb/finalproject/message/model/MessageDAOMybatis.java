@@ -43,4 +43,31 @@ public class MessageDAOMybatis implements MessageDAO{
 	public Map<String, Object> selectByNoSen(Map<String, Object> map){
 		return sqlSession.selectOne(namespace+"selectByNoSen",map);
 	}
+	public int msgRevDel(int revNo) {
+		return sqlSession.delete(namespace+"msgRevDel",revNo);
+	}
+	public int msgPre(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"msgPre",map);
+	}
+	public int countMsgPre(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"countMsgPre",map);
+	}
+	public int msgNext(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"msgNext",map);
+	}
+	public int countMsgNext(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"countMsgNext",map);
+	}
+	public int senMsgPre(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"senMsgPre",map);
+	}
+	public int countSenMsgPre(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"countSenMsgPre",map);
+	}
+	public int senMsgNext(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"senMsgNext",map);
+	}
+	public int countSenMsgNext(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"countSenMsgNext",map);
+	}
 }

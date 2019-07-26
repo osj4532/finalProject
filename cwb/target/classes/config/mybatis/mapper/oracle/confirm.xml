@@ -19,7 +19,7 @@
 		<selectKey keyProperty="cfNo" resultType="int" order="BEFORE">
 			select confirm_seq.nextval from dual
 		</selectKey>
-			insert into confirm(cf_No, form_No, cf_state, mem_No, dept_No, reg_No, cf_Title, cf_Content, cf_file, cf_tmpstorage)
+			insert into confirm(cf_No, form_No, cf_state, mem_No, dept_No, reg_No, cf_Title, cf_Content, cf_file, CF_TMPSTORAGE)
 			values(#{cfNo}, #{formNo}, #{cfState}, #{memNo}, #{deptNo}, #{regNo}, #{cfTitle}, #{cfContent}, #{cfFile}, #{cfTmpstorage})
 	</insert>
 	

@@ -52,6 +52,10 @@
 	.msgNav ul li{
 		cursor: pointer;
 	}
+	
+	.box1{
+		float: right;
+	}
 </style>
 
 <div class="container">
@@ -70,26 +74,84 @@
 		</div>
 		<div class="msgList">
 			<div class="newBtn">
-				<button title="삭제하기" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
-				<button title="새로고침" class="btn btn-warning btn-sm"><i class="fas fa-redo-alt"></i></button>
+				<button id="del" title="삭제하기" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
+				<button id="re" title="새로고침" class="btn btn-warning btn-sm"><i class="fas fa-redo-alt"></i></button>
+				<div class="box1">
+					<div class="container-1">
+						<span class="icon"><i class="fa fa-search"></i></span>
+						<input type="search" id="msgSearch" placeholder="아이디/제목/내용 검색">
+					</div>
+				</div>
 			</div>
-		
 			<table class="table table-hover">
-				
+			
 			</table>
 			<div class="pageDiv align-center">
-		
+			
 			</div>
 		</div>
-		
 	</div>
 </div>
+<input type="hidden" name="kind" value="1">
+<input type="text" name="currentPage" value="1">
 <%@ include file="../inc/bottom.jsp"%>
-
 <script>
 	$(function(){
+		let sel = new Array();
+		
 		showList(1,"",1);
 		$('.msgNav ul li:eq(0)').addClass("active");
+		
+		$('#del').click(function(){
+			
+			$('input[type=checkbox]:gt(0)').each(function(idx,item){
+				if($(item).is(':checked')){
+					sel.push($(item).val());
+				}
+			})
+			let kind = $('input[name=kind]').val();
+			
+			$.ajax({
+				url:"<c:url value='/message/revMsgDel.do'/>",
+				type:"post",
+				dataType:"json",
+				data:{"sel":sel,
+					"kind":kind},
+				success:function(data){
+					if(data > 0){
+						alert("쪽지 삭제 성공!");
+					}else{
+						alert("쪽지 삭제 실패!");
+					}
+				},
+				error:function(xhr, status, error){
+					alert(status+" : "+error);
+				}
+			});
+			let keyword = $('#msgSearch').val();
+			let curr = $('input[name=currentPage]').val();
+			
+			//tr이 하나 밖에 없으면 현재 페이지에서 -1한다.
+			if($('table tr').length == 1){
+				curr = curr - 1;
+			}
+			
+			showList(kind,keyword,curr);
+			
+			sel = [];
+		});
+		
+		$('#msgSearch').keyup(function(){
+			let kind = $('input[name=kind]').val();
+			let keyword = $(this).val();
+			showList(kind,keyword,1);
+		});
+		
+		$('#re').click(function(){
+			let kind = $('input[name=kind]').val();
+			let keyword = $('#msgSearch').val();
+			showList(kind,keyword,1);
+		});
 		
 		$('#new').click(function(){
 			open('<c:url value="/address/sendMessage.do?"/>','','width=600px, height=600px, left=200px, top=100px, location=yes, resizable=no');
@@ -102,8 +164,10 @@
 				$('.msgNav ul li').removeClass("active");
 				if(idx==0){
 					showList(1,"",1);
+					$('input[name=kind]').val('1');
 				}else if(idx == 1){
 					showList(2,"",1);
+					$('input[name=kind]').val('2');
 				}
 				
 				$(item).addClass("active");
@@ -164,7 +228,8 @@
 							let trEl2 = $('<tr></tr>');
 							
 							let tdEl1 = $('<td><input type="checkbox" value="'+map['MSGREV_NO']+'"></td>');
-	
+							tdEl1.attr("onclick","event.cancelBubble=true");
+							
 							let revMem = map['MEM_ID'];
 							if(revMem == '${sessionScope.memId}'){
 								revMem = "나";
@@ -188,7 +253,7 @@
 							trEl2.append(tdEl3);
 							trEl2.append(tdEl4);
 							
-							$(trEl2).attr("onclick","showDetail(1,"+map['MSGREV_NO']+","+map['MSG_NO']+")");
+							$(trEl2).attr("onclick","showDetail(1,"+map['MSGREV_NO']+")");
 							
 							table.append(trEl2);
 						}
@@ -236,6 +301,7 @@
 							let trEl2 = $('<tr></tr>');
 							
 							let tdEl1 = $('<td><input type="checkbox" value="'+map['MSGREV_NO']+'"></td>');
+							tdEl1.attr("onclick","event.cancelBubble=true");
 							
 							let revMem = map['MEM_ID'];
 							if(revMem == '${sessionScope.memId}'){
@@ -271,7 +337,7 @@
 							trEl2.append(tdEl4);
 							trEl2.append(tdEl5);
 							
-							$(trEl2).attr("onclick","showDetail(2,"+map['MSGREV_NO']+","+map['MSG_NO']+")");
+							$(trEl2).attr("onclick","showDetail(2,"+map['MSGREV_NO']+")");
 							table.append(trEl2);
 						}
 					}
@@ -282,6 +348,8 @@
 				$('#chkAll').click(function(){
 					$('input[type=checkbox]:gt(0)').prop("checked",$(this).is(':checked'));
 				});
+				
+				
 			},
 			error:function(xhr, status, error){
 				alert(status+" : "+error);
@@ -291,6 +359,7 @@
 	
 	function movePage(kind, currPage){
 		let keyword = "";
+		let curr = $('input[name=currentPage]').val(currPage);
 		showList(kind, keyword, currPage);
 	}
 	

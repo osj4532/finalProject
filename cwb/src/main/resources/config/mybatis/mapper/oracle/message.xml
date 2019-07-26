@@ -34,7 +34,7 @@
 		        and MR.mem_no = #{memNo}
 		        and msgRev_del = 'N'
 		        <if test="keyword != null and keyword != ''">
-		        and msg_title || msg_content like '%' || #{keyword} || '%'
+		        and  MB.MEM_ID || msg_title || msg_content like '%' || #{keyword} || '%'
 		        </if>
 		        order by msgrev_no desc
 		    )A
@@ -72,7 +72,7 @@
 				and M.MEM_NO = #{memNo}
 				and msg_del = 'N'
 				<if test="keyword != null and keyword !=''">
-				and msg_title || msg_content like '%' || #{keyword} || '%'
+				and MB.MEM_ID || msg_title || msg_content like '%' || #{keyword} || '%'
 				</if>
 				order by M.msg_no desc
 		    )A
@@ -107,7 +107,6 @@
 				on M.msg_no = MR.MSG_NO
 				join member MB
 				on M.MEM_NO = MB.MEM_NO
-				and M.msg_no = #{msgNo}
 				and MR.msgrev_no = #{msgrevNo}
 				and msg_del = 'N'
 	</select>
@@ -118,10 +117,89 @@
 				on M.msg_no = MR.MSG_NO
 				join member MB
 				on MR.mem_no = MB.MEM_NO
-				and M.msg_no = #{msgNo}
 				and MR.msgrev_no = #{msgrevNo}
 				and msg_del = 'N'
 	</select>
+	
+	<delete id="msgRevDel" parameterType="int">
+		delete from msgrev
+		where msgrev_no = #{revNo}
+	</delete>
+	
+	<select id="msgPre" parameterType="map" resultType="int">
+		select max(msgrev_no) from messageView
+		where rev_mem = #{memNo}
+		and msg_del = 'N'
+		<if test="keyword!=null and keyword!=''">
+		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
+		</if>
+<![CDATA[and msgrev_no < #{msgrevNo}]]>
+	</select>
+	<select id="countMsgPre" parameterType="map" resultType="int">
+		select count(*) from messageView
+		where rev_mem = #{memNo}
+		and msg_del = 'N'
+		<if test="keyword!=null and keyword!=''">
+		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
+		</if>
+<![CDATA[and msgrev_no < #{msgrevNo}]]>
+	</select>
+	<select id="msgNext" parameterType="map" resultType="int">
+		select min(msgrev_no) from messageView
+		where rev_mem = #{memNo}
+		and msg_del = 'N'
+		<if test="keyword!=null and keyword!=''">
+		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
+		</if>
+		and msgrev_no > #{msgrevNo}
+	</select>
+	<select id="countMsgNext" parameterType="map" resultType="int">
+		select count(*) from messageView
+		where rev_mem = #{memNo}
+		and msg_del = 'N'
+		<if test="keyword!=null and keyword!=''">
+		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
+		</if>
+		and msgrev_no > #{msgrevNo}
+	</select>
+	
+	<select id="senMsgPre" parameterType="map" resultType="int">
+		select max(msgrev_no) from messageView
+		where mem_no = #{memNo}
+		and msg_del = 'N'
+		<if test="keyword!=null and keyword!=''">
+		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
+		</if>
+<![CDATA[and msgrev_no < #{msgrevNo}]]>
+	</select>
+	<select id="countSenMsgPre" parameterType="map" resultType="int">
+		select count(*) from messageView
+		where mem_no = #{memNo}
+		and msg_del = 'N'
+		<if test="keyword!=null and keyword!=''">
+		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
+		</if>
+<![CDATA[and msgrev_no < #{msgrevNo}]]>
+	</select>
+	<select id="senMsgNext" parameterType="map" resultType="int">
+		select min(msgrev_no) from messageView
+		where mem_no = #{memNo}
+		and msg_del = 'N'
+		<if test="keyword!=null and keyword!=''">
+		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
+		</if>
+		and msgrev_no > #{msgrevNo}
+	</select>
+	<select id="countSenMsgNext" parameterType="map" resultType="int">
+		select count(*) from messageView
+		where mem_no = #{memNo}
+		and msg_del = 'N'
+		<if test="keyword!=null and keyword!=''">
+		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
+		</if>
+		and msgrev_no > #{msgrevNo}
+	</select>
+	
 </mapper>
 
 

@@ -181,6 +181,7 @@ public class ConfirmController {
 			confirmVo.setCfFile("N"); 
 		}
 		
+		confirmVo.setCfTmpstorage("N");
 		confirmVo.setCfState(1);
 		
 		int cnt = confirmService.insertDoc(confirmVo, fileList);

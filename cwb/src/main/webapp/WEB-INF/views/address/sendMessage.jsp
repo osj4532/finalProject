@@ -185,7 +185,7 @@
 				$('#mailTitle').focus();
 				event.preventDefault();
 			}
-			opener.location.href="<c:url value='/address/msgList.do'/>";
+			opener.location.href="<c:url value='/message/msgList.do'/>";
 			window.close();
 			
 		});

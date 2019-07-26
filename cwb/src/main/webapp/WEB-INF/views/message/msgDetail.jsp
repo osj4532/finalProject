@@ -39,8 +39,12 @@
 <body>
 	<button id="del" title="삭제"><i class="far fa-trash-alt"></i></button>
 	<button id="re" title="답장"><i class="fas fa-reply"></i></button>
-	<button id="pre" title="이전쪽지"><i class="fas fa-arrow-left"></i></button>
-	<button id="next" title="다음쪽지"><i class="fas fa-arrow-right"></i></button>
+	<c:if test="${!empty pre }">
+		<button id="pre" title="이전쪽지"><i class="fas fa-arrow-left"></i></button>
+	</c:if>
+	<c:if test="${!empty next}">
+		<button id="next" title="다음쪽지"><i class="fas fa-arrow-right"></i></button>
+	</c:if>
 	<div class="msgHead">
 		<p>${title }</p>
 		<p>보낸 시간 ${map['MSG_REGDATE'] }</p>
@@ -64,11 +68,13 @@
 		});
 		
 		$('#pre').click(function(){
-			
+			let keyword = $(opener.document).find('#msgSearch').val();
+			location.href="<c:url value='/message/msgDetail.do'/>?kind="+${param.kind}+"&revNo="+"${pre}";
 		});
 		
 		$('#next').click(function(){
-			
+			let keyword = $(opener.document).find('#msgSearch').val();
+			location.href="<c:url value='/message/msgDetail.do'/>?kind="+${param.kind}+"&revNo="+"${next}";
 		});
 	});
 </script>

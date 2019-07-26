@@ -49,6 +49,7 @@ public class ConfirmServiceImpl implements ConfirmService{
 			}
 		
 		}catch (RuntimeException e) {
+			e.printStackTrace();
 			cnt = -1;
 		}
 		

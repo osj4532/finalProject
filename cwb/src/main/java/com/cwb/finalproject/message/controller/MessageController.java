@@ -73,12 +73,14 @@ public class MessageController {
 	
 	@RequestMapping("/msgDetail.do")
 	public String msgDetail(@RequestParam int kind,
-							@RequestParam int revNo,
-							@RequestParam int msgNo, Model model) {
-		logger.info("쪽지함 상세보기 revNo={}, msgNo={}",revNo, msgNo);
+							@RequestParam int revNo,Model model,
+							HttpSession session) {
+		logger.info("쪽지함 상세보기 revNo={}, kind={}",revNo, kind);
 		Map<String, Object> info = new HashMap<String, Object>();
-		info.put("msgNo",msgNo);
 		info.put("msgrevNo",revNo);
+		
+		int memNo = (Integer)session.getAttribute("memNo");
+		info.put("memNo",memNo);
 		
 		Map<String, Object> map = null;
 		if(kind == 1) {
@@ -87,14 +89,60 @@ public class MessageController {
 				int cnt = messageService.readCheck(revNo);
 				logger.info("수신확인 체크 결과 cnt = {}",cnt);
 			}
+			
+			
+			int count = messageService.countMsgPre(info);
+			logger.info("pre = {}",count);
+			if(count > 0) {
+				int pre = messageService.msgPre(info);
+				model.addAttribute("pre", pre);
+			}
+			
+			count = messageService.countMsgNext(info);
+			logger.info("next = {}",count);
+			if(count > 0) {
+				int next = messageService.msgNext(info);
+				model.addAttribute("next", next);
+			}
+			
 			model.addAttribute("map", map);
 		}else if(kind == 2) {
 			map = messageService.selectByNoSen(info);
 			logger.info("보낸쪽지 확인 map = {}",map);
 			model.addAttribute("map", map);
+			
+			
+			int count = messageService.countSenMsgPre(info);
+			logger.info("pre = {}",count);
+			if(count > 0) {
+				int pre = messageService.senMsgPre(info);
+				model.addAttribute("pre", pre);
+			}
+			
+			count = messageService.countSenMsgNext(info);
+			logger.info("next = {}",count);
+			if(count > 0) {
+				int next = messageService.senMsgNext(info);
+				model.addAttribute("next", next);
+			}
 		}
-		
 		
 		return "message/msgDetail";
 	}
+	
+	@RequestMapping("/revMsgDel.do")
+	@ResponseBody
+	public int revMsgDel(@RequestParam(value = "sel[]") List<Integer> sel, @RequestParam int kind) {
+		logger.info("받은 쪽지함 지우기 체크사이즈 = {}, kind = {}", sel.size(), kind);
+		
+		int cnt = 0;
+		if(kind == 1) {
+			for(int revNo : sel)
+				cnt = messageService.msgRevDel(revNo);
+		}else if(kind == 2) {
+			
+		}
+		return cnt;
+	}
+
 }
