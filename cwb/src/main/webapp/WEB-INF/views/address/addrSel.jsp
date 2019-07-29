@@ -9,7 +9,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
   <link href="<c:url value='/resources/lib/bootstrap/css/bootstrap.min1.css'/>"  rel="stylesheet">
   <style type="text/css">
-  .wraper1{
+  .wraper2{
   	margin: 10px 10px;
   	width: 600px;
   	min-height: 600px;
@@ -171,7 +171,7 @@
 <body>
 
 
-<div class="wraper1">
+<div class="wraper2">
 	<div class="topnav">
 		<div class="header">
 			<span class="title"><i class="fas fa-user-circle"></i>연락처 선택</span>

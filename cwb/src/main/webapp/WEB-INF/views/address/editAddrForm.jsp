@@ -4,7 +4,8 @@
 
 <style>
 .wraper2{
-		margin: 100px auto;
+		margin: 70px auto;
+		margin-bottom: 20px;
 }
 
 .card{
@@ -14,6 +15,7 @@
 
 .card-body{
 	font-size: 1.5em;
+	padding-top: 30px;
 }
 
 /* Making the label break the flow */

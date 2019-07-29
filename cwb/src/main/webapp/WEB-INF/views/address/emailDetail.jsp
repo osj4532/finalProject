@@ -38,7 +38,7 @@
 </style>
 
 <div class="container panel">
-	<div id="wraper1">
+	<div class="wraper2" id="wraper1">
 		<div>
 			<span class="mailLabel">받는 주소</span>
 			<p class="mailsm">${vo.mailSenAddr }</p>

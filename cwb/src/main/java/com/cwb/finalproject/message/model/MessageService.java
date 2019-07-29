@@ -13,7 +13,6 @@ public interface MessageService {
 	public int readCheck(int msgrevNo);
 	public Map<String, Object> selectByNo(Map<String, Object> map);
 	public Map<String, Object> selectByNoSen(Map<String, Object> map);
-	public int msgRevDel(int revNo);
 	
 	public int msgPre(Map<String, Object> map);
 	public int countMsgPre(Map<String, Object> map);
@@ -23,4 +22,13 @@ public interface MessageService {
 	public int countSenMsgPre(Map<String, Object> map);
 	public int senMsgNext(Map<String, Object> map);
 	public int countSenMsgNext(Map<String, Object> map);
+	
+	public String selectMsgDel(int msgrevNo);
+	public String selectMsgRevDel(int msgrevNo);
+	public int msgRevChangeY(int msgrevNo);
+	public int msgChangeY(int msgrevNo);
+	public int selectMsgNo(int msgrevNo);
+	public int deleteMsgRev(int msgrevNo);
+	public int countMsgRev(int msgrevNo);
+	public int deleteMsg(int msgrevNo);
 }

@@ -62,6 +62,16 @@
       return false;
     });
   </script> -->
+<script>
+  function autoResizeDiv(){
+		$('.wraper2').css("min-height",(window.innerHeight-169)+'px');
+	}
+  
+  $(function(){
+	  window.onresize = autoResizeDiv;
+		autoResizeDiv();
+  });
+</script>
 </body>
 
 </html>

@@ -8,7 +8,8 @@
 	.wraper1{
 		overflow: hidden;
 		padding: 20px;
-		padding-top: 100px;
+		padding-bottom:0;
+		margin-top: 70px;
 	}
 
 	.wraper1 .info1, .wraper1 .info2{
@@ -46,7 +47,7 @@
 </style>
 
 <div class="container">
-	<div class="row wraper1">
+	<div class="row wraper1 wraper2">
 		<div class="info1 col-sm-2">
 			<h4>문서 상태</h4>
 			<ul class="list-group">
@@ -112,8 +113,8 @@
 </div>
 
 <form name="pageForm">
-	<input type="text" name="cfState" value="1">
-	<input type="text" name="currentPage" value="1">
+	<input type="hidden" name="cfState" value="1">
+	<input type="hidden" name="currentPage" value="1">
 </form>
 
 <c:import url="../inc/bottom.jsp"></c:import>

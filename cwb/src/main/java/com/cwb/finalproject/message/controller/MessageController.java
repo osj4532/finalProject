@@ -136,12 +136,60 @@ public class MessageController {
 		logger.info("받은 쪽지함 지우기 체크사이즈 = {}, kind = {}", sel.size(), kind);
 		
 		int cnt = 0;
+		
 		if(kind == 1) {
-			for(int revNo : sel)
-				cnt = messageService.msgRevDel(revNo);
+			//받은
+			for(int revNo : sel) {
+				String msgDel = messageService.selectMsgDel(revNo);
+				logger.info("조회 결과 msgDel = {}", msgDel);
+				
+				int msgNo = messageService.selectMsgNo(revNo);
+				
+				if(msgDel.equals("Y")) {
+					//msgrev삭제
+					cnt = messageService.deleteMsgRev(revNo);
+					logger.info("삭제 결과 cnt = {}", cnt);
+				}else {
+					//msgrev update
+					cnt = messageService.msgRevChangeY(revNo);
+					logger.info("업데이트 Y 결과 cnt = {}", cnt);
+				}
+				
+				//revcount 조회 시 0이면 message 삭제
+				int count = messageService.countMsgRev(msgNo);
+				logger.info("개수 조회 결과 count = {}", count);
+				if(count < 1) {
+					int dbDel = messageService.deleteMsg(msgNo);
+					logger.info("db 삭제 결과 cnt = {}", dbDel);
+				}
+			}
 		}else if(kind == 2) {
-			
+			//보낸
+			for(int revNo : sel) {
+				String msgrevDel = messageService.selectMsgRevDel(revNo);
+				logger.info("조회 결과 msgDel = {}", msgrevDel);
+				
+				int msgNo = messageService.selectMsgNo(revNo);
+				
+				if(msgrevDel.equals("Y")) {
+					//msgrev삭제
+					cnt = messageService.deleteMsgRev(revNo);
+					logger.info("삭제 결과 cnt = {}", cnt);
+				}else {
+					//msg update
+					cnt = messageService.msgChangeY(revNo);
+					logger.info("업데이트 Y 결과 cnt = {}", cnt);
+				}
+				//revcount 조회 시 0이면 message 삭제
+				int count = messageService.countMsgRev(msgNo);
+				logger.info("개수 조회 결과 count = {}", count);
+				if(count < 1) {
+					int dbDel = messageService.deleteMsg(msgNo);
+					logger.info("db 삭제 결과 cnt = {}", dbDel);
+				}
+			}
 		}
+		
 		return cnt;
 	}
 

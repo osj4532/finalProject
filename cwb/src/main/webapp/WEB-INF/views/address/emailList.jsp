@@ -28,7 +28,7 @@
 </style>
 
 <div class="container">
-	<div class="panel" id="wraper">
+	<div class="panel wraper2" id="wraper">
 		<div id="mlistHead">
 			<h1>보낸 메일함</h1>
 			<button id="newMail" class="btn btn-success" onclick="sendEmail()">새 메일 쓰기</button>

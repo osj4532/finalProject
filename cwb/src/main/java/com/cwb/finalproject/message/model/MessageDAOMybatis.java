@@ -43,9 +43,6 @@ public class MessageDAOMybatis implements MessageDAO{
 	public Map<String, Object> selectByNoSen(Map<String, Object> map){
 		return sqlSession.selectOne(namespace+"selectByNoSen",map);
 	}
-	public int msgRevDel(int revNo) {
-		return sqlSession.delete(namespace+"msgRevDel",revNo);
-	}
 	public int msgPre(Map<String, Object> map) {
 		return sqlSession.selectOne(namespace+"msgPre",map);
 	}
@@ -69,5 +66,30 @@ public class MessageDAOMybatis implements MessageDAO{
 	}
 	public int countSenMsgNext(Map<String, Object> map) {
 		return sqlSession.selectOne(namespace+"countSenMsgNext",map);
+	}
+
+	public String selectMsgDel(int msgrevNo) {
+		return sqlSession.selectOne(namespace+"selectMsgDel",msgrevNo);
+	}
+	public String selectMsgRevDel(int msgrevNo) {
+		return sqlSession.selectOne(namespace+"selectMsgRevDel",msgrevNo);
+	}
+	public int msgRevChangeY(int msgrevNo) {
+		return sqlSession.update(namespace+"msgRevChangeY",msgrevNo);
+	}
+	public int msgChangeY(int msgrevNo) {
+		return sqlSession.update(namespace+"msgChangeY",msgrevNo);
+	}
+	public int deleteMsgRev(int msgrevNo) {
+		return sqlSession.delete(namespace+"deleteMsgRev",msgrevNo);
+	}
+	public int selectMsgNo(int msgrevNo) {
+		return sqlSession.selectOne(namespace+"selectMsgNo",msgrevNo);
+	}
+	public int countMsgRev(int msgrevNo) {
+		return sqlSession.selectOne(namespace+"countMsgRev",msgrevNo);
+	}
+	public int deleteMsg(int msgrevNo) {
+		return sqlSession.delete(namespace+"deleteMsg",msgrevNo);
 	}
 }
