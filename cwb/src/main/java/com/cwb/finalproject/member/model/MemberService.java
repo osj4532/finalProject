@@ -21,4 +21,5 @@ public interface MemberService {
 	
 	public List<Map<String, Object>> selectOrSearchEmail(Map<String, Object> map);
 	public int countEmail(Map<String, Object> map);
+	
 }

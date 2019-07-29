@@ -4,9 +4,10 @@
 <style type="text/css">
 	#wraper1{
 		overflow: hidden;
-		margin-top:90px;
+		margin-top:70px;
 		border: 1px solid white;
 		border-radius: 10px 10px 10px 10px;
+		margin-bottom: 8px;
 	}
 	
 	
@@ -41,12 +42,16 @@
 	form[name=signFrm] label{
 		font-size: 2.0em;
 	}
+	
+	#edit{
+		margin-top:-5px;
+	}
 </style>
 
 </head>
 <body>
 <div class="container">
-	<div id="wraper1" class="center-block">
+	<div id="wraper1" class="center-block wraper2">
 		<h2>사인 이미지 미리보기</h2>
 		<div id="info1" >
 			<img id="image"

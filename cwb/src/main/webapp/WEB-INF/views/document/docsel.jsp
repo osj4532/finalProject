@@ -46,6 +46,7 @@ ul, #docType {
 	overflow: hidden;
 	margin: 0 auto;
 	margin-top: 80px;
+	min-height: 605px;
 }
 
 #selInfo1, #selInfo2{
@@ -64,13 +65,14 @@ tabel th{
 	margin-top: 5px;
 }
 
-
+.btnDiv{
+	min-height: 100px;
+}
 </style>
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
-</head>
-<body>
 
-<div class="container panel">
+
+<div class="container panel wraper2 mar">
 	<form name="frm1" action="<c:url value='/document/docSel.do'/>" method="post">
 	<div class="row" id="wraper1">
 		
@@ -140,8 +142,10 @@ tabel th{
 			</div>
 		</div>
 		<br>
-		<input type="submit" class="btn btn-primary btn-lg" value="확인">
-		<a class="btn btn-danger btn-lg" href="<c:url value='/document/docSel.do'/>">취소</a>
+		<div class="btnDiv">
+			<input type="submit" class="btn btn-primary btn-lg" value="확인">
+			<a class="btn btn-danger btn-lg" href="<c:url value='/document/docSel.do'/>">취소</a>
+		</div>
 	</form>
 </div>
 

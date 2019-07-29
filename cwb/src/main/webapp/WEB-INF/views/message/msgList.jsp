@@ -19,7 +19,7 @@
 	.msgNav, .msgList{
 		float: left;
 		margin-left: 10px;
-		min-height: 500px;
+		margin-top: -2px;
 	}
 	
 	.msgNav{
@@ -56,12 +56,13 @@
 	.box1{
 		float: right;
 	}
+	
 </style>
 
 <div class="container">
 	<div class="wraper2 panel">
 		
-		<div class="msgNav">
+		<div class="wraper2 msgNav">
 		
 			<div class="align-center newBtn">
 				<button id="new" class="btn btn-info">쪽지 쓰기</button>
@@ -72,7 +73,7 @@
 				<li class="list-group-item">보낸 쪽지함</li>
 			</ul>
 		</div>
-		<div class="msgList">
+		<div class="wraper2 msgList">
 			<div class="newBtn">
 				<button id="del" title="삭제하기" class="btn btn-danger btn-sm"><i class="far fa-trash-alt"></i></button>
 				<button id="re" title="새로고침" class="btn btn-warning btn-sm"><i class="fas fa-redo-alt"></i></button>
@@ -93,9 +94,11 @@
 	</div>
 </div>
 <input type="hidden" name="kind" value="1">
-<input type="text" name="currentPage" value="1">
+<input type="hidden" name="currentPage" value="1">
 <%@ include file="../inc/bottom.jsp"%>
 <script>
+	
+
 	$(function(){
 		let sel = new Array();
 		
@@ -109,6 +112,12 @@
 					sel.push($(item).val());
 				}
 			})
+			
+			if(sel.length == 0){
+				alert("삭제할 쪽지를 선택해주세요.");
+				return false;
+			}
+			
 			let kind = $('input[name=kind]').val();
 			
 			$.ajax({
@@ -120,6 +129,13 @@
 				success:function(data){
 					if(data > 0){
 						alert("쪽지 삭제 성공!");
+						let keyword = $('#msgSearch').val();
+						let curr = $('input[name=currentPage]').val();
+						
+						console.log("삭제");
+						showList(kind,keyword,1);
+						
+						sel = [];
 					}else{
 						alert("쪽지 삭제 실패!");
 					}
@@ -128,17 +144,7 @@
 					alert(status+" : "+error);
 				}
 			});
-			let keyword = $('#msgSearch').val();
-			let curr = $('input[name=currentPage]').val();
 			
-			//tr이 하나 밖에 없으면 현재 페이지에서 -1한다.
-			if($('table tr').length == 1){
-				curr = curr - 1;
-			}
-			
-			showList(kind,keyword,curr);
-			
-			sel = [];
 		});
 		
 		$('#msgSearch').keyup(function(){
@@ -176,6 +182,7 @@
 	});
 	
 	function showList(kind, keyword, currentPage){
+		console.log("쪽지 리스트 보여주기");
 		$.ajax({
 			url:"<c:url value='/message/showMsgList.do'/>",
 			type:"post",

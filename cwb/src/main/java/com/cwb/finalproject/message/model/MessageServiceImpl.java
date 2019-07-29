@@ -61,9 +61,6 @@ public class MessageServiceImpl implements MessageService{
 	public Map<String, Object> selectByNoSen(Map<String, Object> map){
 		return messageDAO.selectByNoSen(map);
 	}
-	public int msgRevDel(int revNo) {
-		return messageDAO.msgRevDel(revNo);
-	}
 	public int msgPre(Map<String, Object> map) {
 		return messageDAO.msgPre(map);
 	}
@@ -87,5 +84,30 @@ public class MessageServiceImpl implements MessageService{
 	}
 	public int countSenMsgNext(Map<String, Object> map) {
 		return messageDAO.countSenMsgNext(map);
+	}
+	
+	public String selectMsgDel(int msgrevNo) {
+		return messageDAO.selectMsgDel(msgrevNo);
+	}
+	public String selectMsgRevDel(int msgrevNo) {
+		return messageDAO.selectMsgRevDel(msgrevNo);
+	}
+	public int msgRevChangeY(int msgrevNo) {
+		return messageDAO.msgRevChangeY(msgrevNo);
+	}
+	public int msgChangeY(int msgrevNo) {
+		return messageDAO.msgChangeY(msgrevNo);
+	}
+	public int deleteMsgRev(int msgrevNo) {
+		return messageDAO.deleteMsgRev(msgrevNo);
+	}
+	public int selectMsgNo(int msgrevNo) {
+		return messageDAO.selectMsgNo(msgrevNo);
+	}
+	public int countMsgRev(int msgrevNo) {
+		return messageDAO.countMsgRev(msgrevNo);
+	}
+	public int deleteMsg(int msgrevNo) {
+		return messageDAO.deleteMsg(msgrevNo);
 	}
 }

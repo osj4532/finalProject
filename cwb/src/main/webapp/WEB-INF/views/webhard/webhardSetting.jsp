@@ -1,100 +1,66 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="../inc/top.jsp"/>
+<script type="text/javascript" src="<c:url value='/resources/lib/bootstrap/js/bootstrap.js'/>"></script>
+<style>
+#Main {
+	min-height: 856px;
+}
 
-  <style>
-  body {
-    min-width: 520px;
-  }
-  .column {
-    width: 170px;
-    float: left;
-    padding-bottom: 100px;
-  }
-  .portlet {
-    margin: 0 1em 1em 0;
-    padding: 0.3em;
-  }
-  .portlet-header {
-    padding: 0.2em 0.3em;
-    margin-bottom: 0.5em;
-    position: relative;
-  }
-  .portlet-toggle {
-    position: absolute;
-    top: 50%;
-    right: 0;
-    margin-top: -8px;
-  }
-  .portlet-content {
-    padding: 0.4em;
-  }
-  .portlet-placeholder {
-    border: 1px dotted black;
-    margin: 0 1em 1em 0;
-    height: 50px;
-  }
-  </style>
-  
-  <script>
-  $( function() {
-    $( ".column" ).sortable({
-      connectWith: ".column",
-      handle: ".portlet-header",
-      cancel: ".portlet-toggle",
-      placeholder: "portlet-placeholder ui-corner-all"
-    });
- 
-    $( ".portlet" )
-      .addClass( "ui-widget ui-widget-content ui-helper-clearfix ui-corner-all" )
-      .find( ".portlet-header" )
-        .addClass( "ui-widget-header ui-corner-all" )
-        .prepend( "<span class='ui-icon ui-icon-minusthick portlet-toggle'></span>");
- 
-    $( ".portlet-toggle" ).on( "click", function() {
-      var icon = $( this );
-      icon.toggleClass( "ui-icon-minusthick ui-icon-plusthick" );
-      icon.closest( ".portlet" ).find( ".portlet-content" ).toggle();
-    });
-  } );
-  </script>
-<body>
- 
-<div class="column">
- 
-  <div class="portlet">
-    <div class="portlet-header">Feeds</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
+#ulMenu li {
+	padding: 10px;
+	margin-top: 50px;
+	min-width: 185px;
+}
+
+#Menu {
+	min-height: 775px;
+	background-color: white;
+}
+
+#Main>h1 {
+	margin-top: 70px;
+}
+
+#title h2 {
+	text-align: center;
+	background-color: white;
+}
+
+#content {
+	min-height: 775px;
+	background-color: white;
+	min-width: 900px;
+}
+#editWebhard{
+	margin-top: 500px;
+}
+</style>
+<div id="Main" class="container">
+	<h1>웹 하 드</h1>
+	<div class="row">
+		<div id="Menu" class="col-md-2">
+			<div class="list-group" id="list-tab" role="tablist">
+				<a class="list-group-item list-group-item-action active" id="list-home-list" data-toggle="list" href="#list-home" role="tab" aria-controls="home">Home</a>
+			      <a class="list-group-item list-group-item-action" id="list-profile-list" data-toggle="list" href="#list-profile" role="tab" aria-controls="profile">Profile</a>
+			      <a class="list-group-item list-group-item-action" id="list-messages-list" data-toggle="list" href="#list-messages" role="tab" aria-controls="messages">Messages</a>
+			      <a class="list-group-item list-group-item-action" id="list-settings-list" data-toggle="list" href="#list-settings" role="tab" aria-controls="settings">Settings</a>
+			    </div>
+		</div>
+		
+		<div id="content" class="col-md-8">
+			<div id="title" class="col-md-8"></div>
+			<div class="col-md-8">
+    <div class="tab-content" id="nav-tabContent">
+      <div class="tab-pane fade show active" id="list-home" role="tabpanel" aria-labelledby="list-home-list">...</div>
+      <div class="tab-pane fade" id="list-profile" role="tabpanel" aria-labelledby="list-profile-list">...</div>
+      <div class="tab-pane fade" id="list-messages" role="tabpanel" aria-labelledby="list-messages-list">...</div>
+      <div class="tab-pane fade" id="list-settings" role="tabpanel" aria-labelledby="list-settings-list">...</div>
+    </div>
   </div>
- 
-  <div class="portlet">
-    <div class="portlet-header">News</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
- 
+			<div id="page"></div>
+		</div>
+	</div>
 </div>
- 
-<div class="column">
- 
-  <div class="portlet">
-    <div class="portlet-header">Shopping</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
- 
-</div>
- 
-<div class="column">
- 
-  <div class="portlet">
-    <div class="portlet-header">Links</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
- 
-  <div class="portlet">
-    <div class="portlet-header">Images</div>
-    <div class="portlet-content">Lorem ipsum dolor sit amet, consectetuer adipiscing elit</div>
-  </div>
- 
-</div>
- 
- 
-</body>
 <c:import url="../inc/bottom.jsp"/>

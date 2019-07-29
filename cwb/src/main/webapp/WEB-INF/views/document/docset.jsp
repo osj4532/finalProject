@@ -10,9 +10,8 @@
       #wraper1{
       	background: lightgray;
       	padding: 20px;
-		min-height:750px;
 		overflow: hidden;
-		padding-top: 100px;
+		padding-top: 70px;
       }
       
       .content{
@@ -33,14 +32,14 @@
 	
 	#typeDiv #tDiv1, #typeDiv #tDiv3{
 		float:left;
-		width:29%;
+		width:20%;
 		border-right: 1px solid silver;
 		min-height: 600px;
 	}
 	
 	#typeDiv #tDiv4{
 		float:left;
-		width:32%;
+		width:41%;
 		border-right: 1px solid silver;
 		min-height: 600px;
 	}
@@ -123,7 +122,7 @@
 
 <body>
     <div class="container" id="wraper1">
-      <div class="row">
+      <div class="row wraper2">
         <div class="col panel">
           <h1>문서관리</h1>
             <ul class="nav nav-tabs">

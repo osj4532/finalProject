@@ -108,7 +108,7 @@
 				join member MB
 				on M.MEM_NO = MB.MEM_NO
 				and MR.msgrev_no = #{msgrevNo}
-				and msg_del = 'N'
+				and msgRev_del = 'N'
 	</select>
 	
 	<select id="selectByNoSen" parameterType="map" resultType="map">
@@ -121,15 +121,10 @@
 				and msg_del = 'N'
 	</select>
 	
-	<delete id="msgRevDel" parameterType="int">
-		delete from msgrev
-		where msgrev_no = #{revNo}
-	</delete>
-	
 	<select id="msgPre" parameterType="map" resultType="int">
 		select max(msgrev_no) from messageView
 		where rev_mem = #{memNo}
-		and msg_del = 'N'
+		and msgRev_del = 'N'
 		<if test="keyword!=null and keyword!=''">
 		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
 		</if>
@@ -138,7 +133,7 @@
 	<select id="countMsgPre" parameterType="map" resultType="int">
 		select count(*) from messageView
 		where rev_mem = #{memNo}
-		and msg_del = 'N'
+		and msgRev_del = 'N'
 		<if test="keyword!=null and keyword!=''">
 		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
 		</if>
@@ -147,7 +142,7 @@
 	<select id="msgNext" parameterType="map" resultType="int">
 		select min(msgrev_no) from messageView
 		where rev_mem = #{memNo}
-		and msg_del = 'N'
+		and msgRev_del = 'N'
 		<if test="keyword!=null and keyword!=''">
 		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
 		</if>
@@ -156,7 +151,7 @@
 	<select id="countMsgNext" parameterType="map" resultType="int">
 		select count(*) from messageView
 		where rev_mem = #{memNo}
-		and msg_del = 'N'
+		and msgRev_del = 'N'
 		<if test="keyword!=null and keyword!=''">
 		and mem_id || msg_title || msg_content like '%' || #{keyword} || '%'
 		</if>
@@ -200,6 +195,49 @@
 		and msgrev_no > #{msgrevNo}
 	</select>
 	
+	<select id="selectMsgDel" parameterType="int" resultType="String">
+		select msg_del from messageView
+		where msgrev_no = #{msgrev_no}
+	</select>
+	
+	<select id="selectMsgRevDel" parameterType="int" resultType="String">
+		select msgrev_del from messageView
+		where msgrev_no = #{msgrev_no}
+	</select>
+	
+	<update id="msgRevChangeY" parameterType="int">
+		update msgrev
+		set msgrev_del = 'Y'
+		where msgrev_no = #{msgrevNo}
+	</update>
+	
+	<update id="msgChangeY" parameterType="int">
+		update message
+		set msg_Del = 'Y'
+		where msg_no = (
+		select msg_no from messageview
+		where msgrev_no = #{msgrevNo})
+	</update>
+	
+	<delete id="deleteMsgRev" parameterType="int">
+		delete from msgrev
+		where msgrev_no = #{msgrevNo}
+	</delete>
+	
+	<select id="countMsgRev" parameterType="int" resultType="int">
+		select count(*) from msgrev
+		where msg_no = #{msgNo}
+	</select>
+	
+	<select id="selectMsgNo" parameterType="int" resultType="int">
+		select msg_no from messageview
+		where msgrev_no = #{msgrevNo}
+	</select>
+	
+	<delete id="deleteMsg" parameterType="int">
+		delete from message
+		where msg_no = #{msgNo}
+	</delete>
 </mapper>
 
 

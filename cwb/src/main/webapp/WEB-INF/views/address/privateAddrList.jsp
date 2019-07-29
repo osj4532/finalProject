@@ -3,7 +3,7 @@
 <%@ include file="../inc/top.jsp"%>
 <style>
 	.wraper2{
-		margin-top: 100px;
+		margin-top: 70px;
 	}
   
   	.container-1{

@@ -11,6 +11,8 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,13 +30,14 @@ public class MemberServiceImpl implements MemberService{
 	public Map<String, Object> selectByNo(int memNo){
 		return memberDAO.selectByNo(memNo);
 	}
+	
 	@Override
 	public int loginCheck(String memId, String memPwd) {
 		String dbPwd = memberDAO.selectForLogin(memId);
 		try {
 			aes256Util = new AES256Util(AES256Util.KEY);
-			//dbPwd = aes256Util.aesEncode(dbPwd);
 			dbPwd = aes256Util.aesDecode(dbPwd);
+			//dbPwd = aes256Util.aesEncode(dbPwd);
 		} catch (UnsupportedEncodingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

@@ -244,4 +244,41 @@
 	<select id="selectNull" resultType="int" parameterType="int">
 		select count(*) from commute where com_indate is null and mem_no = #{memNo}
 	</select>
+	
+	<select id="selectAllWorkDay" resultType="int">
+		SELECT   MAX(X.YY) AS YEAR
+       , MAX(DECODE(X.MM, '01', X.DAY_CNT)) AS "01"
+       , MAX(DECODE(X.MM, '02', X.DAY_CNT)) AS "02"
+       , MAX(DECODE(X.MM, '03', X.DAY_CNT)) AS "03"
+       , MAX(DECODE(X.MM, '04', X.DAY_CNT)) AS "04"
+       , MAX(DECODE(X.MM, '05', X.DAY_CNT)) AS "05"
+       , MAX(DECODE(X.MM, '06', X.DAY_CNT)) AS "06"
+       , MAX(DECODE(X.MM, '07', X.DAY_CNT)) AS "07"
+       , MAX(DECODE(X.MM, '08', X.DAY_CNT)) AS "08"
+       , MAX(DECODE(X.MM, '09', X.DAY_CNT)) AS "09"
+       , MAX(DECODE(X.MM, '10', X.DAY_CNT)) AS "10"
+       , MAX(DECODE(X.MM, '11', X.DAY_CNT)) AS "11"
+       , MAX(DECODE(X.MM, '12', X.DAY_CNT)) AS "12"
+  FROM (
+ SELECT A.YY, A.MM, COUNT(1) AS DAY_CNT
+   FROM (SELECT TO_CHAR(SDT + LEVEL - 1, 'YYYY')     YY
+              , TO_CHAR(SDT + LEVEL - 1, 'YYYYMM')   YM
+              , TO_CHAR(SDT + LEVEL - 1, 'MM')       MM
+              , TO_CHAR(SDT + LEVEL - 1, 'YYYYMMDD') DT
+              , TO_CHAR(SDT + LEVEL - 1, 'D') D
+           FROM (SELECT TO_DATE('20190101', 'YYYYMMDD') SDT
+                      , TO_DATE('20191231', 'YYYYMMDD') EDT
+                   FROM DUAL)
+                   <![CDATA[
+         CONNECT BY LEVEL <= EDT - SDT + 1
+         ]]>
+         ) A
+  WHERE A.D NOT IN ('1', '7') --1: 일, 2:월, 3:화, 4:수, 5:목, 6:금, 7:토 
+  GROUP BY A.YY, A.YM, A.MM
+  ORDER BY A.YM
+)X
+	</select>
+	
+	
+	
 </mapper>

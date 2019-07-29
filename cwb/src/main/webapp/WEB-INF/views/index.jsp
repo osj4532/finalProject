@@ -63,11 +63,11 @@
                   <canvas id="serverstatus01" height="120" width="120"></canvas>
                   <script>
                     var doughnutData = [{
-                        value: 70,
+                        value: 200-25,
                         color: "#FF6B6B"
                       },
                       {
-                        value: 30,
+                        value: 25,
                         color: "#fdfdfd"
                       }
                     ];
@@ -78,7 +78,8 @@
                       <p>Usage<br/>Increase:</p>
                     </div>
                     <div class="col-sm-6 col-xs-6">
-                      <h2>21%</h2>
+                      <c:set var="percent" value="${(200-25)/200*100}"></c:set>
+                      <h2>${percent}%</h2>
                     </div>
                   </div>
                 </div>
