@@ -8,6 +8,9 @@ public class SchedulerVO {
 	private String scdTitle; /* 스케줄내용 */
 	private String scdContent; /* 스케줄내용 */
 	
+	private boolean isday;
+	
+	
 	public String getScdTitle() {
 		return scdTitle;
 	}
@@ -16,7 +19,6 @@ public class SchedulerVO {
 		this.scdTitle = scdTitle;
 	}
 
-	private boolean isday;
 
 	public int getScdNo() {
 		return scdNo;
@@ -69,8 +71,9 @@ public class SchedulerVO {
 	@Override
 	public String toString() {
 		return "SchedulerVO [scdNo=" + scdNo + ", memNo=" + memNo + ", scdStart=" + scdStart + ", scdEnd=" + scdEnd
-				+ ", scdContent=" + scdContent + ", isday=" + isday + "]";
+				+ ", scdTitle=" + scdTitle + ", scdContent=" + scdContent + ", isday=" + isday + "]";
 	}
+
 
 	
 	
