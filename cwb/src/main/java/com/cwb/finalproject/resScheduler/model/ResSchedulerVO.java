@@ -6,10 +6,19 @@ public class ResSchedulerVO {
 	private int resNo;  /* 자원번호 */
 	private String useRegdate;  /* 사용날짜 */
 	private String returnRegdate; /* 반납날짜 */
+	private String reservTitle;  /* 예약내용 */
 	private String reservContent;  /* 예약내용 */
 	private String apprFlag; /* 승인여부 */
 	
 	private boolean isday;
+
+	public String getReservTitle() {
+		return reservTitle;
+	}
+
+	public void setReservTitle(String reservTitle) {
+		this.reservTitle = reservTitle;
+	}
 
 	public int getReservNo() {
 		return reservNo;

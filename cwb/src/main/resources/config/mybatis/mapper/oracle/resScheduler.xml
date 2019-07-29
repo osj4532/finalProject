@@ -12,7 +12,7 @@
 		use_regdate,return_regdate,reserv_content,appr_flag)
 values(#{reservNo},#{memNo},#{resNo},
 to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS'),to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS')
-		,#{reservContent},#{apprFlag})
+		,#{reservTitle},#{reservContent},#{apprFlag})
 	</insert>
 	
 	
@@ -23,7 +23,7 @@ to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS'),to_date(#{returnRegdate},'YYYY/MM
 		insert into resschedule(reserv_no,mem_no,res_no,
 		use_regdate,return_regdate,reserv_content,appr_flag)
 values(#{reservNo},#{memNo},#{resNo},
-#{useRegdate},#{returnRegdate},#{reservContent},#{apprFlag})
+#{useRegdate},#{returnRegdate},#{reservTitle},#{reservContent},#{apprFlag})
 	</insert>
 	<select id="selectResScdByResNo" parameterType="int" resultType="resSchedulerVO">
 			select * from resschedule

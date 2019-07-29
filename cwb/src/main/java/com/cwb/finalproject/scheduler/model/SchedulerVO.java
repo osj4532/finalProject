@@ -5,8 +5,17 @@ public class SchedulerVO {
 	private int memNo;/* 사원번호 */
 	private String scdStart; /* 시작날짜 */
 	private String scdEnd; /* 끝날짜 */
+	private String scdTitle; /* 스케줄내용 */
 	private String scdContent; /* 스케줄내용 */
 	
+	public String getScdTitle() {
+		return scdTitle;
+	}
+
+	public void setScdTitle(String scdTitle) {
+		this.scdTitle = scdTitle;
+	}
+
 	private boolean isday;
 
 	public int getScdNo() {
