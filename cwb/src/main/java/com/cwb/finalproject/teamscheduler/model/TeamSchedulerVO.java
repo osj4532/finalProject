@@ -63,7 +63,8 @@ public class TeamSchedulerVO {
 	@Override
 	public String toString() {
 		return "TeamSchedulerVO [tscdNo=" + tscdNo + ", memNo=" + memNo + ", deptNo=" + deptNo + ", tscdStartdate="
-				+ tscdStartdate + ", tscdEnddate=" + tscdEnddate + ", tscdContent=" + tscdContent + "]";
+				+ tscdStartdate + ", tscdEnddate=" + tscdEnddate + ", tscdTitle=" + tscdTitle + ", tscdContent="
+				+ tscdContent + ", isday=" + isday + "]";
 	}
-	
+ 	
 }

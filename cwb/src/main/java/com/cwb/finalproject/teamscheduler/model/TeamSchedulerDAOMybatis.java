@@ -44,10 +44,9 @@ public class TeamSchedulerDAOMybatis implements TeamSchedulerDAO{
 
 	@Override
 	public int updateTeamScdContent(TeamSchedulerVO teamSchedulerVo) {
-		// TODO Auto-generated method stub
-		return 0;
+		return sqlsession.update(namespace+"updateTeamScdContent", teamSchedulerVo);
 	}
-
+ 
 	
 	
 }

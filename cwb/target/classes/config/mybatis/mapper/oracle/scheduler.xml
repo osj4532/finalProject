@@ -50,7 +50,7 @@ to_date(#{scdStart},'YYYY/MM/DD HH24:MI:SS'),to_date(#{scdEnd},'YYYY/MM/DD HH24:
 	</update>
 	<update id="updateUserScdContent" parameterType="schedulerVo">
 		update schedule
-		set scd_content=#{scdContent} 
+		set scd_content=#{scdContent},scd_title=#{scdTitle} 
 		where scd_no=#{scdNo}
 	</update> 
 </mapper>

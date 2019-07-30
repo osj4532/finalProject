@@ -39,7 +39,7 @@
 
 		this.element = $(element);
 		this.language = options.language || this.element.data('date-language') || "en";
-		this.language = this.language in dates ? this.language : "en";
+		this.language = this.language in dates ? this.language : "ko";
 		this.isRTL = dates[this.language].rtl || ($('body').css("direction") == 'rtl');
 		this.formatType = options.formatType || this.element.data('format-type') || 'standard';
 		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || dates[this.language].format || DPGlobal.getDefaultFormat(this.formatType, 'input'), this.formatType);
@@ -498,7 +498,7 @@
 			this.picker.find('.datetimepicker-days thead th:eq(1)')
 						.text(dates[this.language].months[month]+' '+year);
 				if (this.formatViewType == "time") {
-						var hourConverted = hours % 12 ? hours % 12 : 12;
+						var hourConverted = hours % 12 ? hours % 12 : 12; 
 						var hoursDisplay = (hourConverted < 10 ? '0' : '') + hourConverted;
 						var minutesDisplay = (minutes < 10 ? '0' : '') + minutes;
 						var meridianDisplay = dates[this.language].meridiem[hours < 12 ? 0 : 1];
@@ -506,12 +506,12 @@
 								.text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
 						this.picker.find('.datetimepicker-minutes thead th:eq(1)')
 								.text(hoursDisplay + ':' + minutesDisplay + ' ' + meridianDisplay.toUpperCase());
-				} else {
+				} else {   
 						this.picker.find('.datetimepicker-hours thead th:eq(1)')
 								.text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);
 						this.picker.find('.datetimepicker-minutes thead th:eq(1)')
 								.text(dayMonth + ' ' + dates[this.language].months[month] + ' ' + year);		        
-				}
+				} 
 				this.picker.find('tfoot th.today')
 						.text(dates[this.language].today)
 						.toggle(this.todayBtn !== false);
@@ -574,19 +574,19 @@
 								if (this.showMeridian && dates[this.language].meridiem.length == 2) {
 										meridian = (i<12?dates[this.language].meridiem[0]:dates[this.language].meridiem[1]);
 										if (meridian != meridianOld) {
-												if (meridianOld != '') {
+												if (meridianOld != '') { 
 														html.push('</fieldset>');
 												}
-												html.push('<fieldset class="hour"><legend>'+meridian.toUpperCase()+'</legend>');
-										}
+												html.push('<fieldset class="hour"><legend>'+' '+meridian.toUpperCase()+'</legend>');
+										} 
 										meridianOld = meridian;
 										txt = (i%12?i%12:12);
-										html.push('<span class="hour'+clsName+' hour_'+(i<12?'am':'pm')+'">'+txt+'</span>');
+										html.push('<span class="hour'+clsName+' hour_'+(" "+i<12?'am':'pm')+'"> '+txt+' </span>');
 										if (i == 23) {
 												html.push('</fieldset>');
 										}
 								} else {
-										txt = i+':00';
+										txt = " "+i+':00 ';
 										html.push('<span class="hour'+clsName+'">'+txt+'</span>');
 								}
 			}
@@ -1219,7 +1219,7 @@
 		en: {
 			days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
 			daysShort: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-			daysMin: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa", "Su"],
+			daysMin: ["일", "월", "화", "수", "목", "금", "토", "일"],
 			months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
 			monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
 			meridiem: ["am", "pm"],
