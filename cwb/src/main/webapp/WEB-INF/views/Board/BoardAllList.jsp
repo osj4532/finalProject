@@ -21,6 +21,24 @@ $(function(){
 		//alert($(this).val());      
 		$("#boardlistAdd").html($(this).val()+" 등록 ");
 	});  
+	
+	$('#EditListForm').submit(function(){
+		var info=$('#EditBdlistName').val();
+		if(info==''){   
+			$(".editinfo").show();    
+			event.preventDefault();
+		} 
+	});
+	
+	$('form[name=boardListAdd]').submit(function(){
+		var info=$('#addBdlistName').val();
+		if(info==''){ 
+			$(".addinfo").show();  
+			event.preventDefault();
+		} 
+	});
+	
+	
 });
 
 var myNo=0; 
@@ -77,10 +95,6 @@ $.bdlistEdit=function(bdlistNo){
 					}  
 				}); 
 				
-				
-				
- 
-				 
 				       
 			}, 
 			error : function(xhr, err) { 
@@ -123,9 +137,9 @@ function delBdList(bdlistNo){
 								<input type="text" class="form-control" name="bdlistName"
 									id="addBdlistName"
 									placeholder="7자 이하 입력"> <span 
-									class="help-block" >정확히 입력하세요.</span>
+									class="help-block addinfo" >입력 해주세요!</span>
 							</div>
-						</div> 
+						</div>  
 						<div class="form-group">
 							<label class="col-sm-2 col-sm-2 control-label">댓글 가능 게시판</label>
 							<div class="col-sm-3"> 
@@ -195,6 +209,7 @@ function delBdList(bdlistNo){
 					<form class="form-horizontal style-form" method="get">
 						<div class="form-group">
 						</div>  
+						<c:if test="${!empty bdLlist}">
 						<c:forEach var="bLlistVo" items="${bdLlist}"> 
 						<div class="form-group mouseOver" onclick="$.bdlistEdit(${bLlistVo.bdlistNo})"> 
 						<label class="col-sm-9 control-label"> ${bLlistVo.bdlistName} </label>
@@ -204,6 +219,15 @@ function delBdList(bdlistNo){
 							</div>
 						</div> 
 						 </c:forEach>
+						 </c:if>	 
+						 <c:if test="${empty bdLlist}">
+						 	<div class="form-group" >  
+								<label class="col-sm-9 control-label"><b>등록한 게시판이 없습니다.</b></label>
+								<div class="col-sm-3"> 
+							</div>
+							</div>   
+						 </c:if>
+					
 					</form> 
 					
 				</div>
@@ -223,8 +247,9 @@ function delBdList(bdlistNo){
 						<label class="col-sm-4 col-sm-4 control-label">게시판 이름</label>
 							<div class="col-sm-3">
 								<input type="text" class="form-control" name="bdlistName"
+									id="EditBdlistName"
 									placeholder="수정 게시판 클릭"> <span  
-									class="help-block" >정확히 입력하세요.</span>
+									class="help-block editinfo" >입력 해주세요.</span>
 							</div>
 						</div> 
 						<div class="form-group">

@@ -267,7 +267,7 @@ element.style {
 					scd_id = $.gritter.add({ 
 				            title: '일정 : '+event.title 
 				            +' <br> 시간 : '+mytime,
-				            text: '상세 일정 : '+content
+				            text: '<h6>상세 일정</h6>'+content
 					});         
 				}, 
 				eventMouseout:function( event, jsEvent, view ) { 

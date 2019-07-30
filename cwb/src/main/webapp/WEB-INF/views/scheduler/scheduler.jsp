@@ -129,6 +129,8 @@ element.style {
 				eventMouseover:function( event, jsEvent, view ) { 
 					var etime =event.start.format();
 					var mytime = "";
+					var content = event.content;  
+					content = content.replace(/\n/g, "<br>");
 					if(etime.length==10){ 
 						estart=event.start.format();
 						eend=event.end.format(); 
@@ -145,8 +147,8 @@ element.style {
 					scd_id = $.gritter.add({ 
 				            title: '일정 : '+event.title 
 				            +' <br> 시간 : '+mytime,
-				            text: '상세 일정 : '+event.content
-				        });     
+				            text: '<h6>상세 일정</h6>'+content
+				        });        
 				}, 
 				eventMouseout:function( event, jsEvent, view ) { 
 					$.gritter.remove(scd_id);  
@@ -422,11 +424,10 @@ element.style {
 			</div>  
    <div class="form-group">   
 			<label class="col-sm-3 col-sm-3 control-label">내용</label>
-				<div class="col-sm-6">
-					<input type="text" class="form-control"
-						placeholder="일정 내용 입력" id="contentinfo"> 
+				<div class="col-sm-6"> 
+				 <textarea class="form-control " placeholder="일정 내용 입력" id="contentinfo" name="comment" ></textarea>
 				</div>
-			</div>  
+			</div>   
 			
 	<div class="form-group">
                <label class="control-label col-md-3">일정 시간</label>
