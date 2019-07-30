@@ -7,8 +7,15 @@ public class TeamSchedulerVO {
 	private int deptNo;
 	private String tscdStartdate;
 	private String tscdEnddate;
+	private String tscdTitle;
 	private String tscdContent;
 	
+	public String getTscdTitle() {
+		return tscdTitle;
+	}
+	public void setTscdTitle(String tscdTitle) {
+		this.tscdTitle = tscdTitle;
+	}
 	private boolean isday;
 	
 	public boolean isIsday() {

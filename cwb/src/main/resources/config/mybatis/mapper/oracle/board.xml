@@ -3,8 +3,76 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="config.mybatis.mapper.oracle.board">
-
 	
+	<insert id="boardListInsert" parameterType="boardListVo">
+		<selectKey order="BEFORE" keyProperty="bdlistNo" resultType="int">
+			select BOARDLIST_SEQ.nextval from dual
+		</selectKey>
+		insert into boardlist
+		values(#{bdlistNo},#{bdlistName},
+		<if test="bdlistRe!=null">
+			'Y'
+		</if>
+		<if test="bdlistRe==null">
+			'N'
+		</if>
+		,
+		<if test="bdlistUp!=null">
+			'Y'
+		</if>
+		<if test="bdlistUp==null">
+			'N'
+		</if> 
+		,#{ranksNo},
+		<if test="bdlistRc!=null">
+			'Y'
+		</if> 
+		<if test="bdlistRc==null">
+			'N'
+		</if>
+		,sysdate)
+	</insert>
+
+	<select id="selectBoardList" resultType="boardlistVo">
+		select * from boardlist order by bdlist_regdate 
+	</select>
+	
+	<delete id="delectBoardList" parameterType="int">
+		delete from boardlist
+		where bdlist_No=#{bdlistNo} 
+	</delete>
+	
+	<select id="selectBoardListByNo" parameterType="int" resultType="boardlistVo">
+		select * from boardlist 
+		where bdlist_No=#{bdlistNo}
+	</select>
+	
+	<update id="updateBoardList" parameterType="boardlistVo" >
+		update boardlist
+		set bdlist_name=#{bdlistName},bdlist_re=
+		<if test="bdlistRe!=null">
+			'Y'
+		</if>
+		<if test="bdlistRe==null">
+			'N'
+		</if>
+		,bdlist_up=
+		<if test="bdlistUp!=null">
+			'Y'
+		</if>
+		<if test="bdlistUp==null">
+			'N'
+		</if> 
+		,ranks_no=#{ranksNo},bdlist_rc=
+		<if test="bdlistRc!=null">
+			'Y'
+		</if> 
+		<if test="bdlistRc==null">
+			'N'
+		</if>
+		where bdlist_no =#{bdlistNo}
+	</update>
+	 
 </mapper>
 
 

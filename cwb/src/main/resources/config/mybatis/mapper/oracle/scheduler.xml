@@ -11,17 +11,17 @@
 		insert into schedule
 		values(#{scdNo},#{memNo},
 to_date(#{scdStart},'YYYY/MM/DD HH24:MI:SS'),to_date(#{scdEnd},'YYYY/MM/DD HH24:MI:SS')
-		,#{scdContent})
+		,#{scdTitle},#{scdContent})
 	</insert>
 	
-	
+	 
 	<insert id="insertUserDayScd" parameterType="schedulerVo">
 		<selectKey order="BEFORE" keyProperty="scdNo" resultType="int">
 			select schedule_seq.nextval from dual
 		</selectKey>
 		insert into schedule
 		values(#{scdNo},#{memNo},#{scdStart},#{scdEnd}
-		,#{scdContent})
+		,#{scdTitle},#{scdContent})
 	</insert>
 	<select id="selectByUser" parameterType="int" resultType="schedulerVo">
 			select * from schedule

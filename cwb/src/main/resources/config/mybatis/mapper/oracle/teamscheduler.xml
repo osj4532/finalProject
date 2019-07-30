@@ -11,7 +11,7 @@
 		insert into teamschedule
 		values(#{tscdNo},#{memNo},#{deptNo},
 to_date(#{tscdStartdate},'YYYY/MM/DD HH24:MI:SS'),to_date(#{tscdEnddate},'YYYY/MM/DD HH24:MI:SS')
-		,#{tscdContent})
+		,#{tscdContent},#{tscdTitle})
 	</insert>
 	
 	<insert id="insertTeamDayScd" parameterType="teamSchedulerVo">
@@ -20,8 +20,8 @@ to_date(#{tscdStartdate},'YYYY/MM/DD HH24:MI:SS'),to_date(#{tscdEnddate},'YYYY/M
 		</selectKey>
 		insert into teamschedule
 		values(#{tscdNo},#{memNo},#{deptNo},#{tscdStartdate},#{tscdEnddate}
-		,#{tscdContent})
-	</insert>
+		,#{tscdContent},#{tscdTitle}))
+	</insert> 
 	
 
 	<select id="selectByTeam" parameterType="int" resultType="teamSchedulerVo">

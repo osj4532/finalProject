@@ -36,8 +36,7 @@
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-  
-   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
 <style type="text/css">
 	#sidebar{
 		z-index: 501;
@@ -363,7 +362,15 @@
             </c:if> 
             </ul>
           </li>
-           
+           <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fas fa-user-clock fa-o"></i>
+              <span>사원관리</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/member/memberRegister.do"/>"><i class="fas fa-history"></i>사원등록</a></li>
+            </ul>
+          </li>
           
           
         </ul>
