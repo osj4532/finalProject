@@ -59,7 +59,8 @@
 				<p class="mailsm">첨부된 파일이 없습니다.</p>
 			</c:if>
 			<c:if test="${!empty vo.mailOriginalFileName }">
-				<p class="mailsm">${vo.mailOriginalFileName } [${vo.mailFileSize } B]</p>
+				<p class="mailsm">
+				<a href="<c:url value='/document/download.do?fileName=${vo.mailFileName }&fileOriginalName=${vo.mailOriginalFileName }'/>">${vo.mailOriginalFileName }</a> [${vo.mailFileSize}B]</p>
 			</c:if>
 		</div>
 		<div class="align-center">

@@ -81,7 +81,7 @@ public class FileUploadUtil {
 		MultipartHttpServletRequest mr = (MultipartHttpServletRequest)request;
 		
 		Map<String, MultipartFile> fileMap = mr.getFileMap();
-		MultipartFile multiFile = fileMap.get("file");
+		MultipartFile multiFile = fileMap.get("fileName");
 		
 		originalFileName = multiFile.getOriginalFilename();
 		fileName = getUniqueFileName(originalFileName);

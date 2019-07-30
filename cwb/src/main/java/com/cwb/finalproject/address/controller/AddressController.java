@@ -2,16 +2,23 @@ package com.cwb.finalproject.address.controller;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.nio.file.FileSystem;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.MailSender;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -53,6 +60,9 @@ public class AddressController {
 	private AddressBookService addressBookService;
 	@Autowired
 	private MessageService messageService;
+	@Autowired
+	private JavaMailSender mailSender;
+	
 	
 	@RequestMapping("/privateAddr.do")
 	public String showPrivAddr() {
@@ -123,38 +133,71 @@ public class AddressController {
 	}
 	
 	@RequestMapping(value="/sendEmailProc.do")
-	public String sendEmail_post(@ModelAttribute EmailVO vo,
-			@RequestParam MultipartFile file,HttpServletRequest request) {
-		logger.info("보낸 메일 저장하기 vo = {}",vo);
+	public String sendEmail_post(@ModelAttribute final EmailVO vo,
+			@RequestParam MultipartFile fileName,final HttpServletRequest request) {
 		
-		if(file != null && !file.isEmpty()) {
+		logger.info("보낸 메일 저장하기 vo = {}, file = {}",vo, fileName);
+		
+		if(fileName != null && !fileName.isEmpty()) {
 			Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.MAIL_UPLOAD);
 			vo.setMailFileName((String)map.get("fileName"));
 			vo.setMailFileSize((Long)map.get("fileSize"));
 			vo.setMailOriginalFileName((String)map.get("originalFileName"));
 			logger.info("파일 넣은 후 vo = {}",vo);
 		}
-		
+		final String[] mails = vo.getMailSenAddr().split(",| ");
+		if(mails.length > 1) {
+			vo.setMailSenAddr(mails[0]+"외 "+(mails.length-1)+"명");
+		}
+
 		int cnt = emailService.insertEmail(vo);
 		logger.info("DB에 저장 결과 cnt = {}",cnt);
 		
-		String[] members = vo.getMailSenAddr().split(",| ");
-		
-		String savePath = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
-		
-		for(String member : members) {
-			logger.info(member);
-			try {
-				emailSender.init();
-				emailSender.addMsg(vo.getMailContent());
-				emailSender.addFile(savePath, vo.getMailFileName(), vo.getMailOriginalFileName());
-				emailSender.sendEmail(vo.getMailTitle(), member, vo.getMailRevAddr());
-			} catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+		int i = 0;
+		final MimeMessagePreparator[] preparators = new MimeMessagePreparator[mails.length];
+		for(final String mail : mails) {
+			preparators[i++] = new MimeMessagePreparator() {
+				@Override
+				public void prepare(MimeMessage mimeMessage) throws Exception {
+					MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+					helper.setTo(mail);
+					helper.setFrom(vo.getMailRevAddr());
+					helper.setSubject(vo.getMailTitle());
+					helper.setText(vo.getMailContent(),true);
+					
+					if(vo.getMailFileName() != null) {
+						String path = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
+						File file = new File(path, vo.getMailFileName());
+						FileSystemResource fileAdd = new FileSystemResource(file);
+						helper.addAttachment(vo.getMailOriginalFileName(), fileAdd);
+					}
+				}
+			};
 		}
-		return "redirect:/address/emailList.do";
+		
+		/*
+		final MimeMessagePreparator preparator = new MimeMessagePreparator() {
+			
+			@Override
+			public void prepare(MimeMessage mimeMessage) throws Exception {
+				final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+				helper.setTo(vo.getMailSenAddr());
+				helper.setFrom(vo.getMailRevAddr());
+				helper.setSubject(vo.getMailTitle());
+				helper.setText(vo.getMailContent(),true);
+				
+				if(vo.getMailFileName() != null) {
+					String path = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
+					File file = new File(path, vo.getMailFileName());
+					FileSystemResource fileAdd = new FileSystemResource(file);
+					helper.addAttachment(vo.getMailOriginalFileName(), fileAdd);
+				}
+			}
+		};
+		*/
+		mailSender.send(preparators);
+		
+		return "message/mailComplete";
 	}
 	
 	@RequestMapping("/emailList.do")

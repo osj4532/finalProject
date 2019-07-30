@@ -57,6 +57,11 @@
 		float: right;
 	}
 	
+	.notice{
+		color:green;
+		font-size:0.8em;
+	}
+	
 </style>
 
 <div class="container">
@@ -83,6 +88,7 @@
 						<input type="search" id="msgSearch" placeholder="아이디/제목/내용 검색">
 					</div>
 				</div>
+				<p class="notice">※ 보낸쪽지 삭제시 같은 쪽지는 같이 삭제됩니다.</p>
 			</div>
 			<table class="table table-hover">
 			
@@ -409,7 +415,7 @@
 	}
 	
 	function showDetail(kind, msgrevNo, msgNo){
-		open('<c:url value="/message/msgDetail.do?kind='+kind+'&revNo='+msgrevNo+'&msgNo='+msgNo+'"/>','',
+		open('<c:url value="/message/msgDetail.do?kind='+kind+'&revNo='+msgrevNo+'"/>','',
 				'width=600px, height=420px, left=200px, top=100px, location=yes, resizable=no');
 	}
 </script>
