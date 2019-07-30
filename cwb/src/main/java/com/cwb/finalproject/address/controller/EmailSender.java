@@ -36,6 +36,7 @@ public class EmailSender {
 		msg.setSubject(subject);
 		msg.setRecipient(RecipientType.TO, new InternetAddress(receiver)); //보내는
 		msg.setFrom(new InternetAddress(sender));// 받는
+		msg.setHeader("content-Type", "text/html");
 		msg.setContent(multipart);
 		mailSender.send(msg);
 	}
@@ -43,7 +44,7 @@ public class EmailSender {
 	public void addMsg(String content) {
 		try {
 			MimeBodyPart mbp1 = new MimeBodyPart();
-			mbp1.setContent(content,"text/html");
+			mbp1.setContent(content,"UTF-8");
 			multipart.addBodyPart(mbp1);
 		}catch (Exception e) {
 			e.printStackTrace();

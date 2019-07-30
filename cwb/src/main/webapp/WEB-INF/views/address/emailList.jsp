@@ -76,12 +76,10 @@
 				</c:if>
 			
 			<!-- 1, 2, 3 .... -->
-				
 			
 				<c:forEach var="i" begin="${pageInfo.firstPage }" end="${pageInfo.lastPage }">
 					<li class="page-item
-					
-					<c:if test="${param.currentPage == i }">
+					<c:if test="${param.currentPage == i  || (empty param.currentPage && i == 1)}">
 					active
 					</c:if>
 					"><a class="page-link" href="#" onclick="e_movePage('${i}')">${i }</a></li>
@@ -97,7 +95,7 @@
 	</div>
 </div>
 
-<form name="pagefrm" method="post" action="<c:url value='/address//emailList.do'/>">
+<form name="pagefrm" method="post" action="<c:url value='/address/emailList.do'/>">
 	<input type="hidden" name="currentPage" value="1">
 </form>
 
@@ -116,7 +114,6 @@
 					email_sel.pop($(item).val());
 				}
 			});
-			alert(email_sel);
 		});
 		
 		$('input[type=checkbox]#chk').each(function(idx, item){
@@ -136,12 +133,16 @@
 	}
 	
 	function deleteMail(){
+		if(email_sel.length == 0){
+			alert("삭제할 메일을 체크해주세요.");
+			return false;
+		}
+		
 		$.ajax({
 			url:"<c:url value='/address/emailDelete.do'/>",
 			type:"get",
 			data:{"sel":email_sel},
 			success:function(edata){
-				alert(edata);
 				if(edata > 0){
 					location.reload();
 				}else{

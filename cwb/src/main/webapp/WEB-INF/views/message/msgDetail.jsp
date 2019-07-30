@@ -60,7 +60,31 @@
 <script type="text/javascript">
 	$(function(){
 		$('#del').click(function(){
+			let kind = ${param.kind};
+			let revNo = ${param.revNo};
 			
+			let sel = new Array();
+			sel.push(revNo);
+			
+			$.ajax({
+				url:"<c:url value='/message/revMsgDel.do'/>",
+				type:"post",
+				dataType:"json",
+				data:{"sel":sel,
+					"kind":kind},
+				success:function(data){
+					if(data > 0){
+						opener.showList(kind,"",1);
+						window.opener.alert("쪽지 삭제 성공!");
+						window.close();
+					}else{
+						alert("쪽지 삭제 실패!");
+					}
+				},
+				error:function(xhr, status, error){
+					alert(status+" : "+error);
+				}
+			});
 		});
 		
 		$('#re').click(function(){

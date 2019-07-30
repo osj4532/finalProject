@@ -165,7 +165,7 @@
 	</div>
 	<div>
 		<label>첨부파일</label>
-		<input type="file" name="file">
+		<input type="file" name="fileName">
 	</div>
 	<div class="align-center">
 		<button type="submit" class="btn btn-primary">메일 보내기</button>
@@ -197,7 +197,6 @@
 				event.preventDefault();
 			}
 			opener.location.href="<c:url value='/address/emailList.do'/>";
-			window.close();
 			
 		});
 		
