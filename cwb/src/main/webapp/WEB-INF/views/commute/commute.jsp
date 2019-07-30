@@ -270,42 +270,49 @@
 	}
 	
 	function pageSetting(pagingInfo){
-		var page = $('#page').html('');
+		var page = $('#ul').html('');
+		
+		if(pagingInfo.currentPage != 1){
+			var anchor1=$('<li class="page-item"></li>')
+			.html("<a class='page-link' href='#'>First</a>")
+			.attr("onclick", "page("+1+")");
+			$("#ul").html(anchor1);
+		}
+		
 		if(pagingInfo.firstPage!=1){
-			var anchor1=$('<a href="#"></a>')
-			.html("<i class='fas fa-backward'> </i>")
-			.attr("onclick", "page("+(1)+")");
-			$("#page").append(anchor1);
-			
-			var anchor=$('<a href="#"></a>')
-			.html("<img src='<c:url value='/resources/img/first.JPG'/>' alt='이전블럭으로 이동'>")
+			var anchor=$('<li class="page-item"></li>')
+			.html("<a class='page-link' href='#' tabindex='-1' aria-disabled='true'>Previous</a>")
 			.attr("onclick", "page("+(pagingInfo.firstPage-1)+")");
 			
-			$("#page").append(anchor);
+			$('#ul').append(anchor);
 		}
 		
 		for(var i=pagingInfo.firstPage;i<=pagingInfo.lastPage;i++){
+			
 			if(i==pagingInfo.currentPage){
-				var spanEl = $("<span style='color:blue;font-size:1em'></span>")
-				.html(i);
-				$('#page').append(spanEl);
+				var spanEl = $("<li class='page-item active' aria-current='page'><a class='page-link' href='#'>"+i+"<span class='sr-only'>(current)</span></a></li>");
+				$('#ul').append(spanEl);
 			}else{
-				var anchor = $("<button type='button' class='btn btn-outline-light'>"+i+"</button>")
+				var anchor = $("<li class='page-item'><a class='page-link' href='#'>"+i+"</a></li>")
 				.attr("onclick", "page("+i+")");
-				$('#page').append(anchor);
+				$('#ul').append(anchor);
 			}
+			
+			
 		}
 		
 		if(pagingInfo.lastPage<pagingInfo.totalPage){
-			var anchor=$("<a href='#'></a>")
-			.html("<img src='<c:url value='/resources/img/last.JPG'/>' alt='다음블럭으로 이동'>")
+			var anchor=$("<li class='page-item'></li>")
+			.html("<a class='page-link' href='#'>Next</a>")
 			.attr("onclick", "page("+(pagingInfo.lastPage+1)+")");
-			$('#page').append(anchor);
+			$('#ul').append(anchor);
 			
-			var anchor2=$('<a href="#"></a>')
-			.html("<i class='fas fa-forward'> </i>")
-			.attr("onclick", "page("+(pagingInfo.totalPage)+")");
-			$('#page').append(anchor2);
+			
+			var anchor2=$("<li class='page-item'></li>")
+			.html("<a class='page-link' href='#'>Last</a>")
+			.attr("onclick", "page("+pagingInfo.totalPage+")");
+			$('#ul').append(anchor2);
+			
 		}
 	}
 	
@@ -332,7 +339,6 @@
 		background-color: white;
 	}
 	#content{
-		position: relative;
 		min-height: 890px;
 		background-color: white;
 		min-width: 900px;
@@ -345,9 +351,8 @@
 		background-color: white;
 	}
 	#page{
-		position:absolute;
 		top: 500px;
-		margin-left: 333px;
+		text-align: center;
 	}
 	#tblCommute{
 		color: blue;
@@ -399,7 +404,13 @@
 			</tbody>
 		</table>
 		</form>
-		<div id="page"></div>
+		<div id="page">
+			<nav aria-label="...">
+				<ul id="ul" class="pagination">
+				
+				</ul>
+			</nav>
+		</div>
 	</div>
 	</div>
 </div>

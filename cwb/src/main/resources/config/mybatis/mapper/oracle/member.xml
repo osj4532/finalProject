@@ -51,6 +51,10 @@
 		)B
 		where B.RNUM > #{firstRecordIndex}
 	</select>
+	
+	<!-- <select id="selectMemberAll" resultType="map">
+		
+	</select> -->
 </mapper>
 
 

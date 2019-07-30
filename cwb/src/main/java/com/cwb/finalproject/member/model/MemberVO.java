@@ -26,6 +26,7 @@ public class MemberVO {
 	private int memHoliday;	//사원연차
 	private int memUseHoliday;	//사원사용한연차
 	private int posNo;	//직급번호
+	
 	public int getMemNo() {
 		return memNo;
 	}

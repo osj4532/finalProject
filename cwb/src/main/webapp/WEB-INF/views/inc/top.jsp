@@ -362,7 +362,15 @@
             </c:if> 
             </ul>
           </li>
-           
+           <li class="sub-menu">
+            <a href="javascript:;">
+              <i class="fas fa-user-clock fa-o"></i>
+              <span>사원관리</span>
+              </a>
+            <ul class="sub">
+              <li><a href="<c:url value="/member/memberRegister.do"/>"><i class="fas fa-history"></i>사원등록</a></li>
+            </ul>
+          </li>
           
           
         </ul>
