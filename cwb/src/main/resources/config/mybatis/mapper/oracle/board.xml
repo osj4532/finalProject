@@ -73,6 +73,20 @@
 		where bdlist_no =#{bdlistNo}
 	</update>
 	 
+	 <select id="selectBoardByListNo" parameterType="int" resultType="boardVo">
+	 	select * from board
+		where bdlist_no = #{bdlistNo}
+	 </select>
+	 
+	 <insert id="insertBoard" parameterType="boardVo">
+	 	<selectKey order="BEFORE" keyProperty="boardNo" resultType="int">
+			select board_seq.nextval from dual
+		</selectKey>
+		 insert into board(board_no,mem_no,bdlist_no,board_title,board_content,
+		board_filename,board_filesize,board_originalfilename)
+		values(#{boardNo},#{memNo},#{bdlistNo},#{boardTitle},#{boardContent}
+		,#{boardFilename},#{boardFilesize},#{boardOriginalfilename})
+	</insert> 
 </mapper>
 
 

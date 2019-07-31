@@ -67,7 +67,7 @@
 		
 	});
 
-</script>
+</script> 
 </head>
 <body>
  <section id="container">
@@ -181,7 +181,7 @@
   <script type="text/javascript" src="<c:url value='/resources/lib/bootstrap-fileupload/bootstrap-fileupload.js'/>"></script>
   <script src="<c:url value='/resources/lib/sparkline-chart.js'/>"></script>
   <script src="<c:url value='/resources/lib/zabuto_calendar.js'/>"></script>
-   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66fc63c70e3d4b0aa612be53665e59ba"></script>
+     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66fc63c70e3d4b0aa612be53665e59ba"></script>
  <script>
 			var container = document.getElementById('map');
 			var options = {

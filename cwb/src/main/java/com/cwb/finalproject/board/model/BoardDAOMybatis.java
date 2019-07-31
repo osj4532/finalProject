@@ -35,6 +35,11 @@ public class BoardDAOMybatis implements BoardDAO{
 	@Override
 	public int updateBoardList(BoardListVO boardlistVo) {
 		return sqlSession.update(namespace+"updateBoardList", boardlistVo);
+	}
+
+	@Override
+	public List<BoardVO> selectBoardByListNo(int bdlistNo) {
+		return sqlSession.selectList(namespace+"selectBoardByListNo", bdlistNo);
 	}  
-  
+   
 }
