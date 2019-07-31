@@ -165,7 +165,7 @@
 		    from
 		    (
 		        select com_outdate from commute
-				where mem_no = #{memNo}
+				where mem_no = #{memNo} and com_indate between to_char(sysdate, 'yyyy-mm-dd') and to_char(sysdate+1, 'yyyy-mm-dd')
 				order by com_outdate desc
 			)A
 		)
@@ -195,14 +195,6 @@
 		select count(*)
 		from department
 	</select>
-
-	<!-- <insert id="insertComin" parameterType="CommuteVo">
-		<selectKey keyProperty="comNo" resultType="int" order="BEFORE">
-			select commute_seq.nextval from dual
-		</selectKey>
-		insert into commute(com_no, mem_no, com_indate, com_status)
-		values(#{comNo}, #{memNo}, sysdate, 'Y')
-	</insert> -->
 	
 	<insert id="insertComin" parameterType="CommuteVo">
 		<selectKey keyProperty="comNo" resultType="int" order="BEFORE">
