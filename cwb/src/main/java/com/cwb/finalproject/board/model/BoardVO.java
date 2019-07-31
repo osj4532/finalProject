@@ -2,7 +2,7 @@ package com.cwb.finalproject.board.model;
 
 import com.cwb.finalproject.common.SearchVO;
 
-public class BaordVO extends SearchVO{
+public class BoardVO extends SearchVO{
 	private int boardNo; /* 게시글번호 */
 	private int memNo;  /* 사원번호 */
 	private int bdlistNo; /* 게시판번호 */

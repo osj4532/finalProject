@@ -35,4 +35,9 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.updateBoardList(boardlistVo);
 	}
 
+	@Override
+	public List<BoardVO> selectBoardByListNo(int bdlistNo) {
+		return boardDao.selectBoardByListNo(bdlistNo);
+	}
+
 }

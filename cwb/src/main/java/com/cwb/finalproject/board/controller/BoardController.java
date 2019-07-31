@@ -9,11 +9,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.cwb.finalproject.board.model.BoardListVO;
 import com.cwb.finalproject.board.model.BoardService;
+import com.cwb.finalproject.board.model.BoardVO;
 import com.cwb.finalproject.ranks.model.RanksService;
 import com.cwb.finalproject.ranks.model.RanksVO;
 
@@ -106,5 +108,51 @@ public class BoardController {
 		return "common/message";
 
 	} 
+	
+	@RequestMapping("/BoardTopIns.do") 
+	public String boardTopIns(Model model) {
+		logger.info("top 게시판 보여주기");
+		List<BoardListVO> bdLlist = boardService.selectBoardList();
+		model.addAttribute("bdLlist", bdLlist);
+		 
+		return "Board/BoardTopIns";
+	}
+	
+	@RequestMapping("/BoardList.do")
+	public String boardlist(@RequestParam int bdlistNo,
+			Model model) {
+		logger.info("top 게시판 보여주기");
+		List<BoardVO> Blist = boardService.selectBoardByListNo(bdlistNo);
+		BoardListVO blVo = boardService.selectBoardListByNo(bdlistNo);
+		
+		model.addAttribute("Blist", Blist);
+		model.addAttribute("blVo", blVo);
+		
+		return "Board/BoardList"; 
+	}
+	
+	@RequestMapping(value = "/BoardWrite.do",method = RequestMethod.GET)
+	public String boardWriteGet(@RequestParam int bdlistNo, Model model) {
+		BoardListVO blVo = boardService.selectBoardListByNo(bdlistNo);
+		
+		model.addAttribute("blVo", blVo);
+		
+		return "Board/BoardWrite";
+	}
+	@RequestMapping(value = "/BoardWrite.do",method = RequestMethod.POST)
+	public String boardWritePost(@ModelAttribute BoardVO boardVo, Model model) {
+		
+		
+		String msg = "",url="/resources/close.do";
+		if(false) {
+			msg="자원 등록되었습니다.";
+		}else { 
+			msg="자원 등록 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		return "common/message";
+	}
 }
 

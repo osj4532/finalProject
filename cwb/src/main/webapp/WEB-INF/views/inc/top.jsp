@@ -359,6 +359,7 @@
             <ul class="sub">
             <c:if test="${sessionScope.ranksNo>=2 }">
               <li><a href="<c:url value="/Board/BoardAllList.do"/>">게시판 관리</a></li>
+              <c:import url="/Board/BoardTopIns.do"></c:import>
             </c:if> 
             </ul>
           </li>

@@ -8,4 +8,5 @@ public interface BoardDAO {
 	int delectBoardList(int bdlistNo);
 	BoardListVO selectBoardListByNo(int bdlistNo);
 	int updateBoardList(BoardListVO boardlistVo);
+	List<BoardVO> selectBoardByListNo(int bdlistNo); 
 }
