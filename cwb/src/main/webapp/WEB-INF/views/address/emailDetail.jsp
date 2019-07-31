@@ -60,7 +60,7 @@
 			</c:if>
 			<c:if test="${!empty vo.mailOriginalFileName }">
 				<p class="mailsm">
-				<a href="<c:url value='/document/download.do?fileName=${vo.mailFileName }&fileOriginalName=${vo.mailOriginalFileName }'/>">${vo.mailOriginalFileName }</a> [${vo.mailFileSize}B]</p>
+				<a href="<c:url value='/document/download.do?fileName=${vo.mailFileName }&fileOriginalName=${vo.mailOriginalFileName }&type=5'/>">${vo.mailOriginalFileName }</a> [${vo.mailFileSize}B]</p>
 			</c:if>
 		</div>
 		<div class="align-center">

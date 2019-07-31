@@ -373,10 +373,17 @@ public class ConfirmController {
 	}
 	
 	@RequestMapping("/download.do")
-	public ModelAndView download(@ModelAttribute ConfirmFileVO vo, HttpServletRequest request ) {
-		logger.info("첨부파일 다운로드 하기 vo = {}",vo);
+	public ModelAndView download(@ModelAttribute ConfirmFileVO vo, 
+			@RequestParam int type,HttpServletRequest request ) {
+		logger.info("첨부파일 다운로드 하기 vo = {}, type={}",vo, type);
 		
-		String path = fileUtil.getUploadPath(request, FileUploadUtil.DOC_FILE_UPLOAD);
+		String path = "";
+		if(type == FileUploadUtil.DOC_FILE_UPLOAD) {
+			path = fileUtil.getUploadPath(request, FileUploadUtil.DOC_FILE_UPLOAD);
+		}else if(type == FileUploadUtil.MAIL_UPLOAD) {
+			path = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
+		}
+		logger.info("path = {}",path);
 		File file = new File(path,vo.getFileName());
 		File file1 = new File(vo.getFileOriginalName());
 		

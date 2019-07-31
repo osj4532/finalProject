@@ -164,7 +164,7 @@
 					<td style="text-align: right">
 						<c:forEach var="vo" items="${files }">
 							<p><a 
-	href="<c:url value='/document/download.do?fileName=${vo.fileName }&fileOriginalName=${vo.fileOriginalName }'/>">${vo.fileOriginalName }</a> [${vo.fileSize}B]</p>
+	href="<c:url value='/document/download.do?fileName=${vo.fileName }&fileOriginalName=${vo.fileOriginalName }&type=4'/>">${vo.fileOriginalName }</a> [${vo.fileSize}B]</p>
 						</c:forEach>
 					</td>
 				</c:if>
