@@ -31,4 +31,6 @@ public interface MessageService {
 	public int deleteMsgRev(int msgrevNo);
 	public int countMsgRev(int msgrevNo);
 	public int deleteMsg(int msgrevNo);
+	
+	public List<Map<String, Object>> indexListMsg(int memNo);
 }

@@ -27,4 +27,7 @@ public interface ConfirmDAO {
 	public int docBack(int cfNo);
 	public int docOk(int cfNo);
 	public int docOkComplete(int cfNo);
+	
+	public List<Map<String, Object>> indexConfirmWaitList(int memNo);
+	public List<Map<String, Object>> recentConfirmList(int memNo);
 }
