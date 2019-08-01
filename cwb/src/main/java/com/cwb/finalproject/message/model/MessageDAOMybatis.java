@@ -92,4 +92,8 @@ public class MessageDAOMybatis implements MessageDAO{
 	public int deleteMsg(int msgrevNo) {
 		return sqlSession.delete(namespace+"deleteMsg",msgrevNo);
 	}
+	
+	public List<Map<String, Object>> indexListMsg(int memNo){
+		return sqlSession.selectList(namespace+"indexListMsg",memNo);
+	}
 }

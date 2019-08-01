@@ -110,4 +110,8 @@ public class MessageServiceImpl implements MessageService{
 	public int deleteMsg(int msgrevNo) {
 		return messageDAO.deleteMsg(msgrevNo);
 	}
+	
+	public List<Map<String, Object>> indexListMsg(int memNo){
+		return messageDAO.indexListMsg(memNo);
+	}
 }
