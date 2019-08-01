@@ -3,7 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="../inc/top.jsp" />
 <script src="http://dmaps.daum.net/map_js_init/postcode.v2.js"></script>
-
+<script type="text/javascript" src="<c:url value='/resources/lib/jquery-3.4.1.min.js'/>"></script>
 <style type="text/css">
 #Main {
 	min-height: 900px;
@@ -28,35 +28,36 @@
 .width_350 {
 	width: 350px;
 }
+.error{
+	color: red;
+	font-weight: bold;
+	display: none;
+}
 </style>
 <script type="text/javascript" src="<c:url value='/resources/js/member.js'/>"></script>
 <script type="text/javascript">
 $(document).ready(function(){
 	$('#submit').click(function(){
-		if($('#name').val().length<1){
+		if($('input[name=memName]').val().length<1){
 			alert('성명을 입력하세요');
 			event.preventDefault();
-			$('#name').focus();
-		}else if(!validate_userid($('#memId').val())){
-			alert('아이디는 영문대소문자, 숫자, _만 입력가능합니다.');
+			$('input[name=memName]').focus();
+		}else if($('#memId').val().length<1){
+			alert('id를 입력하세요');
 			event.preventDefault();
 			$('#memId').focus();
-		}else if($('#pwd').val().length<1){
+		}else if($('#memPwd').val().length<1){
 			alert('비밀번호를 입력하세요');
 			event.preventDefault();
-			$('#pwd').focus();
-		}else if($('#pwd').val()!=$('#pwd2').val()){
+			$('#memPwd').focus();
+		}else if($('#memPwd').val()!=$('#memPwd2').val()){
 			alert('비밀번호가 일치해야 합니다.');
 			event.preventDefault();
-			$('#pwd2').focus();
-		}else if(!validate_hp($('#hp2').val()) || !validate_hp($('#hp3').val())){
+			$('#memPwd2').focus();
+		}else if(!validate_hp($('#memHp2').val()) || !validate_hp($('#memHp3').val())){
 			alert('휴대폰은 숫자만 입력 가능 합니다');
 			event.preventDefault();
-			$('#hp2').focus();
-		}else if($('#chkId').val()!='Y'){
-			alert('아이디 중복확인을 하세요');
-			event.preventDefault();
-			$('#btnChkId').focus();
+			$('#memHp2').focus();
 		}
 	});
 	
@@ -121,8 +122,8 @@ function getAddressInfo(){
             for(var i=value;i<str.length;i++){
                 jusoSangsae = jusoSangsae+str[i];
             }
-            $('#zipcode').val(data.zonecode);
-            $('#address').val(data.sido+" "+data.sigungu+" "+jusoSangsae);
+            $('#memZipcode').val(data.zonecode);
+            $('#memAddress').val(data.sido+" "+data.sigungu+" "+jusoSangsae);
         },
         shorthand : false
     }).open();
@@ -142,57 +143,60 @@ function getAddressInfo(){
 						<div class="form-group"> 
 						</div>  
 						<div class="form-group">  
-							<label class="col-sm-1 col-sm-1 control-label" id="addon-wrapping">성명</label>
-							<div class="col-sm-8">  
-							<input type="text" class="form-control" id="name" name="name">
+							<label class="col-sm-1 col-sm-1 control-label">성명</label>
+							<div class="col-sm-2">  
+								<input type="text" class="form-control" id="memName" name="memName">
 							</div> 
 						</div>  	
 						<div class="form-group"> 
 							<label for="memId" class="col-sm-1 col-sm-1 control-label" >사원ID</label>
-							<div class="col-sm-8">  
+							<div class="col-sm-2">  
 							 <input type="text" name="memId" class="form-control"
-								id="memId"><span class="error"></span>
+								id="memId">
 							</div>	
+							<div class="col-sm-2">
+								<span class="error"></span>
+								</div>
 						</div>
 						<div class="form-group"> 
-							<label for="pwd" class="col-sm-1 col-sm-1 control-label">비밀번호</label>
-							<div class="col-sm-8">  
-							 <input type="Password" name="pwd" class="form-control"
-								id="pwd">
+							<label for="memPwd" class="col-sm-1 col-sm-1 control-label">비밀번호</label>
+							<div class="col-sm-2">  
+							 <input type="Password" name="memPwd" class="form-control"
+								id="memPwd">
 							</div>
 						</div>
 						<div class="form-group"> 
-							<label for="pwd2" class="col-sm-1 col-sm-1 control-label" >비밀번호 확인</label> 
-							<div class="col-sm-8">  
+							<label for="memPwd2" class="col-sm-1 col-sm-1 control-label" >비밀번호 확인</label> 
+							<div class="col-sm-2">  
 							<input type="Password" class="form-control"
-								name="pwd2" id="pwd2">
+								name="memPwd2" id="memPwd2">
 							</div>
 						</div>
 						<div class="form-group"> 
-							<label for="zipcode" class="col-sm-1 col-sm-1 control-label" >주소</label>
+							<label for="memZipcode" class="col-sm-1 col-sm-1 control-label" >주소</label>
 							<div class="col-sm-10">       
-								<div class="col-sm-4 mb">       
-								<input type="text" name="zipcode"
-									id="zipcode" ReadOnly title="우편번호" class="form-control">
+								<div class="col-sm-2 mb">       
+								<input type="text" name="memZipcode"
+									id="memZipcode" ReadOnly title="우편번호" class="form-control">
 								</div>        
 								<div class="col-sm-6 mb">     
 								<input type="Button" class="btn btn-info"
 								 value="우편번호 찾기" id="btnZipcode" onclick="getAddressInfo()" title="새창열림">  
 								</div>    
-								<div class="col-sm-10 mb">          
-								<input type="text" name="address" class="form-control" id="address"
+								<div class="col-sm-8 mb">          
+								<input type="text" name="memAddress" class="form-control" id="memAddress"
 								 	ReadOnly title="주소" >  
 							 	</div>         
-							 	<div class="col-sm-10 mb">  
-								<input type="text" name="addressDetail"  class="form-control" id="addressDetail"
+							 	<div class="col-sm-8 mb">  
+								<input type="text" name="memAddressDetail"  class="form-control" id="memAddressDetail"
 									title="상세주소" >
 								</div> 
 							</div>  
 						</div>  
 						<div class="form-group"> 
-							<label for="hp1" class="col-sm-1 col-sm-1 control-label" >핸드폰</label>
+							<label for="memHp1" class="col-sm-1 col-sm-1 control-label" >핸드폰</label>
 							  <div class="col-sm-1">    
-								<select name="hp1" id="hp1" class="form-control"
+								<select name="memHp1" id="memHp1" class="form-control"
 									title="휴대폰 앞자리"> 
 									<option value="010">010</option>
 									<option value="011">011</option>
@@ -205,32 +209,32 @@ function getAddressInfo(){
 								<div class="col-sm-1 minus"> 
 								<i class="fas fa-minus"></i>
 								</div>
-								 <div class="col-sm-2"> 
-								 	<input type="text" name="hp2" id="hp2" maxlength="4"
+								 <div class="col-sm-1"> 
+								 	<input type="text" name="memHp2" id="memHp2" maxlength="4"
 									title="휴대폰 가운데자리" class="form-control">
 								</div>    
 								<div class="col-sm-1 minus">  
 									<i class="fas fa-minus"></i>
 								</div>  
-								 <div class="col-sm-2">
+								 <div class="col-sm-1">
 									<input type="text"
-									name="hp3" id="hp3" maxlength="4" title="휴대폰 뒷자리"
+									name="memHp3" id="memHp3" maxlength="4" title="휴대폰 뒷자리"
 									class="form-control" >
 								</div>	   
 						</div>
 						
 						<div class="form-group"> 
-							<label for="email1"  class="col-sm-1 col-sm-1 control-label">이메일 주소</label> 
+							<label for="memEmail1"  class="col-sm-1 col-sm-1 control-label">이메일 주소</label> 
 							<div class="col-sm-2">
 							<input type="text" class="form-control"
-								name="email1" id="email1" title="이메일주소 앞자리">
+								name="memEmail1" id="memEmail1" title="이메일주소 앞자리">
 								</div>
 								<div class="col-sm-1 minus"> 
 								<i class="fas fa-at"></i> 
 								</div>	 
 								<div class="col-sm-2">
 								<select class="form-control"
-								name="email2" id="email2" title="이메일주소 뒷자리">
+								name="memEmail2" id="memEmail2" title="이메일주소 뒷자리">
 								<option value="naver.com">naver.com</option>
 								<option value="hanmail.com">hanmail.com</option>
 								<option value="nate.com">nate.com</option>
@@ -239,63 +243,67 @@ function getAddressInfo(){
 							</select> 
 							</div>
 							<div class="col-sm-2">
-							<input type="text" name="email3" id="email3" class="form-control"
+							<input type="text" name="memEmail3" id="memEmail3" class="form-control"
 								title="직접입력인 경우 이메일주소 뒷자리" style="visibility: hidden" > 
 							</div> 
 						</div>
+						<div class="form-group"> 
+							<label for="memAchievement"  class="col-sm-1 col-sm-1 control-label">학력</label> 
+							<div class="col-sm-2">
+								<input type="text" class="form-control"
+									name="memAchievement" id="memAchievement">
+							</div> 
+						</div>
+						<div class="form-group"> 
+							<label for="memPay"  class="col-sm-1 col-sm-1 control-label">연봉</label>
+							<div class="col-sm-2"> 
+							 <input type="text" name="memPay" class="form-control"
+								id="memPay">
+							</div>								
+						</div>
+						<div class="form-group"> 
+							<label for="memHoliday"  class="col-sm-1 col-sm-1 control-label">연차</label>
+							<div class="col-sm-2"> 
+							 <input type="text" name="memHoliday" class="form-control"
+								id="memHoliday">
+							</div>								
+						</div>
 						<div class="form-group">
-						<label for="department"  class="col-sm-1 col-sm-1 control-label">부서</label>
+						<label for="deptNo"  class="col-sm-1 col-sm-1 control-label">부서</label>
 						<div class="col-sm-2">
 								<select class="form-control"
-								name="department" id="department" title="부서">
-								<option value="1">기획팀</option>
-								<option value="2">설계팀</option>
-								<option value="3">디자인팀</option>
-								<option value="4">지원팀</option>
-								<option value="5">법인팀</option>
+								name="deptNo" id="deptNo" title="부서">
+								<c:forEach var="deptVo" items="${deptList }">
+									<option value="${deptVo.deptNo }">${deptVo.deptName }</option>
+								</c:forEach>
 							</select>
 							</div>
 							</div>
 							<div class="form-group">
-						<label for="position"  class="col-sm-1 col-sm-1 control-label">직급</label>
+						<label for="posNo"  class="col-sm-1 col-sm-1 control-label">직급</label>
 						<div class="col-sm-2">
-							<select class="form-control" name="position" id="position" title="직급">
-								<option value="1">이사</option>
-								<option value="2">사장</option>
-								<option value="3">부장</option>
-								<option value="4">과장</option>
-								<option value="5">대리</option>
-								<option value="6">팀장</option>
-								<option value="7">사원</option>
+							<select class="form-control" name="posNo" id="posNo" title="직급">
+								<c:forEach var="positionVo" items="${positionList }">
+									<option value="${positionVo.posNo }">${positionVo.posName }</option>
+								</c:forEach>
 							</select>
 							</div>
 							</div>
-						<div class="form-group"> 
-							<label for="achievement"  class="col-sm-1 col-sm-1 control-label">학력</label> 
-							<div class="col-sm-8">
-								<input type="text" class="form-control"
-									name="achievement" id="achievement">
-							</div> 
-						</div>
-						<div class="form-group"> 
-							<label for="pay"  class="col-sm-1 col-sm-1 control-label">연봉</label>
-							<div class="col-sm-8"> 
-							 <input type="text" name="pay" class="form-control"
-								id="pay">
-							</div>								
-						</div>
-						<div class="form-group"> 
-							<label for="holiday"  class="col-sm-1 col-sm-1 control-label">연차</label>
-							<div class="col-sm-8"> 
-							 <input type="text" name="holiday" class="form-control"
-								id="holiday">
-							</div>								
-						</div>
+							<div class="form-group">
+						<label for="ranksNo"  class="col-sm-1 col-sm-1 control-label">등급</label>
+						<div class="col-sm-2">
+							<select class="form-control" name="ranksNo" id="ranksNo" title="등급">
+								<c:forEach var="ranksVo" items="${ranksList }">
+									<option value="${ranksVo.ranksNo }">${ranksVo.ranksName }</option>
+								</c:forEach>
+							</select>
+							</div>
+							</div>
 						<div class="form-group">  
-							<label for="memImage" class="col-sm-1 col-sm-1 control-label">사원사진</label>
+							<label for="fileName" class="col-sm-1 col-sm-1 control-label">사원사진</label>
 							<div class="col-sm-8">  
 								<input type="file"  
-									name="memImage" id="memImage">
+									name="fileName" id="fileName">
 							</div> 
 						</div>
 						<div class="center">

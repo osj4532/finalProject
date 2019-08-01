@@ -40,4 +40,12 @@ public class MemberDAOMybatis implements MemberDAO{
 	public int countEmail(Map<String, Object> map) {
 		return sqlSession.selectOne(namespace+"countEmail",map);
 	}
+	@Override
+	public int insertMember(MemberVO vo) {
+		return sqlSession.insert(namespace+"insertMember", vo);
+	}
+	@Override
+	public int dupUserid(String memId) {
+		return sqlSession.selectOne(namespace+"dupUserid", memId);
+	}
 }
