@@ -19,6 +19,23 @@
 		values(#{msgrevNo}, #{memNo}, #{msgNo})
 	</insert>
 	
+	<select id="indexListMsg" parameterType="int" resultType="map">
+		select * 
+		from
+		(
+		 select MB.MEM_ID, MB.MEM_NAME, M.*,MR.MSGREV_NO, MR.MEM_NO rev_Mem, MR.MSGREV_DEL, MR.MSGREV_DATE from message M
+				join msgrev MR
+				on M.msg_no = MR.MSG_NO
+				join member MB
+				on MR.MEM_NO = MB.MEM_NO
+				where MR.MEM_NO = #{memNo}
+				and msgRev_del = 'N'
+				and msgrev_date is null
+				order by msgrev_no desc
+		)
+<![CDATA[where rownum <= 4]]>
+	</select>
+	
 	<select id="selectRevMsg" parameterType="map" resultType="map">
 		select B.*
 		from

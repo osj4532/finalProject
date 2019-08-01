@@ -199,6 +199,39 @@
 		cf_okdate = sysdate
 		where cf_no = #{cfNo}
 	</update>
+	
+	<select id="indexConfirmWaitList" parameterType="int" resultType="map">
+		select * from (
+			select M.MEM_NAME, F.FORM_NAME, C.CF_TITLE, C.CF_NO from confirm C
+			join member M
+			on C.MEM_NO = M.MEM_NO
+			join docform F
+			on C.FORM_NO = F.FORM_NO
+			where C.CF_ORDER = (
+			                    select line_order from confirmline
+			                    where mem_no = #{memNo}
+			                )
+			and C.CF_TMPSTORAGE = 'N'
+			and C.CF_DEL = 'N'
+			and C.CF_STATE = 1
+			order by cf_no desc
+			)
+<![CDATA[where rownum <= 4]]>
+	</select>
+	
+	
+	<select id="recentConfirmList" parameterType="int" resultType="map">
+		select *
+		from
+		(
+			select F.FORM_NAME, C.CF_ORDER, C.CF_STATE, C.CF_NO
+			from confirm C
+			join docform F
+			on C.FORM_NO = F.FORM_NO
+			where mem_no = #{memNo}
+		)
+<![CDATA[where rownum <= 4]]>
+	</select>
 </mapper>
 
 

@@ -158,4 +158,12 @@ public class ConfirmServiceImpl implements ConfirmService{
 	public int docOkComplete(int cfNo) {
 		return confirmDAO.docOkComplete(cfNo);
 	}
+	
+	public List<Map<String, Object>> indexConfirmWaitList(int memNo){
+		return confirmDAO.indexConfirmWaitList(memNo);
+	}
+	
+	public List<Map<String, Object>> recentConfirmList(int memNo){
+		return confirmDAO.recentConfirmList(memNo);
+	}
 }

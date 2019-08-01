@@ -3,6 +3,7 @@ package com.cwb.finalproject.resources.model;
 import java.util.List;
 import java.util.Map;
 
+
 public interface ResourcesDAO {
 	int insertResType(Map<String, String> map);
 	List<RestypeVO> selectResType();
@@ -15,4 +16,5 @@ public interface ResourcesDAO {
 	int deleteResByno(int resNo);
 	List<ResourcesVO> selectImgNameBytype(int typeNo);
 	int deleteResByTypeNo(int typeNo);
+	
 }

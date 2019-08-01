@@ -9,8 +9,20 @@
 function writeBoard(bdlistNo){
 	window.open(
 			"${pageContext.request.contextPath}/Board/BoardWrite.do?bdlistNo="+bdlistNo,
-			"resourceWrite",  
+			"boardWrite",  
 			"left=450, top=150, width=800, height=770, scrollbars=yes,resizable=yes");
+	};
+function editBoard(boardNo){
+	window.open( 
+			"${pageContext.request.contextPath}/Board/BoardEdit.do?boardNo="+boardNo,
+			"boardEdit",  
+			"left=450, top=150, width=800, height=770, scrollbars=yes,resizable=yes");
+	};
+function delBoard(boardNo){
+		
+		if(confirm("글을 삭제하시겠습니까?")){
+			location.href="${pageContext.request.contextPath}/Board/BoardDel.do?boardNo="+boardNo;
+		}
 	};
 </script>	
 <section id="main-content">
@@ -37,36 +49,40 @@ function writeBoard(bdlistNo){
                   </tr> 
                 </thead> 
                 <tbody>
-                 <c:if test="${empty AppList}">
+                 <c:if test="${empty Blist}">
                 	<tr> 
                     <td colspan="5">
 							<h4><b>
 						 	<c:if test="${empty param.AppsearchKeyword}">
-							게시판 목록이 없습니다.
+							게시판 목록이 없습니다. 
 		                  	</c:if> 
 						 	<c:if test="${!empty param.AppsearchKeyword}">
 							검색 결과가 없습니다.
 		                  	</c:if> 
-							</b></h4>
+							</b></h4> 
 					</td>
                   </tr>   
 				</c:if>  
-                <c:if test="${!empty AppList}">
-                 <c:forEach var="AanVo" items="${AppList}">
+                <c:if test="${!empty Blist}"> 
+                <c:set value="${bdSize+1}" var="i"/>
+                 <c:forEach var="BVo" items="${Blist}">
                   <tr>
-                    <td>${AanVo.typeName } 
-                    </td> 
-                    <td class="hidden-phone">${AanVo.resName }</td>
-                    <td>${AanVo.useRegdate } ~ ${AanVo.returnRegdate }</td>
-                    <td>${AanVo.memName }</td>
+                  <c:set value="${i-1}"  var="i"/>
+                    <td>${i}     
+                    </td>  
+                    <td>${BVo.boardTitle }</td>
+                    <td>${BVo.boardReadcount }</td>
+                    <td>${BVo.boardRegdate }</td>
                     <td>
-                      <button class="btn btn-primary btn-xs">
-                      <i class="fas fa-undo"> 승인 취소 </i></button>
-                    </td>     
+                      <button class="btn btn-primary btn-xs" onclick="editBoard(${BVo.boardNo})">
+                      <i class="fas fa-undo"></i> 글수정 </button>
+                      <button class="btn btn-primary btn-xs" onclick="delBoard(${BVo.boardNo})">
+                      <i class="fas fa-undo"></i> 글삭제 </button>
+                    </td>      
                   </tr>   
-                      </c:forEach> 
+                      </c:forEach>  
                   </c:if> 
-                </tbody>
+                </tbody> 
               </table> 
 	            <!-- /content-panel -->
 	            <div class="row-fluid">

@@ -29,6 +29,7 @@ public class ResImgUploadUtility {
 	//이미지 업로드인지, 자료실 파일 업로드인지 구분하는 상수
 	public static final int IMAGE_UPLOAD=1; //이미지 업로드
 	public static final int PDS_FILE_UPLOAD=2; //자료실 파일 업로드
+	public static final int BOARD_UPLOAD =3;
 	
 	@Resource(name = "fileProperties")
 	Properties props;
@@ -65,7 +66,7 @@ public class ResImgUploadUtility {
 				
 				//업로드 처리
 				//업로드 폴더 구하기
-				String upPath=getUploadPath(request);
+				String upPath=getUploadPath(request,uploadPathGb);
 				
 				File file = new File(upPath,fileName);
 				try {
@@ -109,18 +110,30 @@ public class ResImgUploadUtility {
 		
 	}
 	
-	public String getUploadPath(HttpServletRequest request) {
+	public String getUploadPath(HttpServletRequest request,int uploadPathGb) {
 		//업로드 경로 구하기
 		String result="";
 		String type =props.getProperty("file.upload.type");
 		if(type.equals("test")) {
-			//테스트 경로
-			result = props.getProperty("file.resimg.path.test");
-		}else {
-			//배포경로
-			String path=props.getProperty("file.resimg.path");
 			
-			//실제 물리적 경로 구하기
+			if(uploadPathGb == IMAGE_UPLOAD) {
+				result = props.getProperty("file.resimg.path.test");
+			}else if(uploadPathGb == PDS_FILE_UPLOAD) {
+				result = props.getProperty("file.member.path.test");
+			}else if(uploadPathGb == BOARD_UPLOAD) {
+				result = props.getProperty("file.board.path.test");
+			}
+			
+		}else {
+			String path = "";
+			if(uploadPathGb == IMAGE_UPLOAD) {
+				path = props.getProperty("file.resimg.path");
+			}else if(uploadPathGb == PDS_FILE_UPLOAD) {
+				path = props.getProperty("file.member.path");
+			}else if(uploadPathGb == BOARD_UPLOAD) {
+				path = props.getProperty("file.board.path");
+			}
+			
 			result = request.getServletContext().getRealPath(path);
 		}
 		logger.info("upload path={}",result);

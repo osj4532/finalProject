@@ -89,4 +89,12 @@ public class ConfirmDAOMybatis implements ConfirmDAO{
 	public int docOkComplete(int cfNo) {
 		return sqlSession.update(namespace+"docOkComplete",cfNo);
 	}
+	
+	public List<Map<String, Object>> indexConfirmWaitList(int memNo){
+		return sqlSession.selectList(namespace+"indexConfirmWaitList",memNo);
+	}
+	
+	public List<Map<String, Object>> recentConfirmList(int memNo){
+		return sqlSession.selectList(namespace+"recentConfirmList", memNo);
+	}
 }
