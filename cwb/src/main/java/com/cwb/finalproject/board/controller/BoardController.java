@@ -106,9 +106,9 @@ public class BoardController {
 		
 		String msg="",url="/Board/BoardAllList.do";
 		if(cnt>0) {
-			msg="게시판 리스트 삭제 성공";
+			msg="게시판 리스트 수정 성공";
 		}else {
-			msg="게시판 리스트 삭제 실패"; 
+			msg="게시판 리스트 수정 실패"; 
 		}
 		 
 		model.addAttribute("msg", msg);
