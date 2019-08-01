@@ -73,6 +73,8 @@
 		where bdlist_no =#{bdlistNo}
 	</update>
 	 
+	 <!-- 개별  게시판  -->
+	 
 	 <select id="selectBoardByListNo" parameterType="int" resultType="boardVo">
 	 	select * from board
 		where bdlist_no = #{bdlistNo}
@@ -87,6 +89,27 @@
 		values(#{boardNo},#{memNo},#{bdlistNo},#{boardTitle},#{boardContent}
 		,#{boardFilename},#{boardFilesize},#{boardOriginalfilename})
 	</insert> 
+	
+	<select id="selectboard" parameterType="int" resultType="boardVo">
+		select * from board
+		where board_no = #{boardNo}
+	</select>
+	
+	<update id="updateboard" parameterType="boardVo">
+		update board
+		set board_title=#{boardTitle},board_content=#{boardContent},
+		board_changedate=sysdate
+		<if test="boardFilename!=null and !boardFilename.equals('')">
+		,board_filename=#{boardFilename},board_filesize=#{boardFilesize},
+		board_originalfilename=#{boardOriginalfilename}
+		</if>
+		where board_no=#{boardNo}
+	</update>
+	
+	<delete id="deleteboard" parameterType="int">
+		delete from board
+		where board_no = #{boardNo}
+	</delete>
 </mapper>
 
 

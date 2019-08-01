@@ -122,10 +122,13 @@ element.style {
 					$("#startinfo").val(st); 
 					$("#endinfo").val(en); 
 					$("#infoname").html(' 일정 등록 '); 
+					$("#btLb").removeClass("col-sm-4");
+					$("#btLb").addClass("col-sm-5");
 					$("#editinfo").hide();
+					$("#delinfo").hide(); 
 					$("#insinfo").show();
 					$("#my-dialog,#dialog-background").show();
-				}, 
+				},  
 				eventMouseover:function( event, jsEvent, view ) { 
 					var etime =event.start.format();
 					var mytime = "";
@@ -170,9 +173,12 @@ element.style {
 						$("#titleinfo").val(event.title);   
 						$("#contentinfo").val(event.content);  
 						$("#noinfo").val(event.id);  
+						$("#btLb").removeClass("col-sm-5");
+						$("#btLb").addClass("col-sm-4");
 						$("#insinfo").hide();
 						$("#editinfo").show(); 
-						$("#infoname").html(' 일정 수정 ');  
+						$("#delinfo").show(); 
+						$("#infoname").html(' 일정 ');  
 						
 						$("#my-dialog,#dialog-background").show();
 						
@@ -346,6 +352,7 @@ element.style {
 				alert('모두 입력해주세요!');
 			}
 		}); 
+		
 		$("#insinfo").click(function(){ 
 			title=$('#titleinfo').val(); 
 			content=$('#contentinfo').val();
@@ -443,14 +450,16 @@ element.style {
                 </div>
     </div>
     <div class="form-group">  
-		<label class="col-sm-5 col-sm-5 control-label"></label>
-		<div class="col-lg-6">       
+		<label class="col-sm-4 control-label" id="btLb"></label>
+		<div class="col-lg-5">            
 		 <button type="button" class="btn btn-theme" id="insinfo">
 			  <i class="fas fa-clipboard-check"></i> 등록 </button>
 		 <button type="button" class="btn btn-theme" id="editinfo">
 			  <i class="fas fa-clipboard-check"></i> 수정 </button>
+		 <button type="button" class="btn btn-theme" id="delinfo">
+			  <i class="fas fa-clipboard-check"></i> 삭제 </button>
 		</div> 
-	</div>
+	</div> 
 	<input type="hidden" id="noinfo">			
    </form>
 </div>  

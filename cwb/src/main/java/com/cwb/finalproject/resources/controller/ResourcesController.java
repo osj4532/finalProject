@@ -81,10 +81,10 @@ public class ResourcesController {
 		
 		
 		String msg="",url="/resources/list.do";
-		if(cnt>0) {
+		if(cnt>0) { 
 			msg="자원 리스트삭제 완료";
 			for (ResourcesVO vo : resVo) {
-				String path =resImgUtility.getUploadPath(request);
+				String path =resImgUtility.getUploadPath(request,resImgUtility.IMAGE_UPLOAD);
 				File file = new File(path,vo.getResFilename());
 				if(file.exists()) {
 					boolean bool = file.delete();
@@ -194,7 +194,7 @@ public class ResourcesController {
 		if(cnt>0) {
 			msg="자원 수정 완료";
 			if(fixImg) {
-				String path =resImgUtility.getUploadPath(request);
+				String path =resImgUtility.getUploadPath(request,resImgUtility.IMAGE_UPLOAD);
 				File file = new File(path,oldImg);
 				if(file.exists()) {
 					boolean bool = file.delete();
@@ -222,7 +222,7 @@ public class ResourcesController {
 		String msg="",url="/resources/list.do";
 		if(cnt>0) {
 			msg="자원 삭제 성공";
-			String path =resImgUtility.getUploadPath(request);
+			String path =resImgUtility.getUploadPath(request,resImgUtility.IMAGE_UPLOAD);
 			File file = new File(path,resVo.getResFilename());
 			if(file.exists()) {
 				boolean bool = file.delete();

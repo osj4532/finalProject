@@ -40,4 +40,24 @@ public class BoardServiceImpl implements BoardService{
 		return boardDao.selectBoardByListNo(bdlistNo);
 	}
 
+	@Override
+	public int insertBoard(BoardVO boardVo) {
+		return boardDao.insertBoard(boardVo);
+	}
+
+	@Override
+	public BoardVO selectboard(int boardNo) {
+		return boardDao.selectboard(boardNo);
+	}
+
+	@Override
+	public int updateboard(BoardVO boardVo) {
+		return boardDao.updateboard(boardVo);
+	}
+
+	@Override
+	public int deleteboard(int boardNo) {
+		return boardDao.deleteboard(boardNo);
+	}
+
 }
