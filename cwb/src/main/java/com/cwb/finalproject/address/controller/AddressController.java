@@ -53,8 +53,6 @@ public class AddressController {
 	@Autowired
 	private FileUploadUtil fileUtil;
 	@Autowired
-	private EmailSender emailSender;
-	@Autowired
 	private EmailService emailService;
 	@Autowired
 	private AddressBookService addressBookService;
@@ -494,6 +492,8 @@ public class AddressController {
 		
 		return "common/message";
 	}
+	
+	
 	
 }
 

@@ -57,7 +57,7 @@
 	}
 </style>
 
-<section id="main-content1">
+<section id="main-content">
 	<section class="wrapper">
 		<div class="row mt info">
 			<div class="col-md-4 col-sm-4 mb">
@@ -111,33 +111,10 @@
 						<h5><i class="fas fa-at"></i> 최근 보낸 메일</h5>
 					</div>
 					<div class="plus align-right">
-						<a class="detail"><i class="far fa-plus-square"></i>더보기</a>
+						<a href="<c:url value='/address/emailList.do'/>" class="detail"><i class="far fa-plus-square"></i>더보기</a>
 					</div>
 					<div class="content">
-						<table class="table">
-						<thead>
-							<tr>
-								<th>보낸주소</th>
-								<th>제목</th>
-							</tr>
-							</thead>
-							<tr>
-								<td>test@test.com</td>
-								<td>테스트메일입니다.</td>
-							</tr>
-							<tr>
-								<td>test@test.com</td>
-								<td>테스트메일입니다.</td>
-							</tr>
-							<tr>
-								<td>test@test.com</td>
-								<td>테스트메일입니다.</td>
-							</tr>
-							<tr>
-								<td>test@test.com</td>
-								<td>테스트메일입니다.</td>
-							</tr>
-						</table>
+						<c:import url="/indexMailShow.do"/>
 					</div>
 				</div>
 			</div>

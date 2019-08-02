@@ -14,4 +14,5 @@ public interface EmailService {
 	public int countPre(int mailNo);
 	public int deleteMail(int mailNo);
 	
+	public List<EmailVO> indexMailList(int mailRev);
 }

@@ -124,6 +124,16 @@
 	<select id="selectByNo" parameterType="int" resultType="addressBookVo">
 		select * from addressbook where addrbook_no = #{addressbookNo}
 	</select>
+	
+	<select id="indexMailList" parameterType="int" resultType="emailVo">
+		select * 
+		from(
+		select * from mail
+		where mail_rev = #{mailRev}
+		order by mail_no desc
+		)
+<![CDATA[where rownum <= 4]]>
+	</select>
 </mapper>
 
 

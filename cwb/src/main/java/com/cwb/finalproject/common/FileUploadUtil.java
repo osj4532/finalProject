@@ -27,6 +27,7 @@ public class FileUploadUtil {
 	public static final int SIGN_UPLOAD = 3;
 	public static final int DOC_FILE_UPLOAD = 4;
 	public static final int MAIL_UPLOAD = 5;
+	public static final int WEBHARD_UPLOAD = 6;
 	
 	@Resource(name="fileProperties")
 	private Properties props;
@@ -126,6 +127,8 @@ public class FileUploadUtil {
 				result = props.getProperty("file.doc.path.test");
 			}else if(uploadPathKey == MAIL_UPLOAD) {
 				result = props.getProperty("file.mail.path.test");
+			}else if(uploadPathKey == WEBHARD_UPLOAD) {
+				result = props.getProperty("file.webhard.path.test");
 			}
 			
 		}else {
@@ -140,6 +143,8 @@ public class FileUploadUtil {
 				result = props.getProperty("file.doc.path");
 			}else if(uploadPathKey == MAIL_UPLOAD) {
 				result = props.getProperty("file.mail.path");
+			}else if(uploadPathKey == WEBHARD_UPLOAD) {
+				result = props.getProperty("file.webhard.path");
 			}
 			
 			result = request.getServletContext().getRealPath(path);
