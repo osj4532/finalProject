@@ -11,8 +11,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -88,5 +86,20 @@ public class MemberServiceImpl implements MemberService{
 	
 	public int countEmail(Map<String, Object> map) {
 		return memberDAO.countEmail(map);
+	}
+	@Override
+	public int insertMember(MemberVO vo) {
+		return memberDAO.insertMember(vo);
+	}
+	@Override
+	public int dupUserid(String memId) {
+		int count = memberDAO.dupUserid(memId);
+		int result = 0;
+		if(count>0) {	//이미 해당 아이디가 존재함 => 사용불가
+			result = NON_USEFUL_USERID;
+		}else {
+			result = MemberService.USEFUL_USERID;	//사용가능
+		}
+		return result;
 	}
 }

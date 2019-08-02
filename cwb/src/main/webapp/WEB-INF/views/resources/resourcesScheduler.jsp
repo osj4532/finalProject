@@ -14,6 +14,31 @@
 	src="<c:url value='/resources/lib/scheduler/fullcalendar-ko.js'/>"></script>
 
 <style type="text/css">
+#dialog-background {
+    display: none;
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,.3);
+    z-index: 10;
+}
+#my-dialog {
+    display: none; 
+    position: fixed;  
+    left: calc( 50% - 260px ); top: calc( 50% - 150px );
+    width: 500px; height: 320px; 
+    background: #fff;  
+    z-index: 11;   
+    padding: 10px;
+} 
+
+.form-horizontal.style-form .form-group { 
+	margin-left: -10px;
+    margin-right: -10px;
+}
+
+
+
 .mg_text {
 	font-size: 36px;
 	color: #00bcd4ad; 
@@ -58,6 +83,16 @@ element.style {
 </style>
 <script type="text/javascript">
 	$(function() {
+		$("#dialog-background").click(function () {
+			$("#my-dialog,#dialog-background").hide();
+			$('#meminfo').val('');
+			$('#contentinfo').val('');  
+		});    
+		var st='';
+		var en='';
+		
+		
+		
 		$('#calendar').fullCalendar({
 				themeSystem : 'bootstrap3',
 				header : {
@@ -71,8 +106,8 @@ element.style {
 				selectHelper : true,
 				eventLimit: true,
 				select : function(start, end,  allDay) {
-					var st=start.format(); 
-					var en=end.format(); 
+					st=start.format(); 
+					en=end.format(); 
 					if(st.length==10){
 						st=start.format();
 						en=end.format();
@@ -141,12 +176,13 @@ element.style {
 				eventClick: function(event, element){
 
 					<c:if test="${ranksNo>=2}">   
-					
+					 
 						if(event.title=='승인' || event.title=='거절' ||
 								event.title=='대여 완료'){
 							alert("이미 완료된 문서입니다 변경은 자원사용 내역에서 가능합니다.")
 							return;
 						}; 
+						
 						$.ajax({
 							type: "post",
 							url: "<c:url value='/resScheduler/findMember.do'/>",
@@ -154,51 +190,30 @@ element.style {
 								memNo: event.memNo 
 							}, 
 							success : function(mem) {
-								if($("#EditChk").is(":checked")){
-									if(confirm(mem+"님이 신청하셨습니다. 승인하시겠습니까?")){ 
-										$.ajax({ 
-											type : "post", 
-											url : "<c:url value='/resScheduler/approve.do'/>",
-											data : { 
-												"reservNo": event.id 
-											}, 
-											success : function(data) {
-												alert("승인 완료");
-												$("#calendar").fullCalendar("refetchEvents");
-											},
-											error : function(xhr, err) { 
-												alert("ERROR! - readyState: "
-														+ xhr.readyState
-														+ "<br/>status: "
-														+ xhr.status
-														+ "<br/>responseText: "
-														+ xhr.responseText);
-											}
-										}); //승인 ajax
-									}
-								}else {
-									if(confirm(mem+"님이 신청하셨습니다. 반려하시겠습니까?")){
-										$.ajax({
-											type:"post",
-											url:"<c:url value='/resScheduler/refuse.do'/>",
-											data:{ 
-												"reservNo": event.id 
-											}, 
-											success : function(data) {
-												alert("반려 완료");
-												$("#calendar").fullCalendar("refetchEvents");
-											},
-											error : function(xhr, err) { 
-												alert("ERROR! - readyState: "
-														+ xhr.readyState
-														+ "<br/>status: "
-														+ xhr.status
-														+ "<br/>responseText: "
-														+ xhr.responseText);
-											}
-										});//반려 ajax
-									}
-								}//내부 ajax
+								st=event.start.format(); 
+								en=event.end.format(); 
+								if(st.length==10){ 
+									st=event.start.format(); 
+									en=event.end.format();
+								}else{ 
+									st=event.start.format('YYYY/MM/DD HH:mm:ss');
+									en=event.end.format('YYYY/MM/DD HH:mm:ss');
+								} 
+								
+								$("#startinfo").val(st); 
+								$("#endinfo").val(en);   
+								$("#meminfo").html(mem);      
+								$("#noinfo").val(event.id);  
+								//$("#insinfo").hide(); 
+								//$("#infoname").html(' 신청 내역 ');  
+								$("#my-dialog,#dialog-background").show();
+								 
+								//if($("#EditChk").is(":checked")){
+								
+								//}else {
+									//반려 ajax
+									//}
+								//}내부 ajax
 							},
 							error : function(xhr, err) { 
 								alert("ERROR! - readyState: "
@@ -273,6 +288,65 @@ element.style {
 
 				}
 			});
+		
+		
+		$("#insinfo").click(function(){
+			var id= $("#noinfo").val();
+			if(confirm("승인하시겠습니까?")){ 
+					$.ajax({ 
+						type : "post", 
+						url : "<c:url value='/resScheduler/approve.do'/>",
+						data : { 
+							"reservNo": id 
+						}, 
+						success : function(data) {
+							alert("승인 완료");
+							$("#calendar").fullCalendar("refetchEvents");
+							$("#my-dialog,#dialog-background").hide();
+							$('#meminfo').val(''); 
+							$('#contentinfo').val('');  
+						},
+						error : function(xhr, err) { 
+							alert("ERROR! - readyState: "
+									+ xhr.readyState
+									+ "<br/>status: "
+									+ xhr.status
+									+ "<br/>responseText: "
+									+ xhr.responseText);
+						}
+					}); //승인 ajax
+			} 
+		});
+		$("#delinfo").click(function(){
+			var id= $("#noinfo").val(); 
+			if(confirm("반려하시겠습니까?")){
+					$.ajax({
+						type:"post", 
+						url:"<c:url value='/resScheduler/refuse.do'/>",
+						data:{ 
+							"reservNo": id 
+						}, 
+						success : function(data) {
+							alert("반려 완료");
+							$("#calendar").fullCalendar("refetchEvents");
+							$("#my-dialog,#dialog-background").hide();
+							$('#meminfo').val('');
+							$('#contentinfo').val('');  
+						},
+						error : function(xhr, err) { 
+							alert("ERROR! - readyState: "
+									+ xhr.readyState
+									+ "<br/>status: "
+									+ xhr.status
+									+ "<br/>responseText: "
+									+ xhr.responseText);
+						}
+					});
+				}
+		});
+		
+		
+		
 });
 
 </script>
@@ -287,12 +361,6 @@ element.style {
 		<!-- page start-->  
 		<div class="row"> 
 			<div class="col-lg-12">    
-			<c:if test="${ranksNo>=2}">  
-				<span id="switchinfo"> Click    </span>      
-                  <div class="switch switch-square" data-on-label="승인" data-off-label="반려">
-                    <input type="checkbox" id="EditChk"/>
-                  </div>
-            </c:if>
 				<div class="darkblue-panel"
 					style="padding: 30px; border-radius: 35px;">
 					<div id='calendar'></div> 
@@ -301,5 +369,48 @@ element.style {
 		</div>
 	</section>
 </section>
+
+
+<div id="my-dialog">
+   <h3 id="infoname"> 신청 내역 </h3>
+   <form name="scheduleInfo" class="form-horizontal style-form">
+   <div class="form-group">
+   </div>  
+   <div class="form-group">   
+			<label class="col-sm-3 col-sm-3 control-label"> 신청자 </label>
+				<div class="col-sm-6">
+					<h5 id="meminfo"></h5>
+				</div>
+			</div>  
+			
+	<div class="form-group">
+               <label class="control-label col-md-3">신청 시간</label>
+                <div class="col-md-12">   
+                  <!--  <input type="text" readonly class="form-control">
+                   <span class="input-group-addon">To</span>
+                   <input type="text" readonly class="form-control"> -->
+                   <div class="input-group input-large" >
+                      <input type="text" readonly class="form-control" id="startinfo" >
+                      <span class="input-group-addon">To</span>
+                      <input type="text" readonly class="form-control" id="endinfo">
+                    </div>
+                </div>
+    </div>
+    <div class="form-group">  
+		<label class="col-sm-4 control-label" id="btLb"></label>
+		<div class="col-lg-5">            
+		 <button type="button" class="btn btn-theme" id="insinfo">
+			  <i class="fas fa-clipboard-check"></i> 승인 </button>
+		 <button type="button" class="btn btn-theme" id="delinfo">
+			  <i class="fas fa-clipboard-check"></i> 반려 </button>
+		</div> 
+	</div> 
+	<input type="hidden" id="noinfo">			
+   </form>
+</div>  
+<div id="dialog-background"></div>
+
+
+
  <script src="<c:url value='/resources/lib/bootstrap-switch.js'/>"></script>
 <%@include file="../inc/bottom.jsp"%>

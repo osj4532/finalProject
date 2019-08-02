@@ -11,12 +11,14 @@ public class BoardVO extends SearchVO{
 	private int boardReadcount; /* 조회수 */
 	private String boardRegdate; /* 등록일 */
 	private String boardChangedate; /* 수정일 */
-	private String boardFileName; /* 업로드파일명 */
-	private double boardFilesize;  /* 파일사이즈 */
+	private String boardFilename; /* 업로드파일명 */
+	private Long boardFilesize;  /* 파일사이즈 */
 	private String boardOriginalfilename;   /* 원본파일명 */
 	private int boardDowncount;  /* 다운로드수 */
-	private String boardDelflag; /* 삭제구분 */
+	private String boardDelflag; /* 삭제구분 */ 
 	private int BoardRecommend;/* 추천수 */
+	
+	
 	public int getBoardNo() {
 		return boardNo;
 	}
@@ -65,16 +67,16 @@ public class BoardVO extends SearchVO{
 	public void setBoardChangedate(String boardChangedate) {
 		this.boardChangedate = boardChangedate;
 	}
-	public String getBoardFileName() {
-		return boardFileName;
+	public String getboardFilename() {
+		return boardFilename;
 	}
-	public void setBoardFileName(String boardFileName) {
-		this.boardFileName = boardFileName;
+	public void setboardFilename(String boardFilename) {
+		this.boardFilename = boardFilename;
 	}
 	public double getBoardFilesize() {
 		return boardFilesize;
 	}
-	public void setBoardFilesize(double boardFilesize) {
+	public void setBoardFilesize(Long boardFilesize) {
 		this.boardFilesize = boardFilesize;
 	}
 	public String getBoardOriginalfilename() {
@@ -105,8 +107,8 @@ public class BoardVO extends SearchVO{
 	public String toString() {
 		return "BaordVO [boardNo=" + boardNo + ", memNo=" + memNo + ", bdlistNo=" + bdlistNo + ", boardTitle="
 				+ boardTitle + ", boardContent=" + boardContent + ", boardReadcount=" + boardReadcount
-				+ ", boardRegdate=" + boardRegdate + ", boardChangedate=" + boardChangedate + ", boardFileName="
-				+ boardFileName + ", boardFilesize=" + boardFilesize + ", boardOriginalfilename="
+				+ ", boardRegdate=" + boardRegdate + ", boardChangedate=" + boardChangedate + ", boardFilename="
+				+ boardFilename + ", boardFilesize=" + boardFilesize + ", boardOriginalfilename="
 				+ boardOriginalfilename + ", boardDowncount=" + boardDowncount + ", boardDelflag=" + boardDelflag
 				+ ", BoardRecommend=" + BoardRecommend + "]";
 	}

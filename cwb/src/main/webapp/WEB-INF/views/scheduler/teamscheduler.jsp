@@ -105,7 +105,7 @@ element.style {
 				aspectRatio : 1.8,
 				eventLimit: true, 
 				<c:if test="${ranksNo>=2}">    
-				selectHelper : true,
+				selectHelper : true, 
 				selectable : true,
 				select : function(start, end,  allDay) {
 					//var title = prompt('일정을 입력하세요.');
@@ -121,14 +121,17 @@ element.style {
 					
 					$("#startinfo").val(st); 
 					$("#endinfo").val(en); 
-					$("#infoname").html(' 일정 등록 '); 
+					$("#infoname").html(' 일정 등록 ');
+					$("#btLb").removeClass('col-sm-4');
+					$("#btLb").addClass('col-sm-5');
 					$("#editinfo").hide();
+					$("#delinfo").hide();
 					$("#insinfo").show();
 					$("#my-dialog,#dialog-background").show();
 					
 				}, 
 				eventClick: function(event, element){ 
-					if($("#EditChk").is(":checked")){
+					//if($("#EditChk").is(":checked")){
 						//var title = prompt('['+event.title+']을 수정합니다.');
 						var st=event.start.format(); 
 						var en=event.end.format(); 
@@ -145,36 +148,19 @@ element.style {
 						$("#contentinfo").val(event.content);  
 						$("#noinfo").val(event.id);  
 						$("#insinfo").hide();
+						$("#delinfo").show(); 
 						$("#editinfo").show(); 
 						$("#infoname").html(' 일정 수정 ');  
+						$("#btLb").removeClass('col-sm-5');
+						$("#btLb").addClass('col-sm-4'); 
 						
 						$("#my-dialog,#dialog-background").show();
 						
 						/* 수정 */		
 							
-					}else {
-						if(confirm("일정을 삭제하시겠습니까?")){
-							$.ajax({
-								type:"post",
-								url:"<c:url value='/teamscheduler/TeamScdDel.do'/>",
-								data:{ 
-									"tscdNo":event.id,
-								},
-								success : function(data) {
-									alert("삭제 완료");
-									$("#calendar").fullCalendar("refetchEvents");
-								},
-								error : function(xhr, err) { 
-									alert("ERROR! - readyState: "
-											+ xhr.readyState
-											+ "<br/>status: "
-											+ xhr.status
-											+ "<br/>responseText: "
-											+ xhr.responseText);
-								}
-							});
-						}
-					}
+					//}else {
+						
+					//}
 				},
 				editable : true, //수정 가능  
 				eventDrop: function( event, dayDelta, allDay ) {//이벤트 드롭 수정
@@ -197,7 +183,6 @@ element.style {
 							
 						},
 						success : function(data) {
-							alert("수정 완료");
 							$("#calendar").fullCalendar("refetchEvents");
 						},
 						error : function(xhr, err) { 
@@ -232,7 +217,6 @@ element.style {
 								
 							},
 							success : function(data) {
-								alert("수정 완료");
 								$("#calendar").fullCalendar("refetchEvents");
 							},
 							error : function(xhr, err) { 
@@ -245,7 +229,7 @@ element.style {
 							}
 						});
 	            },
-	            </c:if>  
+	            </c:if>   
 	            eventMouseover:function( event, jsEvent, view ) { 
 					var etime =event.start.format();
 					var mytime = ""; 
@@ -348,6 +332,36 @@ element.style {
 			}
 		});
 		
+		$("#delinfo").click(function(){
+			var id=$('#noinfo').val();
+			if(confirm("일정을 삭제하시겠습니까?")){
+				$.ajax({
+					type:"post",
+					url:"<c:url value='/teamscheduler/TeamScdDel.do'/>",
+					data:{ 
+						"tscdNo": id
+					},
+					success : function(data) {
+						alert("삭제 완료");
+						$("#calendar").fullCalendar("refetchEvents");
+						$('#titleinfo').val(''); 
+						$('#contentinfo').val('');  
+						$("#my-dialog,#dialog-background").hide();
+					},
+					error : function(xhr, err) { 
+						alert("ERROR! - readyState: "
+								+ xhr.readyState
+								+ "<br/>status: "
+								+ xhr.status
+								+ "<br/>responseText: "
+								+ xhr.responseText);
+					}
+				});
+			}
+			
+		});
+		
+		
 		$("#insinfo").click(function(){ 
 			title=$('#titleinfo').val(); 
 			content=$('#contentinfo').val();
@@ -400,12 +414,6 @@ element.style {
 		<!-- page start--> 
 		<div class="row"> 
 			<div class="col-lg-12">   
-			<c:if test="${ranksNo>=2}">  
-				<span id="switchinfo" ><i class="fas fa-hand-point-right"></i>  Click    </span>      
-                  <div class="switch switch-square" data-on-label="수정" data-off-label="삭제">
-                    <input type="checkbox" id="EditChk"/>
-                  </div>
-            </c:if>
 				<div class="darkblue-panel"
 					style="padding: 30px; border-radius: 35px;">
 					<div id='calendar'></div> 
@@ -449,12 +457,14 @@ element.style {
                 </div>
     </div>
     <div class="form-group">  
-		<label class="col-sm-5 col-sm-5 control-label"></label>
+		<label class="col-sm-5 control-label" id="btLb"></label>
 		<div class="col-lg-6">       
 		 <button type="button" class="btn btn-theme" id="insinfo">
 			  <i class="fas fa-clipboard-check"></i> 등록 </button>
 		 <button type="button" class="btn btn-theme" id="editinfo">
 			  <i class="fas fa-clipboard-check"></i> 수정 </button>
+		 <button type="button" class="btn btn-theme" id="delinfo">
+			  <i class="fas fa-clipboard-check"></i> 삭제 </button>
 		</div> 
 	</div>
 	<input type="hidden" id="noinfo">			

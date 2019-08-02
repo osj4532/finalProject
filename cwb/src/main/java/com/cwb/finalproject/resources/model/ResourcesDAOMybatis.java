@@ -7,6 +7,7 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+
 @Repository
 public class ResourcesDAOMybatis implements ResourcesDAO{
 	private String namespace="config.mybatis.mapper.oracle.resources.";
@@ -78,6 +79,7 @@ public class ResourcesDAOMybatis implements ResourcesDAO{
 	public int deleteResByTypeNo(int typeNo) {
 		return sqlSession.delete(namespace+"deleteResByTypeNo", typeNo);
 	}
-	
+
+
 	
 }

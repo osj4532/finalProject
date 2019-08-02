@@ -54,7 +54,7 @@ src="<c:url value='/resources/SmartEditor2/js/service/HuskyEZCreator.js'/>" char
     			 elClickedObj.form.submit();
  			} catch(e) {} */
 		try {  
-	 		$("form[name=boardWrite]").submit(function(){
+	 		$("form[name=boardEdit]").submit(function(){
 	 	        oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
 	 	        var ir1 = $("#ir1").val();
 	 	        var title = $("input[name=boardTitle]").val();
@@ -88,38 +88,46 @@ src="<c:url value='/resources/SmartEditor2/js/service/HuskyEZCreator.js'/>" char
 <body>
  <section id="container">
        <section class="wrapper" style="margin-top: 10px"> 
-        <h3 style="margin-left: 15px"><i class="fa fa-plus-square"></i> ${blVo.bdlistName} 글쓰기 </h3>
+        <h3 style="margin-left: 15px"><i class="fa fa-plus-square"></i> ${bVo.boardTitle} 글 수정 </h3>
         <!-- BASIC FORM ELELEMNTS -->
-        <div class="row">
+        <div class="row"> 
           <div class="col-lg-12"> 
             <div class="form-panel">
               <form class="form-horizontal style-form" 
               enctype="multipart/form-data"
               method="post"  
-              name="boardWrite"
-              action="<c:url value='/Board/BoardWrite.do'/>">
+              name="boardEdit"
+              action="<c:url value='/Board/BoardEdit.do'/>">
               
                 <div class="form-group mt">
                   <label class="col-sm-1 col-sm-1 control-label"> 제목 </label>
                   <div class="col-sm-11">       
-                    <input type="text" class="form-control" name="boardTitle">
-                    <input type="hidden" name="bdlistNo" value="${blVo.bdlistNo}">
+                    <input type="text" class="form-control" value="${bVo.boardTitle}" name="boardTitle">
+                    <input type="hidden" name="boardNo" value="${bVo.boardNo}">
                   </div>	  
                 </div>
                 <div class="form-group">  
                   <div class="col-sm-12 mt">   
-                  <textarea name="boardContent" id="ir1" rows="20" cols="114"></textarea>
-                  </div>           
+                  <textarea name="boardContent" id="ir1" rows="20" cols="114">${bVo.boardContent}</textarea>
+                  </div>            
                 </div>         
              <div class="form-group"> 
                   <label class="col-sm-2 col-sm-2 control-label">파일 첨부 </label>
                   <div class="col-md-10">  
                      <div class="fileupload fileupload-new" data-provides="fileupload">
                       <span class="btn btn-theme02 btn-file">
-                        <span class="fileupload-new"><i class="fa fa-paperclip"></i> 파일 선택 </span>
+                        <span class="fileupload-new">
+						<c:if test="${!empty bVo.boardOriginalfilename}">
+							<i class="fa fa-undo"></i>	${bVo.boardOriginalfilename} 파일 변경
+       					</c:if> 
+						<c:if test="${empty bVo.boardOriginalfilename}">
+ 							<i class="fa fa-paperclip"></i>	파일 선택 
+       					</c:if>
+                         </span>
                       <span class="fileupload-exists"><i class="fa fa-undo"></i> 파일 변경</span>
-                      	<input type="file" class="default" name="upfile"/>  
-                      </span> 
+                      	<input type="file" class="default" name="upfile"/>   
+                      	<input type="hidden"  name="oldFile" value="${bVo.boardFilename}"/>  
+                      </span>  
                       <span class="fileupload-preview" style="margin-left:5px;"></span>
                       <a href="advanced_form_components.html#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
                    	 </div>
@@ -128,9 +136,9 @@ src="<c:url value='/resources/SmartEditor2/js/service/HuskyEZCreator.js'/>" char
                     <div class="form-group"> 
 		                  <label class="col-sm-5 col-sm-5 control-label"></label>
 		                  <div class="col-md-5">  
-		                    <button type="submit"
+		                    <button type="submit" 
 		                        class="btn btn-theme">
-		                        <i class="fa fa-check"></i> 작성 </button>
+		                        <i class="fa fa-check"></i> 수정 </button>
 	                        <div class="chkInfo" style="display:none;">
 		                    <span class="label label-info">입력!</span>
 		                    <span id="infoCon">정확하게 기입하여 주세요</span>

@@ -9,4 +9,8 @@ public interface BoardDAO {
 	BoardListVO selectBoardListByNo(int bdlistNo);
 	int updateBoardList(BoardListVO boardlistVo);
 	List<BoardVO> selectBoardByListNo(int bdlistNo); 
+	int insertBoard(BoardVO boardVo);
+	BoardVO selectboard(int boardNo);
+	int updateboard(BoardVO boardVo);
+	int deleteboard(int boardNo);
 }
