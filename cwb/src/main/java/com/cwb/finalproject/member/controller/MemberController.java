@@ -5,6 +5,7 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+import java.util.Map;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cwb.finalproject.common.AES256Util;
+import com.cwb.finalproject.common.FileUploadUtil;
 import com.cwb.finalproject.dept.model.DeptService;
 import com.cwb.finalproject.dept.model.DeptVO;
 import com.cwb.finalproject.member.model.MemberService;
@@ -40,8 +42,8 @@ public class MemberController {
 	
 	private AES256Util aes256Util;
 	
-	
-	
+	@Autowired
+	private FileUploadUtil fileUtil;
 	@Autowired
 	private MemberService memberService;
 	@Autowired
@@ -116,8 +118,16 @@ public class MemberController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		vo.setMemOriginalFileName(vo.getMemFileName());
 		vo.setMemPwd(memPwd);
+		
+		if(fileName != null && !fileName.isEmpty()) {
+			Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.MEMBER_UPLOAD);
+			vo.setMemFileName((String)map.get("fileName"));
+			vo.setMemOriginalFileName((String)map.get("originalFileName"));
+			logger.info("파일 넣은 후 vo = {}", vo);
+		}
+		
+		
 		int cnt = memberService.insertMember(vo);
 		logger.info("사원등록 처리 결과 cnt = {}", cnt);
 		
@@ -154,14 +164,33 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/memberList.do")
-	public void list() {
+	public void list(Model model) {
 		logger.info("멤버 조회 화면");
 		
+		List<Map<String, Object>> list = memberService.selectOrSearch(null);
+		model.addAttribute("list", list);
 	}
-	@RequestMapping("/member/memberEdit.do")
-	public void edit() {
-		logger.info("멤버 수정 화면");
+	
+	@RequestMapping(value="/member/memberEdit.do", method = RequestMethod.GET)
+	public String edit(@RequestParam(defaultValue = "0") int memNo, Model model) {
+		logger.info("멤버 수정 화면, 파라미터 memNo = {}", memNo);
+		
+		List<DeptVO> deptList = deptService.selectAll();
+		List<RanksVO> ranksList = ranksService.selectAll();
+		List<PositionVO> positionList = positionService.selectAll();
+		
+		model.addAttribute("deptList", deptList);
+		model.addAttribute("ranksList", ranksList);
+		model.addAttribute("positionList", positionList);
+		
+		Map<String, Object> map = memberService.selectByNo(memNo);
+		logger.info("수정화면 조회 결과, map={}", map);
+		
+		model.addAttribute("map", map);
+		
+		return "member/memberEdit";
 	}
+	
 	@RequestMapping("/member/memberDetail.do")
 	public void detail() {
 		logger.info("멤버 상세보기 화면");

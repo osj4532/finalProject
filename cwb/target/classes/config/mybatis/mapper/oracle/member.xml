@@ -57,16 +57,13 @@
 			select member_seq.nextval from dual
 		</selectKey>
 		insert into member(mem_no, ranks_no, dept_no, mem_name, mem_hp1, mem_hp2, mem_hp3, mem_email1, mem_email2, mem_id, mem_pwd, mem_zipcode, mem_address, mem_addressdetail, mem_filename, mem_originalfilename, mem_achievement, mem_pay, mem_holiday, pos_no)
-		values(#{memNo}, #{ranksNo}, #{deptNo}, #{memName}, #{memHp1}, #{memHp2}, #{memHp3}, #{memEmail1}, #{memEmail2}, #{memId}, #{memPwd}, #{memZipcode}, #{memAddress}, #{memAddressDetail}, #{memFileName}, #{memOriginalFileName}, #{memAchievement}, #{memPay}, #{memHoliday}, #{posNo)
+		values(#{memNo}, #{ranksNo}, #{deptNo}, #{memName}, #{memHp1}, #{memHp2}, #{memHp3}, #{memEmail1}, #{memEmail2}, #{memId}, #{memPwd}, #{memZipcode}, #{memAddress}, #{memAddressDetail}, #{memFileName}, #{memOriginalFileName}, #{memAchievement}, #{memPay}, #{memHoliday}, #{posNo})
 	</insert>
 	
 	<select id="dupUserid" parameterType="string" resultType="int">
 		select count(*) from member where mem_id=#{memId}
 	</select>
 	
-	<!-- <select id="selectMemberAll" resultType="map">
-		
-	</select> -->
 </mapper>
 
 

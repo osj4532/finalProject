@@ -128,11 +128,48 @@ function getAddressInfo(){
         shorthand : false
     }).open();
 }
+
+
+var contextPath = "/finalproject";
+$(document).ready(function(){
+	$('#memEmail2').change(function(){
+		if($(this).val()=="etc"){
+			$('#memEmail3').css('visibility', 'visible');
+			$('#memEmail3').focus();
+		}else{
+			$('#memEmail3').css('visibility', 'hidden');
+			$('#memEmail3').val("");
+		}
+	});
+	
+});
+
+function validate_hp(hp){
+	var pattern = new RegExp(/^[0-9]*$/g);
+	return pattern.test(hp);
+	/* 정규식 /^[0-9]*$/g
+	0 에서 9사이의 숫자로 시작하거나 끝나야 한다는 의미
+	(^는 시작, $는 끝을 의미)
+	닫기 대괄호(]) 뒤의 * 기호는 0번 이상 반복 */
+}
+
+function validate_userid(userid){
+	var pattern = new RegExp(/^[a-zA-Z0-9_]/g);
+	return pattern.test(userid);
+	/* 정규식 /^[a-zA-Z0-9_]+$/g
+	a에서 z 사이의 문자, A~Z사이의 문자, 0에서 9사이의 숫자나 _로 시작하거나
+	끝나야 한다는 의미
+	닫기 대괄호(]) 뒤의 + 기호는 이 패턴이 한 번 또는 그 이상 반복된다는 의미 */
+}
+
+function list(){
+	location.href="<c:url value='/member/memberList.do'/>";
+}
 </script>
 <section id="main-content">
 	<section class="wrapper">
 		<h3>
-			<i class="fas fa-keyboard mb mt"></i> 사원 등록
+			<i class="fas fa-user-plus"></i> 사원 등록
 		</h3>  
 		<div class="row">   
 			<div class="col-lg-12">   
@@ -309,6 +346,7 @@ function getAddressInfo(){
 						<div class="center">
 							<input type="submit" id="submit" value="등록" class="btn btn-success">
 							<input type="reset" id="reset" value="취소" class="btn btn-danger">
+							<input type="button" id="list" value="목록" class="btn btn-info" onclick="location.href='<c:url value='/member/memberList.do'/>'">
 						</div>
 						<input type="hidden" name="chkId" id="chkId">
 					</form>
