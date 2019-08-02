@@ -24,6 +24,9 @@ function delBoard(boardNo){
 			location.href="${pageContext.request.contextPath}/Board/BoardDel.do?boardNo="+boardNo;
 		}
 	};
+function detailBoard(boardNo){
+		location.href="${pageContext.request.contextPath}/Board/BoardDetail.do?boardNo="+boardNo;
+	};
 </script>	
 <section id="main-content">
 	<section class="wrapper">
@@ -70,7 +73,7 @@ function delBoard(boardNo){
                   <c:set value="${i-1}"  var="i"/>
                     <td>${i}     
                     </td>  
-                    <td>${BVo.boardTitle }</td>
+                   	<td onclick="detailBoard(${BVo.boardNo})">${BVo.boardTitle}</td>
                     <td>${BVo.boardReadcount }</td>
                     <td>${BVo.boardRegdate }</td>
                     <td>

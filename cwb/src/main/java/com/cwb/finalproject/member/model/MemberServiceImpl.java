@@ -102,4 +102,8 @@ public class MemberServiceImpl implements MemberService{
 		}
 		return result;
 	}
+	@Override
+	public MemberVO selectByMemNotoVo(int memNO) {
+		return memberDAO.selectByMemNotoVo(memNO);
+	}
 }

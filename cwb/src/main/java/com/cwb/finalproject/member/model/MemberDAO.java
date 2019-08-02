@@ -22,4 +22,6 @@ public interface MemberDAO {
 	public int insertMember(MemberVO vo);
 	
 	public int dupUserid(String memId);
+	
+	public MemberVO selectByMemNotoVo(int memNO);
 }

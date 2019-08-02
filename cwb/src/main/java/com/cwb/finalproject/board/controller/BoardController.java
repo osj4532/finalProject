@@ -1,6 +1,7 @@
 package com.cwb.finalproject.board.controller;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,12 +18,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.cwb.finalproject.board.model.BoardListVO;
 import com.cwb.finalproject.board.model.BoardService;
 import com.cwb.finalproject.board.model.BoardVO;
 import com.cwb.finalproject.common.FileUploadUtil;
 import com.cwb.finalproject.common.ResImgUploadUtility;
+import com.cwb.finalproject.confirm.model.ConfirmFileVO;
+import com.cwb.finalproject.member.model.MemberService;
+import com.cwb.finalproject.member.model.MemberVO;
 import com.cwb.finalproject.ranks.model.RanksService;
 import com.cwb.finalproject.ranks.model.RanksVO;
 
@@ -31,6 +36,7 @@ import com.cwb.finalproject.ranks.model.RanksVO;
 public class BoardController {
 	Logger logger = LoggerFactory.getLogger(BoardController.class);
 	
+	@Autowired MemberService memberService;
 	@Autowired BoardService boardService;
 	@Autowired RanksService ranksService;
 	@Autowired ResImgUploadUtility upLoadUtil;
@@ -169,7 +175,7 @@ public class BoardController {
 			fileSize = (Long)map.get("fileSize");
 			originalFileName = (String) map.get("originalFileName");
 		}
-		boardVo.setboardFilename(fileName);  
+		boardVo.setBoardFilename(fileName);  
 		boardVo.setBoardFilesize(fileSize);
 		boardVo.setBoardOriginalfilename(originalFileName);
 		int cnt = boardService.insertBoard(boardVo);
@@ -211,7 +217,7 @@ public class BoardController {
 			fileSize = (Long)map.get("fileSize");
 			originalFileName = (String) map.get("originalFileName");
 		}
-		boardVo.setboardFilename(fileName);  
+		boardVo.setBoardFilename(fileName);  
 		boardVo.setBoardFilesize(fileSize);
 		boardVo.setBoardOriginalfilename(originalFileName);
 		
@@ -251,8 +257,8 @@ public class BoardController {
 		if(cnt>0) {  
 			msg="글삭제 성공"; 
 				String path =upLoadUtil.getUploadPath(request,upLoadUtil.BOARD_UPLOAD);
-				File file = new File(path,bVo.getboardFilename());
-				if(file.exists()) {
+				File file = new File(path,bVo.getBoardFilename());
+				if(file.exists()) { 
 					boolean bool = file.delete();
 					logger.info("삭제 후 기존 파일 삭제 결과={}",bool);
 				}   
@@ -263,8 +269,40 @@ public class BoardController {
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
 		return "common/message";
-		
 	}
 	
+	@RequestMapping("/BoardDetail.do")
+	public String boardDetail(@RequestParam int boardNo,Model model) {
+		logger.info("게시글 상세보기");
+
+		BoardVO BVo= boardService.selectboard(boardNo);
+		MemberVO mVo =  memberService.selectByMemNotoVo(BVo.getMemNo());
+		
+		String memName =mVo.getMemName();
+		model.addAttribute("BVo", BVo);
+		model.addAttribute("memName", memName);
+		  
+		return "Board/BoardDetail";
+	}
+	
+	@RequestMapping("/download.do")
+	public ModelAndView download(@ModelAttribute BoardVO vo,HttpServletRequest request ) {
+		logger.info("첨부파일 다운로드 하기 vo = {}",vo);
+		
+		String path = upLoadUtil.getUploadPath(request, upLoadUtil.BOARD_UPLOAD);
+		 
+		logger.info("path = {}",path);
+		File file = new File(path,vo.getBoardFilename());
+		File file1 = new File(vo.getBoardOriginalfilename());
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("downFile",file);
+		map.put("downFileName",file1);
+		
+		logger.info("첨부파일 다운로드 하기 map.size = {}",map.size());
+		
+		ModelAndView mav = new ModelAndView("downloadView",map);
+		return mav;
+	}
 }
 

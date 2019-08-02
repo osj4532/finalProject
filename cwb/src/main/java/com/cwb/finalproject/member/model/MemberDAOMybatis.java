@@ -48,4 +48,8 @@ public class MemberDAOMybatis implements MemberDAO{
 	public int dupUserid(String memId) {
 		return sqlSession.selectOne(namespace+"dupUserid", memId);
 	}
+	@Override
+	public MemberVO selectByMemNotoVo(int memNO) {
+		return sqlSession.selectOne(namespace+"selectByMemNotoVo",memNO);
+	}
 }

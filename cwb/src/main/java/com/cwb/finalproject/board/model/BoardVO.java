@@ -16,7 +16,7 @@ public class BoardVO extends SearchVO{
 	private String boardOriginalfilename;   /* 원본파일명 */
 	private int boardDowncount;  /* 다운로드수 */
 	private String boardDelflag; /* 삭제구분 */ 
-	private int BoardRecommend;/* 추천수 */
+	private int boardRecommend;/* 추천수 */
 	
 	
 	public int getBoardNo() {
@@ -67,13 +67,13 @@ public class BoardVO extends SearchVO{
 	public void setBoardChangedate(String boardChangedate) {
 		this.boardChangedate = boardChangedate;
 	}
-	public String getboardFilename() {
+	public String getBoardFilename() {
 		return boardFilename;
 	}
-	public void setboardFilename(String boardFilename) {
+	public void setBoardFilename(String boardFilename) {
 		this.boardFilename = boardFilename;
 	}
-	public double getBoardFilesize() {
+	public Long getBoardFilesize() {
 		return boardFilesize;
 	}
 	public void setBoardFilesize(Long boardFilesize) {
@@ -98,19 +98,19 @@ public class BoardVO extends SearchVO{
 		this.boardDelflag = boardDelflag;
 	}
 	public int getBoardRecommend() {
-		return BoardRecommend;
+		return boardRecommend;
 	}
 	public void setBoardRecommend(int boardRecommend) {
-		BoardRecommend = boardRecommend;
+		this.boardRecommend = boardRecommend;
 	}
 	@Override
 	public String toString() {
-		return "BaordVO [boardNo=" + boardNo + ", memNo=" + memNo + ", bdlistNo=" + bdlistNo + ", boardTitle="
+		return "BoardVO [boardNo=" + boardNo + ", memNo=" + memNo + ", bdlistNo=" + bdlistNo + ", boardTitle="
 				+ boardTitle + ", boardContent=" + boardContent + ", boardReadcount=" + boardReadcount
 				+ ", boardRegdate=" + boardRegdate + ", boardChangedate=" + boardChangedate + ", boardFilename="
 				+ boardFilename + ", boardFilesize=" + boardFilesize + ", boardOriginalfilename="
 				+ boardOriginalfilename + ", boardDowncount=" + boardDowncount + ", boardDelflag=" + boardDelflag
-				+ ", BoardRecommend=" + BoardRecommend + "]";
+				+ ", boardRecommend=" + boardRecommend + ", toString()=" + super.toString() + "]";
 	}
 	
 	

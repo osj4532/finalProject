@@ -64,6 +64,11 @@
 		select count(*) from member where mem_id=#{memId}
 	</select>
 	
+	
+	<select id="selectByMemNotoVo" parameterType="int" resultType="memberVo">
+		select * from member
+		where mem_no = #{memNo}	
+	</select>
 </mapper>
 
 

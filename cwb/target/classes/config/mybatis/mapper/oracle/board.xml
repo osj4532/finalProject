@@ -110,6 +110,11 @@
 		delete from board
 		where board_no = #{boardNo}
 	</delete>
+	
+	<delete id="deleteboardByListNo" parameterType="int">
+		delete from board
+		where bdlist_no = #{bdlistNo}
+	</delete>
 </mapper>
 
 

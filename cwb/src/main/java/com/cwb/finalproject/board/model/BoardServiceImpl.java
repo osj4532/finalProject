@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -21,8 +22,12 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
+	@Transactional
 	public int delectBoardList(int bdlistNo) {
-		return boardDao.delectBoardList(bdlistNo);
+		int cnt = boardDao.deleteboardByListNo(bdlistNo);
+		cnt +=boardDao.delectBoardList(bdlistNo);
+		return cnt;
+		
 	}
 
 	@Override
@@ -59,5 +64,6 @@ public class BoardServiceImpl implements BoardService{
 	public int deleteboard(int boardNo) {
 		return boardDao.deleteboard(boardNo);
 	}
+
 
 }
