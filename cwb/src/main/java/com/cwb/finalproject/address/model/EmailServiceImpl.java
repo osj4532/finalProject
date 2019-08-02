@@ -42,4 +42,8 @@ public class EmailServiceImpl implements EmailService{
 	public int deleteMail(int mailNo) {
 		return emailDAO.deleteMail(mailNo);
 	}
+	
+	public List<EmailVO> indexMailList(int mailRev){
+		return emailDAO.indexMailList(mailRev);
+	}
 }

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.cwb.finalproject.address.model.EmailService;
+import com.cwb.finalproject.address.model.EmailVO;
 import com.cwb.finalproject.common.PaginationInfo;
 import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.confirm.controller.ConfirmController;
@@ -36,6 +38,8 @@ public class IndexController {
 	private MessageService messageService;
 	@Autowired
 	private ConfirmService confirmService;
+	@Autowired
+	private EmailService emailService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -103,10 +107,19 @@ public class IndexController {
 		return list;
 	}
 	
-	/*
-	@RequestMapping("/indexMailList.do")
+	
+	@RequestMapping("/indexMailShow.do")
 	public String mailList() {
-		
+		return "inc/indexMailList";
 	}
-	*/
+	
+	@RequestMapping("/indexMailList.do")
+	@ResponseBody
+	public List<EmailVO> mailList(HttpSession session){
+		int memNo = (Integer) session.getAttribute("memNo");
+		logger.info("ajax - index 최근 보낸 메일 리스트, memNo = {}", memNo);
+		
+		List<EmailVO> list = emailService.indexMailList(memNo);
+		return list;
+	}
 }

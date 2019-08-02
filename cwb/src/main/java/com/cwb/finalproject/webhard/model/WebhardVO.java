@@ -8,7 +8,7 @@ public class WebhardVO {
 	private int memNo;
 	private String fileName;
 	private String fileOriginalfilename;
-	private int fileFilesize;
+	private long fileFilesize;
 	private Date fileRegdate;
 	private Date fileChangedate;
 	
@@ -42,10 +42,10 @@ public class WebhardVO {
 	public void setFileOriginalfilename(String fileOriginalfilename) {
 		this.fileOriginalfilename = fileOriginalfilename;
 	}
-	public int getFileFilesize() {
+	public long getFileFilesize() {
 		return fileFilesize;
 	}
-	public void setFileFilesize(int fileFilesize) {
+	public void setFileFilesize(long fileFilesize) {
 		this.fileFilesize = fileFilesize;
 	}
 	public Date getFileRegdate() {

@@ -3,7 +3,23 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="config.mybatis.mapper.oracle.webhard">
-	<select id="selectWebhard" resultType="map">
+	<select id="selectWBList" resultType="webhardListVo">
 		select * from webhard
 	</select>
+	
+	<select id="selectFileByWebNo" parameterType="webhardVo" resultType="map" >
+		select W.*, M.mem_name from webhardfile W
+		join member M
+		on W.mem_no = M.mem_no
+		where web_no = #{webNo}
+		order by file_No desc
+	</select>
+	
+	<insert id="insertWBFile" parameterType="webhardVo">
+		<selectKey keyProperty="fileNo" resultType="int" order="BEFORE">
+			select WEBHARDFILE_SEQ.nextval from dual 
+		</selectKey>
+		insert into webhardfile(file_no, web_no, mem_no, file_name, file_originalfilename, file_filesize)
+		values(#{fileNo}, #{webNo}, #{memNo}, #{fileName}, #{fileOriginalfilename}, #{fileFilesize})
+	</insert>
 </mapper>

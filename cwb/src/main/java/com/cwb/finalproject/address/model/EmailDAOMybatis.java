@@ -45,5 +45,9 @@ public class EmailDAOMybatis implements EmailDAO{
 		return sqlSession.delete(namespace+"deleteMail",mailNo);
 	}
 	
+	public List<EmailVO> indexMailList(int mailRev){
+		return sqlSession.selectList(namespace+"indexMailList",mailRev);
+	}
+	
 }
 
