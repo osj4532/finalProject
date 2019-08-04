@@ -9,4 +9,5 @@ public interface WebhardDAO {
 	
 	public List<Map<String, Object>> selectFileByWebNo(WebhardVO vo);
 	public int insertWBFile(WebhardVO vo);
+	public WebhardVO selectByFileNo(int fileNo);
 }

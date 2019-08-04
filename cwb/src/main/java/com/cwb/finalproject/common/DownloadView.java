@@ -49,6 +49,12 @@ public class DownloadView extends AbstractView{
 			}
 		}
 		
+		if((Boolean)model.get("isZip") != null) {
+			if(file.exists()) {
+				file.delete();
+			}
+		}
+		
 	}
 
 }

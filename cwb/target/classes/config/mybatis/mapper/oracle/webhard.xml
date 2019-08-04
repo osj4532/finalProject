@@ -8,10 +8,13 @@
 	</select>
 	
 	<select id="selectFileByWebNo" parameterType="webhardVo" resultType="map" >
-		select W.*, M.mem_name from webhardfile W
+		select W.*, M.mem_id from webhardfile W
 		join member M
 		on W.mem_no = M.mem_no
 		where web_no = #{webNo}
+		<if test="webNo == 2">
+			and W.mem_no = #{memNo}
+		</if>
 		order by file_No desc
 	</select>
 	
@@ -22,4 +25,9 @@
 		insert into webhardfile(file_no, web_no, mem_no, file_name, file_originalfilename, file_filesize)
 		values(#{fileNo}, #{webNo}, #{memNo}, #{fileName}, #{fileOriginalfilename}, #{fileFilesize})
 	</insert>
+	
+	<select id="selectByFileNo" parameterType="int" resultType="webhardVo">
+		select * from webhardfile
+		where file_no = #{fileNo}
+	</select>
 </mapper>

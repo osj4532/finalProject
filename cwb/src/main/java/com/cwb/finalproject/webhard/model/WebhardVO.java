@@ -11,6 +11,7 @@ public class WebhardVO {
 	private long fileFilesize;
 	private Date fileRegdate;
 	private Date fileChangedate;
+	private int fileDowncount;
 	
 	public int getFileNo() {
 		return fileNo;
@@ -60,13 +61,18 @@ public class WebhardVO {
 	public void setFileChangedate(Date fileChangedate) {
 		this.fileChangedate = fileChangedate;
 	}
-	
+	public int getFileDowncount() {
+		return fileDowncount;
+	}
+	public void setFileDowncount(int fileDowncount) {
+		this.fileDowncount = fileDowncount;
+	}
 	@Override
 	public String toString() {
 		return "WebhardVO [fileNo=" + fileNo + ", webNo=" + webNo + ", memNo=" + memNo + ", fileName=" + fileName
 				+ ", fileOriginalfilename=" + fileOriginalfilename + ", fileFilesize=" + fileFilesize + ", fileRegdate="
-				+ fileRegdate + ", fileChangedate=" + fileChangedate + "]";
-	}
-	
+				+ fileRegdate + ", fileChangedate=" + fileChangedate + ", fileDowncount=" + fileDowncount + "]";
+	}	
 
+	
 }

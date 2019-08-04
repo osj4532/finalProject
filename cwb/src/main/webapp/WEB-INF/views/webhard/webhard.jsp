@@ -98,10 +98,10 @@
 	<div class="panel wraper2">
 		<div class="whNav">
 			<form id="fileForm" method="post" enctype="multipart/form-data">
-				<label for="upload"><i class="fas fa-upload"></i></label>
+				<label title="업로드하기" for="upload"><i class="fas fa-upload"></i></label>
 	  			<input type="file" id="upload" name="fileName" multiple="multiple">
-				<button class="whBtn" id="download"><i class="fas fa-download"></i></button>
-				<button class="whBtn bgRed" id="fileDel"><i class="fas fa-trash-alt"></i></button>
+				<button title="다운로드하기" class="whBtn" id="download"><i class="fas fa-download"></i></button>
+				<button title="삭제하기" class="whBtn bgRed" id="fileDel"><i class="fas fa-trash-alt"></i></button>
 				
 				<select class="form-control" id="selecter">
 					<c:forEach var="listVo" items="${WBList }">
@@ -119,6 +119,8 @@
 </div>
 <c:import url="../inc/bottom.jsp"/>
 <script>
+	let selFile = new Array();
+
 	$(function(){
 		showWbList($('#selecter').val());
 		
@@ -213,6 +215,12 @@
 					table.append(trEl1);
 				}else{
 					
+					makeList(data, webNo);
+					
+					$('#download').click(function(){
+						downFileZip();
+					});
+					
 				}
 				
 			},
@@ -222,4 +230,62 @@
 		});
 	}
 	
+	function makeList(data, webNo){
+		let table = $('table');
+		
+		for(let i = 0; i < data.length; i++){
+			let map = data[i];
+			
+			let trEl1 = $('<tr></tr>');
+			let tdEl1 = $('<td><input type="checkbox" value='+map['FILE_NO']+'></td>');
+			let tdEl2 = $('<td>'+map['FILE_ORIGINALFILENAME']+'</td>');
+			let tdEl3 = $('<td>'+map['FILE_FILESIZE']+'</td>');
+			let tdEl4 = $('<td>'+map['FILE_REGDATE']+'</td>');
+			let tdEl5 = $('<td>'+map['FILE_DOWNCOUNT']+'</td>');
+			
+			trEl1.html(tdEl1);
+			trEl1.append(tdEl2);
+			trEl1.append(tdEl3);
+			trEl1.append(tdEl4);
+			trEl1.append(tdEl5);
+			
+			tdEl1.click(function(){
+				event.cancelBubble=true;
+				$('#chkAll').prop("checked",false);
+			});
+			
+			$(trEl1).click(function(){
+				let chb = $(this).find('input[type=checkbox]');
+				$(chb).prop("checked",function(){
+					$('#chkAll').prop("checked",false);
+					return !$(this).prop('checked');
+				});
+			});
+			
+			if(webNo != 2){
+				let tdEl6 = $('<td>'+map['MEM_ID']+'</td>');
+				trEl1.append(tdEl6);
+			}
+			
+			table.append(trEl1);
+			
+		}
+		
+		$('#chkAll').click(function(){
+			$('input[type=checkbox]').prop('checked',$(this).is(':checked'));
+		});
+		
+	}
+	
+	function downFileZip(){
+		event.preventDefault();
+		$('input[type=checkbox]:gt(0)').each(function(item){
+			if($(this).is(':checked')){
+				selFile.push($(this).val());
+			}
+		});
+		
+		alert(selFile);
+		location.href="<c:url value='/webhard/webhardDownZip.do'/>?selFile="+selFile;
+	}
 </script>

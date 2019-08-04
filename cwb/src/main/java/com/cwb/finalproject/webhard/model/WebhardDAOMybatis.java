@@ -26,4 +26,8 @@ public class WebhardDAOMybatis implements WebhardDAO{
 	public int insertWBFile(WebhardVO vo) {
 		return sqlSession.insert(namespace+"insertWBFile",vo);
 	}
+	
+	public WebhardVO selectByFileNo(int fileNo) {
+		return sqlSession.selectOne(namespace+"selectByFileNo",fileNo);
+	}
 }

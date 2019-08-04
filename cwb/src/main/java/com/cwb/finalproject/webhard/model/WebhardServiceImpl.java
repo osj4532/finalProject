@@ -42,4 +42,7 @@ public class WebhardServiceImpl implements WebhardService{
 		return cnt;
 	}
 	
+	public WebhardVO selectByFileNo(int fileNo) {
+		return webhardDao.selectByFileNo(fileNo);
+	}
 }

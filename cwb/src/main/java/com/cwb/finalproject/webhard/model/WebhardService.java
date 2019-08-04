@@ -9,4 +9,5 @@ public interface WebhardService {
 	public List<Map<String, Object>> selectFileByWebNo(WebhardVO vo);
 	
 	public int insertWBFile(WebhardVO vo, List<Map<String, Object>> fileList);
+	public WebhardVO selectByFileNo(int fileNo);
 }

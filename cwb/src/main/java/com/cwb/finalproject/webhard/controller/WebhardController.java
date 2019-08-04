@@ -1,8 +1,12 @@
 package com.cwb.finalproject.webhard.controller;
 
+import java.io.File;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -15,8 +19,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springframework.web.multipart.MultipartRequest;
+import org.springframework.web.servlet.ModelAndView;
 
+import com.cwb.finalproject.common.DownZip;
 import com.cwb.finalproject.common.FileUploadUtil;
 import com.cwb.finalproject.webhard.model.WebhardListVO;
 import com.cwb.finalproject.webhard.model.WebhardService;
@@ -31,6 +36,8 @@ public class WebhardController {
 	private WebhardService webhardService;
 	@Autowired
 	private FileUploadUtil fileUtil;
+	@Autowired
+	private DownZip downZip;
 	
 	@RequestMapping("/webhard.do")
 	public String webhard(Model model) {
@@ -80,6 +87,31 @@ public class WebhardController {
 		logger.info("웹하드 파일 목록 vo = {}", vo);
 		List<Map<String, Object>> fileList = webhardService.selectFileByWebNo(vo); 
 		return fileList;
+	}
+	
+	@RequestMapping("/webhardDownZip.do")
+	public ModelAndView webhardDownZip(@RequestParam int[] selFile, 
+			HttpServletRequest request,
+			HttpServletResponse response) {
+		logger.info("웹하드 파일 zip다운");
+		
+		String path = fileUtil.getUploadPath(request, FileUploadUtil.WEBHARD_UPLOAD);
+		logger.info("다운로드 path = {}",path);
+		
+		String zipName = downZip.downloadZip(selFile, response, path);
+		zipName = zipName.substring(zipName.lastIndexOf("/")+1);
+		
+		
+		File file = new File(path, zipName);
+		File file1 = new File(zipName);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("downFile",file);
+		map.put("downFileName",file1);
+		map.put("isZip",true);
+		
+		ModelAndView mav = new ModelAndView("downloadView",map);
+		return mav;
 	}
 	
 }
