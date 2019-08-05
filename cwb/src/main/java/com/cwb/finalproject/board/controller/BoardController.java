@@ -30,6 +30,8 @@ import com.cwb.finalproject.member.model.MemberService;
 import com.cwb.finalproject.member.model.MemberVO;
 import com.cwb.finalproject.ranks.model.RanksService;
 import com.cwb.finalproject.ranks.model.RanksVO;
+import com.cwb.finalproject.reply.model.ReplyService;
+import com.cwb.finalproject.reply.model.ReplyVO;
 
 @Controller
 @RequestMapping("/Board")
@@ -40,6 +42,7 @@ public class BoardController {
 	@Autowired BoardService boardService;
 	@Autowired RanksService ranksService;
 	@Autowired ResImgUploadUtility upLoadUtil;
+	@Autowired ReplyService replyService;
 	
 	
 	@RequestMapping("/BoardAllList.do")
@@ -277,8 +280,11 @@ public class BoardController {
 
 		BoardVO BVo= boardService.selectboard(boardNo);
 		MemberVO mVo =  memberService.selectByMemNotoVo(BVo.getMemNo());
+		List<ReplyVO> reList= replyService.selectReplyByNo(boardNo);
+		
 		
 		String memName =mVo.getMemName();
+		model.addAttribute("reList", reList); 
 		model.addAttribute("BVo", BVo);
 		model.addAttribute("memName", memName);
 		  
