@@ -32,9 +32,11 @@ public class DownloadView extends AbstractView{
 			
 			return;
 		}
+		response.setContentType("application/octet-stream");
 		
-		response.setHeader("Content-Disposition", "attachment; filename="+file1.getName());
-		
+		String fileName = new String(file1.getName().getBytes("utf-8"),"8859_1");
+		response.setHeader("Content-Disposition", "attachment; filename="+fileName);
+		 
 		FileInputStream fis = null;
 		
 		try {
