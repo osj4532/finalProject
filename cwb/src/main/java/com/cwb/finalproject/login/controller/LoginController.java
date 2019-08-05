@@ -46,16 +46,20 @@ public class LoginController {
 		int result = memberService.loginCheck(memberVo.getMemId(), memberVo.getMemPwd());
 		logger.info("로그인 처리 결과, result = {}", result);
 		
+		String fileName = null;
 		String msg="", url="/login/login.do";
+		HttpSession session = request.getSession();
 		if(result==MemberService.LOGIN_OK) {
 			//로그인 성공
 			MemberVO memberVo2 = memberService.selectByUserid(memberVo.getMemId());
 			//session에 저장
-			HttpSession session = request.getSession();
 			session.setAttribute("memId", memberVo.getMemId());
 			session.setAttribute("memName", memberVo2.getMemName());
 			session.setAttribute("memNo", memberVo2.getMemNo());
 			session.setAttribute("ranksNo", memberVo2.getRanksNo());
+			
+			logger.info("memberVo조회 후 memberVo2 = {}", memberVo2);
+			fileName = memberVo2.getMemFileName();
 			
 			int allHoly = commuteService.countSelectAllHoly();
 			session.setAttribute("allHoly", allHoly);
@@ -119,9 +123,13 @@ public class LoginController {
 		}else {
 			msg="로그인 처리 실패";
 		}
-		
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
+		
+		if(fileName != null && !fileName.isEmpty()) {
+			session.setAttribute("fileName", fileName);
+		}
+		
 		
 		return "common/message";
 	}

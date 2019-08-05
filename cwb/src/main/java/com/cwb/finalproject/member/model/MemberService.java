@@ -32,4 +32,8 @@ public interface MemberService {
 	public int dupUserid(String memId);
 	
 	public MemberVO selectByMemNotoVo(int memNO);
+	
+	public int updateMember(MemberVO vo);
+	
+	public int updateResign(int memNo);
 }

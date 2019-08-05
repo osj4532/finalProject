@@ -139,6 +139,7 @@ function getAddressInfo(){
 				<div class="form-panel"> 
 					<form name="frmContent" class="form-horizontal style-form was-validated"
 						method="post" action="<c:url value='/member/memberEdit.do'/>">
+						<input type="hidden" id="memNo" name="memNo" value="${map['MEM_NO'] }">
 						<div class="form-group"> 
 						</div>  
 						<div class="form-group">  
@@ -194,7 +195,7 @@ function getAddressInfo(){
 							</div>
 						<div class="center">
 							<input type="submit" id="submit" value="수정" class="btn btn-success">
-							<input type="reset" id="reset" value="취소" class="btn btn-danger">
+							<a class="btn btn-danger" href="<c:url value='/member/memberList.do'/>">취소</a>
 						</div>
 					</form>
 				</div>
