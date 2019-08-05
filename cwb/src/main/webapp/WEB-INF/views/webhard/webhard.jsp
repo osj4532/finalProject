@@ -124,6 +124,15 @@
 	$(function(){
 		showWbList($('#selecter').val());
 		
+		$('#download').click(function(){
+			alert("click");
+			downFileZip();
+		});
+		
+		$('#fileDel').click(function(){
+			deleteFile();
+		});
+		
 		/*웹하드 카테고리*/
 		$('#selecter').change(function(){
 			showWbList($(this).val());
@@ -181,31 +190,8 @@
 			data:{"webNo":webNo,
 				"memNo":memNo},
 			success:function(data){
-				let col = 5;
-				
 				let table = $('table');
-				let thead = $('<thead></thead>');
-				let trEl = $('<tr></tr>');				
-				let thEl1 = $('<th><input type="checkbox" id="chkAll"></th>');				
-				let thEl2 = $('<th>파일 이름</th>');
-				let thEl3 = $('<th>파일 크기</th>');
-				let thEl4 = $('<th>파일 등록일</th>');
-				let thEl5 = $('<th>다운로드 수</th>');
-				
-				trEl.html(thEl1);
-				trEl.append(thEl2);
-				trEl.append(thEl3);
-				trEl.append(thEl4);
-				trEl.append(thEl5);
-				
-				if(webNo != 2){
-					let thEl6 = $('<th>등록한 사람</th>');
-					trEl.append(thEl6);
-					col = 6;
-				}
-				
-				thead.html(trEl);
-				table.html(thead);
+				let col = setHead(webNo);
 				
 				if(data.length < 1){
 					let trEl1 = $('<tr></tr>');
@@ -216,11 +202,6 @@
 				}else{
 					
 					makeList(data, webNo);
-					
-					$('#download').click(function(){
-						downFileZip();
-					});
-					
 				}
 				
 			},
@@ -228,6 +209,35 @@
 				alert(status+" : "+error);
 			}
 		});
+	}
+	
+	function setHead(webNo){
+		let col = 5;
+		
+		let table = $('table');
+		let thead = $('<thead></thead>');
+		let trEl = $('<tr></tr>');				
+		let thEl1 = $('<th><input type="checkbox" id="chkAll"></th>');				
+		let thEl2 = $('<th>파일 이름</th>');
+		let thEl3 = $('<th>파일 크기</th>');
+		let thEl4 = $('<th>파일 등록일</th>');
+		let thEl5 = $('<th>다운로드 수</th>');
+		
+		trEl.html(thEl1);
+		trEl.append(thEl2);
+		trEl.append(thEl3);
+		trEl.append(thEl4);
+		trEl.append(thEl5);
+		
+		if(webNo != 2){
+			let thEl6 = $('<th>등록한 사람</th>');
+			trEl.append(thEl6);
+			col = 6;
+		}
+		
+		thead.html(trEl);
+		table.html(thead);
+		return col;
 	}
 	
 	function makeList(data, webNo){
@@ -239,8 +249,18 @@
 			let trEl1 = $('<tr></tr>');
 			let tdEl1 = $('<td><input type="checkbox" value='+map['FILE_NO']+'></td>');
 			let tdEl2 = $('<td>'+map['FILE_ORIGINALFILENAME']+'</td>');
-			let tdEl3 = $('<td>'+map['FILE_FILESIZE']+'</td>');
-			let tdEl4 = $('<td>'+map['FILE_REGDATE']+'</td>');
+			
+			let size = Math.round(map['FILE_FILESIZE']/100.0)/10;
+			
+			let tdEl3 = $('<td>'+size+' KB</td>');
+			
+			let regDate = new Date(map['FILE_REGDATE']);
+			let year = regDate.getFullYear();
+			let month = regDate.getMonth()+1;
+			let day = regDate.getDate();
+			regDate = year+"-"+month+"-"+day;
+			
+			let tdEl4 = $('<td>'+regDate+'</td>');
 			let tdEl5 = $('<td>'+map['FILE_DOWNCOUNT']+'</td>');
 			
 			trEl1.html(tdEl1);
@@ -279,13 +299,55 @@
 	
 	function downFileZip(){
 		event.preventDefault();
+		
+		$('input[type=checkbox]:gt(0)').each(function(item){
+			if($(this).is(':checked')){
+				selFile.push($(this).val());
+			}
+		});
+
+		if(selFile.length == 0){
+			alert("다운 받을 파일을 선택해 주세요.");
+		}else{
+			location.href="<c:url value='/webhard/webhardDownZip.do'/>?selFile="+selFile;
+			selFile=[];
+		}
+	}
+	
+	function deleteFile(){
+		
+		event.preventDefault();
+		
 		$('input[type=checkbox]:gt(0)').each(function(item){
 			if($(this).is(':checked')){
 				selFile.push($(this).val());
 			}
 		});
 		
-		alert(selFile);
-		location.href="<c:url value='/webhard/webhardDownZip.do'/>?selFile="+selFile;
+		if(selFile.length == 0){
+			alert("삭제할 파일을 선택해 주세요.");
+		}else{
+			$.ajax({
+				url:"<c:url value='/webhard/deleteWBFile.do'/>",
+				type:"post",
+				dataType:"json",
+				data:{"selFile":selFile},
+				success:function(res){
+					if(res > 0){
+						alert("파일 삭제 성공!");
+						let webNo = $('#selecter').val();
+						showWbList(webNo);
+					}else if(res == 0){
+						alert("관리자 또는 등록한 사람만 삭제 할수 있습니다.");
+					}else{
+						alert("파일 삭제 실패!");
+					}
+					selFile = [];
+				},
+				error:function(e){
+					alert(e);
+				}
+			});
+		}
 	}
 </script>
