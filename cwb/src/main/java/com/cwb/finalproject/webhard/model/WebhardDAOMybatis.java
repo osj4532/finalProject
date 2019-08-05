@@ -30,4 +30,25 @@ public class WebhardDAOMybatis implements WebhardDAO{
 	public WebhardVO selectByFileNo(int fileNo) {
 		return sqlSession.selectOne(namespace+"selectByFileNo",fileNo);
 	}
+	
+	public int upDowncount(int fileNo) {
+		return sqlSession.update(namespace+"upDowncount",fileNo);
+	}
+	
+	public int deleteWBFile(Map<String, Object> map) {
+		return sqlSession.delete(namespace+"deleteWBFile",map);
+	}
+	
+	public int insertWBCate(String webCategory) {
+		return sqlSession.insert(namespace+"insertWBCate",webCategory);
+	}
+	public int updateWBCate(WebhardListVO vo) {
+		return sqlSession.update(namespace+"updateWBCate",vo);
+	}
+	public int deleteWBFileAll(int webNo) {
+		return sqlSession.delete(namespace+"deleteWBFileAll",webNo);
+	}
+	public int deleteWBCate(int webNo) {
+		return sqlSession.delete(namespace+"deleteWBCate",webNo);
+	}
 }

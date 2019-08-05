@@ -49,14 +49,6 @@ public class WebhardController {
 		return "webhard/webhard";
 	}
 	
-	@RequestMapping("/webhardSetting.do")
-	public String webhardSetting() {
-		logger.info("webhardSetting 화면");
-		
-		return "webhard/webhardSetting"; 
-	}
-	
-	
 	private int webNo;
 	@RequestMapping("/setwebNo.do")
 	public void setWeb(@RequestParam int webNo) {
@@ -101,6 +93,8 @@ public class WebhardController {
 		String zipName = downZip.downloadZip(selFile, response, path);
 		zipName = zipName.substring(zipName.lastIndexOf("/")+1);
 		
+		int cnt = webhardService.upDowncount(selFile);
+		logger.info("웹하드파일 다운로드수 증가 cnt = {}",cnt);
 		
 		File file = new File(path, zipName);
 		File file1 = new File(zipName);
@@ -112,6 +106,60 @@ public class WebhardController {
 		
 		ModelAndView mav = new ModelAndView("downloadView",map);
 		return mav;
+	}
+	
+	@RequestMapping("/deleteWBFile.do")
+	@ResponseBody
+	public int deleteWBFile(@RequestParam(value="selFile[]") int[] selFile, HttpSession session){
+		logger.info("ajax 웹하드 파일 삭제하기");
+		int memNo = (Integer)session.getAttribute("memNo");
+		int ranksNo = (Integer)session.getAttribute("ranksNo");
+		
+		int cnt = webhardService.deleteWBFile(selFile, ranksNo, memNo);
+		logger.info("ajax 웹하드 파일 삭제 결과 = {}", cnt);
+		return cnt;
+	}
+	
+	
+	@RequestMapping("/webhardSetting.do")
+	public String webhardSetting() {
+		logger.info("webhardSetting 화면");
+		return "webhard/webhardSetting"; 
+	}
+	
+	@RequestMapping("/showWBList.do")
+	@ResponseBody
+	public List<WebhardListVO> showWBList(){
+		logger.info("ajax-웹하드 관리_웹하드 목록 보여주기");
+		List<WebhardListVO> wbList = webhardService.selectWBList();
+		return wbList;
+	}
+	
+	@RequestMapping("/addWBList.do")
+	@ResponseBody
+	public int addWBList(@RequestParam String webCategory){
+		logger.info("ajax-웹하드 관리_웹하드 목록 추가하기");
+		int cnt = webhardService.insertWBCate(webCategory);
+		logger.info("웹하드 목록 추가 결과 = {}",cnt);
+		return cnt;
+	}
+	
+	@RequestMapping("/editWBList.do")
+	@ResponseBody
+	public int editWBList(@ModelAttribute WebhardListVO vo){
+		logger.info("ajax-웹하드 관리_웹하드 목록 수정하기 vo = {}", vo);
+		int cnt = webhardService.updateWBCate(vo);
+		logger.info("웹하드 목록 수정 결과 = {}",cnt);
+		return cnt;
+	}
+	
+	@RequestMapping("/delWBList.do")
+	@ResponseBody
+	public int delWBList(@RequestParam int webNo) {
+		logger.info("ajax-웹하드 관리_웹하드 목록 삭제하기 webNo = {}", webNo);
+		int cnt = webhardService.deleteWBCate(webNo);
+		logger.info("웹하드 목록 삭제 결과 = {}",cnt);
+		return cnt;
 	}
 	
 }

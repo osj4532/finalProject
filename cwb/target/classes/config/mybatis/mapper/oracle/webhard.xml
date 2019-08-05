@@ -5,6 +5,7 @@
 <mapper namespace="config.mybatis.mapper.oracle.webhard">
 	<select id="selectWBList" resultType="webhardListVo">
 		select * from webhard
+		order by web_no
 	</select>
 	
 	<select id="selectFileByWebNo" parameterType="webhardVo" resultType="map" >
@@ -30,4 +31,40 @@
 		select * from webhardfile
 		where file_no = #{fileNo}
 	</select>
+	
+	<update id="upDowncount" parameterType="int">
+		update webhardfile
+		set file_downcount = file_downcount + 1
+		where file_no = #{fileNo}
+	</update>
+	
+	<delete id="deleteWBFile" parameterType="map">
+		delete from webhardfile
+		where file_no = #{fileNo}
+		<if test="ranksNo != 3">
+			and mem_no = #{memNo}
+		</if>
+	</delete>
+	
+	
+	<insert id="insertWBCate" parameterType="string">
+		insert into webhard(web_no, web_category)
+		values(webhard_seq.nextval, #{webCategory})
+	</insert>
+	
+	<update id="updateWBCate" parameterType="webhardListVo">
+		update webhard
+		set web_category = #{webCategory}
+		where web_no = #{webNo}
+	</update>
+	
+	<delete id="deleteWBFileAll" parameterType="int">
+		delete from webhardfile
+		where web_no = #{webNo}
+	</delete>
+	
+	<delete id="deleteWBCate" parameterType="int">
+		delete from webhard
+		where web_no = #{webNo}
+	</delete>
 </mapper>
