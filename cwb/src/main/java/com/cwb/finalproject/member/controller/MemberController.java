@@ -133,10 +133,10 @@ public class MemberController {
 		
 		String msg = "", url = "/member/memberRegister.do";
 		if(cnt>0) {
-			msg = "사원등록 성공";
+			msg = "사원등록 성공하였습니다.";
 			url = "/member/memberList.do";
 		}else {
-			msg="사원등록 실패";
+			msg="사원등록 실패하였습니다.";
 		}
 		
 		model.addAttribute("msg", msg);
@@ -172,7 +172,7 @@ public class MemberController {
 	}
 	
 	@RequestMapping(value="/member/memberEdit.do", method = RequestMethod.GET)
-	public String edit(@RequestParam(defaultValue = "0") int memNo, Model model) {
+	public String editShow(@RequestParam(defaultValue = "0") int memNo, Model model) {
 		logger.info("멤버 수정 화면, 파라미터 memNo = {}", memNo);
 		
 		List<DeptVO> deptList = deptService.selectAll();
@@ -191,9 +191,47 @@ public class MemberController {
 		return "member/memberEdit";
 	}
 	
-	@RequestMapping("/member/memberDetail.do")
-	public void detail() {
-		logger.info("멤버 상세보기 화면");
+	@RequestMapping(value="/member/memberEdit.do", method = RequestMethod.POST)
+	public String edit(@ModelAttribute MemberVO vo, Model model) {
+		logger.info("사원수정 처리, 파라미터 vo = {}", vo);
+		
+		int cnt = memberService.updateMember(vo);
+		
+		logger.info("사원수정 처리 결과 cnt = {}", cnt);
+		
+		String msg = "", url = "/member/memberEdit.do";
+		if(cnt>0) {
+			msg = "사원수정 성공하였습니다.";
+			url = "/member/memberList.do";
+		}else {
+			msg="사원수정 실패하였습니다.";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+		
+	}
+	
+	@RequestMapping("/member/memberResign.do")
+	public String resign(@RequestParam int memNo, Model model) {
+		logger.info("회원 탈퇴 처리 파라미터, memNo = {}", memNo);
+		
+		int cnt = memberService.updateResign(memNo);
+		logger.info("회원 탈퇴 처리 결과 cnt = {}", cnt);
+		
+		String msg="", url = "/member/memberList.do";
+		if(cnt > 0) {
+			msg = "사원퇴사 처리되었습니다.";
+		}else {
+			msg = "사원퇴사 처리 실패하였습니다.";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
 	}
 	
 	

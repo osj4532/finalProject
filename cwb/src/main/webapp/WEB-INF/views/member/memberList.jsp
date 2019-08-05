@@ -2,6 +2,18 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="../inc/top.jsp"/>
+<script type="text/javascript">
+function resign(memNo){
+	
+    if(confirm("삭제하시겠습니까?")){
+    	
+        location.href = "<c:url value='/member/memberResign.do?memNo='/>"+memNo;
+        return true;
+    } else {
+        return false;
+    }
+}
+</script>
 <style type="text/css">
 #Main{
 		min-height: 900px;
@@ -48,18 +60,23 @@
 							</tr>
 						</c:if>
 						<c:forEach var="map" items="${list }">
+						<c:if test="${map['MEM_NO'] != sessionScope.memNo}">
 							<tr>
 								<td>${map['MEM_NO'] }</td>
 								<td>${map['MEM_NAME'] }</td>
 								<td>${map['DEPT_NAME'] }</td>
 								<td>${map['POS_NAME'] }</td>
 								<td>${map['MEM_HP1'] }-${map['MEM_HP2'] }-${map['MEM_HP3'] }</td>
-								<td><a class="btn btn-theme" href="<c:url value='/member/memberEdit.do?memNo=${map["MEM_NO"] }'/>"><i class="fa fa-cog"></i>수정</a><button class="btn btn-danger"><i class="far fa-trash-alt"></i>삭제</button></td>
+								<td><a class="btn btn-theme" href="<c:url value='/member/memberEdit.do?memNo=${map["MEM_NO"] }'/>"><i class="fa fa-cog"></i>수정</a>
+								<a class="btn btn-danger" href="#" onclick="resign(${map['MEM_NO']})"><i class="far fa-trash-alt"></i>퇴사</a></td>
 							</tr>
+						</c:if>
 						</c:forEach>
 					</tbody>
 				</table>
+				<input type="button" id="register" value="등록" class="btn btn-info" onclick="location.href='<c:url value='/member/memberRegister.do'/>'">
 			</form>
+			
 			</div>
 		</div>
 	</div>

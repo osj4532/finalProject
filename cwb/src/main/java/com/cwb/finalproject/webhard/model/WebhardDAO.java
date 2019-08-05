@@ -10,4 +10,11 @@ public interface WebhardDAO {
 	public List<Map<String, Object>> selectFileByWebNo(WebhardVO vo);
 	public int insertWBFile(WebhardVO vo);
 	public WebhardVO selectByFileNo(int fileNo);
+	public int upDowncount(int fileNo);
+	public int deleteWBFile(Map<String, Object> map);
+	
+	public int insertWBCate(String webCategory);
+	public int updateWBCate(WebhardListVO vo);
+	public int deleteWBFileAll(int webNo);
+	public int deleteWBCate(int webNo);
 }

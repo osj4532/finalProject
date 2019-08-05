@@ -274,8 +274,9 @@
       <div id="sidebar" class="nav-collapse ">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
-          <p class="centered"><a href="profile.html"><img src="<c:url value='/resources/img/ui-sam.jpg'/>" class="img-circle" width="80"></a></p>
-          <h5 class="centered">Sam Soffes</h5>
+          <p class="centered"><a href="<c:url value='/member/memberMypage.do'/>"><img src="<c:url value='/member_file/${sessionScope.fileName}'/>" class="img-circle" width="80"></a></p>
+          <h5 class="centered">${sessionScope.memName }</h5>
+          <p class="centered"><a class="btn btn-round btn-default" href="<c:url value='/member/memberMypage.do'/>">My Page</a></p>
           <li class="sub-menu">
             <a href="javascript:;">
               <i class="fas fa-address-book"></i>
@@ -371,7 +372,7 @@
             <ul class="sub">
               <li><a href="<c:url value="/member/memberRegister.do"/>"><i class="fas fa-user-plus"></i>사원등록</a></li>
               <li><a href="<c:url value="/member/memberList.do"/>"><i class="fas fa-users"></i>사원목록</a></li>
-              <li><a href="<c:url value="/member/memberEdit.do"/>"><i class="fas fa-user-edit"></i>사원정보수정</a></li>
+              <li><a href="<c:url value="/member/memberEdit.do?memNo=${sessionScope.memNo }"/>"><i class="fas fa-user-edit"></i>사원정보수정</a></li>
             </ul>
           </li>
           

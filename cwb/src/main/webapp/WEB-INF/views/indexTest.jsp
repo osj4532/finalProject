@@ -55,6 +55,14 @@
 	.align-right{
 		text-align: right;
 	}
+	
+	.wrapper hr{
+		color:black;
+	}
+	
+	.info{
+		border-bottom: 1px solid #ccd1d9;
+	}
 </style>
 
 <section id="main-content">
@@ -118,8 +126,9 @@
 					</div>
 				</div>
 			</div>
-			
-			
+		</div>
+		
+		<div class="row mt info">
 			<div class="col-md-4 col-sm-4 mb">
                 <div class="grey-panel pn donut-chart">
                   <div class="grey-header">
@@ -150,8 +159,57 @@
                 </div>
                 <!-- /grey-panel -->
               </div>
+              
+              <div class="col-md-4 col-sm-4 mb">
+				<div class=" subInfo">
+					<div class="content">
+						<div id="chartCon" style="min-width: 110px; max-width: 300px; height: 255px; margin: 0 auto"></div>
+					</div>
+				</div>
+			</div>
 		</div>
 	</section>
 </section>
 
 <%@include file="inc/bottom.jsp" %>
+<script src="<c:url value='resources/highChart/highcharts.js'/>"></script>
+<script src="<c:url value='resources/highChart/exporting.js'/>"></script>
+<script type="text/javascript">
+						$(function () {
+					        $('#chartCon').highcharts({
+					            chart: {
+					                type: 'bar'
+					            },
+					            credits:{
+					            	enabled: false
+					            },
+					            title: {
+					                text: ''
+					            },
+					            xAxis: {
+					                categories: ['내 웹하드']
+					            },
+					            yAxis: {
+					                min: 0,
+					                max: 100,
+					            	tickInterval: 20,
+					                title: {
+					                    text: ' '
+					                }
+					            },
+					            legend: {
+					                reversed: true
+					            },
+					            plotOptions: {
+					                /*series: {
+					                    stacking: 'normal'
+					                }*/
+					            },
+					                series: [{
+					                name: '내 웹하드 사용량',
+					                data: [5.8]
+					            }]
+					        });
+					    });
+					    
+						</script>

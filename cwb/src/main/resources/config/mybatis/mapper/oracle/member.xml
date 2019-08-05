@@ -69,6 +69,18 @@
 		select * from member
 		where mem_no = #{memNo}	
 	</select>
+	
+	<update id="updateMember" parameterType="memberVo">
+		update member
+		set ranks_no=#{ranksNo}, pos_no=#{posNo}, dept_no=#{deptNo}
+		where mem_no=#{memNo}
+	</update>
+	
+	<update id="updateResign" parameterType="int">
+		update member
+		set mem_resigndate = sysdate
+		where mem_no=#{memNo}
+	</update>
 </mapper>
 
 
