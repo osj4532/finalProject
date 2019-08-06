@@ -25,6 +25,7 @@ import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.confirm.controller.ConfirmController;
 import com.cwb.finalproject.confirm.model.ConfirmService;
 import com.cwb.finalproject.message.model.MessageService;
+import com.cwb.finalproject.webhard.model.WebhardService;
 
 /**
  * Handles requests for the application home page.
@@ -40,20 +41,17 @@ public class IndexController {
 	private ConfirmService confirmService;
 	@Autowired
 	private EmailService emailService;
+	@Autowired
+	private WebhardService webhardService;
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/index.do", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
+	public String home(Model model, HttpSession session) {
+		int memNo = (Integer)session.getAttribute("memNo");
+		double usingWB = webhardService.selectUseing(memNo);
+		model.addAttribute("usingWB", usingWB);
 		
 		return "indexTest";
 	}

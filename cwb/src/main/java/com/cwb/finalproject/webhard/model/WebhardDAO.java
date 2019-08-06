@@ -17,4 +17,5 @@ public interface WebhardDAO {
 	public int updateWBCate(WebhardListVO vo);
 	public int deleteWBFileAll(int webNo);
 	public int deleteWBCate(int webNo);
+	public double selectUseing(int memNo);
 }

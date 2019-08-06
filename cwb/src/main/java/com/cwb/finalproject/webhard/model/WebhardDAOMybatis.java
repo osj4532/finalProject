@@ -51,4 +51,7 @@ public class WebhardDAOMybatis implements WebhardDAO{
 	public int deleteWBCate(int webNo) {
 		return sqlSession.delete(namespace+"deleteWBCate",webNo);
 	}
+	public double selectUseing(int memNo) {
+		return sqlSession.selectOne(namespace+"selectUseing",memNo);
+	}
 }

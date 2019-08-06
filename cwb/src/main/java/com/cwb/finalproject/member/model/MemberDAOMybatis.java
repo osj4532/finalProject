@@ -60,4 +60,7 @@ public class MemberDAOMybatis implements MemberDAO{
 	public int updateResign(int memNo) {
 		return sqlSession.update(namespace+"updateResign", memNo);
 	}
+	public int changePwd(MemberVO vo) {
+		return sqlSession.update(namespace+"changePwd",vo);
+	}
 }

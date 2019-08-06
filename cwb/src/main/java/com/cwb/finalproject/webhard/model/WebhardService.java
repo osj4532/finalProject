@@ -18,4 +18,5 @@ public interface WebhardService {
 	public int insertWBCate(String webCategory);
 	public int updateWBCate(WebhardListVO vo);
 	public int deleteWBCate(int webNo);
+	public double selectUseing(int memNo);
 }

@@ -102,4 +102,8 @@ public class WebhardServiceImpl implements WebhardService{
 		}
 		return cnt;
 	}
+	
+	public double selectUseing(int memNo) {
+		return webhardDao.selectUseing(memNo);
+	}
 }

@@ -28,4 +28,6 @@ public interface MemberDAO {
 	public int updateMember(MemberVO vo);
 	
 	public int updateResign(int memNo);
+	
+	public int changePwd(MemberVO vo);
 }

@@ -67,4 +67,9 @@
 		delete from webhard
 		where web_no = #{webNo}
 	</delete>
+	
+	<select id="selectUseing" parameterType="int" resultType="double">
+		select NVL(round(sum(file_filesize)/1000/10)/100, 0) as usingWB from webhardfile
+		where mem_no = #{memNo}
+	</select>
 </mapper>

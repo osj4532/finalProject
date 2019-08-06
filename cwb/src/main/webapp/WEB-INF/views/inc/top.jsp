@@ -295,8 +295,12 @@
               <span>전자결재</span>
               </a>
             <ul class="sub">
-              <li><a href="<c:url value="/sign/signReg.do"/>"><i class="fas fa-file-signature"></i>결재사인관리</a></li>
-              <li><a href="<c:url value="/document/docSet.do"/>"><i class="fas fa-copy"></i>문서관리</a></li>
+              <c:if test="${sessionScope.ranksNo > 1}">
+              	<li><a href="<c:url value="/sign/signReg.do"/>"><i class="fas fa-file-signature"></i>결재사인관리</a></li>
+              </c:if>
+              <c:if test="${sessionScope.ranksNo == 3}">
+              	<li><a href="<c:url value="/document/docSet.do"/>"><i class="fas fa-copy"></i>문서관리</a></li>
+              </c:if>
               <li><a href="<c:url value="/document/docSel.do"/>"><i class="fas fa-edit"></i>문서작성</a></li>
               <li><a href="<c:url value="/document/docList.do"/>"><i class="fas fa-archive"></i>문서함</a></li>
             </ul>
