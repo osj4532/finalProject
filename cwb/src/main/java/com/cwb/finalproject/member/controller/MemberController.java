@@ -1,5 +1,6 @@
 package com.cwb.finalproject.member.controller;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -10,11 +11,16 @@ import java.util.Map;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -26,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cwb.finalproject.common.AES256Util;
 import com.cwb.finalproject.common.FileUploadUtil;
+import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.dept.model.DeptService;
 import com.cwb.finalproject.dept.model.DeptVO;
 import com.cwb.finalproject.member.model.MemberService;
@@ -52,6 +59,10 @@ public class MemberController {
 	private RanksService ranksService;
 	@Autowired
 	private PositionService positionService;
+	@Autowired
+	private WebUtility webUtil;
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@RequestMapping(value="/member/memberRegister.do", method=RequestMethod.GET)
 	public void registerShow(Model model) {
@@ -234,5 +245,74 @@ public class MemberController {
 		return "common/message";
 	}
 	
+	@RequestMapping("/member/changePwd.do")
+	public String changePwd(@RequestParam String memId, Model model) {
+		MemberVO vo = memberService.selectByUserid(memId);
+		logger.info("임시 비밀번호 보내기 = {}",vo);
+		
+		String url="/login/login.do", msg="";
+		
+		if(vo != null) {
+			final String pwd = webUtil.createRandomString();
+			final String email = vo.getMemEmail1()+"@"+vo.getMemEmail2();
+			
+			String encodingPwd="";
+			
+			try {
+				aes256Util = new AES256Util(AES256Util.KEY);
+				encodingPwd = aes256Util.aesEncode(pwd);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidKeyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidAlgorithmParameterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalBlockSizeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			vo.setMemPwd(encodingPwd);
+			int cnt = memberService.changePwd(vo);
+			logger.info("비밀번호 변경 결과 cnt = {}", cnt);
+			if(cnt > 0) {
+				MimeMessagePreparator preparator = null;
+				preparator = new MimeMessagePreparator() {
+					@Override
+					public void prepare(MimeMessage mimeMessage) throws Exception {
+						MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+						helper.setTo(email);
+						helper.setFrom("zasqw456@gmail.com");
+						helper.setSubject("임시비밀번호입니다.");
+						helper.setText("임시 비밀번호 입니다.<br> 임시 비밀번호는 꼭 변경해 주세요!!<br>"
+								+ "<h1>"+pwd+"</h1>",true);
+					}
+				};
+				mailSender.send(preparator);
+				msg="임시 비밀번호가 등록된 이메일로 전송 되었습니다.";
+			}else {
+				msg="비밀번호 초기화 실패!";
+			}
+		}else {
+			msg="등록된 회원이 없습니다.";
+		}
+		
+		model.addAttribute("url", url);
+		model.addAttribute("msg", msg);
+		
+		return "common/message";
+	}
 	
 }

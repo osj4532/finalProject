@@ -114,4 +114,7 @@ public class MemberServiceImpl implements MemberService{
 	public int updateResign(int memNo) {
 		return memberDAO.updateResign(memNo);
 	}
+	public int changePwd(MemberVO vo) {
+		return memberDAO.changePwd(vo);
+	}
 }

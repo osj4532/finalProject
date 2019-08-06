@@ -9,7 +9,7 @@
 	}
 </style>
 <head>
-  <title>Dashio - Bootstrap Admin Template</title>
+  <title>CWB login</title>
 
   <!-- Favicons -->
   <link href="<c:url value='/resources/img/favicon.png" rel="icon'/>">
@@ -52,22 +52,10 @@
             	</c:if>
             > Remember me
             <span class="pull-right">
-            <a data-toggle="modal" href="/login/login.do"> Forgot Password?</a>
+            <a data-toggle="modal" href="login.jsp#myModal"> Forgot Password?</a>
             </span>
             </label>
           <button class="btn btn-theme btn-block" type="submit"><i class="fa fa-lock"></i> SIGN IN</button>
-          <!-- <hr>
-          <div class="login-social-link centered">
-            <p>or you can sign in via your social network</p>
-            <button class="btn btn-facebook" type="submit"><i class="fa fa-facebook"></i> Facebook</button>
-            <button class="btn btn-twitter" type="submit"><i class="fa fa-twitter"></i> Twitter</button>
-          </div>
-          <div class="registration">
-            Don't have an account yet?<br/>
-            <a class="" href="#">
-              Create an account
-              </a>
-          </div> -->
         </div>
         <!-- Modal -->
         <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
@@ -75,15 +63,15 @@
             <div class="modal-content">
               <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Forgot Password ?</h4>
+                <h4 class="modal-title">비밀번호를 잊어버리셨나요?</h4>
               </div>
               <div class="modal-body">
-                <p>Enter your e-mail address below to reset your password.</p>
-                <input type="text" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+                <p>당신의 아이디를 입력 하세요.</p>
+                <input id="id" type="text" placeholder="ID" autocomplete="off" class="form-control placeholder-no-fix">
               </div>
               <div class="modal-footer">
-                <button data-dismiss="modal" class="btn btn-default" type="button">Cancel</button>
-                <button class="btn btn-theme" type="button">Submit</button>
+                <button data-dismiss="modal" class="btn btn-default" type="button">취소</button>
+                <button id="findPwd" class="btn btn-theme" type="button">보내기</button>
               </div>
             </div>
           </div>
@@ -101,6 +89,19 @@
   <script>
     $.backstretch("img/login-bg.jpg", {
       speed: 500
+    });
+    
+    $(function(){
+    	$('#findPwd').click(function(){
+    		event.preventDefault();
+    		
+    		let id = $('input#id').val();
+    		if(id.length == 0){
+    			alert("id를 입력해주세요.");
+    		}else{
+    			location.href="<c:url value='/member/changePwd.do'/>?memId="+id;
+    		}
+    	});
     });
   </script>
 </body>

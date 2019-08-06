@@ -173,26 +173,7 @@ public class AddressController {
 			};
 		}
 		
-		/*
-		final MimeMessagePreparator preparator = new MimeMessagePreparator() {
-			
-			@Override
-			public void prepare(MimeMessage mimeMessage) throws Exception {
-				final MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
-				helper.setTo(vo.getMailSenAddr());
-				helper.setFrom(vo.getMailRevAddr());
-				helper.setSubject(vo.getMailTitle());
-				helper.setText(vo.getMailContent(),true);
-				
-				if(vo.getMailFileName() != null) {
-					String path = fileUtil.getUploadPath(request, FileUploadUtil.MAIL_UPLOAD);
-					File file = new File(path, vo.getMailFileName());
-					FileSystemResource fileAdd = new FileSystemResource(file);
-					helper.addAttachment(vo.getMailOriginalFileName(), fileAdd);
-				}
-			}
-		};
-		*/
+		
 		mailSender.send(preparators);
 		
 		return "message/mailComplete";

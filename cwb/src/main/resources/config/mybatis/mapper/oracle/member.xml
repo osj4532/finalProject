@@ -81,6 +81,13 @@
 		set mem_resigndate = sysdate
 		where mem_no=#{memNo}
 	</update>
+	
+	<update id="changePwd" parameterType="memberVo">
+		update member
+		set mem_pwd = #{memPwd}
+		where mem_no = #{memNo}
+	</update>
+	
 </mapper>
 
 
