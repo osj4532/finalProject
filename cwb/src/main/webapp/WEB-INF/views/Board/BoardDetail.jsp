@@ -25,9 +25,67 @@
 $(function(){
 	
 });
+ 
+$.editmake=function(no){
+	var content =$('#replyContent'+no).html(); 
+	$('#replyContent'+no).contents()   
+	.unwrap().wrap( '<input type="text" class="form-control" name="repContent" value="'+content+'">' );
+	$('#replyButton'+no).html('수정 완료');      
+	$('#replyButton'+no).contents().unwrap()  
+	.wrap("<button type='submit' class='btn btn-theme02'>");
+	$('input[name=repNo]').val(no);  
+} 
 
-</script>
-<section id="main-content">
+$.makegroup=function(no){
+var group=$('<div class="form-group" id="groupDiv'+no+'"></div>');
+	$('#group'+no).after(group); 
+	var input=$.insertinput(no);
+	$('#groupDiv'+no).append(input);    
+	$("#groupButton"+no).attr("onclick", "$.delgroup("+no+")" ); 
+	 
+} 
+
+$.selectinput=function(no){
+	var divReply=$();
+}
+
+$.insertinput=function(no){
+	var input =$('<label class="col-sm-1 col-sm-1 control-label"></label><label class="col-sm-1 col-sm-1 control-label"><b>답글 입력</b></label><div class="col-sm-4"><input type="text" class="form-control" id="groupContent'+no+'" ></div><div class="col-sm-2"><button type="button" class="btn btn-theme" onclick="$.insertgroup('+no+')"><i class="fas fa-edit"></i> 등록 </button></div>');
+	return input; 
+}
+
+$.delgroup=function(no){
+	$("#groupDiv"+no).hide();
+	$("#groupButton"+no).attr("onclick", "$.makegroup("+no+")" );
+}
+
+$.insertgroup=function(no){
+	var content=$("#groupContent"+no).val();
+	//alert(content);
+ 	$.ajax({ 
+ 		type : "post", 
+		url : "<c:url value='/Reply/GroupWrite.do'/>",
+		data : {  
+			"repNo": no,
+			"content" :content
+		},   
+			success : function(data) { 
+			$.makegroup(no);
+		},  
+ 		error : function(xhr, err) { 
+			alert("ERROR! - readyState: " 
+					+ xhr.readyState
+					+ "<br/>status: "
+					+ xhr.status
+					+ "<br/>responseText: " 
+					+ xhr.responseText);
+		}
+ 	});
+	
+}
+  
+</script>  
+<section id="main-content"> 
 	<section class="wrapper"> 
 		<h3>
 			<i class="fas fa-keyboard mt"></i> 게시판 글
@@ -104,25 +162,38 @@ $(function(){
 					<h4 class="mb" id="EditListTitle"> 
 						<i class="fas fa-clipboard"></i> 댓글  
 					</h4> 
-				<form class="form-horizontal style-form" >  
+				<form class="form-horizontal style-form"
+				method="post" 
+				action="<c:url value='/Reply/ReplyEdit.do'/>">  
+				<input type="hidden" value="" name="repNo"> 
+				<input type="hidden" value="${BVo.boardNo}" name="boardNo"> 
 				<c:if test="${empty reList}">
 				
 				</c:if>
 				<c:if test="${!empty reList}">
 				<c:forEach var="reVo" items="${reList}">
-					<div class="form-group">  
+					<div class="form-group" id="group${reVo.repNo}">   
 					<script type="text/javascript">
 					 $(function() {
                			 $.ajax({ 
                				type : "post", 
 							url : "<c:url value='/Reply/findAjaxMember.do'/>",
 							data : {  
-								"memNo": ${reVo.memNo}
-							},  
+								"memNo": ${reVo.memNo},
+								"repSecret": '${reVo.repSecret}' 
+							},   
 			 				success : function(data) { 
 								document.getElementById("replyName"+${reVo.repNo}).innerHTML
-								= data;    
-							}, 
+								= data.memName;  
+								if(data.show=='N'){
+									document.getElementById("replyContent"+${reVo.repNo}).innerHTML
+									= '<strike>비공개 댓글입니다.</strike>';        
+								}  
+								if(data.divshow=='N'){
+									$("#replyDiv"+${reVo.repNo}).hide(); 
+								}  
+								
+							},  
 							error : function(xhr, err) { 
 								alert("ERROR! - readyState: " 
 										+ xhr.readyState
@@ -133,15 +204,34 @@ $(function(){
 							}
                			 });
                		 });
-					</script>
+					</script> 
 						<label class="col-sm-1 col-sm-1 control-label"><b id="replyName${reVo.repNo}"></b></label>
 							<div class="col-sm-7"> 
-							<b>${reVo.repContent}</b> 
+							<b id="replyContent${reVo.repNo}">${reVo.repContent}</b>    - ${reVo.repNo}
 							</div>       
-							<div class="col-sm-1">   
-							</div> 
+							<div class="col-sm-2" id="replyDiv${reVo.repNo}"> 
+							   <button type="button" class="btn btn-theme02" id="replyButton${reVo.repNo}" 
+							   onclick="$.editmake(${reVo.repNo})">  
+								  <i class="fas fa-edit"></i> 수정 </button>    
+							   <button type="button" class="btn btn-theme04"> 
+								  <i class="fas fa-edit"></i> 삭제 </button> 
+							</div>  
+							   <button type="button" class="btn btn-theme" id="groupButton${reVo.repNo}" onclick="$.makegroup(${reVo.repNo})"> 
+								  <i class="fas fa-edit"></i> 답글 </button>
 						</div>  
 						</c:forEach>
+	<div class="form-group">     
+	<label class="col-sm-1 col-sm-1 control-label"><i class="fas fa-chevron-circle-right"></i></label>
+	<label class="col-sm-1 control-label"><b>작성자</b></label>
+	<label class="col-sm-6 control-label"><b>내용내용</b></label> 
+			<div class="col-sm-2" > 
+			</div>  
+			   <button type="button" class="btn btn-theme" id="groupButton${reVo.repNo}" onclick="$.makegroup(${reVo.repNo})"> 
+				  <i class="fas fa-edit"></i> 답글 </button>
+		</div>  
+						
+						
+						
 					</c:if>	
 				</form>
 					<form class="form-horizontal style-form" 

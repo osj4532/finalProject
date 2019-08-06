@@ -20,6 +20,31 @@ public class ReplyServiceImpl implements ReplyService{
 	public List<ReplyVO> selectReplyByNo(int boardNo) {
 		return replyDao.selectReplyByNo(boardNo);
 	}
+
+	@Override
+	public int updateReplyByNo(ReplyVO replyVo) {
+		return replyDao.updateReplyByNo(replyVo);
+	}
+
+	@Override
+	public ReplyVO selectOriginReply(int repNo) {
+		return replyDao.selectOriginReply(repNo);
+	}
+
+	@Override
+	public int insertReply(ReplyVO replyVo) {
+		return replyDao.insertReply(replyVo);
+	}
+
+	@Override
+	public int updateSortNo(ReplyVO replyVo) {
+		return replyDao.updateSortNo(replyVo);
+	}
+
+	@Override
+	public List<ReplyVO> selectReplyGroup(int repNo) {
+		return replyDao.selectReplyGroup(repNo);
+	}
 	
 	
 	
