@@ -1,5 +1,9 @@
 package com.cwb.finalproject.reply.controller;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -53,15 +57,87 @@ public class ReplyController {
 		
 		return "common/message";
 	}
-	
-	@RequestMapping(value = "/findAjaxMember.do" ,
-			produces = "application/text; charset=utf8")
+	@RequestMapping("/GroupWrite.do")
 	@ResponseBody
-	public String findReplyMember(@RequestParam(defaultValue = "0") int memNo) {
+	public void Group(@RequestParam int repNo,@RequestParam String content
+			,HttpSession session) {  
+		logger.info("대댓글 입력 repNo={},content={}",repNo,content); 
+		int memNo= (Integer)session.getAttribute("memNo");
+		
+		ReplyVO originReVo = replyService.selectOriginReply(repNo);
+		int cnt = replyService.updateSortNo(originReVo);
+		ReplyVO ReVo= new ReplyVO();
+		ReVo.setMemNo(memNo);
+		ReVo.setRepSecret("Y");
+		ReVo.setRepGroup(originReVo.getRepNo());
+		ReVo.setRepContent(content);
+		ReVo.setBoardNo(originReVo.getBoardNo());
+		ReVo.setRepDepth(originReVo.getRepDepth()+1);
+		ReVo.setRepSortno(originReVo.getRepSortno()+1);
+		logger.info("대댓글 입력 ReVo={}",ReVo); 
+		int cntt = replyService.insertReply(ReVo);
+		
+		logger.info("대댓글 입력 cntt={}",cntt);
+		
+	}
+	
+	@RequestMapping("/ReplyEdit.do")
+	public String ReplyEdit(@ModelAttribute ReplyVO replyVo,
+			Model model,HttpSession session) {
+		logger.info("댓글 수정 replyVo={}",replyVo); 
+		
+		int cnt = replyService.updateReplyByNo(replyVo);
+		String msg = "",url="/Board/BoardDetail.do?boardNo="+replyVo.getBoardNo();
+		if(cnt>0) {
+			msg="댓글 수정 성공";
+		}else {
+			msg="댓글 수정 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
+	
+	
+	@RequestMapping(value = "/findAjaxMember.do") //produces = "application/text; charset=utf8")
+	@ResponseBody
+	public Map<String, String> findReplyMember(@RequestParam(defaultValue = "0") int memNo,
+			HttpSession session,@RequestParam String repSecret) {
+		Map<String, String> map = new HashMap<String, String>();
+		int loginMemNo=(Integer)session.getAttribute("memNo");
+		int ranksNo=(Integer)session.getAttribute("ranksNo"); 
+		
+		String show ="N",divshow ="N";
+		if(repSecret.equals("Y")) {
+			show="Y";
+		}else {
+			if(loginMemNo==memNo) {
+				show="Y";
+			}
+			if(ranksNo==3) { 
+				show="Y";
+			}
+		}
+		if(loginMemNo==memNo) {
+			divshow="Y";
+		}
+		if(ranksNo==3) { 
+			divshow="Y"; 
+		}
+		
+		
 		MemberVO memVo= memberService.selectByMemNotoVo(memNo);
-		String replycheck=memVo.getMemName(); 
-		logger.info("ajax 작성자 구해오기 replycheck={}",replycheck);
-		return replycheck;  
+		String memName=memVo.getMemName(); 
+		
+		
+		map.put("memName", memName);
+		map.put("show", show);
+		map.put("divshow", divshow);
+		logger.info("ajax 작성자 구해오기 map={}",map);
+		return map;  
 	} 
 	
 }

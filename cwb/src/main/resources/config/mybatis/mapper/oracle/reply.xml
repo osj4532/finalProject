@@ -14,11 +14,48 @@
 			#{repSecret},#{memNo},#{boardNo})
 	</insert>
 	
+	
 	<select id="selectReplyByNo" parameterType="int" resultType="replyVo">
-		select * from reply
-		where board_no=#{boardNo} 
-		order by rep_group desc,rep_sortno
+		select * from reply 
+		where board_no=#{boardNo} and rep_no=rep_group
+		order by rep_group desc,rep_sortno asc
 	</select>
+	
+	<update id="updateReplyByNo" parameterType="replyVo">
+		update reply
+		set rep_content=#{repContent}
+		where rep_no=#{repNo}
+	</update>
+	
+	
+	<!-- 대댓글  -->
+	<select id="selectOriginReply" parameterType="int" resultType="replyVo">
+		select * from reply
+		where rep_no=#{repNo}
+	</select>
+	
+	<select id="selectReplyGroup" parameterType="int" resultType="replyVo">
+		select * from reply
+		where rep_group=#{repNo} and rep_no != rep_group
+		order by rep_group desc,rep_sortno asc
+	</select>
+	
+	<insert id="insertReply" parameterType="replyVo">
+		<selectKey order="BEFORE" keyProperty="repNo" resultType="int">
+			select reply_seq.nextval from dual
+		</selectKey>
+		insert into reply(rep_no,rep_content,rep_regdate,rep_group,
+			rep_sortno,rep_depth,rep_secret,
+				mem_no,board_no)
+			values(#{repNo},#{repContent},sysdate,#{repGroup},#{repSortno},#{repDepth},
+			#{repSecret},#{memNo},#{boardNo})
+	</insert>
+	
+	<update id="updateSortNo" parameterType="replyVo">
+		update reply
+		set rep_sortno=rep_sortno+1
+		where rep_group=#{repGroup} and rep_sortno>=#{repSortno}
+	</update>
 </mapper>
 
 
