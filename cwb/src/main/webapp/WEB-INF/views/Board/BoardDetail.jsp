@@ -37,16 +37,59 @@ $.editmake=function(no){
 } 
 
 $.makegroup=function(no){
-var group=$('<div class="form-group" id="groupDiv'+no+'"></div>');
-	$('#group'+no).after(group); 
+	$("div[name=groupDiv"+no+"]").hide(); 
+	$("#groupDiv"+no).hide();
+	var group=$('<div class="form-group" id="groupDiv'+no+'"></div>');
+	$('#group'+no).after(group);  
+	 
+	$.selectinput(no);
+	
 	var input=$.insertinput(no);
 	$('#groupDiv'+no).append(input);    
 	$("#groupButton"+no).attr("onclick", "$.delgroup("+no+")" ); 
 	 
 } 
 
+
 $.selectinput=function(no){
-	var divReply=$();
+	var divReplys='';
+	$.ajax({ 
+ 		type : "post", 
+		url : "<c:url value='/Reply/GroupSelect.do'/>",
+		data : {   
+			"repNo": no
+		},   
+			success : function(data) {
+				$.each(data, function(index,
+						item) {
+					var dep=this.repDepth
+					var repDepth ='';   
+					for (var i = 1; i < dep; i++) { 
+						repDepth+='<i class="fas fa-chevron-circle-right"></i>&nbsp;';
+					} 
+					var button = ''; 
+					if(${sessionScope.memNo}==this.memNo || ${sessionScope.ranksNo}==3){
+					button = '<button type="button" class="btn btn-theme02" id="replyButton'+this.repNo+'" ><i class="fas fa-edit"></i> 수정 </button> <button type="button" class="btn btn-theme04"><i class="fas fa-edit"></i> 삭제 </button>';
+					}
+					  
+					$('#group'+no).after($('<div class="form-group" id="group'+this.repNo+'" name="groupDiv'+no+'"><label class="col-sm-1 col-sm-1 control-label"></label><label class="col-sm-1 col-sm-1 control-label">'+repDepth+'</label><label class="col-sm-1 control-label"><b>'+this.memName+'</b></label><label class="col-sm-6 control-label"><b id="replyContent'+this.repNo+'" >'+this.repContent+'</b></label><div class="col-sm-2" id="replyDiv'+this.repNo+'" >'+button+'</div><button type="button" class="btn btn-theme"  onclick="$.makegroup('+this.repNo+')"  id="groupButton'+this.repNo+'"><i class="fas fa-edit"></i> 답글 </button></div>'));
+					 
+				});
+				//$('#group'+no).after(divReplys   
+				   //alert(divReplys);  	 
+		},  
+ 		error : function(xhr, err) { 
+			alert("ERROR! - readyState: " 
+					+ xhr.readyState
+					+ "<br/>status: "
+					+ xhr.status
+					+ "<br/>responseText: " 
+					+ xhr.responseText);
+		}
+ 	});
+	
+	
+	
 }
 
 $.insertinput=function(no){
@@ -55,6 +98,7 @@ $.insertinput=function(no){
 }
 
 $.delgroup=function(no){
+	$("div[name=groupDiv"+no+"]").hide(); 
 	$("#groupDiv"+no).hide();
 	$("#groupButton"+no).attr("onclick", "$.makegroup("+no+")" );
 }
@@ -70,6 +114,8 @@ $.insertgroup=function(no){
 			"content" :content
 		},   
 			success : function(data) { 
+			$('#groupDiv'+no).remove();    
+			$("div[name=groupDiv"+no+"]").remove(); 
 			$.makegroup(no);
 		},  
  		error : function(xhr, err) { 
@@ -219,16 +265,21 @@ $.insertgroup=function(no){
 							   <button type="button" class="btn btn-theme" id="groupButton${reVo.repNo}" onclick="$.makegroup(${reVo.repNo})"> 
 								  <i class="fas fa-edit"></i> 답글 </button>
 						</div>  
-						</c:forEach>
-	<div class="form-group">     
+<!-- 						<div class="form-group"><label class="col-sm-1 col-sm-1 control-label"><i class="fas fa-chevron-circle-right"></i>&nbsp;<i class="fas fa-chevron-circle-right"></i></label><label class="col-sm-1 control-label"><b>작성자</b></label><label class="col-sm-6 control-label"><b>내용내용</b></label><div class="col-sm-2" id="replyContent" ><button type="button" class="btn btn-theme02" id="replyButton" ><i class="fas fa-edit"></i> 수정 </button><button type="button" class="btn btn-theme04"><i class="fas fa-edit"></i> 삭제 </button></div><button type="button" class="btn btn-theme" id="groupButton"><i class="fas fa-edit"></i> 답글 </button></div>
+ -->						</c:forEach>
+<!-- 	<div class="form-group">     
 	<label class="col-sm-1 col-sm-1 control-label"><i class="fas fa-chevron-circle-right"></i>&nbsp;<i class="fas fa-chevron-circle-right"></i></label>
 	<label class="col-sm-1 control-label"><b>작성자</b></label> 
 	<label class="col-sm-6 control-label"><b>내용내용</b></label> 
-			<div class="col-sm-2" > 
+			<div class="col-sm-2" id="replyContent" >  
+			<button type="button" class="btn btn-theme02" id="replyButton"  >  
+			  <i class="fas fa-edit"></i> 수정 </button>    
+		   <button type="button" class="btn btn-theme04"> 
+			  <i class="fas fa-edit"></i> 삭제 </button> 
 			</div>  
-			   <button type="button" class="btn btn-theme" id="groupButton${reVo.repNo}" onclick="$.makegroup(${reVo.repNo})"> 
+			   <button type="button" class="btn btn-theme" id="groupButton"> 
 				  <i class="fas fa-edit"></i> 답글 </button>
-		</div>  
+		</div>   --> 
 						
 						
 						

@@ -139,5 +139,21 @@ public class ReplyController {
 		logger.info("ajax 작성자 구해오기 map={}",map);
 		return map;  
 	} 
+	@RequestMapping(value = "/GroupSelect.do") //produces = "application/text; charset=utf8")
+	@ResponseBody
+	public List<ReplyVO> replyGroupSelect(@RequestParam(defaultValue = "0") int repNo) {
+		List<ReplyVO> reList = replyService.selectReplyGroup(repNo);
+		
+		for (int i = 0; i < reList.size(); i++) {
+			ReplyVO vo=reList.get(i);
+			MemberVO memVo= memberService.selectByMemNotoVo(vo.getMemNo());
+			vo.setMemName(memVo.getMemName()); 
+		}
+		
+		
+		return reList;  
+	} 
+	
+	
 	
 }
