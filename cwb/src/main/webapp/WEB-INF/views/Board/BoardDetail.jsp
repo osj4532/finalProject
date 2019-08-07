@@ -221,8 +221,8 @@ $.insertgroup=function(no){
 						</div>  
 						</c:forEach>
 	<div class="form-group">     
-	<label class="col-sm-1 col-sm-1 control-label"><i class="fas fa-chevron-circle-right"></i></label>
-	<label class="col-sm-1 control-label"><b>작성자</b></label>
+	<label class="col-sm-1 col-sm-1 control-label"><i class="fas fa-chevron-circle-right"></i>&nbsp;<i class="fas fa-chevron-circle-right"></i></label>
+	<label class="col-sm-1 control-label"><b>작성자</b></label> 
 	<label class="col-sm-6 control-label"><b>내용내용</b></label> 
 			<div class="col-sm-2" > 
 			</div>  
