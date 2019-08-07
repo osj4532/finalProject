@@ -125,7 +125,6 @@
 		showWbList($('#selecter').val());
 		
 		$('#download').click(function(){
-			alert("click");
 			downFileZip();
 		});
 		
@@ -155,7 +154,9 @@
 		   			type:"post",
 		   			data:{"webNo":$('#selecter').val()},
 		   			dataType:"json",
-		   			error:function(e){alert(e);}
+		   			success:function(data){},
+		   			error:function(e){//뭔가 나옴 확인좀
+		   				}
 		   		});
 		   		
 		   		
@@ -173,7 +174,7 @@
 		   				showWbList($('#selecter').val());
 		   			},
 		   			error:function(e){
-						alert(e);		   				
+						alert(e+"asdasd2");		   				
 		   			}
 		   		});
 		   	}
