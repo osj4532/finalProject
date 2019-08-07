@@ -29,7 +29,7 @@ public class SchedulerController {
 		logger.info("개인스케줄러 보여주기");
 		return "scheduler/scheduler";
 	}
-
+	
 	@RequestMapping("/userScdWrite.do")
 	@ResponseBody
 	public void userScdput(@ModelAttribute SchedulerVO schedulerVo, HttpSession session) {

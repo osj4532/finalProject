@@ -21,6 +21,8 @@ public interface UseResourceService {
 		int selectAllNotWaitRestotalCount(UseResourceVO useResourceVo);
 		List<UseResourceVO> selectAllNotRefuseRes(UseResourceVO useResourceVo);
 		int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo);
+		
+		List<UseResourceVO> selectResRow(int memNo);
 }
 
 

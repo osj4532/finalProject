@@ -333,6 +333,16 @@ values(#{reservNo},#{memNo},#{resNo},
 		</where>
 	</select>
 	
+	
+	
+	<select id="selectResRow" parameterType="int" resultType="useResourceVO">
+		select * from 
+		(	
+		select * from ResUseListView
+		where mem_no=#{memNo} and use_regdate > sysdate
+		order by use_regdate
+		<![CDATA[	) where rownum <= 4]]>
+	</select>
 </mapper>
 
 

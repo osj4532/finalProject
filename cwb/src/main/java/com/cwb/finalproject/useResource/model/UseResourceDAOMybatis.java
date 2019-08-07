@@ -88,6 +88,11 @@ public class UseResourceDAOMybatis implements UseResourceDAO{
 		return sqlSession.selectOne(namespace+"selectAllNotRefuesRestotalCount", useResourceVo);
 	}
 
+	@Override
+	public List<UseResourceVO> selectResRow(int memNo) {
+		return sqlSession.selectList(namespace+"selectResRow", memNo);
+	}
+
 	
 	
 }

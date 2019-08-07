@@ -84,6 +84,11 @@ public class UseResourceServiceImpl implements UseResourceService{
 	public int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo) {
 		return useResourceDao.selectAllNotRefuesRestotalCount(useResourceVo);
 	}
+
+	@Override
+	public List<UseResourceVO> selectResRow(int memNo) {
+		return useResourceDao.selectResRow(memNo);
+	}
 	 
 	
 	

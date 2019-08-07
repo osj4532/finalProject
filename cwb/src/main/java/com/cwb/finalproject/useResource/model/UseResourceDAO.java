@@ -22,4 +22,6 @@ public interface UseResourceDAO {
 	List<UseResourceVO> selectAllNotRefuseRes(UseResourceVO useResourceVo);
 	int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo);
 	
+	List<UseResourceVO> selectResRow(int memNo);
+	
 }
