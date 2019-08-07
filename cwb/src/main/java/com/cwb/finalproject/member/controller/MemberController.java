@@ -1,10 +1,10 @@
 package com.cwb.finalproject.member.controller;
 
-import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -13,11 +13,11 @@ import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.FileSystemResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -32,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cwb.finalproject.common.AES256Util;
 import com.cwb.finalproject.common.FileUploadUtil;
+import com.cwb.finalproject.common.PaginationInfo;
 import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.dept.model.DeptService;
 import com.cwb.finalproject.dept.model.DeptVO;
@@ -313,6 +314,43 @@ public class MemberController {
 		model.addAttribute("msg", msg);
 		
 		return "common/message";
+	}
+	
+	@RequestMapping("/member/memberShow.do")
+	@ResponseBody
+	public List<Map<String, Object>> memberShow(@RequestParam String keyword, @RequestParam int currentPage, HttpSession session){
+		logger.info("사원 목록 보여주기 매개변수 keyword = {}, currentPage = {}", keyword, currentPage);
+		String memId = (String) session.getAttribute("memId");
+		
+		List<Map<String, Object>> list = null;
+		
+		PaginationInfo page = new PaginationInfo();
+		page.setBlockSize(WebUtility.BLOCK_SIZE);
+		page.setRecordCountPerPage(WebUtility.RECORD_COUNT_PER_PAGE);
+		page.setCurrentPage(currentPage);
+		
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("keyword", keyword);
+		map.put("memId", memId);
+		map.put("firstRecordIndex", page.getFirstRecordIndex());
+		map.put("recordCountPerPage", WebUtility.RECORD_COUNT_PER_PAGE);
+		
+		list = memberService.selectOrSearchPaging(map);
+		int totalRecord = memberService.countMember(map);
+		page.setTotalRecord(totalRecord);
+		
+		Map<String, Object> pageMap = new HashMap<String, Object>();
+		pageMap.put("page", page);
+		logger.info("list.size = {}", list.size());
+		list.add(0, pageMap);
+		
+		return list;
+		
+	}
+	
+	@RequestMapping("/member/memberMypage.do")
+	public void mypage() {
+		logger.info("마이페이지 화면");
 	}
 	
 }

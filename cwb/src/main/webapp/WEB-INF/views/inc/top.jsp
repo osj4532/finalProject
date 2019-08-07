@@ -274,7 +274,12 @@
       <div id="sidebar" class="nav-collapse ">
         <!-- sidebar menu start-->
         <ul class="sidebar-menu" id="nav-accordion">
+        	<c:if test="${!empty sessionScope.fileName }">
           <p class="centered"><a href="<c:url value='/member/memberMypage.do'/>"><img src="<c:url value='/member_file/${sessionScope.fileName}'/>" class="img-circle" width="80"></a></p>
+        	</c:if>
+        	<c:if test="${empty sessionScope.fileName }">
+          <p class="centered"><a href="<c:url value='/member/memberMypage.do'/>"><img src="<c:url value='/member_file/user.png'/>" class="img-circle" width="80"></a></p>
+        	</c:if>
           <h5 class="centered">${sessionScope.memName }</h5>
           <p class="centered"><a class="btn btn-round btn-default" href="<c:url value='/member/memberMypage.do'/>">My Page</a></p>
           <li class="sub-menu">
@@ -368,6 +373,7 @@
               <c:import url="/Board/BoardTopIns.do"></c:import>
             </ul>
           </li>
+              <c:if test="${sessionScope.ranksNo >= 3 }">
            <li class="sub-menu">
             <a href="javascript:;">
               <i class="fas fa-users-cog"></i>
@@ -379,7 +385,7 @@
               <li><a href="<c:url value="/member/memberEdit.do?memNo=${sessionScope.memNo }"/>"><i class="fas fa-user-edit"></i>사원정보수정</a></li>
             </ul>
           </li>
-          
+          </c:if>
           
         </ul>
 	        <c:import url="/address/companyAddr.do"></c:import>

@@ -32,41 +32,44 @@ public class MemberServiceImpl implements MemberService{
 	@Override
 	public int loginCheck(String memId, String memPwd) {
 		String dbPwd = memberDAO.selectForLogin(memId);
-		try {
-			aes256Util = new AES256Util(AES256Util.KEY);
-			dbPwd = aes256Util.aesDecode(dbPwd);
-			//dbPwd = aes256Util.aesEncode(dbPwd);
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (InvalidAlgorithmParameterException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
 		int result = 0;
-		if(dbPwd==null || dbPwd.isEmpty()) {
-			result=ID_NONE;
-		}else {
-			if(dbPwd.equals(memPwd)) {
-				result=LOGIN_OK;
+		if(dbPwd != null && !dbPwd.isEmpty()) {
+			
+			try {
+				aes256Util = new AES256Util(AES256Util.KEY);
+				dbPwd = aes256Util.aesDecode(dbPwd);
+				//dbPwd = aes256Util.aesEncode(dbPwd);
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidKeyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidAlgorithmParameterException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalBlockSizeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			if(dbPwd==null || dbPwd.isEmpty()) {
+				result=ID_NONE;
 			}else {
-				result=PWD_DISAGREE;
+				if(dbPwd.equals(memPwd)) {
+					result=LOGIN_OK;
+				}else {
+					result=PWD_DISAGREE;
+				}
 			}
 		}
 		return result;
@@ -116,5 +119,13 @@ public class MemberServiceImpl implements MemberService{
 	}
 	public int changePwd(MemberVO vo) {
 		return memberDAO.changePwd(vo);
+	}
+	@Override
+	public int countMember(Map<String, Object> map) {
+		return memberDAO.countMember(map);
+	}
+	@Override
+	public List<Map<String, Object>> selectOrSearchPaging(Map<String, Object> map) {
+		return memberDAO.selectOrSearchPaging(map);
 	}
 }

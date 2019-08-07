@@ -58,6 +58,22 @@ $(document).ready(function(){
 			alert('휴대폰은 숫자만 입력 가능 합니다');
 			event.preventDefault();
 			$('#memHp2').focus();
+		}else if($('#memHp2').val().length<1 || $('#memHp3').val().length<1){
+			alert('전화번호를 입력하세요');
+			event.preventDefault();
+			$('#memHp2').focus();
+		}else if($('#memEmail2').val() != "etc"){
+			if($('#memEmail1').val().length<1 || $('#memEmail2').val().length<1){
+				alert('이메일을 입력하세요');
+				event.preventDefault();
+				$('#memEmail1').focus();
+			}
+		}else if($('#memEmail2').val() == "etc"){
+			if($('#memEmail1').val().length<1 || $('#memEmail3').val().length<1){
+				alert('이메일을 입력하세요');
+				event.preventDefault();
+				$('#memEmail1').focus();
+			}
 		}
 	});
 	

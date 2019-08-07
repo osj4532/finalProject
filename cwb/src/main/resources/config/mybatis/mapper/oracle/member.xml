@@ -35,6 +35,15 @@
 		order by pos_no, mem_no
 	</select>
 	
+	<select id="countMember" resultType="int" parameterType="map">
+		select count(*) from memberview
+		where mem_id != #{memId}
+		<if test="keyword != null and keyword != ''">
+			and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+		</if>
+		order by pos_no, mem_no
+	</select>
+	
 	<select id="selectOrSearchEmail" resultType="map" parameterType="map">
 		select B.*
 		from
@@ -52,12 +61,68 @@
 		where B.RNUM > #{firstRecordIndex}
 	</select>
 	
+	<select id="selectOrSearchPaging" resultType="map" parameterType="map">
+		select B.*
+		from
+		(
+			select rownum RNUM, A.*
+			from(
+				select * from memberview
+				where mem_id != #{memId} 
+				<if test="keyword != null and keyword != ''">
+					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+				</if>
+				order by pos_no, mem_no
+			)A
+<![CDATA[	where rownum <= #{firstRecordIndex}+#{recordCountPerPage}]]>
+		)B
+		where B.RNUM > #{firstRecordIndex}
+	</select>
+	
 	<insert id="insertMember" parameterType="MemberVo">
 		<selectKey resultType="int" keyProperty="memNo" order="BEFORE">
 			select member_seq.nextval from dual
 		</selectKey>
-		insert into member(mem_no, ranks_no, dept_no, mem_name, mem_hp1, mem_hp2, mem_hp3, mem_email1, mem_email2, mem_id, mem_pwd, mem_zipcode, mem_address, mem_addressdetail, mem_filename, mem_originalfilename, mem_achievement, mem_pay, mem_holiday, pos_no)
-		values(#{memNo}, #{ranksNo}, #{deptNo}, #{memName}, #{memHp1}, #{memHp2}, #{memHp3}, #{memEmail1}, #{memEmail2}, #{memId}, #{memPwd}, #{memZipcode}, #{memAddress}, #{memAddressDetail}, #{memFileName}, #{memOriginalFileName}, #{memAchievement}, #{memPay}, #{memHoliday}, #{posNo})
+		insert into member(mem_no, ranks_no, dept_no, mem_name, mem_hp1, mem_hp2, mem_hp3, mem_email1, mem_email2, mem_id, mem_pwd, pos_no
+		<if test="memZipcode != null and memZipcode != ''">
+			,mem_zipcode, mem_address
+		</if>
+		<if test="memAddressDetail != null and memAddressDetail != ''">
+			,mem_addressdetail
+		</if>
+		<if test="memFileName != null and memFileName != ''">
+			,mem_filename, mem_originalfilename
+		</if>
+		<if test="memAchievement != null and memAchievement != ''">
+			,mem_achievement
+		</if>
+		<if test="memPay != null and memPay != ''">
+			,mem_pay
+		</if> 
+		<if test="memHoliday != null and memHoliday != ''">
+			,mem_holiday
+		</if>
+		)
+		values(#{memNo}, #{ranksNo}, #{deptNo}, #{memName}, #{memHp1}, #{memHp2}, #{memHp3}, #{memEmail1}, #{memEmail2}, #{memId}, #{memPwd}, #{posNo} 
+		<if test="memZipcode != null and memZipcode != ''">
+			,#{memZipcode}, #{memAddress}
+		</if>
+		<if test="memAddressDetail != null and memAddressDetail != ''">
+			,#{memAddressDetail}
+		</if>
+		<if test="memFileName != null and memFileName != ''">
+			,#{memFileName}, #{memOriginalFileName}
+		</if>
+		<if test="memAchievement != null and memAchievement != ''">
+			,#{memAchievement}
+		</if>
+		<if test="memPay != null and memPay != ''">
+			,#{memPay}
+		</if> 
+		<if test="memHoliday != null and memHoliday != ''">
+			,#{memHoliday}
+		</if>
+		)		
 	</insert>
 	
 	<select id="dupUserid" parameterType="string" resultType="int">
