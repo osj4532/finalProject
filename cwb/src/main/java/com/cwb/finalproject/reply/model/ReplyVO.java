@@ -10,6 +10,15 @@ public class ReplyVO {
 	private String repSecret; /* 공개여부 */
 	private int memNo; /* 사원번호 */
 	private int boardNo; /* 게시글번호 */
+	private String memName; /* 사원이름 */
+	
+	
+	public String getMemName() {
+		return memName;
+	}
+	public void setMemName(String memName) {
+		this.memName = memName;
+	}
 	public int getRepNo() {
 		return repNo;
 	}
@@ -64,13 +73,13 @@ public class ReplyVO {
 	public void setBoardNo(int boardNo) {
 		this.boardNo = boardNo;
 	}
+	
 	@Override
 	public String toString() {
 		return "ReplyVO [repNo=" + repNo + ", repContent=" + repContent + ", repRegdate=" + repRegdate + ", repGroup="
 				+ repGroup + ", repSortno=" + repSortno + ", repDepth=" + repDepth + ", repSecret=" + repSecret
-				+ ", memNo=" + memNo + ", boardNo=" + boardNo + "]";
+				+ ", memNo=" + memNo + ", boardNo=" + boardNo + ", memName=" + memName + "]";
 	}
-	
 	
 	
 }

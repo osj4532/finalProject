@@ -7,6 +7,7 @@
 	label.checkbox {
     	padding-left: 20px;
 	}
+	
 </style>
 <head>
   <title>CWB login</title>
@@ -87,11 +88,12 @@
   <!-- You can use an image of whatever size. This script will stretch to fit in any screen size.-->
   <script type="text/javascript" src="<c:url value='/resources/lib/jquery.backstretch.min.js'/>"></script>
   <script>
-    $.backstretch("img/login-bg.jpg", {
-      speed: 500
-    });
     
     $(function(){
+    	$('body').css("background-image","url(<c:url value='/resources/img/CWB.png'/>)")
+    	.css("background-repeat","no-repeat")
+    	.css("background-size", "cover");
+    	
     	$('#findPwd').click(function(){
     		event.preventDefault();
     		
