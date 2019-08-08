@@ -11,4 +11,6 @@ public interface SchedulerDAO {
 	int updateUserScd(SchedulerVO schedulerVo);
 	int updateUserScdContent(SchedulerVO schedulerVo);
 	SchedulerVO selectByNo(int scdNo);
+	List<SchedulerVO> selectNewTopSchedule(int memNo);
+	
 }

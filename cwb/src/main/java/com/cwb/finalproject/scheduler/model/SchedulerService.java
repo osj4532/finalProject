@@ -9,5 +9,6 @@ public interface SchedulerService {
 	int updateUserScd(SchedulerVO schedulerVo,boolean isday);
 	int updateUserScdContent(SchedulerVO schedulerVo);
 	SchedulerVO selectByNo(int scdNo);
+	List<SchedulerVO> selectNewTopSchedule(int memNo);
 }
  

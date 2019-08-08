@@ -25,6 +25,10 @@ import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.confirm.controller.ConfirmController;
 import com.cwb.finalproject.confirm.model.ConfirmService;
 import com.cwb.finalproject.message.model.MessageService;
+import com.cwb.finalproject.scheduler.model.SchedulerService;
+import com.cwb.finalproject.scheduler.model.SchedulerVO;
+import com.cwb.finalproject.useResource.model.UseResourceService;
+import com.cwb.finalproject.useResource.model.UseResourceVO;
 import com.cwb.finalproject.webhard.model.WebhardService;
 
 /**
@@ -43,6 +47,9 @@ public class IndexController {
 	private EmailService emailService;
 	@Autowired
 	private WebhardService webhardService;
+	@Autowired UseResourceService useResourceService;
+	@Autowired SchedulerService schedulerService;
+	
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
@@ -120,4 +127,33 @@ public class IndexController {
 		List<EmailVO> list = emailService.indexMailList(memNo);
 		return list;
 	}
+	@RequestMapping("/ressSchedulerIns.do")
+	public String resSchedulerIns_view(Model model, HttpSession Session) {
+		int memNo=(Integer)Session.getAttribute("memNo");
+		List<UseResourceVO>  ulist=useResourceService.selectResRow(memNo);
+		for (UseResourceVO vo : ulist) {  
+			if(vo.getUseRegdate().substring(11).equals("00:00:00")
+					&& vo.getReturnRegdate().substring(11).equals("00:00:00")) {
+				vo.setUseRegdate(vo.getUseRegdate().substring(0, 10));
+				vo.setReturnRegdate(vo.getReturnRegdate().substring(0, 10));
+			}
+		}
+		model.addAttribute("ulist", ulist);
+		return "inc/resSchedulerIns";
+	}
+	@RequestMapping("/SchedulerIns.do")
+	public String schedulerIns_view(Model model, HttpSession Session) {
+		int memNo=(Integer)Session.getAttribute("memNo");
+		List<SchedulerVO> scList = schedulerService.selectNewTopSchedule(memNo);
+		for (SchedulerVO vo : scList) { 
+			if(vo.getScdStart().substring(11).equals("00:00:00")
+					&& vo.getScdEnd().substring(11).equals("00:00:00")) {
+				vo.setScdStart(vo.getScdStart().substring(0, 10));
+				vo.setScdEnd(vo.getScdEnd().substring(0, 10));
+			}
+		}
+		
+		model.addAttribute("scList", scList);  
+		return "inc/schedulerIns";
+	}  
 }
