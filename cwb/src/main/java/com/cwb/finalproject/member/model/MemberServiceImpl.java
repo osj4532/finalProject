@@ -128,4 +128,8 @@ public class MemberServiceImpl implements MemberService{
 	public List<Map<String, Object>> selectOrSearchPaging(Map<String, Object> map) {
 		return memberDAO.selectOrSearchPaging(map);
 	}
+	@Override
+	public int updateUser(MemberVO vo) {
+		return memberDAO.updateUser(vo);
+	}
 }

@@ -34,4 +34,6 @@ public interface MemberDAO {
 	public int countMember(Map<String, Object> map);
 	
 	public List<Map<String, Object>> selectOrSearchPaging(Map<String, Object> map);
+	
+	public int updateUser(MemberVO vo);
 }

@@ -304,21 +304,21 @@ function list(){
 							<label for="memAchievement"  class="col-sm-1 col-sm-1 control-label">학력</label> 
 							<div class="col-sm-2">
 								<input type="text" class="form-control"
-									name="memAchievement" id="memAchievement">
+									name="memAchievement" id="memAchievement" value="고졸">
 							</div> 
 						</div>
 						<div class="form-group"> 
 							<label for="memPay"  class="col-sm-1 col-sm-1 control-label">연봉</label>
 							<div class="col-sm-2"> 
 							 <input type="text" name="memPay" class="form-control"
-								id="memPay">
+								id="memPay" value="20000000">
 							</div>								
 						</div>
 						<div class="form-group"> 
 							<label for="memHoliday"  class="col-sm-1 col-sm-1 control-label">연차</label>
 							<div class="col-sm-2"> 
 							 <input type="text" name="memHoliday" class="form-control"
-								id="memHoliday">
+								id="memHoliday" value="13">
 							</div>								
 						</div>
 						<div class="form-group">
