@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@include file="inc/top.jsp" %>
-
+<link rel='stylesheet'
+	href="<c:url value='/resources/lib/scheduler/fullcalendar.min.css'/>" />
+<link rel='stylesheet' media="print"
+	href="<c:url value='/resources/lib/scheduler/fullcalendar.print.min.css'/>" />
+	
 <style>
 	.subInfo{
 		border: 1px solid white;
@@ -77,6 +81,24 @@
 
 <section id="main-content">
 	<section class="wrapper">
+	
+	
+		<div class="row mt info">
+				<div class="col-md-12 col-sm-12 mb">
+					<div class="subInfo">
+						<div class="head">
+							<h5> <i class="far fa-calendar-alt"></i> 최근 개인 스케줄  </h5>
+						</div>  
+						<div class="content"> 
+							<c:import url="/SchedulerIns.do"/>
+						</div>
+					</div>
+				</div> 
+		</div>
+	
+	
+	
+	
 		<div class="row mt info">
 			<div class="col-md-4 col-sm-4 mb">
 				<div class="subInfo">
@@ -121,8 +143,7 @@
 					</div>
 				</div>
 			</div>
-			
-			
+		
 			<div class="col-md-4 col-sm-4 mb">
 				<div class=" subInfo">
 					<div class="head">
@@ -136,8 +157,22 @@
 					</div>
 				</div>
 			</div>
-		</div>
-		
+		 	<c:if test="${sessionScope.ranksNo > 1 }">
+			<div class="col-md-8 col-sm-8 mb">
+			</c:if>
+		 	<c:if test="${sessionScope.ranksNo <= 1 }">
+			<div class="col-md-12 col-sm-12 mb"> 
+			</c:if>
+					<div class="subInfo">
+						<div class="head">
+							<h5> <i class="fas fa-box"></i>  최근 자원 내역</h5>
+						</div> 
+						<div class="content">
+							<c:import url="/ressSchedulerIns.do"/>
+						</div>
+					</div>
+				</div> 
+			</div>  
 		<div class="row mt info">
 <%-- 			<div class="col-md-4 col-sm-4 mb">
                 <div class="grey-panel pn donut-chart">
@@ -186,6 +221,7 @@
 				</div>
 			</div>
 		</div>
+		
 	</section>
 </section>
 

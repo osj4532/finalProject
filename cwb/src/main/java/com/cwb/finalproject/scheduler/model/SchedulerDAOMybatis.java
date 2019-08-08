@@ -52,6 +52,11 @@ public class SchedulerDAOMybatis implements SchedulerDAO{
 	public SchedulerVO selectByNo(int scdNo) {
 		return sqlSesson.selectOne(namespace+"selectByNo", scdNo);
 	}
+
+	@Override
+	public List<SchedulerVO> selectNewTopSchedule(int memNo) {
+		return sqlSesson.selectList(namespace+"selectNewTopSchedule", memNo);
+	} 
 	
 	
 	

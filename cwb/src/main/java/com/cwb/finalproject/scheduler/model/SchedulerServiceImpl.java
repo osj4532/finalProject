@@ -51,6 +51,10 @@ public class SchedulerServiceImpl implements SchedulerService{
 	public SchedulerVO selectByNo(int scdNo) {
 		return schedulerDao.selectByNo(scdNo);
 	}
+	@Override
+	public List<SchedulerVO> selectNewTopSchedule(int memNo) {
+		return schedulerDao.selectNewTopSchedule(memNo);
+	}
 
 	
 	

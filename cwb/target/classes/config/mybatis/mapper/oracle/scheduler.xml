@@ -53,6 +53,15 @@ to_date(#{scdStart},'YYYY/MM/DD HH24:MI:SS'),to_date(#{scdEnd},'YYYY/MM/DD HH24:
 		set scd_content=#{scdContent},scd_title=#{scdTitle} 
 		where scd_no=#{scdNo}
 	</update> 
+	
+	<select id="selectNewTopSchedule" parameterType="int" resultType="schedulerVo">
+	select * from 
+		(	
+		select * from schedule
+		where scd_start >sysdate and mem_no=#{memNo}
+		order by scd_start
+	<![CDATA[	) where rownum <= 5]]>
+	</select>
 </mapper>
 
 

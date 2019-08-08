@@ -369,13 +369,6 @@ public class UseResourceController {
 		return "common/message";
 	}
 	
-	@RequestMapping("/ressSchedulerIns.do")
-	public String schedulerIns_view(Model model, HttpSession Session) {
-		int memNo=(Integer)Session.getAttribute("memNo");
-		List<UseResourceVO>  ulist=useResourceService.selectResRow(memNo);
-		
-		model.addAttribute("ulist", ulist);
-		return "scheduler/schedulerIns";
-	}
+
 	
 }
