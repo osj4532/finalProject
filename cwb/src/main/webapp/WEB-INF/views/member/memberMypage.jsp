@@ -16,9 +16,9 @@
 		min-width: 300px;
 	}
 	#info2{
-		min-height: 200px;
-		background-color: black;
-		min-width: 300px;
+		height: 200px;
+		background-color: lightgray;
+		width: 440px;
 	}
 </style>
 <section id="main-content">
@@ -27,16 +27,53 @@
 	<div class="row">
 		<div class="col-lg-2" id="info">
 					<c:if test="${!empty sessionScope.fileName }">
-		          <p class="centered"><a href="<c:url value='/member/memberMypage.do'/>"><img src="<c:url value='/member_file/${sessionScope.fileName}'/>" class="img-circle" width="80"></a></p>
+		          <p class="centered"><img src="<c:url value='/member_file/${sessionScope.fileName}'/>" class="img-circle" width="80"></p>
 		        	</c:if>
 		        	<c:if test="${empty sessionScope.fileName }">
-		          <p class="centered"><a href="<c:url value='/member/memberMypage.do'/>"><img src="<c:url value='/member_file/user.png'/>" class="img-circle" width="80"></a></p>
+		          <p class="centered"><img src="<c:url value='/member_file/user.png'/>" class="img-circle" width="80"></p>
 		        	</c:if>
 		          <h5 class="centered">${sessionScope.memName }</h5>
-		          <button class="btn btn-info centered" id="btnDetail">상세정보</button>
+		          <div class="centered">
+			          <button class="btn btn-info centered" id="btnDetail" onclick="location.href='<c:url value='/member/memberDetail.do?memNo=${sessionScope.memNo }'/>'">상세정보</button>
+		          </div>
 		</div>
 		<div class="col-lg-8" id="info2">
-			hi
+		<canvas id="myChart" width="200" height="100"></canvas>
+			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
+			<script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
+			<script type="text/javascript">
+			var ctx = document.getElementById("myChart");
+			var myBarChart = new Chart(ctx, {
+				type: 'bar',
+			data : {
+				labels : ["월별 출근일수", "년도별 출근일수"],
+				datasets : [
+					{
+						label : "나의 근태 조회",
+						data: [55, 44],
+						backgroundColor : [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(54, 162, 235, 0.2)'
+						],
+						borderColor : [
+							'rgba(255, 99, 132, 132, 1)',
+							'rgba(54, 162, 235, 1)'
+						],
+						borderWidth : 1
+					}
+				]
+			},
+				options: {
+					scales: {
+						yAxes:[{
+							ticks: {
+								beginAtZero:true
+							}
+						}]
+					}
+				}
+			});
+			</script>
 		</div>
 	</div>
 	</section>

@@ -59,9 +59,7 @@ public class LoginController {
 			session.setAttribute("ranksNo", memberVo2.getRanksNo());
 			
 			logger.info("memberVo조회 후 memberVo2 = {}", memberVo2);
-			if(memberVo2.getMemFileName() != null && !memberVo2.getMemFileName().isEmpty()) {
-				fileName = memberVo2.getMemFileName();
-			}
+			fileName = memberVo2.getMemOriginalFileName();
 			
 			int allHoly = commuteService.countSelectAllHoly();
 			session.setAttribute("allHoly", allHoly);

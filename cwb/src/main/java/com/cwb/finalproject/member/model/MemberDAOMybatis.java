@@ -71,4 +71,8 @@ public class MemberDAOMybatis implements MemberDAO{
 	public List<Map<String, Object>> selectOrSearchPaging(Map<String, Object> map) {
 		return sqlSession.selectList(namespace+"selectOrSearchPaging", map);
 	}
+	@Override
+	public int updateUser(MemberVO vo) {
+		return sqlSession.update(namespace+"updateUser", vo);
+	}
 }

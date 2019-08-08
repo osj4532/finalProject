@@ -153,6 +153,25 @@
 		where mem_no = #{memNo}
 	</update>
 	
+	<update id="updateUser" parameterType="memberVo">
+		update member
+		set mem_pwd = #{memPwd}, mem_hp1 = #{memHp1}, mem_hp2 = #{memHp2}, mem_hp3 = #{memHp3}
+		, mem_email1 = #{memEmail1}, mem_email2 = #{memEmail2}
+		<if test="memZipcode != null and memZipcode != ''">
+			, mem_zipcode = #{memZipcode}, mem_address = #{memAddress}
+		</if>
+		<if test="memAddressDetail != null and memAddressDetail != ''">
+			, mem_addressdetail = #{memAddressDetail}
+		</if>
+		<if test="memAchievement != null and memAchievement != ''">
+			, mem_achievement = #{memAchievement}
+		</if>
+		<if test="memFileName != null and memFileName != ''">
+			, mem_fileName = #{memFileName}
+		</if>
+		where mem_no=#{memNo}
+	</update>
+	
 </mapper>
 
 

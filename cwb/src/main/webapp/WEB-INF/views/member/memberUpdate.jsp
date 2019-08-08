@@ -37,6 +37,7 @@
 <script type="text/javascript" src="<c:url value='/resources/js/member.js'/>"></script>
 <script type="text/javascript">
 $(document).ready(function(){
+	
 	$('#memHp1 option').each(function(item){
 		if($(this).val() == '${map['MEM_HP1']}'){
 			$(this).prop("selected", "selected");
@@ -197,36 +198,49 @@ function validate_userid(userid){
 function list(){
 	location.href="<c:url value='/member/memberList.do'/>";
 }
-
 </script>
 <section id="main-content">
 	<section class="wrapper">
 		<h3>
-			<i class="fas fa-user-plus"></i> 사원 정보
+			<i class="fas fa-user-plus"></i> 사원 수정
 		</h3>  
 		<div class="row">   
 			<div class="col-lg-12">   
 				<div class="form-panel"> 
 					<form name="frmContent" class="form-horizontal style-form was-validated"
-						method="post" action="<c:url value='/member/memberDetail.do'/>"
+						method="post" action="<c:url value='/member/memberUpdate.do'/>"
 						enctype="multipart/form-data">
 						<div class="form-group"> 
 						</div>  
 						<div class="form-group">  
 							<label class="col-sm-1 col-sm-1 control-label">성명</label>
 							<div class="col-sm-2">  
-								<input type="text" class="form-control" id="memName" name="memName" value="${map['MEM_NAME'] }" readOnly>
+								<input type="text" class="form-control" id="memName" name="memName" value="${map['MEM_NAME'] }" readonly>
 							</div> 
 						</div>  	
 						<div class="form-group"> 
 							<label for="memId" class="col-sm-1 col-sm-1 control-label" >사원ID</label>
 							<div class="col-sm-2">  
 							 <input type="text" name="memId" class="form-control"
-								id="memId" value="${map['MEM_ID'] }" readOnly>
+								id="memId" value="${map['MEM_ID'] }" readonly>
 							</div>	
 							<div class="col-sm-2">
 								<span class="error"></span>
 								</div>
+						</div>
+						<div class="form-group"> 
+							<label for="memPwd" class="col-sm-1 col-sm-1 control-label">비밀번호</label>
+							<div class="col-sm-2">  
+							 <input type="Password" name="memPwd" class="form-control"
+								id="memPwd">
+							</div>
+						</div>
+						<div class="form-group"> 
+							<label for="memPwd2" class="col-sm-1 col-sm-1 control-label" >비밀번호 확인</label> 
+							<div class="col-sm-2">  
+							<input type="Password" class="form-control"
+								name="memPwd2" id="memPwd2">
+							</div>
 						</div>
 						<div class="form-group"> 
 							<label for="memZipcode" class="col-sm-1 col-sm-1 control-label" >주소</label>
@@ -245,7 +259,7 @@ function list(){
 							 	</div>         
 							 	<div class="col-sm-8 mb">  
 								<input type="text" name="memAddressDetail"  class="form-control" id="memAddressDetail"
-									title="상세주소" value="${map['MEM_ADDRESSDETAIL'] }" readOnly>
+									title="상세주소" value="${map['MEM_ADDRESSDETAIL'] }">
 								</div> 
 							</div>  
 						</div>  
@@ -253,7 +267,7 @@ function list(){
 							<label for="memHp1" class="col-sm-1 col-sm-1 control-label" >핸드폰</label>
 							  <div class="col-sm-1">    
 								<select name="memHp1" id="memHp1" class="form-control"
-									title="휴대폰 앞자리" disabled="disabled">
+									title="휴대폰 앞자리"> 
 									<option value="010">010</option>
 									<option value="011">011</option>
 									<option value="016">016</option>
@@ -267,7 +281,7 @@ function list(){
 								</div>
 								 <div class="col-sm-1"> 
 								 	<input type="text" name="memHp2" id="memHp2" maxlength="4"
-									title="휴대폰 가운데자리" class="form-control" value="${map['MEM_HP2']}" readOnly>
+									title="휴대폰 가운데자리" class="form-control" value="${map['MEM_HP2']}">
 								</div>    
 								<div class="col-sm-1 minus">  
 									<i class="fas fa-minus"></i>
@@ -275,7 +289,7 @@ function list(){
 								 <div class="col-sm-1">
 									<input type="text"
 									name="memHp3" id="memHp3" maxlength="4" title="휴대폰 뒷자리"
-									class="form-control" value="${map['MEM_HP3'] }" readOnly>
+									class="form-control" value="${map['MEM_HP3'] }">
 								</div>	   
 						</div>
 						
@@ -283,14 +297,14 @@ function list(){
 							<label for="memEmail1"  class="col-sm-1 col-sm-1 control-label">이메일 주소</label> 
 							<div class="col-sm-2">
 							<input type="text" class="form-control"
-								name="memEmail1" id="memEmail1" title="이메일주소 앞자리" value="${map['MEM_EMAIL1'] }" readOnly>
+								name="memEmail1" id="memEmail1" title="이메일주소 앞자리" value="${map['MEM_EMAIL1'] }">
 								</div>
 								<div class="col-sm-1 minus"> 
 								<i class="fas fa-at"></i> 
 								</div>	 
 								<div class="col-sm-2">
 								<select class="form-control"
-								name="memEmail2" id="memEmail2" title="이메일주소 뒷자리" disabled="disabled">
+								name="memEmail2" id="memEmail2" title="이메일주소 뒷자리">
 								<option value="naver.com">naver.com</option>
 								<option value="hanmail.com">hanmail.com</option>
 								<option value="nate.com">nate.com</option>
@@ -300,28 +314,28 @@ function list(){
 							</div>
 							<div class="col-sm-2">
 							<input type="text" name="memEmail3" id="memEmail3" class="form-control"
-								title="직접입력인 경우 이메일주소 뒷자리" style="visibility:" readOnly> 
+								title="직접입력인 경우 이메일주소 뒷자리" style="visibility: hidden" > 
 							</div> 
 						</div>
 						<div class="form-group"> 
 							<label for="memAchievement"  class="col-sm-1 col-sm-1 control-label">학력</label> 
 							<div class="col-sm-2">
 								<input type="text" class="form-control"
-									name="memAchievement" id="memAchievement" value="${map['MEM_ACHIEVEMENT'] }" readOnly>
+									name="memAchievement" id="memAchievement" value="${map['MEM_ACHIEVEMENT'] }">
 							</div> 
 						</div>
 						<div class="form-group"> 
 							<label for="memPay"  class="col-sm-1 col-sm-1 control-label">연봉</label>
 							<div class="col-sm-2"> 
 							 <input type="text" name="memPay" class="form-control"
-								id="memPay" readOnly value="${map['MEM_PAY'] }">
+								id="memPay" readonly value="${map['MEM_PAY'] }">
 							</div>								
 						</div>
 						<div class="form-group"> 
 							<label for="memHoliday"  class="col-sm-1 col-sm-1 control-label">연차</label>
 							<div class="col-sm-2"> 
 							 <input type="text" name="memHoliday" class="form-control"
-								id="memHoliday" readOnly value="${map['MEM_HOLIDAY'] }">
+								id="memHoliday" readonly value="${map['MEM_HOLIDAY'] }">
 							</div>								
 						</div>
 						<div class="form-group">
@@ -329,7 +343,13 @@ function list(){
 						<div class="col-sm-2">
 								<select class="form-control"
 								name="deptNo" id="deptNo" title="부서" disabled="disabled">
-									<option value="1">${map['DEPT_NAME'] }</option>
+								<c:forEach var="deptVo" items="${deptList }">
+									<option value="${deptVo.deptNo }"
+									<c:if test="${deptVo.deptNo == map['DEPT_NO']}">
+										selected="selected"
+									</c:if>
+									>${deptVo.deptName }</option>
+								</c:forEach>
 							</select>
 							</div>
 							</div>
@@ -337,7 +357,13 @@ function list(){
 						<label for="posNo"  class="col-sm-1 col-sm-1 control-label">직급</label>
 						<div class="col-sm-2">
 							<select class="form-control" name="posNo" id="posNo" title="직급" disabled="disabled">
-									<option value="1">${map['POS_NAME'] }</option>
+								<c:forEach var="positionVo" items="${positionList }">
+									<option value="${positionVo.posNo }"
+									<c:if test="${positionVo.posNo == map['POS_NO']}">
+										selected="selected"
+									</c:if>
+									>${positionVo.posName }</option>
+								</c:forEach>
 							</select>
 							</div>
 							</div>
@@ -345,22 +371,34 @@ function list(){
 						<label for="ranksNo"  class="col-sm-1 col-sm-1 control-label">등급</label>
 						<div class="col-sm-2">
 							<select class="form-control" name="ranksNo" id="ranksNo" title="등급" disabled="disabled">
-									<option value="1">${map['RANKS_NAME'] }</option>
+								<c:forEach var="ranksVo" items="${ranksList }">
+									<option value="${ranksVo.ranksNo }"
+									<c:if test="${ranksVo.ranksNo == map['RANKS_NO']}">
+										selected="selected"
+									</c:if>
+									>${ranksVo.ranksName }</option>
+								</c:forEach>
 							</select>
 							</div>
 							</div>
 						<div class="form-group">  
 							<label for="fileName" class="col-sm-1 col-sm-1 control-label">사원사진</label>
 							<div class="col-sm-8">  
-								<c:if test="${!empty map['MEM_FILENAME'] }">
-									<img alt="사원사진" src="<c:url value='/member_file/${map["MEM_FILENAME"] }'/>">
+								<input type="file"  
+									name="fileName" id="fileName">
+							<div class="col-sm-2">
+								<c:if test="${!empty map['MEM_FILENAME'] }">	
+									<span>등록된 사진 : ${map['MEM_ORIGINALFILENAME'] }</span>
 								</c:if>
+							</div>
 							</div> 
 						</div>
 						<div class="center">
-							<input type="button" id="btnUpdate" value="정보 수정하기" class="btn btn-success" onclick="location.href='<c:url value='/member/memberUpdate.do?memNo=${sessionScope.memNo }'/>'">
-							<input type="button" id="back" value="돌아가기" class="btn btn-danger" onclick="location.href='<c:url value='/member/memberMypage.do'/>'">
+							<input type="submit" id="submit" value="수정" class="btn btn-success">
+							<input type="reset" id="reset" value="취소" class="btn btn-danger">
+							<input type="button" id="list" value="돌아가기" class="btn btn-info" onclick="location.href='<c:url value='/member/memberMypage.do'/>'">
 						</div>
+						<input type="hidden" name="chkId" id="chkId">
 					</form>
 				</div>
 			</div>
