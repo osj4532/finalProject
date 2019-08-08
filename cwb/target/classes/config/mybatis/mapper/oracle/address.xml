@@ -109,7 +109,7 @@
 			select addressbook_seq.nextval from dual
 		</selectKey>
 		insert into addressbook
-		values(#{addrbookNo}, #{addrbookName}, #{addrbookComname}, #{addrbookTel}, #{addrbookEmail}, #{memNo}, #{deptNo})
+		values(#{addrbookNo}, #{addrbookName}, #{addrbookComname}, #{addrbookTel}, #{addrbookEmail}, #{memNo})
 	</insert>
 	
 	<update id="addrbookEdit" parameterType="addressbookVo">

@@ -52,7 +52,7 @@ import com.cwb.finalproject.sign.model.SignVO;
 @RequestMapping("/document")
 public class ConfirmController {
 	
-	private Logger logger = LoggerFactory.getLogger(ConfirmlineController.class);
+	private Logger logger = LoggerFactory.getLogger(ConfirmController.class);
 	@Autowired
 	private DocTypeService docTypeService;
 	@Autowired
@@ -427,11 +427,14 @@ public class ConfirmController {
 		
 		int cnt = 0;
 		if(cfVo.getCfFile().equals("Y")) { 
-			cnt = confirmService.deleteDocFileAll(cfVo.getCfNo());
 			List<ConfirmFileVO> files = confirmService.selectDocFiles(cfVo.getCfNo());
+			logger.info("confirmFileVoList.size = {}",files.size());
+			cnt = confirmService.deleteDocFileAll(cfVo.getCfNo());
 			for(ConfirmFileVO vo : files) {
 				String uppath = fileUtil.getUploadPath(request, FileUploadUtil.DOC_FILE_UPLOAD);
+				logger.info("uppath = {}",uppath);
 				File file = new File(uppath, vo.getFileName());
+				logger.info("filename = {}", file.getName());
 				if(file.exists()) {
 					boolean bool = file.delete();
 					logger.info("문서 파일 결과 bool = {}",bool);

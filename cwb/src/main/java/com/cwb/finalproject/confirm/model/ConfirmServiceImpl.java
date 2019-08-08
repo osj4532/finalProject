@@ -44,7 +44,7 @@ public class ConfirmServiceImpl implements ConfirmService{
 					logger.info("파일이름vo = {}", cfFileVo);
 					
 					cnt = confirmDAO.insertDocFile(cfFileVo);
-					logger.info("문서 파일등록 결과 cnt = ", cnt);
+					logger.info("문서 파일등록 결과 cnt = {}", cnt);
 				}
 			}
 		
