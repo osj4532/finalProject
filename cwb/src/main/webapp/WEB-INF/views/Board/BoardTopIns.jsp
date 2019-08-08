@@ -10,7 +10,7 @@
 <body> 
 <c:forEach var="bdVo" items="${bdLlist}">
 	<c:if test="${sessionScope.ranksNo >= bdVo.ranksNo}">
-	<li><a href="<c:url value='/Board/BoardList.do?bdlistNo=${bdVo.bdlistNo }'/>">${bdVo.bdlistName}</a></li>
+	<li><a href="<c:url value='/Board/BoardList.do?bdlistNo=${bdVo.bdlistNo }'/>"><i class="fas fa-chalkboard"></i>${bdVo.bdlistName}</a></li>
 	</c:if> 
 </c:forEach> 
 </body>

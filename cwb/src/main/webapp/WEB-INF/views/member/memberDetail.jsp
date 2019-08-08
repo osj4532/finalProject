@@ -353,7 +353,7 @@ function list(){
 							<label for="fileName" class="col-sm-1 col-sm-1 control-label">사원사진</label>
 							<div class="col-sm-8">  
 								<c:if test="${!empty map['MEM_FILENAME'] }">
-									<img alt="사원사진" src="<c:url value='/member_file/${map["MEM_FILENAME"] }'/>">
+									<img alt="사원사진" src="<c:url value='/member_file/${map["MEM_FILENAME"] }'/>" width="150px">
 								</c:if>
 							</div> 
 						</div>

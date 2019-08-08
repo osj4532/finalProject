@@ -139,7 +139,7 @@
 		</div>
 		
 		<div class="row mt info">
-			<div class="col-md-4 col-sm-4 mb">
+<%-- 			<div class="col-md-4 col-sm-4 mb">
                 <div class="grey-panel pn donut-chart">
                   <div class="grey-header">
                     <h5>SERVER LOAD</h5>
@@ -170,7 +170,7 @@
                 <!-- /grey-panel -->
               </div>
               
-          
+           --%>
               
               <div class="col-md-4 col-sm-4 mb">
 				<div class=" subInfo">

@@ -73,7 +73,9 @@ function showMemInfo(memNo){
 		type:"post",
 		data:{"memNo":memNo},
 		success:function(data){
-			$('.modal-body #pic').attr("src",getContextPath()+"/mem_file/"+data['MEM_FILENAME']);
+			$('.modal-body #pic').attr("src",getContextPath()+"/member_file/"+data['MEM_FILENAME']);
+			$('.modal-body #pic').addClass("img-circle");
+			
 			$('.modal-body #dept').html("["+data['DEPT_NAME']+"]");
 			$('.modal-body #pos').html(data['POS_NAME']+" - ");
 			$('.modal-body #name').html(data['MEM_NAME']);
