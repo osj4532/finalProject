@@ -167,7 +167,10 @@
 	
 	<update id="updateConfirm" parameterType="confirmVo">
 		update confirm
-		set cf_title = #{cfTitle}, cf_content = #{cfContent}, cf_state = #{cfState}, cf_file = #{cfFile}
+		set cf_title = #{cfTitle}, cf_content = #{cfContent}, cf_state = #{cfState}
+		<if test="cfFile == 'Y'">
+			, cf_file = #{cfFile}
+		</if>
 		where cf_No = #{cfNo}
 	</update>
 	
