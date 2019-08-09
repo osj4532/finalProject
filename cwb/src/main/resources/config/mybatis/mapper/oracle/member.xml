@@ -51,8 +51,9 @@
 			select rownum RNUM, A.*
 			from(
 				select * from memberview
+				where mem_ResignDate is null
 				<if test="keyword != null and keyword != ''">
-					where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 				</if>
 				order by pos_no, mem_no
 			)A
@@ -68,7 +69,8 @@
 			select rownum RNUM, A.*
 			from(
 				select * from memberview
-				where mem_id != #{memId} 
+				where mem_id != #{memId}
+				and mem_ResignDate is null
 				<if test="keyword != null and keyword != ''">
 					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 				</if>
