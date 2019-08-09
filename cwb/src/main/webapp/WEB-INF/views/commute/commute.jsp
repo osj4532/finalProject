@@ -306,13 +306,12 @@
 			.html("<a class='page-link' href='#'>Next</a>")
 			.attr("onclick", "page("+(pagingInfo.lastPage+1)+")");
 			$('#ul').append(anchor);
-			
-			
+		}
+		if(pagingInfo.currentPage<pagingInfo.totalPage){
 			var anchor2=$("<li class='page-item'></li>")
 			.html("<a class='page-link' href='#'>Last</a>")
 			.attr("onclick", "page("+pagingInfo.totalPage+")");
 			$('#ul').append(anchor2);
-			
 		}
 	}
 	

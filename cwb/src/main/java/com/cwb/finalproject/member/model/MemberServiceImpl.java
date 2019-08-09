@@ -132,4 +132,16 @@ public class MemberServiceImpl implements MemberService{
 	public int updateUser(MemberVO vo) {
 		return memberDAO.updateUser(vo);
 	}
+	@Override
+	public int selectMonth(int memNo) {
+		return memberDAO.selectMonth(memNo);
+	}
+	@Override
+	public List<Map<String, Object>> selectYearAll(int memNo) {
+		return memberDAO.selectYearAll(memNo);
+	}
+	@Override
+	public int selectYear(int memNo) {
+		return memberDAO.selectYear(memNo);
+	}
 }

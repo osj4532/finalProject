@@ -350,8 +350,22 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/memberMypage.do")
-	public void mypage() {
+	public String mypage(Model model, HttpServletRequest request) {
 		logger.info("마이페이지 화면");
+		
+		int memNo = (Integer) request.getSession().getAttribute("memNo");
+		logger.info("mypage조회 파라미터 memNo = {}", memNo);
+		
+		int month = memberService.selectMonth(memNo);
+		logger.info("month = {}", month);
+		
+		int year = memberService.selectYear(memNo);
+		logger.info("year = {}", year);
+		
+		model.addAttribute("month", month);
+		model.addAttribute("year", year);
+		
+		return "member/memberMypage";
 	}
 	
 	@RequestMapping("/member/memberDetail.do")
