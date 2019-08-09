@@ -44,4 +44,10 @@ public interface MemberService {
 	public List<Map<String, Object>> selectOrSearchPaging(Map<String, Object> map);
 	
 	public int updateUser(MemberVO vo);
+	
+	public int selectMonth(int memNo);
+	
+	public int selectYear(int memNo);
+	
+	public List<Map<String, Object>> selectYearAll(int memNo);
 }

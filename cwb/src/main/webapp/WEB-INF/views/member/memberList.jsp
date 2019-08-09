@@ -110,12 +110,14 @@
 			$('#ul').append(anchor);
 			
 			
+		}
+			if(pagingInfo.currentPage<pagingInfo.totalPage){
 			var anchor2=$("<li class='page-item'></li>")
 			.html("<a class='page-link' href='#'>Last</a>")
 			.attr("onclick", "page("+pagingInfo.totalPage+")");
 			$('#ul').append(anchor2);
-			
-		}
+				
+			}
 	}
 	function page(currentPage){
 		var keyword = $('#search').val();
@@ -174,9 +176,15 @@ function resign(memNo){
 						
 					</tbody>
 				</table>
-				<input type="button" id="register" value="사원 등록" class="btn btn-info" onclick="location.href='<c:url value='/member/memberRegister.do'/>'">
 			</form>
-			
+			<div id="page">
+				<nav aria-label="...">
+					<ul id="ul" class="pagination">
+					
+					</ul>
+				</nav>
+			</div>
+				<input type="button" id="register" value="사원 등록" class="btn btn-info" onclick="location.href='<c:url value='/member/memberRegister.do'/>'">
 			</div>
 		</div>
 	</div>

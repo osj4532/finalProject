@@ -93,7 +93,7 @@ public class WebhardServiceImpl implements WebhardService{
 		int cnt = 0;
 		try {
 			cnt = webhardDao.deleteWBFileAll(webNo);
-			if(cnt > 0) {
+			if(cnt >= 0) {
 				cnt = webhardDao.deleteWBCate(webNo);
 			}
 		}catch (RuntimeException e) {

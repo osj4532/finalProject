@@ -350,8 +350,22 @@ public class MemberController {
 	}
 	
 	@RequestMapping("/member/memberMypage.do")
-	public void mypage() {
+	public String mypage(Model model, HttpServletRequest request) {
 		logger.info("마이페이지 화면");
+		
+		int memNo = (Integer) request.getSession().getAttribute("memNo");
+		logger.info("mypage조회 파라미터 memNo = {}", memNo);
+		
+		int month = memberService.selectMonth(memNo);
+		logger.info("month = {}", month);
+		
+		int year = memberService.selectYear(memNo);
+		logger.info("year = {}", year);
+		
+		model.addAttribute("month", month);
+		model.addAttribute("year", year);
+		
+		return "member/memberMypage";
 	}
 	
 	@RequestMapping("/member/memberDetail.do")
@@ -456,7 +470,6 @@ public class MemberController {
 			Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.MEMBER_UPLOAD);
 			vo.setMemFileName((String)map.get("fileName"));
 			vo.setMemOriginalFileName((String)map.get("originalFileName"));
-			request.getSession().setAttribute("fileName", vo.getMemFileName());
 			logger.info("파일 넣은 후 vo = {}", vo);
 			
 			String oldFile = (String)request.getSession().getAttribute("fileName");
@@ -467,6 +480,7 @@ public class MemberController {
 					of.delete();
 				}
 			}
+			request.getSession().setAttribute("fileName", vo.getMemFileName());
 		}
 		int cnt = memberService.updateUser(vo);
 		

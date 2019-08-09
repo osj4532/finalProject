@@ -51,8 +51,9 @@
 			select rownum RNUM, A.*
 			from(
 				select * from memberview
+				where mem_ResignDate is null
 				<if test="keyword != null and keyword != ''">
-					where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 				</if>
 				order by pos_no, mem_no
 			)A
@@ -68,7 +69,8 @@
 			select rownum RNUM, A.*
 			from(
 				select * from memberview
-				where mem_id != #{memId} 
+				where mem_id != #{memId}
+				and mem_ResignDate is null
 				<if test="keyword != null and keyword != ''">
 					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 				</if>
@@ -167,10 +169,27 @@
 			, mem_achievement = #{memAchievement}
 		</if>
 		<if test="memFileName != null and memFileName != ''">
-			, mem_fileName = #{memFileName}
+			, mem_fileName = #{memFileName}, MEM_ORIGINALFILENAME = #{memOriginalFileName}
 		</if>
 		where mem_no=#{memNo}
 	</update>
+	
+	<select id="selectMonth" parameterType="int" resultType="int">
+		select count(*) from commuteview where memNo = #{memNo} and to_char(comindate, 'yyyy-mm')=to_char(sysdate, 'yyyy-mm') and comindate is not null
+	</select>
+	
+	<select id="selectYear" parameterType="int" resultType="int">
+		select count(*) from commuteview where memNo = #{memNo} and to_char(comindate, 'yyyy')=to_char(sysdate, 'yyyy') and comindate is not null
+	</select>
+	
+	<select id="selectYearAll" parameterType="int" resultType="map">
+		select to_char(comIndate, 'mm') as month, count(*) as count
+		from commuteview
+		where memNo = #{memNo}
+		and to_char(comIndate, 'yyyy') = to_char(sysdate, 'yyyy')
+		group by to_char(comIndate, 'mm')
+		order by to_char(comindate, 'mm')
+	</select>
 	
 </mapper>
 

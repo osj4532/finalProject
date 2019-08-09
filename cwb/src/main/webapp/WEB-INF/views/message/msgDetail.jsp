@@ -88,7 +88,14 @@
 		});
 		
 		$('#re').click(function(){
-			open('<c:url value="/address/sendMessage.do?"/>memNo='+${map['REV_MEM']},'','width=600px, height=600px, left=200px, top=100px, location=yes, resizable=no');
+			let kind = ${param.kind};
+			let memNo;
+			if(kind == 1){
+				memNo = ${map['MEM_NO']};
+			}else{
+				memNo = ${map['REV_MEM']};
+			}
+			open('<c:url value="/address/sendMessage.do?"/>memNo='+memNo,'','width=600px, height=600px, left=200px, top=100px, location=yes, resizable=no');
 		});
 		
 		$('#pre').click(function(){

@@ -167,7 +167,10 @@
 	
 	<update id="updateConfirm" parameterType="confirmVo">
 		update confirm
-		set cf_title = #{cfTitle}, cf_content = #{cfContent}, cf_state = #{cfState}, cf_file = #{cfFile}
+		set cf_title = #{cfTitle}, cf_content = #{cfContent}, cf_state = #{cfState}
+		<if test="cfFile == 'Y'">
+			, cf_file = #{cfFile}
+		</if>
 		where cf_No = #{cfNo}
 	</update>
 	
@@ -207,7 +210,7 @@
 			on C.MEM_NO = M.MEM_NO
 			join docform F
 			on C.FORM_NO = F.FORM_NO
-			where C.CF_ORDER = (
+			where C.CF_ORDER in (
 			                    select line_order from confirmline
 			                    where mem_no = #{memNo}
 			                )

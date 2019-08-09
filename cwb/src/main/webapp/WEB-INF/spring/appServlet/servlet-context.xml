@@ -41,6 +41,7 @@
 		<interceptor>
 			<mapping path="/**"/>
 			<exclude-mapping path="/login/login.do"/>
+			<exclude-mapping path="/member/changePwd.do"/>
 			<beans:ref bean="loginIntercepter"/>
 		</interceptor>
 	</interceptors>
