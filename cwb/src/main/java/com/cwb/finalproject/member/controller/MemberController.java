@@ -456,7 +456,6 @@ public class MemberController {
 			Map<String, Object> map = fileUtil.singleUpload(request, FileUploadUtil.MEMBER_UPLOAD);
 			vo.setMemFileName((String)map.get("fileName"));
 			vo.setMemOriginalFileName((String)map.get("originalFileName"));
-			request.getSession().setAttribute("fileName", vo.getMemFileName());
 			logger.info("파일 넣은 후 vo = {}", vo);
 			
 			String oldFile = (String)request.getSession().getAttribute("fileName");
@@ -467,6 +466,7 @@ public class MemberController {
 					of.delete();
 				}
 			}
+			request.getSession().setAttribute("fileName", vo.getMemFileName());
 		}
 		int cnt = memberService.updateUser(vo);
 		

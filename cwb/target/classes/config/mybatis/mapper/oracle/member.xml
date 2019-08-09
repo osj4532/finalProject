@@ -167,7 +167,7 @@
 			, mem_achievement = #{memAchievement}
 		</if>
 		<if test="memFileName != null and memFileName != ''">
-			, mem_fileName = #{memFileName}
+			, mem_fileName = #{memFileName}, MEM_ORIGINALFILENAME = #{memOriginalFileName}
 		</if>
 		where mem_no=#{memNo}
 	</update>

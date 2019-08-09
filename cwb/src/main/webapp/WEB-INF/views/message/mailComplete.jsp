@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -51,8 +52,14 @@
 	</div>
 	<hr>
 	<div class="btnDiv align-center">
-		<button class="closeBtn" onclick="top.window.close()">닫기</button>
+		<button class="closeBtn" onclick="endMail()">닫기</button>
 	</div>
 </div>
+<script type="text/javascript">
+	function endMail(){
+		top.window.close();
+		opener.location.href="<c:url value='/address/emailList.do'/>";
+	}
+</script>
 </body>
 </html>

@@ -21,6 +21,7 @@ public class LogoutController {
 		session.removeAttribute("memId");
 		session.removeAttribute("memName");
 		session.removeAttribute("ranksNo");
+		session.removeAttribute("fileName");
 		
 		if(session.getAttribute("memNo") == null) {
 			logger.info("로그아웃 되었습니다.");

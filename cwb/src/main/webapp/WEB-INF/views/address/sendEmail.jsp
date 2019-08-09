@@ -196,8 +196,6 @@
 				$('#mailTitle').focus();
 				event.preventDefault();
 			}
-			opener.location.href="<c:url value='/address/emailList.do'/>";
-			
 		});
 		
 		$('#add').click(function(){
