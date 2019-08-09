@@ -48,10 +48,11 @@
 					}
 				} 
 			}); 
-			if($('#hidetext').val()!='외부 위치지정'){
-				$("#mapLatlng").val("!"+$('#hidetext').val());			
-			}
 			
+			if($('#hidetext').is(':disabled')==false){ 
+				$("#mapLatlng").val("!"+$('#hidetext').val());
+			}
+			 
 		});
 		
 		$("#map").hide();
@@ -181,8 +182,8 @@
   <script type="text/javascript" src="<c:url value='/resources/lib/bootstrap-fileupload/bootstrap-fileupload.js'/>"></script>
   <script src="<c:url value='/resources/lib/sparkline-chart.js'/>"></script>
   <script src="<c:url value='/resources/lib/zabuto_calendar.js'/>"></script>
-     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66fc63c70e3d4b0aa612be53665e59ba"></script>
- <script>
+     <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66fc63c70e3d4b0aa612be53665e59ba&libraries=services"></script>
+ <script>  
 			var container = document.getElementById('map');
 			var options = {
 				center: new kakao.maps.LatLng(37.50255739441079, 127.0247957449708),
@@ -190,7 +191,7 @@
 			};
 			
 			var map = new kakao.maps.Map(container, options);
-			
+			var geocoder = new kakao.maps.services.Geocoder();
 			// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 			var zoomControl = new kakao.maps.ZoomControl();
 			map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
@@ -209,17 +210,27 @@
 			    
 			    // 클릭한 위도, 경도 정보를 가져옵니다 
 			    var latlng = mouseEvent.latLng; 
+
 			    
+			    var callback = function(result, status) {
+			        if (status === kakao.maps.services.Status.OK) {
+			        	//address=result[0].address.address_name;
+			        	hidetest.value="외부 위치지정("+result[0].address.address_name+")"; 
+					    hidetest.disabled = true;
+			        }         
+			    };  
+
+			    geocoder.coord2Address(latlng.getLng(), latlng.getLat(), callback);
+			     
 			    // 마커 위치를 클릭한 위치로 옮깁니다
 			    marker.setPosition(latlng);
 			    
 			    var message =  latlng.getLat()+','+latlng.getLng();
-			    
+			    //alert($('#hidetext').is(':disabled')); 
 			    var hidetest = document.getElementById('hidetext'); 
 			    var resultinput = document.getElementById('mapLatlng'); 
-			    resultinput.value = message;
-			    hidetest.value="외부 위치지정";
-			    hidetest.disabled = true;
+			    resultinput.value = message; 
+			    
 			});  
 </script>
 </body>
