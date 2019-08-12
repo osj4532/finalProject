@@ -50,4 +50,12 @@ public interface MemberService {
 	public int selectYear(int memNo);
 	
 	public List<Map<String, Object>> selectYearAll(int memNo);
+	
+	public List<Map<String, Object>> selectResign();
+	
+	public int countResign(Map<String, Object> map);
+	
+	public List<Map<String, Object>> selectOrSearchPagingResign(Map<String, Object> map);
+	
+	public int updateReIn(int memNo);
 }

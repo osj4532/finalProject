@@ -87,4 +87,20 @@ public class MemberDAOMybatis implements MemberDAO{
 	public int selectYear(int memNo) {
 		return sqlSession.selectOne(namespace+"selectYear", memNo);
 	}
+	@Override
+	public List<Map<String, Object>> selectResign() {
+		return sqlSession.selectList(namespace+"selectResign");
+	}
+	@Override
+	public int countResign(Map<String, Object> map) {
+		return sqlSession.selectOne(namespace+"countResign", map);
+	}
+	@Override
+	public List<Map<String, Object>> selectOrSearchPagingResign(Map<String, Object> map) {
+		return sqlSession.selectList(namespace+"selectOrSearchPagingResign", map);
+	}
+	@Override
+	public int updateReIn(int memNo) {
+		return sqlSession.update(namespace+"updateReIn", memNo);
+	}
 }

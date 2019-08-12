@@ -77,6 +77,11 @@
 		display: inline-block;
 		width:200px;
 	}
+	.chartDiv2{
+		display: inline-block;
+		width: 400px;
+		height: 180px;
+	}
 </style>
 
 <section id="main-content">
@@ -220,6 +225,19 @@
 					</div>
 				</div>
 			</div>
+			
+              <div class="col-md-8 col-sm-8 mb">
+				<div class="subInfo">
+					<div class="head">
+						<h5><i class="fas fa-chart-line"></i> 월별 출근 일수</h5>
+					</div>
+					<div class="content align-center">
+						<div class="chartDiv2">
+  							<canvas id="chart9"></canvas>
+						</div>
+					</div>
+				</div>
+			</div>
 		</div>
 		
 	</section>
@@ -273,6 +291,57 @@ var num =  ${usingWB}/100;
                 rotation: 1 * Math.PI,
                 circumference: 1 * Math.PI
         }
+    });
+    
+    var title = new Array();
+    var count = new Array();
+    <c:forEach var="map" items="${list}">
+    	title.push("${map['MONTH']}");
+    	count.push(${map['COUNT']});
+    </c:forEach>
+    
+    var ctx9 = document.getElementById('chart9');
+    var myLineChart = new Chart(ctx9, {
+    	type:'line',
+    	data:{
+    		labels:title,
+    		datasets:[
+    			{
+    				label : "나의 월별 출근일수",
+    				fill:false,
+    				lineTension:1,
+    				backgroundColor:"rgba(75, 192, 192, 0.4)",
+    				borderColor : "rgba(75, 192, 192, 1)",
+    				borderCapStyle : 'butt',
+    				borderDash:[],
+    				borderDashOffset:0.0,
+    				borderJoinStyle:'miter',
+    				pointBorderColor:"rgba(75, 192, 192, 1)",
+    				pointBackgroundColor:"#fff",
+    				pointBorderWidth:1,
+    				pointHoverRadius:5,
+    				pointHoverBackgroundColor:"rgba(75, 192, 192, 1)",
+    				pointHoverBorderColor:"rgba(220, 220, 220, 1)",
+    				pointHoverBorderWidth:2,
+    				pointRadius:1,
+    				pointHitRadius:10,
+		    		data:count,
+		    		spanGaps:false,
+    			}
+    		]
+    	},
+    		options: {
+    			scales: {
+                    yAxes: [{
+                        ticks: {
+                        	beginAtZero:true,
+                        	max:30,
+                        	stepSize: 5
+    					}
+				
+    				}]
+    			}
+    		}
     });
 }
 

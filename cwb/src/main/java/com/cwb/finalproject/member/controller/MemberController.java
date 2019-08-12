@@ -229,10 +229,10 @@ public class MemberController {
 	
 	@RequestMapping("/member/memberResign.do")
 	public String resign(@RequestParam int memNo, Model model) {
-		logger.info("회원 탈퇴 처리 파라미터, memNo = {}", memNo);
+		logger.info("사원 퇴사 처리 파라미터, memNo = {}", memNo);
 		
 		int cnt = memberService.updateResign(memNo);
-		logger.info("회원 탈퇴 처리 결과 cnt = {}", cnt);
+		logger.info("사원 퇴사 처리 결과 cnt = {}", cnt);
 		
 		String msg="", url = "/member/memberList.do";
 		if(cnt > 0) {
@@ -319,7 +319,7 @@ public class MemberController {
 	
 	@RequestMapping("/member/memberShow.do")
 	@ResponseBody
-	public List<Map<String, Object>> memberShow(@RequestParam String keyword, @RequestParam int currentPage, HttpSession session){
+	public List<Map<String, Object>> memberShow(@RequestParam (required = false)String keyword, @RequestParam(defaultValue = "1") int currentPage, @RequestParam String resignChk, HttpSession session){
 		logger.info("사원 목록 보여주기 매개변수 keyword = {}, currentPage = {}", keyword, currentPage);
 		String memId = (String) session.getAttribute("memId");
 		
@@ -336,9 +336,18 @@ public class MemberController {
 		map.put("firstRecordIndex", page.getFirstRecordIndex());
 		map.put("recordCountPerPage", WebUtility.RECORD_COUNT_PER_PAGE);
 		
-		list = memberService.selectOrSearchPaging(map);
-		int totalRecord = memberService.countMember(map);
-		page.setTotalRecord(totalRecord);
+		int totalRecord = 0;
+		logger.info("resignchk = {}", resignChk);
+		
+		if(resignChk.equals("N")) {
+			list = memberService.selectOrSearchPaging(map);
+			totalRecord = memberService.countMember(map);
+			page.setTotalRecord(totalRecord);
+		}else if(resignChk.equals("Y")){
+			list = memberService.selectOrSearchPagingResign(map);
+			totalRecord = memberService.countResign(map);
+			page.setTotalRecord(totalRecord);
+		}
 		
 		Map<String, Object> pageMap = new HashMap<String, Object>();
 		pageMap.put("page", page);
@@ -494,6 +503,34 @@ public class MemberController {
 			msg="사원수정 실패하였습니다.";
 		}
 		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
+	@RequestMapping("/member/memberResignList.do")
+	public void memberResign(Model model) {
+		logger.info("member 퇴사한 사원 조회");
+		
+		List<Map<String, Object>> list = memberService.selectResign();
+		
+		model.addAttribute("list", list);
+	}
+	
+	@RequestMapping("/member/memberReInstate.do")
+	public String memberReIn(@RequestParam int memNo, Model model) {
+		logger.info("사원 복직 처리 파라미터 memNo = {}", memNo);
+		
+		int cnt = memberService.updateReIn(memNo);
+		logger.info("사원 복직 처리 결과 cnt = {}", cnt);
+		
+		String msg = "", url = "/member/memberResignList.do";
+		if(cnt>0) {
+			msg = "사원 복직 처리되었습니다.";
+		}else {
+			msg = "사원복직 처리 실패하였습니다.";
+		}
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
 		
