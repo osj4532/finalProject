@@ -43,8 +43,8 @@ public class BoardServiceImpl implements BoardService{
 	}
 
 	@Override
-	public List<BoardVO> selectBoardByListNo(int bdlistNo) {
-		return boardDao.selectBoardByListNo(bdlistNo);
+	public List<BoardVO> selectBoardByListNo(BoardVO boradVo) {
+		return boardDao.selectBoardByListNo(boradVo);
 	}
 
 	@Override
@@ -75,6 +75,11 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int updateCommend(int boardNo) {
 		return boardDao.updateCommend(boardNo);
+	}
+
+	@Override
+	public int boardTotalrecord(BoardVO boardVo) {
+		return boardDao.boardTotalrecord(boardVo);
 	}
 
 

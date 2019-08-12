@@ -75,9 +75,48 @@
 	 
 	 <!-- 개별  게시판  -->
 	 
-	 <select id="selectBoardByListNo" parameterType="int" resultType="boardVo">
-	 	select * from board
-		where bdlist_no = #{bdlistNo}
+	 <select id="selectBoardByListNo" parameterType="boardVo" resultType="boardVo">
+		select *
+		from
+		(
+		    select A.*, rownum as RNUM 
+		    from
+		    (
+		        select * from board		
+				<where>
+						<if test="searchKeyword != '' and searchCondition == 'title' ">
+							board_title like '%' || #{searchKeyword} || '%'
+						</if> 
+						<if test="searchKeyword != '' and searchCondition == 'content' ">
+							board_content like '%' || #{searchKeyword} || '%'
+						</if> 
+						<if test="searchKeyword != '' and searchCondition == 'all' ">
+							board_title like '%' || #{searchKeyword} || '%'
+							and board_content like '%' || #{searchKeyword} || '%'
+						</if> 
+						and bdlist_no = #{bdlistNo}
+				</where>
+		    ) A
+		)
+		<![CDATA[ where RNUM>#{firstRecordIndex}  
+		and RNUM<=#{firstRecordIndex} + #{recordCountPerPage}]]>
+	 </select>
+	 
+	 <select id="boardTotalrecord" parameterType="boardVo" resultType="int">
+	 	 select count(*) from board	
+	 			 <where>
+						<if test="searchKeyword != '' and searchCondition == 'title' ">
+							board_title like '%' || #{searchKeyword} || '%'
+						</if> 
+						<if test="searchKeyword != '' and searchCondition == 'content' ">
+							board_content like '%' || #{searchKeyword} || '%'
+						</if> 
+						<if test="searchKeyword != '' and searchCondition == 'all' ">
+							board_title like '%' || #{searchKeyword} || '%'
+							and board_content like '%' || #{searchKeyword} || '%'
+						</if> 
+						and bdlist_no = #{bdlistNo}
+				</where>	
 	 </select>
 	 
 	 <insert id="insertBoard" parameterType="boardVo">
@@ -127,6 +166,7 @@
 		set board_recommend= board_recommend+1
 		where board_no =  #{boardNo}
 	</update>
+	
 </mapper>
 
 

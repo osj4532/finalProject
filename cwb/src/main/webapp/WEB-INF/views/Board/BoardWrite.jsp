@@ -110,7 +110,8 @@ src="<c:url value='/resources/SmartEditor2/js/service/HuskyEZCreator.js'/>" char
                   <div class="col-sm-12 mt">   
                   <textarea name="boardContent" id="ir1" rows="20" cols="114"></textarea>
                   </div>           
-                </div>         
+                </div>   
+              <c:if test="${blVo.bdlistUp=='Y'}">        
              <div class="form-group"> 
                   <label class="col-sm-2 col-sm-2 control-label">파일 첨부 </label>
                   <div class="col-md-10">  
@@ -124,7 +125,8 @@ src="<c:url value='/resources/SmartEditor2/js/service/HuskyEZCreator.js'/>" char
                       <a href="advanced_form_components.html#" class="close fileupload-exists" data-dismiss="fileupload" style="float: none; margin-left:5px;"></a>
                    	 </div>
                       </div>
-                    </div> 
+                    </div>  
+               </c:if>     
                     <div class="form-group"> 
 		                  <label class="col-sm-5 col-sm-5 control-label"></label>
 		                  <div class="col-md-5">  

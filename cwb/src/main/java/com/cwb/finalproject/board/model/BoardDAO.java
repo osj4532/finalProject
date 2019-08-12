@@ -8,7 +8,7 @@ public interface BoardDAO {
 	int delectBoardList(int bdlistNo);
 	BoardListVO selectBoardListByNo(int bdlistNo);
 	int updateBoardList(BoardListVO boardlistVo);
-	List<BoardVO> selectBoardByListNo(int bdlistNo); 
+	List<BoardVO> selectBoardByListNo(BoardVO boradVo); 
 	int insertBoard(BoardVO boardVo);
 	BoardVO selectboard(int boardNo);
 	int updateboard(BoardVO boardVo);
@@ -16,5 +16,7 @@ public interface BoardDAO {
 	int deleteboardByListNo(int bdlistNo);
 	int updateReadCount(int boardNo);
 	int updateCommend(int boardNo);
+	
+	int boardTotalrecord(BoardVO boardVo);
 	
 }

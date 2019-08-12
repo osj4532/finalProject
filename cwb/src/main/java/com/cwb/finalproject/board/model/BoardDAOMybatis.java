@@ -38,8 +38,8 @@ public class BoardDAOMybatis implements BoardDAO{
 	}
 
 	@Override
-	public List<BoardVO> selectBoardByListNo(int bdlistNo) {
-		return sqlSession.selectList(namespace+"selectBoardByListNo", bdlistNo);
+	public List<BoardVO> selectBoardByListNo(BoardVO boradVo) {
+		return sqlSession.selectList(namespace+"selectBoardByListNo", boradVo);
 	}
 
 	@Override
@@ -75,6 +75,11 @@ public class BoardDAOMybatis implements BoardDAO{
 	@Override
 	public int updateCommend(int boardNo) {
 		return sqlSession.update(namespace+"updateCommend", boardNo);
+	}
+
+	@Override
+	public int boardTotalrecord(BoardVO boardVo) {
+		return sqlSession.selectOne(namespace+"boardTotalrecord", boardVo);
 	}   
 	
    
