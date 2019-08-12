@@ -197,6 +197,7 @@
               <li><a href="<c:url value="/member/memberRegister.do"/>"><i class="fas fa-user-plus"></i>사원등록</a></li>
               <li><a href="<c:url value="/member/memberList.do"/>"><i class="fas fa-users"></i>사원목록</a></li>
               <li><a href="<c:url value="/member/memberEdit.do?memNo=${sessionScope.memNo }"/>"><i class="fas fa-user-edit"></i>사원정보수정</a></li>
+              <li><a href="<c:url value="/member/memberResignList.do"/>"><i class="fas fa-history"></i>퇴사자목록</a></li>
             </ul>
           </li>
           </c:if>

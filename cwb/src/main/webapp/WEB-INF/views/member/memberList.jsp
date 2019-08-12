@@ -21,7 +21,8 @@
 			type:"post",
 			data:{
 				"keyword":keyword,
-				"currentPage":currentPage},
+				"currentPage":currentPage,
+				"resignChk":"N"},
 				success:function(res){
 					show(res);
 				},
@@ -47,7 +48,7 @@
 				var tdEl2 = $('<td></td>').html(map['MEM_NAME']);
 				var tdEl3 = $('<td></td>').html(map['DEPT_NAME']);
 				var tdEl4 = $('<td></td>').html(map['POS_NAME']);
-				var tdEl5 = $('<td></td>').html(map['MEM_HP1']+"-"+map['MEM_HP2']+" "+map['MEM_HP3']);
+				var tdEl5 = $('<td></td>').html(map['MEM_HP1']+"-"+map['MEM_HP2']+"-"+map['MEM_HP3']);
 				
 				var a1 = $('<a class="btn btn-theme"><i class="fa fa-cog"></i>수정</a>').attr("href", "<c:url value='/member/memberEdit.do?memNo="+map["MEM_NO"] +"'/>");
 				var a2 = $('<a class="btn btn-danger"><i class="far fa-trash-alt"></i>퇴사</a></td>').attr("href", "#").attr("onclick", "resign("+map["MEM_NO"]+")");
@@ -126,7 +127,7 @@
 	
 function resign(memNo){
 	
-    if(confirm("삭제하시겠습니까?")){
+    if(confirm("퇴사 시키시겠습니까?")){
     	
         location.href = "<c:url value='/member/memberResign.do?memNo='/>"+memNo;
         return true;
@@ -140,7 +141,10 @@ function resign(memNo){
 		min-height: 900px;
 	}
 	.row{
-		margin-top: 100px;
+		margin-top: 30px;
+	}
+	#page{
+		text-align: center;
 	}
 </style>
 <section id="main-content">

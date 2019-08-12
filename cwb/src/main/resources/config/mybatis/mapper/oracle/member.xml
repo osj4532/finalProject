@@ -17,7 +17,7 @@
 	</select>
 	
 	<select id="selectMember" parameterType="string" resultType="memberVo">
-		select * from member where mem_Id=#{memId}
+		select * from member where mem_Id=#{memId} and mem_ResignDate is null
 	</select>
 	
 	<select id="selectOrSearch" resultType="map" parameterType="map">
@@ -25,6 +25,7 @@
 		<if test="keyword != null and keyword != ''">
 			where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 		</if>
+		order by pos_no
 	</select>
 	
 	<select id="countEmail" resultType="int" parameterType="map">
@@ -39,7 +40,7 @@
 		select count(*) from memberview
 		where mem_id != #{memId}
 		<if test="keyword != null and keyword != ''">
-			and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+			where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 		</if>
 		order by pos_no, mem_no
 	</select>
@@ -51,9 +52,8 @@
 			select rownum RNUM, A.*
 			from(
 				select * from memberview
-				where mem_ResignDate is null
 				<if test="keyword != null and keyword != ''">
-					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+					where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 				</if>
 				order by pos_no, mem_no
 			)A
@@ -70,7 +70,6 @@
 			from(
 				select * from memberview
 				where mem_id != #{memId}
-				and mem_ResignDate is null
 				<if test="keyword != null and keyword != ''">
 					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 				</if>
@@ -135,24 +134,26 @@
 	<select id="selectByMemNotoVo" parameterType="int" resultType="memberVo">
 		select * from member
 		where mem_no = #{memNo}	
+		and mem_ResignDate is null
 	</select>
 	
 	<update id="updateMember" parameterType="memberVo">
 		update member
 		set ranks_no=#{ranksNo}, pos_no=#{posNo}, dept_no=#{deptNo}
-		where mem_no=#{memNo}
+		where mem_no=#{memNo} and mem_ResignDate is null
 	</update>
 	
 	<update id="updateResign" parameterType="int">
 		update member
 		set mem_resigndate = sysdate
-		where mem_no=#{memNo}
+		where mem_no=#{memNo} and mem_ResignDate is null
 	</update>
 	
 	<update id="changePwd" parameterType="memberVo">
 		update member
 		set mem_pwd = #{memPwd}
 		where mem_no = #{memNo}
+		and mem_ResignDate is null
 	</update>
 	
 	<update id="updateUser" parameterType="memberVo">
@@ -172,6 +173,7 @@
 			, mem_fileName = #{memFileName}, MEM_ORIGINALFILENAME = #{memOriginalFileName}
 		</if>
 		where mem_no=#{memNo}
+		and mem_ResignDate is null
 	</update>
 	
 	<select id="selectMonth" parameterType="int" resultType="int">
@@ -183,13 +185,66 @@
 	</select>
 	
 	<select id="selectYearAll" parameterType="int" resultType="map">
-		select to_char(comIndate, 'mm') as month, count(*) as count
+		select to_char(comindate, 'mm') as month, count(*) as count
 		from commuteview
 		where memNo = #{memNo}
 		and to_char(comIndate, 'yyyy') = to_char(sysdate, 'yyyy')
-		group by to_char(comIndate, 'mm')
+		group by to_char(comindate, 'mm')
 		order by to_char(comindate, 'mm')
 	</select>
+	
+	<select id="selectResign" resultType="map">
+				select m.*, d.DEPT_NAME as dept_name, p.POS_NAME as pos_name from member m
+				join department d
+				on m.DEPT_NO = d.DEPT_NO
+				join position p
+				on m.POS_NO = p.POS_NO
+				and mem_resigndate is not null
+				<if test="keyword != null and keyword != ''">
+					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+				</if>
+	</select>
+	
+	<select id="countResign" resultType="int" parameterType="map">
+		select count(*) from member m
+		join department d
+		on m.DEPT_NO = d.DEPT_NO
+		join position p
+		on m.POS_NO = p.POS_NO
+		and mem_resigndate is not null
+		<if test="keyword != null and keyword != ''">
+			and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+		</if>
+		order by p.pos_no, mem_no
+	</select>
+	
+	<select id="selectOrSearchPagingResign" resultType="map" parameterType="map">
+		select B.*
+		from
+		(
+			select rownum RNUM, A.*
+			from(
+				select m.*, d.DEPT_NAME as dept_name, p.POS_NAME as pos_name from member m
+				join department d
+				on m.DEPT_NO = d.DEPT_NO
+				join position p
+				on m.POS_NO = p.POS_NO
+				and mem_resigndate is not null
+				<if test="keyword != null and keyword != ''">
+					and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+				</if>
+				order by p.pos_no, mem_no
+			)A
+<![CDATA[	where rownum <= #{firstRecordIndex}+#{recordCountPerPage}]]>
+		)B
+		where B.RNUM > #{firstRecordIndex}
+	</select>
+	
+	<update id="updateReIn" parameterType="int">
+		update member
+		set mem_resigndate = null
+		where mem_no = #{memNo}
+	</update>
 	
 </mapper>
 

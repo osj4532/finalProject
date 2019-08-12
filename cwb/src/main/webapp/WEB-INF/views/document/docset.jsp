@@ -171,7 +171,7 @@
                 		<h3>문서종류</h3>
                 		<ul class="list-group">
                 			<c:forEach var="map" items="${typeList }">
-                				<li class="list-group-item">
+                				<li class="list-group-item" onclick="showForm('${map['TYPE_NAME'] }')">
                 					<i class="far fa-file-alt fa-lg"></i> 
                 					${map['TYPE_NAME'] }
                 				</li>
@@ -249,9 +249,32 @@
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
+	
 	<script type="text/javascript">
 		function selectType(typeName){
 			$('input[name=typeName]').val(typeName);
+		}
+		
+		function showForm(typeName){
+			$('#tDiv4 tbody').html('');
+			
+			<c:forEach var="map" items="${formList }">
+				if(typeName == "${map['TYPE_NAME'] }"){
+					let trEl = $('<tr></tr>');
+					let tdEl1 = $('<td><input type="checkbox" name="sel" value="${map['FORM_NO'] }"></td>');
+					let tdEl2 = $('<td>${map['TYPE_NAME'] }</td>');
+					let tdEl3 = $('<td>${map['FORM_NAME'] }</td>');
+					let tdEl4 = $('<td>${map['RANKS_NAME'] }</td>');
+	
+					trEl.html(tdEl1);
+					trEl.append(tdEl2);
+					trEl.append(tdEl3);
+					trEl.append(tdEl4);
+						
+					$('#tDiv4 tbody').append(trEl);
+				}
+			</c:forEach>
+			
 		}
 	
 		$(function(){

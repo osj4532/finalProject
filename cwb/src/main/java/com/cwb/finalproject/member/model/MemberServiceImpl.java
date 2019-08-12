@@ -144,4 +144,20 @@ public class MemberServiceImpl implements MemberService{
 	public int selectYear(int memNo) {
 		return memberDAO.selectYear(memNo);
 	}
+	@Override
+	public List<Map<String, Object>> selectResign() {
+		return memberDAO.selectResign();
+	}
+	@Override
+	public int countResign(Map<String, Object> map) {
+		return memberDAO.countResign(map);
+	}
+	@Override
+	public List<Map<String, Object>> selectOrSearchPagingResign(Map<String, Object> map) {
+		return memberDAO.selectOrSearchPagingResign(map);
+	}
+	@Override
+	public int updateReIn(int memNo) {
+		return memberDAO.updateReIn(memNo);
+	}
 }

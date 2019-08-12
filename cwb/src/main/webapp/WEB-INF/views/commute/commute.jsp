@@ -9,6 +9,13 @@
 
 	$(function(){
 		showPage();
+		
+		$('#Menu #ulMenu a li').each(function(idx, item){
+			$(item).click(function(){
+				$('#Menu #ulMenu a li').removeClass("active");
+				$(item).addClass("active");
+			});
+		});
 	});
 	
 	
@@ -34,17 +41,17 @@
 		var title = $('<h2></h2>');
 		
 		if(menu == 'allAssiduity'){
-			title.html("전체 조회");
+			title.html("전체 사원 근태 조회");
 		}else if(menu == 'indWork'){
 			title.html("개인 출퇴근 조회");
 		}else if(menu == 'depAssiduity'){
-			title.html("부서 근태 조회");
+			title.html("속한 부서 근태 조회");
 		}else if(menu == 'indHoly'){
 			title.html("개인 연차 조회");
 		}else if(menu == 'allHoly'){
-			title.html("전체 연차 조회");
+			title.html("전체 사원 연차 조회");
 		}else if(menu == 'depAssi'){
-			title.html("부서별 근태 조회");
+			title.html("부서별 사원 근태 조회");
 		}
 		$('#title').html(title);
 	}
@@ -328,10 +335,7 @@
 		min-height:896px;
 	}
 	#ulMenu li{
-		padding: 10px;
-		margin-top: 50px;
 		min-width: 185px;
-		color: orange;
 	}
 	#Menu{
 		min-height: 890px;
@@ -353,8 +357,8 @@
 		top: 500px;
 		text-align: center;
 	}
-	#tblCommute{
-		color: blue;
+	#ulMenu{
+		margin-top: 50px;
 	}
 </style>
 
@@ -369,12 +373,12 @@
 			<a href="#" onclick="select('indHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">개인연차조회</li></a>
 			</c:if>
 			<c:if test="${sessionScope.ranksNo >= 2 }">
-			<a href="#" onclick="select('depAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">부서근태조회<span class="badge badge-primary badge-pill">${sessionScope.countDep }</span></li></a>
+			<a href="#" onclick="select('depAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">속한부서근태조회<span class="badge badge-primary badge-pill">${sessionScope.countDep }</span></li></a>
 			</c:if>
 			<c:if test="${sessionScope.ranksNo >= 3 }">
-			<a href="#" onclick="select('depAssi')"><li class="list-group-item d-flex justify-content-between align-items-center">부서별근태조회</li></a>
-			<a href="#" onclick="select('allAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">전체근태조회<span class="badge badge-primary badge-pill">${sessionScope.countAll }</span></li></a>
-			<a href="#" onclick="select('allHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">전체연차조회<span class="badge badge-primary badge-pill">${sessionScope.allHoly }</span></li></a>
+			<a href="#" onclick="select('depAssi')"><li class="list-group-item d-flex justify-content-between align-items-center">부서별사원근태조회</li></a>
+			<a href="#" onclick="select('allAssiduity')"><li class="list-group-item d-flex justify-content-between align-items-center">전체사원근태조회<span class="badge badge-primary badge-pill">${sessionScope.countAll }</span></li></a>
+			<a href="#" onclick="select('allHoly')"><li class="list-group-item d-flex justify-content-between align-items-center">전체사원연차조회<span class="badge badge-primary badge-pill">${sessionScope.allHoly }</span></li></a>
 			</c:if>
 		</ul>
 	</div>
