@@ -26,7 +26,9 @@ import com.cwb.finalproject.board.model.BoardListVO;
 import com.cwb.finalproject.board.model.BoardService;
 import com.cwb.finalproject.board.model.BoardVO;
 import com.cwb.finalproject.common.FileUploadUtil;
+import com.cwb.finalproject.common.PaginationInfo;
 import com.cwb.finalproject.common.ResImgUploadUtility;
+import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.confirm.model.ConfirmFileVO;
 import com.cwb.finalproject.member.model.MemberService;
 import com.cwb.finalproject.member.model.MemberVO;
@@ -34,6 +36,7 @@ import com.cwb.finalproject.ranks.model.RanksService;
 import com.cwb.finalproject.ranks.model.RanksVO;
 import com.cwb.finalproject.reply.model.ReplyService;
 import com.cwb.finalproject.reply.model.ReplyVO;
+import com.cwb.finalproject.useResource.model.UseResourceVO;
 
 @Controller
 @RequestMapping("/Board")
@@ -113,9 +116,6 @@ public class BoardController {
 	
 	@RequestMapping("/BoardListEdit.do")
 	public String boardListEdit(@ModelAttribute BoardListVO boardListVo
-			,@RequestParam(defaultValue = "1") int currentPage
-			,@RequestParam(required = false) String searchCondition
-			,@RequestParam(required = false) String searchKeyword
 			,Model model){
 		logger.info("게시판 리스트 수정 boardListVo={}",boardListVo);
 		
@@ -146,9 +146,15 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/BoardList.do")
-	public String boardlist(@RequestParam int bdlistNo,
-			Model model) {
+	public String boardlist(@RequestParam int bdlistNo
+			,@RequestParam(defaultValue = "1") int currentPage
+			,@RequestParam(required = false) String searchCondition
+			,@RequestParam(required = false) String searchKeyword
+			,Model model) {
 		logger.info("게시판 보여주기");
+		
+		
+		
 		List<BoardVO> Blist = boardService.selectBoardByListNo(bdlistNo);
 		BoardListVO blVo = boardService.selectBoardListByNo(bdlistNo);
 		int bdSize= Blist.size();  

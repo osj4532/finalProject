@@ -141,8 +141,8 @@ function detailBoard(boardNo){
 					</div>
 					 
 					<!-- row-fluid -->
-				</div> 
-				 <form 
+				</div>  
+				 <form action="<c:url value='/Board/BoardList.do'/>" 
 						method="post" name="AllSearch" class="form-inline" role="form">
 						<!-- 승인 페이지 처리 -->
 						<input type="hidden" name='currentPage' value="1">
