@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cwb.finalproject.reply.model.ReplyService;
+
 @Service
 public class BoardServiceImpl implements BoardService{
 
@@ -63,6 +65,16 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int deleteboard(int boardNo) {
 		return boardDao.deleteboard(boardNo);
+	}
+
+	@Override
+	public int updateReadCount(int boardNo) {
+		return boardDao.updateReadCount(boardNo);
+	}
+
+	@Override
+	public int updateCommend(int boardNo) {
+		return boardDao.updateCommend(boardNo);
 	}
 
 

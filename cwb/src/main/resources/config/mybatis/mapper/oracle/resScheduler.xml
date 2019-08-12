@@ -343,6 +343,27 @@ values(#{reservNo},#{memNo},#{resNo},
 		order by use_regdate
 		<![CDATA[	) where rownum <= 4]]>
 	</select>
+	
+	<select id="frontUsefindRes" parameterType="resSchedulerVO" resultType="int">
+		select count(*) from resschedule
+		where appr_flag='Y' and res_no = #{resNo} 
+		<![CDATA[	and use_regdate <=to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS') 
+		and return_regdate >= to_date(#{useRegdate},'YYYY/MM/DD HH24:MI:SS')]]>
+	</select>  
+	<select id="backUsefindRes" parameterType="resSchedulerVO" resultType="int">
+		select count(*) from resschedule
+		where appr_flag='Y' and res_no = #{resNo} 
+		<![CDATA[	and use_regdate <=  to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS')
+		 and return_regdate >= to_date(#{returnRegdate},'YYYY/MM/DD HH24:MI:SS')]]>
+	</select>   
+	
+	
+	<select id="findMyRess" parameterType="int" resultType="resSchedulerVO">
+		select * from resschedule 
+		where reserv_no =#{reservNo}
+	</select>
+	
+	
 </mapper>
 
 

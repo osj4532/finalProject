@@ -2,12 +2,15 @@ package com.cwb.finalproject.resScheduler.model;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ResSchedulerServiceImp implements ResSchedulerService{
-
+	Logger logger = LoggerFactory.getLogger(ResSchedulerServiceImp.class);
+	
 	@Autowired ResSchedulerDAO resSchedulerDao;
 	
 	@Override
@@ -28,7 +31,16 @@ public class ResSchedulerServiceImp implements ResSchedulerService{
 
 	@Override
 	public int updateResScdApprove(int reservNo) {
-		return resSchedulerDao.updateResScdApprove(reservNo);
+		ResSchedulerVO resVo=resSchedulerDao.findMyRess(reservNo);
+		logger.info("서비스에서 불러온 스케줄 resVo={}",resVo);
+		int cnt = resSchedulerDao.frontUsefindRes(resVo);
+		cnt += resSchedulerDao.backUsefindRes(resVo);
+		
+		if(cnt>0) {
+			return EXIST_USE_RES;
+		}else {
+			return resSchedulerDao.updateResScdApprove(reservNo);
+		}
 	}
 
 	@Override

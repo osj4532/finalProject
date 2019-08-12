@@ -93,6 +93,8 @@ public class UseResourceDAOMybatis implements UseResourceDAO{
 		return sqlSession.selectList(namespace+"selectResRow", memNo);
 	}
 
+
+
 	
 	
 }

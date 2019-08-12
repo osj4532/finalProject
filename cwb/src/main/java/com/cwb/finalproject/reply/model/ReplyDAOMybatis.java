@@ -46,5 +46,30 @@ public class ReplyDAOMybatis implements ReplyDAO{
 	public List<ReplyVO> selectReplyGroup(int repNo) {
 		return sqlSession.selectList(namespace+"selectReplyGroup",repNo);
 	}
+
+	@Override
+	public int deleteReply(int repNo) {
+		return sqlSession.delete(namespace+"deleteReply", repNo);
+	}
+
+	@Override
+	public int selectReplyMine(int repNo) {
+		return sqlSession.selectOne(namespace+"selectReplyMine", repNo);
+	}
+
+	@Override
+	public int deleteAllReply(int repNo) {
+		return sqlSession.delete(namespace+"deleteAllReply", repNo);
+	}
+
+	@Override
+	public int deletereplyByBoardno(int boardNo) {
+		return sqlSession.delete(namespace+"deletereplyByBoardno", boardNo);
+	}
+
+	@Override
+	public int deleteAllReplyByBdList(int boardNo) {
+		return sqlSession.delete(namespace+"deleteAllReplyByBdList", boardNo);
+	} 
 	 
 }

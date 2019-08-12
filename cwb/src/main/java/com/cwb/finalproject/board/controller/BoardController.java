@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -63,6 +65,7 @@ public class BoardController {
 			,Model model) {
 		logger.info("게시판 리스트 추가 boardlistVo={}",boardlistVo);
 		
+		
 		int cnt =boardService.boardListInsert(boardlistVo);
 		
 		String msg="",url="/Board/BoardAllList.do";
@@ -82,6 +85,8 @@ public class BoardController {
 			,Model model) {
 		logger.info("게시판 리스트 삭제 bdlistNo={}",bdlistNo);
 		
+		
+		replyService.deleteAllReplyByBdList(bdlistNo); 
 		int cnt =boardService.delectBoardList(bdlistNo);
 		
 		String msg="",url="/Board/BoardAllList.do";
@@ -107,8 +112,11 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/BoardListEdit.do")
-	public String boardListEdit(@ModelAttribute BoardListVO boardListVo,
-			Model model){
+	public String boardListEdit(@ModelAttribute BoardListVO boardListVo
+			,@RequestParam(defaultValue = "1") int currentPage
+			,@RequestParam(required = false) String searchCondition
+			,@RequestParam(required = false) String searchKeyword
+			,Model model){
 		logger.info("게시판 리스트 수정 boardListVo={}",boardListVo);
 		
 		int cnt =boardService.updateBoardList(boardListVo);
@@ -252,7 +260,7 @@ public class BoardController {
 		logger.info("게시판 삭제 boardNo={}",boardNo);
 		
 		BoardVO bVo= boardService.selectboard(boardNo);
-		
+		replyService.deletereplyByBoardno(boardNo);
 		int cnt =boardService.deleteboard(boardNo);
 		
 		
@@ -275,9 +283,34 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/BoardDetail.do")
-	public String boardDetail(@RequestParam int boardNo,Model model) {
+	public String boardDetail(@RequestParam int boardNo,Model model,
+			HttpSession session,HttpServletResponse response
+			,HttpServletRequest request) {
 		logger.info("게시글 상세보기");
-
+		String memId = (String)session.getAttribute("memId");
+		
+		Cookie[] getCookie = request.getCookies();
+		String viewbdMem ="";
+		if (getCookie != null) {
+			for (int i = 0; i < getCookie.length; i++) {
+				Cookie ck = getCookie[i];
+				String name = ck.getName();
+				if(name.equals("viewbdMem"+boardNo)) {
+					viewbdMem=ck.getValue();
+				}
+			}
+		}
+		if(memId.equals(viewbdMem)) { 
+			logger.info("이미 조회함");
+		}else {
+			int upcount = boardService.updateReadCount(boardNo);
+			if (upcount>0) {
+				Cookie setCookie = new Cookie("viewbdMem"+boardNo, memId); 
+				setCookie.setMaxAge(60*60*24); // 기간을 하루로 지정
+				response.addCookie(setCookie);
+			}
+		}
+		
 		BoardVO BVo= boardService.selectboard(boardNo);
 		MemberVO mVo =  memberService.selectByMemNotoVo(BVo.getMemNo());
 		List<ReplyVO> reList= replyService.selectReplyByNo(boardNo);
@@ -289,6 +322,40 @@ public class BoardController {
 		model.addAttribute("memName", memName);
 		  
 		return "Board/BoardDetail";
+	}
+	
+	@RequestMapping("/upcommend.do")
+	@ResponseBody
+	public int upCommend(@RequestParam int boardNo
+			,HttpSession session,HttpServletResponse response
+			,HttpServletRequest request) {
+		
+		String memId = (String)session.getAttribute("memId");
+		Cookie[] getCookie = request.getCookies();
+		String commendbdMem ="";
+		if (getCookie != null) {
+			for (int i = 0; i < getCookie.length; i++) {
+				Cookie ck = getCookie[i];
+				String name = ck.getName();
+				if(name.equals("commendbdMem"+boardNo)) {
+					commendbdMem=ck.getValue();
+				}
+			}
+		}
+		if(memId.equals(commendbdMem)) { 
+			logger.info("이미 추천함");
+		}else {
+			int upcommend =boardService.updateCommend(boardNo);
+			if (upcommend>0) {
+				Cookie setCookie = new Cookie("commendbdMem"+boardNo, memId); 
+				setCookie.setMaxAge(60*60*24); // 기간을 하루로 지정
+				response.addCookie(setCookie);
+			}
+		}
+		
+		BoardVO BVo= boardService.selectboard(boardNo);
+		
+		return BVo.getBoardRecommend();
 	}
 	
 	@RequestMapping("/download.do")
@@ -310,5 +377,7 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView("downloadView",map);
 		return mav;
 	}
+	
+	
 }
 

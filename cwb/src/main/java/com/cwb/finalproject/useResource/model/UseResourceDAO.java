@@ -24,4 +24,6 @@ public interface UseResourceDAO {
 	
 	List<UseResourceVO> selectResRow(int memNo);
 	
+
+	
 }

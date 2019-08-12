@@ -23,9 +23,29 @@
 <script src="<c:url value='/resources/lib/jquery/jquery.min.js'/>"></script>
 <script type="text/javascript">
 $(function(){
+	$("form[name=editfrm]").submit(function(){
+		if($(this).find('input[name=repContent]').val()==''){
+			alert('수정할 댓글을 입력해주세요');
+			event.preventDefault();
+		}    
+	}); 
+	$("form[name=writefrm]").submit(function(){
+		if($(this).find('input[name=repContent]').val()==''){
+			alert('댓글을 입력해주세요'); 
+			event.preventDefault();
+		}    
+	}); 
+	
 	
 });
  
+function delreply(no){
+	if(confirm('댓글을 삭제하시겠습니까?')){
+		location.href="<c:url value='/Reply/ReplyDel.do?repNo='/>"+no;
+	}
+} 
+
+/* 댓글 수정  */
 $.editmake=function(no){
 	var content =$('#replyContent'+no).html(); 
 	$('#replyContent'+no).contents()   
@@ -36,9 +56,10 @@ $.editmake=function(no){
 	$('input[name=repNo]').val(no);  
 } 
 
+/* 답글 보여주기 재구현 필요 */
 $.makegroup=function(no){
-	$("div[name=groupDiv"+no+"]").hide(); 
-	$("#groupDiv"+no).hide();
+	$("div[name=groupDiv"+no+"]").remove(); 
+	$("#groupDiv"+no).remove();
 	var group=$('<div class="form-group" id="groupDiv'+no+'"></div>');
 	$('#group'+no).after(group);  
 	 
@@ -49,6 +70,16 @@ $.makegroup=function(no){
 	$("#groupButton"+no).attr("onclick", "$.delgroup("+no+")" ); 
 	 
 } 
+
+$.makeregroup=function(gno,no){
+	$("div[name=groupDiv"+no+"]").remove(); 
+	$("#groupDiv"+no).remove();
+	var group=$('<div class="form-group" id="groupDiv'+no+'"></div>');
+	$('#group'+no).after(group);  
+	var input=$.insertinput(gno); 
+	$('#groupDiv'+no).append(input);     
+	$("#groupButton"+no).attr("onclick", "$.delgroup("+no+")" ); 
+}
 
 
 $.selectinput=function(no){
@@ -69,12 +100,12 @@ $.selectinput=function(no){
 					} 
 					var button = ''; 
 					if(${sessionScope.memNo}==this.memNo || ${sessionScope.ranksNo}==3){
-					button = '<button type="button" class="btn btn-theme02" id="replyButton'+this.repNo+'" ><i class="fas fa-edit"></i> 수정 </button> <button type="button" class="btn btn-theme04"><i class="fas fa-edit"></i> 삭제 </button>';
-					}
-					  
-					$('#group'+no).after($('<div class="form-group" id="group'+this.repNo+'" name="groupDiv'+no+'"><label class="col-sm-1 col-sm-1 control-label"></label><label class="col-sm-1 col-sm-1 control-label">'+repDepth+'</label><label class="col-sm-1 control-label"><b>'+this.memName+'</b></label><label class="col-sm-6 control-label"><b id="replyContent'+this.repNo+'" >'+this.repContent+'</b></label><div class="col-sm-2" id="replyDiv'+this.repNo+'" >'+button+'</div><button type="button" class="btn btn-theme"  onclick="$.makegroup('+this.repNo+')"  id="groupButton'+this.repNo+'"><i class="fas fa-edit"></i> 답글 </button></div>'));
+					button = '<button type="button" onclick="$.editmake('+this.repNo+')" class="btn btn-theme02" id="replyButton'+this.repNo+'" ><i class="fas fa-edit"></i> 수정 </button> <button type="button" class="btn btn-theme04" onclick="delreply('+this.repNo+')"><i class="fas fa-edit"></i> 삭제 </button>';
+					}  
+					     
+					$('#group'+no).after($('<div class="form-group" id="group'+this.repNo+'" name="groupDiv'+no+'"><label class="col-sm-1 col-sm-1 control-label"></label><label class="col-sm-1 col-sm-1 control-label">'+repDepth+'</label><label class="col-sm-1 control-label"><b>'+this.memName+'</b></label><label class="col-sm-6 control-label"><b id="replyContent'+this.repNo+'" >'+this.repContent+'</b></label><div class="col-sm-2" id="replyDiv'+this.repNo+'" >'+button+'</div><button type="button" class="btn btn-theme"  onclick="$.makeregroup('+this.repGroup+','+this.repNo+')"  id="groupButton'+this.repNo+'"><i class="fas fa-edit"></i> 답글 </button></div>'));
 					 
-				});
+				}); 
 				//$('#group'+no).after(divReplys   
 				   //alert(divReplys);  	 
 		},  
@@ -88,8 +119,6 @@ $.selectinput=function(no){
 		}
  	});
 	
-	
-	
 }
 
 $.insertinput=function(no){
@@ -98,14 +127,13 @@ $.insertinput=function(no){
 }
 
 $.delgroup=function(no){
-	$("div[name=groupDiv"+no+"]").hide(); 
-	$("#groupDiv"+no).hide();
+	$("div[name=groupDiv"+no+"]").remove(); 
+	$("#groupDiv"+no).remove();
 	$("#groupButton"+no).attr("onclick", "$.makegroup("+no+")" );
 }
 
 $.insertgroup=function(no){
 	var content=$("#groupContent"+no).val();
-	//alert(content);
  	$.ajax({ 
  		type : "post", 
 		url : "<c:url value='/Reply/GroupWrite.do'/>",
@@ -129,6 +157,33 @@ $.insertgroup=function(no){
  	});
 	
 }
+
+$.upcommend=function(){
+	$.ajax({ 
+ 		type : "post", 
+		url : "<c:url value='/Board/upcommend.do'/>",
+		data : {  
+			"boardNo": ${BVo.boardNo}
+		},    
+			success : function(data) { 
+				if($('#reCommendNum').html()==data){
+					alert('이미 추천 하셨습니다.');
+				}else {
+					alert('추천 하셨습니다.');
+					$('#reCommendNum').html(data);
+				}
+		},  
+ 		error : function(xhr, err) { 
+			alert("ERROR! - readyState: " 
+					+ xhr.readyState
+					+ "<br/>status: "
+					+ xhr.status
+					+ "<br/>responseText: " 
+					+ xhr.responseText);
+		}
+ 	});
+}
+  
   
 </script>  
 <section id="main-content"> 
@@ -162,12 +217,12 @@ $.insertgroup=function(no){
 							<label class="col-sm-1 col-sm-1 control-label">
 							<b> 추천 </b> </label>
 							<div class="col-lg-3">  
-							<button type="button" class="btn btn-theme">
+							<button type="button" class="btn btn-theme" onclick="$.upcommend()">
 								  <i class="fas fa-clipboard-check"></i> 추천하기 </button>
 							</div> 
 							<label class="col-sm-1 col-sm-1 control-label"><b> 추천 수 </b></label>
 							<div class="col-sm-3"> 
-								<h6>${BVo.boardRecommend}</h6> 
+								<h6 id="reCommendNum">${BVo.boardRecommend}</h6> 
 							</div>   
 						</div> 
 						<div class="form-group">  
@@ -209,7 +264,7 @@ $.insertgroup=function(no){
 						<i class="fas fa-clipboard"></i> 댓글  
 					</h4> 
 				<form class="form-horizontal style-form"
-				method="post" 
+				method="post" name="editfrm"
 				action="<c:url value='/Reply/ReplyEdit.do'/>">  
 				<input type="hidden" value="" name="repNo"> 
 				<input type="hidden" value="${BVo.boardNo}" name="boardNo"> 
@@ -259,7 +314,8 @@ $.insertgroup=function(no){
 							   <button type="button" class="btn btn-theme02" id="replyButton${reVo.repNo}" 
 							   onclick="$.editmake(${reVo.repNo})">  
 								  <i class="fas fa-edit"></i> 수정 </button>    
-							   <button type="button" class="btn btn-theme04"> 
+							   <button type="button" class="btn btn-theme04"
+							   onclick="delreply(${reVo.repNo})"> 
 								  <i class="fas fa-edit"></i> 삭제 </button> 
 							</div>  
 							   <button type="button" class="btn btn-theme" id="groupButton${reVo.repNo}" onclick="$.makegroup(${reVo.repNo})"> 
@@ -285,7 +341,7 @@ $.insertgroup=function(no){
 						
 					</c:if>	
 				</form>
-					<form class="form-horizontal style-form" 
+					<form class="form-horizontal style-form" name="writefrm"
 					action="<c:url value='/Reply/ReplyWrite.do'/>" method="post" >
 						<div class="form-group">  
 						<label class="col-sm-1 col-sm-1 control-label"><b>댓글 입력</b></label>

@@ -3,6 +3,8 @@ package com.cwb.finalproject.resScheduler.model;
 import java.util.List;
 
 public interface ResSchedulerService {
+	int EXIST_USE_RES=101;
+	
 	int insertResScd(ResSchedulerVO resSchedulerVo,boolean isday);
 	List<ResSchedulerVO> selectResScdByResNo(int resNo);
 	int updateResScdApprove(int reservNo);

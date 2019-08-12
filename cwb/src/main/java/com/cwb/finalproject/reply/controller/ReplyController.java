@@ -65,6 +65,8 @@ public class ReplyController {
 		int memNo= (Integer)session.getAttribute("memNo");
 		
 		ReplyVO originReVo = replyService.selectOriginReply(repNo);
+		logger.info("부모 댓글 originReVo={}",originReVo);
+		
 		int cnt = replyService.updateSortNo(originReVo);
 		ReplyVO ReVo= new ReplyVO();
 		ReVo.setMemNo(memNo);
@@ -92,6 +94,34 @@ public class ReplyController {
 			msg="댓글 수정 성공";
 		}else {
 			msg="댓글 수정 실패";
+		}
+		
+		model.addAttribute("msg", msg);
+		model.addAttribute("url", url);
+		
+		return "common/message";
+	}
+	
+	@RequestMapping("/ReplyDel.do")
+	public String ReplyDel(@RequestParam int repNo,
+			Model model) {
+		ReplyVO replyVo = replyService.selectOriginReply(repNo);
+		
+		
+		logger.info("댓글 삭제 replyVo={}",replyVo); 
+		
+		int result =replyService.selectReplyMine(repNo);
+		int cnt = 0;
+		if(result==1) {
+			cnt = replyService.deleteAllReply(repNo);
+		}else {
+			cnt = replyService.deleteReply(repNo);  
+		}
+		String msg = "",url="/Board/BoardDetail.do?boardNo="+replyVo.getBoardNo();
+		if(cnt>0) {
+			msg="댓글 삭제 성공";
+		}else {
+			msg="댓글 삭제 실패";
 		}
 		
 		model.addAttribute("msg", msg);

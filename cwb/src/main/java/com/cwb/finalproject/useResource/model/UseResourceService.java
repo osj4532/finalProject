@@ -23,6 +23,7 @@ public interface UseResourceService {
 		int selectAllNotRefuesRestotalCount(UseResourceVO useResourceVo);
 		
 		List<UseResourceVO> selectResRow(int memNo);
+		
 }
 
 

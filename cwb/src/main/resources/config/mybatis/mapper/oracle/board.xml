@@ -115,6 +115,18 @@
 		delete from board
 		where bdlist_no = #{bdlistNo}
 	</delete>
+	
+	<update id="updateReadCount" parameterType="int">
+		update board
+		set board_readcount= board_readcount+1
+		where board_no = #{boardNo}
+	</update>
+	
+	<update id="updateCommend" parameterType="int">
+	update board
+		set board_recommend= board_recommend+1
+		where board_no =  #{boardNo}
+	</update>
 </mapper>
 
 

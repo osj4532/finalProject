@@ -358,9 +358,11 @@ public class UseResourceController {
 		int cnt = resSchedulerService.updateResScdApprove(reservNo);
 		
 		String msg="",url="/useResource/AllUseResList.do";
-		if(cnt>0) {
-			msg="신청 승인 완료";
-		}else {
+		if(cnt==resSchedulerService.EXIST_USE_RES) {
+			msg="이미 신청 자원이 있습니다.";
+		}else if (cnt>0) {
+			msg="신청 승인 성공";
+		}else{
 			msg="신청 승인 실패";
 		}
 		model.addAttribute("msg", msg);

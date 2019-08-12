@@ -18,4 +18,8 @@ public interface ResSchedulerDAO {
 	int selectFrontAllnotDay(ResSchedulerVO resSchedulerVo);
 	int selectBackAllnotDay(ResSchedulerVO resSchedulerVo);
 	int selectNowSysDay(int resNo);
+	ResSchedulerVO findMyRess(int reservNo);
+	int frontUsefindRes(ResSchedulerVO resVo);
+	int backUsefindRes(ResSchedulerVO resVo);
+	
 }

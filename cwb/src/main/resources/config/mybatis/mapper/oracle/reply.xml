@@ -27,17 +27,34 @@
 		where rep_no=#{repNo}
 	</update>
 	
+	<delete id="deletereplyByBoardno" parameterType="int">
+		delete from reply
+		where board_no = #{boardNo}
+	</delete>
+	
+	<delete id="deleteAllReplyByBdList" parameterType="int">
+		delete from reply
+		where board_no in
+		(select board_no from board
+		where bdlist_no = #{bdlistNo})
+	</delete>
 	
 	<!-- 대댓글  -->
 	<select id="selectOriginReply" parameterType="int" resultType="replyVo">
 		select * from reply
-		where rep_no=#{repNo}
+		where rep_no=rep_group and rep_group = 
+		(select rep_group from reply where rep_no = #{repNo})
 	</select>
 	
 	<select id="selectReplyGroup" parameterType="int" resultType="replyVo">
 		select * from reply
 		where rep_group=#{repNo} and rep_no != rep_group
 		order by rep_group desc,rep_sortno asc
+	</select>
+	
+	<select id="selectReplyMine" parameterType="int" resultType="int">
+		select count(*) from reply
+		where rep_no=rep_group and  rep_no=#{repNo}
 	</select>
 	
 	<insert id="insertReply" parameterType="replyVo">
@@ -56,6 +73,17 @@
 		set rep_sortno=rep_sortno+1
 		where rep_group=#{repGroup} and rep_sortno>=#{repSortno}
 	</update>
+	
+	<delete id="deleteReply" parameterType="int">
+		delete from reply
+		where rep_No = #{repNo}
+	</delete>
+	<delete id="deleteAllReply" parameterType="int">
+		delete from reply
+		where rep_group =#{repNo}
+	</delete>
+	
+	
 </mapper>
 
 
