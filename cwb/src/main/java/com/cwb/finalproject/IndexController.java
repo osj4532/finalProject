@@ -24,6 +24,7 @@ import com.cwb.finalproject.common.PaginationInfo;
 import com.cwb.finalproject.common.WebUtility;
 import com.cwb.finalproject.confirm.controller.ConfirmController;
 import com.cwb.finalproject.confirm.model.ConfirmService;
+import com.cwb.finalproject.member.model.MemberService;
 import com.cwb.finalproject.message.model.MessageService;
 import com.cwb.finalproject.scheduler.model.SchedulerService;
 import com.cwb.finalproject.scheduler.model.SchedulerVO;
@@ -49,6 +50,8 @@ public class IndexController {
 	private WebhardService webhardService;
 	@Autowired UseResourceService useResourceService;
 	@Autowired SchedulerService schedulerService;
+	@Autowired
+	private MemberService memberService;
 	
 	
 	/**
@@ -58,6 +61,9 @@ public class IndexController {
 	public String home(Model model, HttpSession session) {
 		int memNo = (Integer)session.getAttribute("memNo");
 		double usingWB = webhardService.selectUseing(memNo);
+		List<Map<String, Object>> list = memberService.selectYearAll(memNo);
+		
+		model.addAttribute("list", list);
 		model.addAttribute("usingWB", usingWB);
 		
 		return "indexTest";

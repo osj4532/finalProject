@@ -45,7 +45,8 @@
 					} 
 				}
 			});
-			if($('#hidetext').val()!='외부 위치지정' || $('#hidetext').val()==''){
+			
+			if($('#hidetext').is(':disabled')==false){
 				$("#mapLatlng").val("!"+$('#hidetext').val());			
 			}
 		});
@@ -200,7 +201,7 @@
   <script type="text/javascript" src="<c:url value='/resources/lib/bootstrap-fileupload/bootstrap-fileupload.js'/>"></script>
   <script src="<c:url value='/resources/lib/sparkline-chart.js'/>"></script>
   <script src="<c:url value='/resources/lib/zabuto_calendar.js'/>"></script>
-   <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66fc63c70e3d4b0aa612be53665e59ba"></script>
+    <script type="text/javascript" src="https://dapi.kakao.com/v2/maps/sdk.js?appkey=66fc63c70e3d4b0aa612be53665e59ba&libraries=services"></script>
  <script>
 			var container = document.getElementById('map');
 			var options = {
@@ -213,10 +214,28 @@
                     </c:if> 
 				),
 				level: 2
-			};
+			}; 
 			
+			var hidetest = document.getElementById('hidetext'); 
+		    var resultinput = document.getElementById('mapLatlng'); 
+		    
+		    
+		    
 			var map = new kakao.maps.Map(container, options);
+			var geocoder = new kakao.maps.services.Geocoder();
+			 var back = function(result, status) {
+			        if (status === kakao.maps.services.Status.OK) {
+			        	var address=result[0].address.address_name;
+			        	hidetest.value="외부 위치지정("+result[0].address.address_name+")"; 
+					    hidetest.disabled = true;
+			        }          
+			    };    
+			var center = map.getCenter(); 
 			
+			<c:if test="${fn:indexOf(resVo.resLocation,'!')!=0}"> 
+		    geocoder.coord2Address(center.getLng(), center.getLat(), back);
+		    </c:if> 
+			 
 			// 지도 확대 축소를 제어할 수 있는  줌 컨트롤을 생성합니다
 			var zoomControl = new kakao.maps.ZoomControl();
 			map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
@@ -228,7 +247,9 @@
 			}); 
 			// 지도에 마커를 표시합니다
 			marker.setMap(map);
-
+			
+			
+			
 			// 지도에 클릭 이벤트를 등록합니다
 			// 지도를 클릭하면 마지막 파라미터로 넘어온 함수를 호출합니다
 			kakao.maps.event.addListener(map, 'click', function(mouseEvent) {        
@@ -236,17 +257,27 @@
 			    // 클릭한 위도, 경도 정보를 가져옵니다 
 			    var latlng = mouseEvent.latLng; 
 			    
+			    var callback = function(result, status) {
+			        if (status === kakao.maps.services.Status.OK) {
+			        	//address=result[0].address.address_name;
+			        	hidetest.value="외부 위치지정("+result[0].address.address_name+")"; 
+					    hidetest.disabled = true;
+			        }          
+			    };   
+			    geocoder.coord2Address(latlng.getLng(), latlng.getLat(), callback);
+			    
+			    
 			    // 마커 위치를 클릭한 위치로 옮깁니다
 			    marker.setPosition(latlng);
 			    
 			    var message =  latlng.getLat()+','+latlng.getLng();
 			    
-			    var hidetest = document.getElementById('hidetext'); 
-			    var resultinput = document.getElementById('mapLatlng'); 
+			    
 			    resultinput.value = message;
-			    hidetest.value="외부 위치지정";
-			    hidetest.disabled = true;
+			    
 			});  
+			
+			
 </script>
 </body>
 

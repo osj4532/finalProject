@@ -20,8 +20,8 @@
 	<tbody class="scdtable">
 	   
 	<c:if test="${empty scList}">
-		<tr><td>최근 스케줄 없습니다.</td></tr>
-	</c:if> 
+		<tr><td colspan="4">최근 스케줄 없습니다.</td></tr>
+	</c:if>  
 	<c:if test="${!empty scList}">
 	<c:forEach var="vo"  items="${scList}">
 		<tr> 

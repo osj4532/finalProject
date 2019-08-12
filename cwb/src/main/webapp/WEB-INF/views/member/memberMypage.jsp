@@ -46,11 +46,11 @@
 			var myBarChart = new Chart(ctx, {
 				type: 'bar',
 			data : {
-				labels : ["월별 출근일수", "년도별 출근일수"],
+				labels : ["당월 출근일수", "올해 출근일수"],
 				datasets : [
 					{
 						label : "나의 근태 조회",
-						data: [55, 44],
+						data: [${month}, ${year}],
 						backgroundColor : [
 							'rgba(255, 99, 132, 0.2)',
 							'rgba(54, 162, 235, 0.2)'
