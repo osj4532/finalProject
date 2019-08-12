@@ -124,7 +124,7 @@
   	}
   	
   	.addrCheck span{
-  		font-size: 2em;
+  		font-size: 1.7em;
   		display: inline-block;
   		position: relative;
   		top:-5px;
@@ -137,20 +137,20 @@
   	}
   	
   	.addrCheck input[type=checkbox]{
-		width:30px;
-		height: 30px;
+		width:20px;
+		height: 20px;
 		margin-top: 20px;
   	}
   	
   	 #emailList input[type=checkbox]{
-  	 	width:30px;
-		height: 30px;
+  	 	width:20px;
+		height: 20px;
   	 }
   	
   	#emailList .table tr{
   		height: 50px;
-  		font-size: 2em;
-  		text-align: center;
+  		font-size: 15pt;
+  		text-align: left;
   	}
   	
   	#emailList .table tr:hover{
@@ -303,7 +303,7 @@
 							let mail = item['MEM_EMAIL1'] + "@" + item['MEM_EMAIL2']; 
 							
 							tdEl1.html('<input type="checkbox" value="'+mail+'">');
-							tdEl2.html('<i class="fas fa-user"></i>'+item['MEM_NAME']);
+							tdEl2.html('<i class="fas fa-user"></i> '+item['MEM_NAME']);
 							tdEl3.html(mail);
 						}else if(kind == 2){
 							tdEl1.html('<input type="checkbox" value="'+item["ADDRBOOK_EMAIL"]+'">');

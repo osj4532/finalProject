@@ -22,8 +22,8 @@
 	<tbody class="restable">
 	
 	<c:if test="${empty ulist}">
-		<tr><td>최근 신청 자원이 없습니다.</td></tr>
-	</c:if> 
+		<tr><td colspan="3">최근 신청 자원이 없습니다.</td></tr>
+	</c:if>  
 	<c:if test="${!empty ulist}">
 	<c:forEach var="vo"  items="${ulist}">
 		<tr>

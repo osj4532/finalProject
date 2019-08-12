@@ -30,6 +30,7 @@
 		font-size: 0.9em;
 		border-left: 1px solid gray;
 		width: calc(100% - 135px);
+		padding: 20px;
 	}
 	
 	.newBtn{
