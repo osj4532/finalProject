@@ -33,6 +33,9 @@
 	font-weight: bold;
 	display: none;
 }
+#main-content{
+		min-height: 900px;
+	}
 </style>
 <script type="text/javascript" src="<c:url value='/resources/js/member.js'/>"></script>
 <script type="text/javascript">

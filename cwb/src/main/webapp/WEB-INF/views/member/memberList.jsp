@@ -127,7 +127,7 @@
 	
 function resign(memNo){
 	
-    if(confirm("퇴사 시키시겠습니까?")){
+    if(confirm("퇴사 처리 하시겠습니까?")){
     	
         location.href = "<c:url value='/member/memberResign.do?memNo='/>"+memNo;
         return true;
@@ -145,6 +145,9 @@ function resign(memNo){
 	}
 	#page{
 		text-align: center;
+	}
+	#main-content{
+		min-height: 900px;
 	}
 </style>
 <section id="main-content">

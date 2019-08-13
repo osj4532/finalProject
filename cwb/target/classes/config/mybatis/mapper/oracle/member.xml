@@ -40,7 +40,7 @@
 		select count(*) from memberview
 		where mem_id != #{memId}
 		<if test="keyword != null and keyword != ''">
-			where mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
+			and mem_name||dept_name||pos_name like '%'||#{keyword}||'%'
 		</if>
 		order by pos_no, mem_no
 	</select>

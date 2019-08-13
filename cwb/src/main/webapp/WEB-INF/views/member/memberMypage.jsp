@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:import url="../inc/top.jsp"/>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 
 <style type="text/css">
 #Main{
@@ -17,15 +19,16 @@
 	}
 	#info2{
 		height:200px;
-		margin-left:50px;
 		background-color: white;
-		width: 300px;
 	}
 	#info3{
 		height: 200px;
-		margin-left:50px;
+		margin-left:10px;
 		background-color: white;
 		width: 440px;
+	}
+	#main-content{
+		height: 900px;
 	}
 </style>
 <section id="main-content">
@@ -46,16 +49,13 @@
 		</div>
 		
 		<div class="col-lg-2" id="info2">
-					<c:if test="${!empty sessionScope.fileName }">
-		          <p class="centered"><img src="<c:url value='/member_file/${sessionScope.fileName}'/>" class="img-circle" width="80"></p>
-		        	</c:if>
-		        	<c:if test="${empty sessionScope.fileName }">
-		          <p class="centered"><img src="<c:url value='/member_file/user.png'/>" class="img-circle" width="80"></p>
-		        	</c:if>
-		          <h5 class="centered">${sessionScope.memName }</h5>
-		          <div class="centered">
-			          <button class="btn btn-info centered" id="btnDetail" onclick="location.href='<c:url value='/member/memberDetail.do?memNo=${sessionScope.memNo }'/>'">상세정보</button>
-		          </div>
+			<label>ID : </label><span> ${map['MEM_ID'] }</span>
+			<br><br>
+			<label>E-MAIL : </label><span> ${map['MEM_EMAIL1'] }@${map['MEM_EMAIL2'] }</span>
+			<br><br>
+			<label>HP : </label><span> ${map['MEM_HP1'] }-${map['MEM_HP2'] }-${map['MEM_HP3'] }</span>
+			<br><br>
+			<label>입사일 : </label><span><fmt:formatDate pattern="yyyy-MM-dd" value="${map['MEM_JOINDATE'] }"/></span>
 		</div>
 		
 		<div class="col-lg-8" id="info3">
@@ -67,7 +67,7 @@
 			var myBarChart = new Chart(ctx, {
 				type: 'bar',
 			data : {
-				labels : ["당월 출근일수", "올해 출근일수"],
+				labels : ["금월 출근일수", "올해 출근일수"],
 				datasets : [
 					{
 						label : "나의 근태 조회",
@@ -88,7 +88,8 @@
 					scales: {
 						yAxes:[{
 							ticks: {
-								beginAtZero:true
+								beginAtZero:true,
+								stepSize:1
 							}
 						}]
 					}

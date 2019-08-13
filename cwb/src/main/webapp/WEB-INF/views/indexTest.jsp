@@ -226,7 +226,7 @@
 				</div>
 			</div>
 			
-              <div class="col-md-8 col-sm-8 mb">
+              <div class="col-md-4 col-sm-4 mb">
 				<div class="subInfo">
 					<div class="head">
 						<h5><i class="fas fa-chart-line"></i> 월별 출근 일수</h5>

@@ -371,8 +371,12 @@ public class MemberController {
 		int year = memberService.selectYear(memNo);
 		logger.info("year = {}", year);
 		
+		Map<String, Object> map = memberService.selectByNo(memNo);
+		logger.info("마이페이지 조회 결과 map = {}", map);
+		
 		model.addAttribute("month", month);
 		model.addAttribute("year", year);
+		model.addAttribute("map", map);
 		
 		return "member/memberMypage";
 	}
@@ -482,6 +486,7 @@ public class MemberController {
 			logger.info("파일 넣은 후 vo = {}", vo);
 			
 			String oldFile = (String)request.getSession().getAttribute("fileName");
+			request.getSession().setAttribute("fileName", vo.getMemFileName());
 			if(oldFile !=null &&!oldFile.isEmpty()) {
 				String path = fileUtil.getUploadPath(request, FileUploadUtil.MEMBER_UPLOAD);
 				File of = new File(path, oldFile);
@@ -489,7 +494,6 @@ public class MemberController {
 					of.delete();
 				}
 			}
-			request.getSession().setAttribute("fileName", vo.getMemFileName());
 		}
 		int cnt = memberService.updateUser(vo);
 		
@@ -527,9 +531,9 @@ public class MemberController {
 		
 		String msg = "", url = "/member/memberResignList.do";
 		if(cnt>0) {
-			msg = "사원 복직 처리되었습니다.";
+			msg = "사원 복직 처리 되었습니다.";
 		}else {
-			msg = "사원복직 처리 실패하였습니다.";
+			msg = "사원 복직 처리 실패하였습니다.";
 		}
 		model.addAttribute("msg", msg);
 		model.addAttribute("url", url);
