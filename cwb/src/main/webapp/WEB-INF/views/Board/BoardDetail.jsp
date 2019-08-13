@@ -212,7 +212,9 @@ $.upcommend=function(){
 							<div class="col-sm-3"> 
 								<h6>${BVo.boardReadcount }</h6> 
 							</div>  
-						</div>   
+						</div>    
+						
+						<c:if test="${blVo.bdlistRc=='Y'}"> 
 						<div class="form-group">
 							<label class="col-sm-1 col-sm-1 control-label">
 							<b> 추천 </b> </label>
@@ -225,6 +227,9 @@ $.upcommend=function(){
 								<h6 id="reCommendNum">${BVo.boardRecommend}</h6> 
 							</div>   
 						</div> 
+						</c:if>
+						
+						<c:if test="${blVo.bdlistUp=='Y'}">
 						<div class="form-group">  
 							<label class="col-sm-1 col-sm-1 control-label" id="boardlistAdd">
 							<b> 첨부파일 </b> </label> 
@@ -236,8 +241,10 @@ $.upcommend=function(){
 	href="<c:url value='/Board/download.do?boardFilename=${BVo.boardFilename }&boardOriginalfilename=${BVo.boardOriginalfilename }'/>">${BVo.boardOriginalfilename }</a>
 	</b>(${BVo.boardFilesize}Byte)    
 							</c:if> 
-							</div>  
+							</div> 
 						</div> 
+						</c:if>
+						
 						<div class="form-group">
 							<label class="col-sm-1 col-sm-1 control-label">
 							<b>제목</b> </label>
@@ -255,6 +262,8 @@ $.upcommend=function(){
 			</div>
 		</div>
 		
+		 
+<c:if test="${blVo.bdlistRe=='Y'}">	
 		<div class="row mt">  
 			<div class="col-lg-12">
 				
@@ -363,10 +372,13 @@ $.upcommend=function(){
 						</div>   
 					</form>
 			</div>	
+			
+			
 			<!-- col-lg-12-->
 		</div>
 		<!-- /row -->
 		</div>
+		</c:if>	
 		<!-- INLINE FORM ELELEMNTS -->
 		<!-- /row --> 
 	</section>

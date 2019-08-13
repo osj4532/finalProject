@@ -95,20 +95,32 @@ function detailBoard(boardNo){
 					</div>
 					<div class="span6"> 
 					 
-						<form method="post" name="Search" class="form-inline" role="form">
-								<select  id="searchCondition" class="form-control">
-										<option value="type_Name" 
+						<form  action="<c:url value='/Board/BoardList.do'/>" 
+						 method="post" name="Search" class="form-inline" role="form">
+								<select  name="searchCondition" class="form-control">
+										<option value="title" 
+										<c:if test="${bVo.searchCondition=='title'}">
+										selected="selected" 
+										</c:if>
 										> 제목 </option> 
-										<option value="res_Name" 
-										> 내용 </option>
-										<option value="mem_Name" 
+										<option value="content"
+										<c:if test="${bVo.searchCondition=='content'}">
+										selected="selected" 
+										</c:if>  
+										> 내용 </option> 
+										<option value="all"
+										<c:if test="${bVo.searchCondition=='all'}">
+										selected="selected" 
+										</c:if>
 										> 제목+내용 </option>
-								</select>     
+								</select>      
 								<div class="form-group">  
-			                  <input type="text" class="form-control" id="searchKeyword" 
-			                  placeholder="내용 입력" value="${param.searchKeyword}">
-			                </div>    
-			               		 <button type="submit" class="btn btn-theme">검색</button> 
+			                  <input type="text" class="form-control" name="searchKeyword" 
+			                  placeholder="내용 입력" value="${bVo.searchKeyword}">
+			                </div>      
+			               		 <button type="submit" class="btn btn-theme">검색</button>
+			           <input type="hidden" name='bdlistNo' value="${bVo.bdlistNo}">
+						<input type="hidden" name='currentPage' value="1">    		  
 						</form> 
 				
 				
@@ -142,15 +154,15 @@ function detailBoard(boardNo){
 					 
 					<!-- row-fluid -->
 				</div>  
-				 <form action="<c:url value='/Board/BoardList.do'/>" 
+			<%-- 	 <form action="<c:url value='/Board/BoardList.do'/>" 
 						method="post" name="AllSearch" class="form-inline" role="form">
 						<!-- 승인 페이지 처리 -->
-						<input type="hidden" name='currentPage' value="1">
+						
 						<!-- 승인 검색 처리 -->
 						<input type="hidden" name='searchCondition' > 
 						<input type="hidden" name='searchKeyword' >
 						
-					</form> 
+					</form>  --%>
 				<!-- row-fluid -->
             </div> 
           </div>

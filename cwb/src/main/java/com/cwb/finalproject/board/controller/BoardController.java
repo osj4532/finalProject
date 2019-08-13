@@ -146,19 +146,33 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/BoardList.do")
-	public String boardlist(@RequestParam int bdlistNo
-			,@RequestParam(defaultValue = "1") int currentPage
-			,@RequestParam(required = false) String searchCondition
-			,@RequestParam(required = false) String searchKeyword
+	public String boardlist(@ModelAttribute BoardVO boardVo
 			,Model model) {
-		logger.info("게시판 보여주기");
+ 
+		logger.info("게시판 boardVo={}",boardVo);
+		PaginationInfo PagingInfo=new PaginationInfo();
 		
 		
+		PagingInfo.setBlockSize(WebUtility.RES_BLOCK_SIZE);
+		PagingInfo.setRecordCountPerPage(WebUtility.BLOCK_SIZE);
+		PagingInfo.setCurrentPage(boardVo.getCurrentPage());
+		 
+		boardVo.setRecordCountPerPage(WebUtility.BLOCK_SIZE);
+		boardVo.setFirstRecordIndex(PagingInfo.getFirstRecordIndex());
 		
-		List<BoardVO> Blist = boardService.selectBoardByListNo(bdlistNo);
-		BoardListVO blVo = boardService.selectBoardListByNo(bdlistNo);
+		
+		List<BoardVO> Blist = boardService.selectBoardByListNo(boardVo);
+		BoardListVO blVo = boardService.selectBoardListByNo(boardVo.getBdlistNo());
+		
+		int total = boardService.boardTotalrecord(boardVo);
+		
+		PagingInfo.setTotalRecord(total);
 		int bdSize= Blist.size();  
 		logger.info("게시판 개수 bdSize={}",bdSize);
+		
+		
+		model.addAttribute("bVo", boardVo); 
+		model.addAttribute("PagingInfo", PagingInfo); 
 		model.addAttribute("Blist", Blist);
 		model.addAttribute("blVo", blVo);
 		model.addAttribute("bdSize", bdSize);
@@ -316,14 +330,15 @@ public class BoardController {
 				response.addCookie(setCookie);
 			}
 		}
-		
 		BoardVO BVo= boardService.selectboard(boardNo);
+		BoardListVO blVo = boardService.selectBoardListByNo(BVo.getBdlistNo());
 		MemberVO mVo =  memberService.selectByMemNotoVo(BVo.getMemNo());
 		List<ReplyVO> reList= replyService.selectReplyByNo(boardNo);
 		
 		
 		String memName =mVo.getMemName();
 		model.addAttribute("reList", reList); 
+		model.addAttribute("blVo", blVo);  
 		model.addAttribute("BVo", BVo);
 		model.addAttribute("memName", memName);
 		  
