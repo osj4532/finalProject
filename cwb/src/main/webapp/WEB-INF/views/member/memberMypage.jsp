@@ -6,11 +6,8 @@
 
 
 <style type="text/css">
-#Main{
-		min-height: 900px;
-	}
 	.row{
-		margin-top: 50px;
+		margin-top: 15px;
 	}
 	#info{
 		min-height: 200px;
@@ -22,20 +19,20 @@
 		background-color: white;
 	}
 	#info3{
-		height: 200px;
-		margin-left:10px;
 		background-color: white;
-		width: 440px;
+		
+		margin: 0 auto;
 	}
 	#main-content{
 		height: 900px;
 	}
+	
 </style>
 <section id="main-content">
 	<section class="wrapper">
 	<h3><i class="fas fa-users"></i>My Page</h3>
 	<div class="row">
-		<div class="col-lg-2" id="info">
+		<div class="col-lg-3" id="info">
 					<c:if test="${!empty sessionScope.fileName }">
 		          <p class="centered"><img src="<c:url value='/member_file/${sessionScope.fileName}'/>" class="img-circle" width="80"></p>
 		        	</c:if>
@@ -48,7 +45,7 @@
 		          </div>
 		</div>
 		
-		<div class="col-lg-2" id="info2">
+		<div class="col-lg-3" id="info2">
 			<label>ID : </label><span> ${map['MEM_ID'] }</span>
 			<br><br>
 			<label>E-MAIL : </label><span> ${map['MEM_EMAIL1'] }@${map['MEM_EMAIL2'] }</span>
@@ -58,8 +55,10 @@
 			<label>입사일 : </label><span><fmt:formatDate pattern="yyyy-MM-dd" value="${map['MEM_JOINDATE'] }"/></span>
 		</div>
 		
-		<div class="col-lg-8" id="info3">
-		<canvas id="myChart" width="200" height="100"></canvas>
+	</div>
+	<div class="row">
+		<div class="col-lg-6" id="info3">
+		<canvas id="myChart"></canvas>
 			<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.1.4/Chart.bundle.min.js"></script>
 			<script type="text/javascript" charset="utf-8" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
 			<script type="text/javascript">
@@ -89,14 +88,14 @@
 						yAxes:[{
 							ticks: {
 								beginAtZero:true,
-								stepSize:1
+								stepSize:20
 							}
 						}]
 					}
 				}
 			});
 			</script>
-		</div>
+	</div>
 	</div>
 	</section>
 </section>

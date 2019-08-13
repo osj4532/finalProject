@@ -84,7 +84,7 @@ public class ResourcesController {
 		if(cnt>0) { 
 			msg="자원 리스트삭제 완료";
 			for (ResourcesVO vo : resVo) {
-				String path =resImgUtility.getUploadPath(request,resImgUtility.IMAGE_UPLOAD);
+				String path =resImgUtility.getUploadPath(request,ResImgUploadUtility.IMAGE_UPLOAD);
 				File file = new File(path,vo.getResFilename());
 				if(file.exists()) {
 					boolean bool = file.delete();
@@ -117,7 +117,7 @@ public class ResourcesController {
 		logger.info("자원 등록 ");
 		
 		//파일 업로드 
-		List<Map<String, Object>> list= resImgUtility.fileUpload(request,resImgUtility.PDS_FILE_UPLOAD);
+		List<Map<String, Object>> list= resImgUtility.fileUpload(request,ResImgUploadUtility.IMAGE_UPLOAD);
 		
 		String resFilename = "";
 		for (Map<String, Object> map : list) {
@@ -170,7 +170,7 @@ public class ResourcesController {
 		logger.info("자원 등록 oldImg={},resourcesVo={}",oldImg,resourcesVo);
 		
 		//파일 업로드 
-		List<Map<String, Object>> list= resImgUtility.fileUpload(request,resImgUtility.PDS_FILE_UPLOAD);
+		List<Map<String, Object>> list= resImgUtility.fileUpload(request,ResImgUploadUtility.IMAGE_UPLOAD);
 		logger.info("체크 list={}",list.size());
 		String resFilename = "";
 		boolean fixImg=false;

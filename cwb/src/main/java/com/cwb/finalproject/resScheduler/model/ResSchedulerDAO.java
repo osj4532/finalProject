@@ -21,5 +21,6 @@ public interface ResSchedulerDAO {
 	ResSchedulerVO findMyRess(int reservNo);
 	int frontUsefindRes(ResSchedulerVO resVo);
 	int backUsefindRes(ResSchedulerVO resVo);
+	int delAllResBySchedule(int resNo);
 	
 }

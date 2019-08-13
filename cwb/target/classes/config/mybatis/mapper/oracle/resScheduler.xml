@@ -196,6 +196,11 @@ values(#{reservNo},#{memNo},#{resNo},
 		where reserv_no = #{reservNo}
 	</delete>
 	
+	<delete id="delAllResBySchedule" parameterType="int">
+		delete from resschedule
+		where res_no =#{resNo}
+	</delete>
+	<!--  -->
 	<update id="updateUseResSchedule" parameterType="int">
 		update Resschedule
 		set appr_flag='W'

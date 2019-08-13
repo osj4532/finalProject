@@ -46,6 +46,7 @@ $(document).ready(function(){
 	$('#memEmail2 option').each(function(item){
 		if($(this).val() == '${map['MEM_EMAIL2']}'){
 			$(this).prop("selected", "selected");
+			return false;
 		}else{
 			$('#memEmail3').css("visibility", 'visible');
 			$('#memEmail2').val("etc");
@@ -300,7 +301,7 @@ function list(){
 							</div>
 							<div class="col-sm-2">
 							<input type="text" name="memEmail3" id="memEmail3" class="form-control"
-								title="직접입력인 경우 이메일주소 뒷자리" style="visibility:" readOnly> 
+								title="직접입력인 경우 이메일주소 뒷자리" style="visibility:hidden" readOnly> 
 							</div> 
 						</div>
 						<div class="form-group"> 

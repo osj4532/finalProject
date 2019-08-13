@@ -100,5 +100,10 @@ public class ResSchedulerDAOMybatis implements ResSchedulerDAO{
 	public int backUsefindRes(ResSchedulerVO resVo) {
 		return sqlSession.selectOne(namespace+"backUsefindRes", resVo);
 	}
+
+	@Override
+	public int delAllResBySchedule(int resNo) {
+		return sqlSession.delete(namespace+"delAllResBySchedule", resNo);
+	}
 	 
 }

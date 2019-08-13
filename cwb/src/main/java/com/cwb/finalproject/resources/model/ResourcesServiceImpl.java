@@ -9,11 +9,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cwb.finalproject.board.model.BoardVO;
+import com.cwb.finalproject.resScheduler.model.ResSchedulerDAO;
 
 @Service
 public class ResourcesServiceImpl implements ResourcesService{
 
 	@Autowired private ResourcesDAO resourcesDao;
+	@Autowired private ResSchedulerDAO ResSchedulrDao;
 	
 	@Override
 	public int insertResType(Map<String, String> map) {
@@ -60,6 +62,7 @@ public class ResourcesServiceImpl implements ResourcesService{
 
 	@Override
 	public int deleteResByno(int resNo) {
+		ResSchedulrDao.delAllResBySchedule(resNo);
 		return resourcesDao.deleteResByno(resNo);
 	}
 

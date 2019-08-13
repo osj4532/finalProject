@@ -269,6 +269,9 @@ public class ConfirmController {
 		
 		Map<String, Object> member = memberService.selectByNo(cfVo.getMemNo());
 		List<Map<String, Object>> clList = confirmlineService.selectAll(cfVo.getRegNo());
+		logger.info("clList[0]", clList.get(0));
+		
+		
 		Map<String, Object> formInfo = docFormService.selectDocFormByNo(cfVo.getFormNo());
 		List<ConfirmFileVO> files = confirmService.selectDocFiles(cfVo.getCfNo());
 		
@@ -322,6 +325,7 @@ public class ConfirmController {
 		
 		Map<String, Object> member = memberService.selectByNo(cfVo.getMemNo());
 		List<Map<String, Object>> clList = confirmlineService.selectAll(cfVo.getRegNo());
+		logger.info("clList[0] = {}", clList.get(0));
 		Map<String, Object> formInfo = docFormService.selectDocFormByNo(cfVo.getFormNo());
 		List<ConfirmFileVO> files = confirmService.selectDocFiles(cfNo);
 		List<SignVO> signs = signService.getSignList(cfVo);

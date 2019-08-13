@@ -168,7 +168,8 @@ function resign(memNo){
 						<col style="width:15%;"/>
 						<col style="width:20%;"/>
 						<col style="width:15%;"/>
-						<col style="width:20%;"/>
+						<col style="width:10%;"/>
+						<col style="width:20%"/>
 						<col style="width:20%"/>
 					</colgroup>
 					<thead>
@@ -179,7 +180,7 @@ function resign(memNo){
 							<th>부서</th>
 							<th>직급</th>
 							<th>연락처</th>
-							<th>수정/삭제</th>
+							<th>수정/퇴사</th>
 						</tr>
 					</thead>
 					<tbody>

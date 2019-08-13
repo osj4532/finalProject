@@ -27,7 +27,6 @@
 	<div class="row wraper2 panel">
 		<h3>웹하드 관리</h3>
 		<div class="col-sm-4">
-			<label>웹하드 목록</label>
 			<select id="cateList" multiple="multiple" size="7">
 				
 			</select>

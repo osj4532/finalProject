@@ -42,15 +42,21 @@
 		                    where cf_no = #{cfNo}
 		                )
 		) -->
-		select * from signreg
-		where mem_no in
-		(
-		select CF.mem_no from confirmline CF
-		join confirm C
-		on CF.REG_NO = C.REG_NO
-		where C.reg_no = #{regNo}
-		and C.CF_NO = #{cfNo}
-		and C.CF_ORDER > CF.LINE_ORDER
-		)
+		select * from signreg S
+		join confirmline C
+		on S.MEM_NO = C.MEM_NO
+				where S.mem_no in
+				(
+					select CF.mem_no from confirmline CF
+					join confirm C
+					on CF.REG_NO = C.REG_NO
+					where C.reg_no = #{regNo}
+					and C.CF_NO = #{cfNo}
+					and C.CF_ORDER > CF.LINE_ORDER
+					
+				)
+		and C.REG_NO = #{regNo}
+		order by C.LINE_ORDER
+		
 	</select>
 </mapper>

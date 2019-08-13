@@ -13,6 +13,7 @@
 	
 	<select id="selectAll" resultType="map" parameterType="int">
 		select * from confirmlineview where reg_no = #{reg_no}
+		order by line_order
 	</select>
 	
 	<select id="getMaxOrder" resultType="int" parameterType="int">
