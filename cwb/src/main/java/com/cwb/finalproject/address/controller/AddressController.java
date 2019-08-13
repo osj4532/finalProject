@@ -444,7 +444,7 @@ public class AddressController {
 		
 		String[] ids = msgrevId.split(",| ");
 		
-		String msg = "", url = "/address/sendMessage.do";
+		String msg = "", url = "/message/sendMessage.do";
 		
 		int[] memNos = new int[ids.length];
 		for(int i = 0; i < ids.length; i++) {
@@ -463,7 +463,7 @@ public class AddressController {
 		
 		if(cnt > 0) {
 			msg = "쪽지 보내기 성공";
-			url = "/address/msgList.do";
+			url = "/message/close.do";
 		}else {
 			msg = "쪽지 보내기 실패";
 		}

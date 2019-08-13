@@ -317,7 +317,7 @@ $.upcommend=function(){
 					</script> 
 						<label class="col-sm-1 col-sm-1 control-label"><b id="replyName${reVo.repNo}"></b></label>
 							<div class="col-sm-7"> 
-							<b id="replyContent${reVo.repNo}">${reVo.repContent}</b>    - ${reVo.repNo}
+							<b id="replyContent${reVo.repNo}">${reVo.repContent}</b>
 							</div>       
 							<div class="col-sm-2" id="replyDiv${reVo.repNo}"> 
 							   <button type="button" class="btn btn-theme02" id="replyButton${reVo.repNo}" 

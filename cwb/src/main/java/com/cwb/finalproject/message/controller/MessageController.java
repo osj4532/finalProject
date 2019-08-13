@@ -193,5 +193,8 @@ public class MessageController {
 		return cnt;
 	}
 
-	
+	@RequestMapping("/close.do")
+	public void closeWin() {
+		logger.info("닫기 창으로 이동");
+	}
 }

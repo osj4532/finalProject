@@ -38,21 +38,22 @@
 		
 		if(res.length == 1){
 			var trEl = $('<tr></tr>');
-			var tdEl = $('<td colspan="6"></td>').html("해당하는 사원이 없습니다.");
+			var tdEl = $('<td colspan="7"></td>').html("해당하는 사원이 없습니다.");
 		}
 		for(var i=1;i<res.length;i++){
 			var map = res[i];
 			if(map['MEM_NO'] != ${sessionScope.memNo}){
 				var trEl = $('<tr></tr>');
 				var tdEl1 = $('<td></td>').html(map['MEM_NO']);
-				var tdEl2 = $('<td></td>').html(map['MEM_NAME']);
-				var tdEl3 = $('<td></td>').html(map['DEPT_NAME']);
-				var tdEl4 = $('<td></td>').html(map['POS_NAME']);
-				var tdEl5 = $('<td></td>').html(map['MEM_HP1']+"-"+map['MEM_HP2']+"-"+map['MEM_HP3']);
+				var tdEl2 = $('<td></td>').html(map['MEM_ID']);
+				var tdEl3 = $('<td></td>').html(map['MEM_NAME']);
+				var tdEl4 = $('<td></td>').html(map['DEPT_NAME']);
+				var tdEl5 = $('<td></td>').html(map['POS_NAME']);
+				var tdEl6 = $('<td></td>').html(map['MEM_HP1']+"-"+map['MEM_HP2']+"-"+map['MEM_HP3']);
 				
 				var a1 = $('<a class="btn btn-theme"><i class="fa fa-cog"></i>수정</a>').attr("href", "<c:url value='/member/memberEdit.do?memNo="+map["MEM_NO"] +"'/>");
 				var a2 = $('<a class="btn btn-danger"><i class="far fa-trash-alt"></i>퇴사</a></td>').attr("href", "#").attr("onclick", "resign("+map["MEM_NO"]+")");
-				var tdEl6 = $('<td></td>').html(a1).append(a2);
+				var tdEl7 = $('<td></td>').html(a1).append(a2);
 				
 				trEl.html(tdEl1);
 				trEl.append(tdEl2);
@@ -60,6 +61,7 @@
 				trEl.append(tdEl4);
 				trEl.append(tdEl5);
 				trEl.append(tdEl6);
+				trEl.append(tdEl7);
 				
 				tbody.append(trEl);
 			}
@@ -172,6 +174,7 @@ function resign(memNo){
 					<thead>
 						<tr>
 							<th>사원번호</th>
+							<th>아이디</th>
 							<th>이름</th>
 							<th>부서</th>
 							<th>직급</th>

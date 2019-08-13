@@ -143,7 +143,7 @@
 <div class="btnDiv">
 <button id="add" class="btn btn-info">받는사람</button>
 </div>
-<form name="mailfrm" action="<c:url value='/address/sendMsgProc.do'/>" method="post" enctype="multipart/form-data">
+<form name="mailfrm" action="<c:url value='/address/sendMsgProc.do'/>" method="post">
 	<div class="lab-grid-cell lab-grid-cell--mb-2x w-third--d w-half--t w-full--m">
 	    <div class="floating-label-wrap">
 	      <input type="text" class="floating-label-field floating-label-field--s1" name="msgrevId" 
@@ -186,14 +186,12 @@
 				event.preventDefault();
 			}
 			opener.location.href="<c:url value='/message/msgList.do'/>";
-			window.close();
-			
 		});
 		
 		$('#add').click(function(){
 			window.open("<c:url value='/address/selCoworker.do'/>",'',"width=630px,height=630px,left=100px,top=100px,resizable=no,location=yes");
 		});
-	})
+	});
 </script>
 </body>
 </html>
